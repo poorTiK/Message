@@ -4,6 +4,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 15.0.28010.2026
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Message", "Message\Message.csproj", "{C944A37F-481A-4D32-9B07-2D8D8163D01C}"
+	ProjectSection(ProjectDependencies) = postProject
+		{336C8302-9992-4859-9507-CDF64FD121DF} = {336C8302-9992-4859-9507-CDF64FD121DF}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServerWCF", "ServerWCF\ServerWCF.csproj", "{336C8302-9992-4859-9507-CDF64FD121DF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +20,10 @@ Global
 		{C944A37F-481A-4D32-9B07-2D8D8163D01C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C944A37F-481A-4D32-9B07-2D8D8163D01C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C944A37F-481A-4D32-9B07-2D8D8163D01C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{336C8302-9992-4859-9507-CDF64FD121DF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{336C8302-9992-4859-9507-CDF64FD121DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{336C8302-9992-4859-9507-CDF64FD121DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{336C8302-9992-4859-9507-CDF64FD121DF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

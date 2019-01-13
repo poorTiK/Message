@@ -5,8 +5,132 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Message"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
         
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+
+        
+        Name="MainWnd" Height="250" Width="450" 
+        WindowStartupLocation="CenterScreen" WindowStyle="None"
+        BorderThickness="0" ResizeMode="NoResize"
+        >
+    <WindowChrome.WindowChrome>
+        <WindowChrome CaptionHeight="22"/>
+    </WindowChrome.WindowChrome>
+
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVisConverter" />
+    </Window.Resources>
+
+    <Grid>
+        <Grid VerticalAlignment="Top" Background="#353636" Height="22">
+            <TextBlock HorizontalAlignment="Left" VerticalAlignment="Bottom" Foreground="White" FontSize="15" Margin="15,0,0,0">Log In</TextBlock>
+            <StackPanel  WindowChrome.IsHitTestVisibleInChrome="True" VerticalAlignment="Bottom" Orientation="Horizontal" Margin="0" HorizontalAlignment="Right">
+                <Button Name="MinimizeButton" Background="{x:Null}" BorderBrush="{x:Null}" 
+                        Foreground="White" Height="auto" HorizontalAlignment="Center" 
+                        VerticalAlignment="Center">
+                    <materialDesign:PackIcon
+                        Kind="WindowMinimize" />
+                </Button>
+                <Button Name="CloseButton" Background="{x:Null}" BorderBrush="{x:Null}" 
+                        Foreground="White" Height="auto" HorizontalAlignment="Center" 
+                        VerticalAlignment="Center">
+                    <materialDesign:PackIcon
+                        Kind="WindowClose" />
+                </Button>
+            </StackPanel>
+        </Grid>
+        <Grid>
+            <Grid Margin="0,22,0,0" Name="LoginPage" Visibility="{Binding IsSignUpVisible, Converter={StaticResource BoolToVisConverter}}">
+                <Grid Background="#262626">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+
+                        <StackPanel Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" Margin="3">
+                            <TextBox Text="{Binding LoginTxt, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                materialDesign:HintAssist.Hint="Login"
+                         Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                 Foreground="White" CaretBrush="{x:Null}" SelectionBrush="{x:Null}" Margin="0,0,0,15">
+
+                            </TextBox>
+                            <PasswordBox Name="PasswordBox"
+                    Foreground="White" CaretBrush="{x:Null}" SelectionBrush="{x:Null}"
+                    materialDesign:HintAssist.Hint="Password" Margin="0,0,0,15"
+                    Style="{StaticResource MaterialDesignFloatingHintPasswordBox}"
+                    />
+                            <Button Content="Sign In" Margin="0,0,0,15"
+                        Command="{Binding OnLogin}"
+                        ></Button>
+
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                <Button Command="{Binding OnStartRegister}" Style="{StaticResource MaterialDesignFlatButton}"
+                        Margin="2,0" FontSize="12" Height="25" Content="Register">
+                                    
+                                </Button>
+                                <Button Style="{StaticResource MaterialDesignFlatButton}"
+                        Margin="2,0" FontSize="12" Height="25">Forgot password?</Button>
+                            </StackPanel>
+                        </StackPanel>
+
+                    </Grid>
+                </Grid>
+            </Grid>
+            <Grid Margin="0,22,0,0" Background="#262626" Visibility="{Binding IsRegisterVisible, Converter={StaticResource BoolToVisConverter}}">
+                <Grid Margin="15,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
+                    <StackPanel Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0" Orientation="Vertical" VerticalAlignment="Center">
+                        <TextBox
+                            materialDesign:HintAssist.Hint="Name Surname"
+                            Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                            Foreground="White" CaretBrush="{x:Null}" SelectionBrush="{x:Null}" Margin="0,0,0,5"/>
+
+                        <TextBox
+                            materialDesign:HintAssist.Hint="Login"
+                            Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                            Foreground="White" CaretBrush="{x:Null}" SelectionBrush="{x:Null}" Margin="0,0,0,5"/>
+
+                        <PasswordBox
+                            Foreground="White" CaretBrush="{x:Null}" SelectionBrush="{x:Null}"
+                            materialDesign:HintAssist.Hint="Password" 
+                            Style="{StaticResource MaterialDesignFloatingHintPasswordBox}" Margin="0,0,0,5"/>
+
+                        <TextBox
+                            materialDesign:HintAssist.Hint="Phone"
+                            Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                            Foreground="White" CaretBrush="{x:Null}" SelectionBrush="{x:Null}" Margin="0,0,0,5"/>
+
+                        <TextBox
+                            materialDesign:HintAssist.Hint="Email"
+                            Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                            Foreground="White" CaretBrush="{x:Null}" SelectionBrush="{x:Null}"/>
+
+                    </StackPanel>
+
+                    <Button Grid.Column="0" Grid.Row="1" Margin="0,0,0,15" 
+                            Width="84" Content="Register"></Button>
+                    <Button Grid.Column="1" Grid.Row="1" Margin="0,0,0,15" 
+                            Width="84" Content="Back"
+                            Command="{Binding BackCommand}">
+                        
+                    </Button>
+                    
+                </Grid>
+            </Grid>
+        </Grid>
     </Grid>
 </Window>

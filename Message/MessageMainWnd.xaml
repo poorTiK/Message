@@ -1,0 +1,115 @@
+﻿<Window x:Class="Message.MessageMainWnd"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Message"
+        mc:Ignorable="d"
+        
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             WindowStartupLocation="CenterScreen" WindowStyle="None"
+        BorderThickness="0"
+             Width="600" Height="450">
+    <WindowChrome.WindowChrome>
+        <WindowChrome CaptionHeight="22"/>
+    </WindowChrome.WindowChrome>
+    <Grid>
+        <Grid VerticalAlignment="Top" Background="#353636" Height="22">
+            
+            <StackPanel  WindowChrome.IsHitTestVisibleInChrome="True" VerticalAlignment="Bottom" Orientation="Horizontal" Margin="0" HorizontalAlignment="Right">
+                <Button Name="MinimizeButton" Background="{x:Null}" BorderBrush="{x:Null}" 
+                        Foreground="White" Height="auto" HorizontalAlignment="Center" 
+                        VerticalAlignment="Center">
+                    <materialDesign:PackIcon
+                        Kind="WindowMinimize" />
+                </Button>
+                <Button Name="MaximizeMinimizeButton" Background="{x:Null}" BorderBrush="{x:Null}" 
+                        Foreground="White" Height="auto" HorizontalAlignment="Center" 
+                        VerticalAlignment="Center">
+                    <materialDesign:PackIcon Kind="WindowMaximize" />
+                </Button>
+                <Button Name="CloseButton" Background="{x:Null}" BorderBrush="{x:Null}" 
+                        Foreground="White" Height="auto" HorizontalAlignment="Center" 
+                        VerticalAlignment="Center">
+                    <materialDesign:PackIcon
+                        Kind="WindowClose" />
+                </Button>
+            </StackPanel>
+        </Grid>
+       <Grid Margin="0,22,0,0" Background="#4A4A4A">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="53"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200"/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Border Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="0">
+            <Border.Effect>
+                <DropShadowEffect BlurRadius="50" ShadowDepth="3" Direction="264" Opacity="0.33"/>
+            </Border.Effect>
+            <Grid Background="#262626">
+                <Grid Margin="0">
+                    <StackPanel Orientation="Vertical" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="15,5,0,0">
+                        <TextBlock Foreground="White">Name Surname</TextBlock>
+                        <TextBlock Foreground="#FF63A35D">Online</TextBlock>
+                    </StackPanel>
+                    <Menu Background="#262626" HorizontalAlignment="Right" >
+                        <MenuItem Background="{x:Null}" BorderBrush="{x:Null}" Height="53" >
+                            <MenuItem.Header>
+                                <materialDesign:PackIcon Kind="CommentSearchOutline" Width="25" Height="25" Foreground="White" />
+                            </MenuItem.Header>
+                        </MenuItem>
+                        <MenuItem Background="{x:Null}" BorderBrush="{x:Null}" Height="53" >
+                            <MenuItem.Header>
+                                <materialDesign:PackIcon Kind="EllipsisVertical" Width="25" Height="25" Foreground="White" />
+                            </MenuItem.Header>
+                            <MenuItem Header="View profile" Background="#353636" Foreground="White"/>
+                            <MenuItem Header="Edit contact" Background="#353636" Foreground="White"/>
+                            <MenuItem Header="Delete contact" Background="#353636" Foreground="White"/>
+                            <MenuItem Header="Delete conversation" Background="#353636" Foreground="White"/>
+                            <MenuItem Header="Block user" Background="#353636" Foreground="White"/>
+                        </MenuItem>
+                    </Menu>
+                </Grid>
+            </Grid>
+        </Border>
+
+        <Grid Grid.Column="0" Grid.Row="0" Background="#262626" Margin="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="0" Style="{StaticResource MaterialDesignFlatButton}" Foreground="White">
+                <materialDesign:PackIcon Kind="HamburgerMenu" Foreground="White" />
+            </Button>
+            <StackPanel Grid.Column="1" Margin="5"
+                    Orientation="Horizontal">
+                <materialDesign:PackIcon Kind="Magnify" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" />
+                <TextBox Margin="0,10,10,10" Width="122" Foreground="White"/>
+            </StackPanel>
+        </Grid>
+        <Border Grid.Column="0" Grid.Row="1">
+            <Border.Effect>
+                <DropShadowEffect BlurRadius="40" ShadowDepth="3" Direction="281" Opacity="0.33"/>
+            </Border.Effect>
+            <Grid Background="#262626">
+                <ListBox Foreground="#DDFFFFFF">
+                    <ListBoxItem Content="Item1"/>
+                    <ListBoxItem Content="Item1"/>
+                    <ListBoxItem Content="Item1"/>
+                    <ListBoxItem Content="Item1"/>
+                    <ListBoxItem Content="Item1"/>
+                    <ListBoxItem Content="Item1"/>
+                    <ListBoxItem Content="Item1"/>
+                    <ListBoxItem Content="Item1"/>
+                </ListBox>
+            </Grid>
+        </Border>
+
+    </Grid> 
+    </Grid>
+    
+</Window>
