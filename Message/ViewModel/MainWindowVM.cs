@@ -61,7 +61,7 @@ namespace Message.ViewModel
         {
             if (IsSignUpVisible)
             {
-                view.AnimatedResize(400, 250);
+                view.AnimatedResize(380, 350);
                 IsSignUpVisible = false;
                 IsRegisterVisible = true;
             }
@@ -93,7 +93,7 @@ namespace Message.ViewModel
         void ExecuteOnLogin()
         {
 
-            proxy.AddNewUser(1);
+            //proxy.AddNewUser(new User());
             
             MessageMainWnd wnd = new MessageMainWnd();
             wnd.Show();

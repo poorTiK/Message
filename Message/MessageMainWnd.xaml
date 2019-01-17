@@ -108,6 +108,24 @@
                 </ListBox>
             </Grid>
         </Border>
+            <Grid Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2">
+                <Border Height="30" Background="#262626" VerticalAlignment="Bottom">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBox
+                        materialDesign:HintAssist.Hint="Write a message..." 
+                            Foreground="White" Margin="10,2,48,2" VerticalAlignment="Center" />
+                        <Button Style="{StaticResource MaterialDesignFlatButton}" HorizontalAlignment="Right">
+                            <materialDesign:PackIcon Kind="MessageTextOutline" Foreground="White" />
+                        </Button>
+    
+                    </Grid>
+                </Border>
+            </Grid>
 
     </Grid> 
     </Grid>

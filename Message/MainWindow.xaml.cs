@@ -40,12 +40,12 @@ namespace Message
         {
             Storyboard storyboard = new Storyboard();
 
-            DoubleAnimation daWidth = new DoubleAnimation(ActualWidth, w, new Duration(TimeSpan.FromSeconds(0.5)));
-            DoubleAnimation daHeight = new DoubleAnimation(ActualHeight, h, new Duration(TimeSpan.FromSeconds(0.5)));
+            DoubleAnimation daWidth = new DoubleAnimation(ActualWidth, w, new Duration(TimeSpan.FromSeconds(0.3)));
+            DoubleAnimation daHeight = new DoubleAnimation(ActualHeight, h, new Duration(TimeSpan.FromSeconds(0.2)));
             
             storyboard.Children.Add(daWidth);
             storyboard.Children.Add(daHeight);
-            daHeight.BeginTime = new TimeSpan(0, 0, 0, 0, 500);
+            daHeight.BeginTime = new TimeSpan(0, 0, 0, 0, 300);
 
             Storyboard.SetTarget(daWidth, this);
             Storyboard.SetTarget(daHeight, this);

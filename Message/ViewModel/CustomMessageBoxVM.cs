@@ -10,8 +10,7 @@ namespace Message.ViewModel
         Yes,
         No,
         Ok,
-        Cancel,
-        OkCancel
+        Cancel
     }
     public enum CustomMessageBoxType
     {

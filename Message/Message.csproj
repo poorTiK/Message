@@ -90,6 +90,12 @@
     <Compile Include="MessageMainWnd.xaml.cs">
       <DependentUpon>MessageMainWnd.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ReceiveMessage.xaml.cs">
+      <DependentUpon>ReceiveMessage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SendMessage.xaml.cs">
+      <DependentUpon>SendMessage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewModel\CustomMessageBoxVM.cs" />
     <Compile Include="ViewModel\MainWindowVM.cs" />
     <Compile Include="ViewModel\MessageMainVM.cs" />
@@ -111,6 +117,14 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="MessageMainWnd.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ReceiveMessage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SendMessage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -24,5 +24,10 @@ namespace ServerWCF.Model
         public string Email { get; set; }
         [DataMember]
         public string Bio { get; set; }
+
+        public User()
+        {
+
+        }
     }
 }
