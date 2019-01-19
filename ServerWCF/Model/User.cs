@@ -14,16 +14,27 @@ namespace ServerWCF.Model
         [Key]
         [DataMember]
         public string LoginId { get; set; }
+
         [DataMember]
         public string Password { get; set; }
+
         [DataMember]
         public string ShownName { get; set; }
+
         [DataMember]
         public string Phone { get; set; }
+
         [DataMember]
         public string Email { get; set; }
+
         [DataMember]
         public string Bio { get; set; }
+
+        [DataMember]
+        public byte[] Avatar { get; set; }
+
+        [DataMember]
+        public DateTime lastOnline { get; set; }
 
         public User()
         {
