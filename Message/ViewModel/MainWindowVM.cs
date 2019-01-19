@@ -74,6 +74,7 @@ namespace Message.ViewModel
 
         }
 
+
         private void ExecuteOnBackCommand()
         {
             if (IsSignUpVisible)
