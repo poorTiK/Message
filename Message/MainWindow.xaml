@@ -23,7 +23,6 @@
 
     <Grid>
         <Grid VerticalAlignment="Top" Background="#353636" Height="22">
-            <TextBlock HorizontalAlignment="Left" VerticalAlignment="Bottom" Foreground="White" FontSize="15" Margin="15,0,0,0">Log In</TextBlock>
             <StackPanel  WindowChrome.IsHitTestVisibleInChrome="True" VerticalAlignment="Bottom" Orientation="Horizontal" Margin="0" HorizontalAlignment="Right">
                 <Button Name="MinimizeButton" Background="{x:Null}" BorderBrush="{x:Null}" 
                         Foreground="White" Height="auto" HorizontalAlignment="Center" 
@@ -55,7 +54,7 @@
                         </Grid.RowDefinitions>
 
                         <StackPanel Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" Margin="3">
-                            <TextBox Text="{Binding LoginTxt, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                            <TextBox Text="{Binding LoginText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                 materialDesign:HintAssist.Hint="Login"
                          Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                  Foreground="White" CaretBrush="{x:Null}" SelectionBrush="{x:Null}" Margin="0,0,0,15">
@@ -76,6 +75,7 @@
                                     
                                 </Button>
                                 <Button Style="{StaticResource MaterialDesignFlatButton}"
+                                        Command="{Binding OnForgotPassword}"
                         Margin="2,0" FontSize="12" Height="25">Forgot password?</Button>
                             </StackPanel>
                         </StackPanel>
@@ -94,27 +94,22 @@
                         <RowDefinition Height="auto"/>
                     </Grid.RowDefinitions>
                     <StackPanel Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0" Orientation="Vertical" VerticalAlignment="Center">
-                        <TextBox
+                        <TextBox Text="{Binding Name}"
                             materialDesign:HintAssist.Hint="Name Surname"
                             Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                             Foreground="White" CaretBrush="{x:Null}" SelectionBrush="{x:Null}" Margin="0,0,0,5"/>
 
-                        <TextBox
+                        <TextBox Text="{Binding UserLogin}"
                             materialDesign:HintAssist.Hint="Login"
                             Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                             Foreground="White" CaretBrush="{x:Null}" SelectionBrush="{x:Null}" Margin="0,0,0,5"/>
 
-                        <PasswordBox
+                        <PasswordBox Name="RPasswordBox"
                             Foreground="White" CaretBrush="{x:Null}" SelectionBrush="{x:Null}"
                             materialDesign:HintAssist.Hint="Password" 
                             Style="{StaticResource MaterialDesignFloatingHintPasswordBox}" Margin="0,0,0,5"/>
 
-                        <TextBox
-                            materialDesign:HintAssist.Hint="Phone"
-                            Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                            Foreground="White" CaretBrush="{x:Null}" SelectionBrush="{x:Null}" Margin="0,0,0,5"/>
-
-                        <TextBox
+                        <TextBox Text="{Binding Email}"
                             materialDesign:HintAssist.Hint="Email"
                             Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                             Foreground="White" CaretBrush="{x:Null}" SelectionBrush="{x:Null}"/>

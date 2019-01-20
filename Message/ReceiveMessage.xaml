@@ -4,46 +4,29 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Message"
-             mc:Ignorable="d" Width="331.778" Height="167.798">
-    <Grid Margin="0,0,0,68">
-        <Grid HorizontalAlignment="Right">
-            <Grid.RowDefinitions>
-                <RowDefinition/>
-                <RowDefinition Height="auto"/>
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
-            <Border Grid.Column="0" CornerRadius="15" BorderBrush="{x:Null}" BorderThickness="1,1,1,1" HorizontalAlignment="Left" Margin="-14,0,0,0" MinWidth="170">
+             mc:Ignorable="d" d:DesignWidth="800">
+    <Grid Margin="0,0,0,15" MinHeight="60">
+        <Grid HorizontalAlignment="Left">
+            <Border Grid.Column="0" CornerRadius="10" BorderBrush="{x:Null}" 
+                    BorderThickness="1,1,1,1" HorizontalAlignment="Left">
                 <Border.Background>
-                    <SolidColorBrush Color="#262626"></SolidColorBrush>
+                    <SolidColorBrush Color="#FF363636"></SolidColorBrush>
                 </Border.Background>
                 <Border.Effect>
                     <DropShadowEffect Opacity="0.2" Direction="310" ShadowDepth="6" BlurRadius="15"/>
                 </Border.Effect>
-                <Grid MinWidth="125" MaxWidth="350"  Height="auto" MinHeight="80" 
-                      HorizontalAlignment="Left" Margin="20,5,15,10" VerticalAlignment="Top">
+                <Grid MinWidth="125" MaxWidth="350"
+                      HorizontalAlignment="Left" Margin="10,5" >
 
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto"/>
                         <RowDefinition Height="auto"/>
 
                     </Grid.RowDefinitions>
-                    <TextBlock Name="MessageText" Padding="15,5" TextWrapping="Wrap" Grid.Row="0" Foreground="#FFC7C7C7"> Hello my dear friend</TextBlock>
-                    <TextBlock Name="SendTime" Margin="15,3" Grid.Row="1" 
-                               HorizontalAlignment="Right" FontWeight="Bold" Foreground="#FF63A35D">20:11</TextBlock>
+                    <TextBlock Name="MessageText" Padding="15,5" TextWrapping="Wrap" Grid.Row="0" Foreground="#FFC7C7C7"> Hello my  friend</TextBlock>
+                    <TextBlock Name="SendTime" Margin="0,0,15,0" Grid.Row="1" FontWeight="Bold" Foreground="#FF63A35D" VerticalAlignment="Bottom" HorizontalAlignment="Right">20:11</TextBlock>
                 </Grid>
             </Border>
-
-            <Grid  Grid.Row="1" Margin="0,0,40,0">
-                <Border Margin="0,0,-26,0">
-                    <Border.Effect>
-                        <DropShadowEffect Opacity="0.2" Direction="310" ShadowDepth="6" BlurRadius="15"/>
-                    </Border.Effect>
-                    <Polygon Points="0,00  20,20 50,00" Stroke="#262626" Fill="#262626" VerticalAlignment="Top" HorizontalAlignment="Right" Width="62" Margin="0,0,81,0"></Polygon>
-                </Border>
-            </Grid>
         </Grid>
     </Grid>
 </UserControl>

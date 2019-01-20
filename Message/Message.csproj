@@ -85,7 +85,6 @@
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
     <Compile Include="Interfaces\IMainView.cs" />
-    <Compile Include="Interfaces\IPage.cs" />
     <Compile Include="Interfaces\IView.cs" />
     <Compile Include="MessageMainWnd.xaml.cs">
       <DependentUpon>MessageMainWnd.xaml</DependentUpon>

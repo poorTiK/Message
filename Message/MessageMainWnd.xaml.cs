@@ -151,6 +151,13 @@ namespace Message
 
             DataContext = new MessageMainVM(this);
 
+            for (int i = 0; i < 100; i++)
+            {
+                MessageControl.Children.Add(new SendMessage());
+                MessageControl.Children.Add(new ReceiveMessage());
+            }
+            ScrollV.ScrollToEnd();
+
             MinimizeButton.Click += (s, e) => WindowState = WindowState.Minimized;
             MaximizeMinimizeButton.Click += (s, e) => WindowState = WindowState == WindowState.Maximized ? WindowState.Normal : WindowState.Maximized;
             CloseButton.Click += (s, e) => Close();

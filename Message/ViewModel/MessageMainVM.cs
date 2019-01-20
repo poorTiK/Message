@@ -11,6 +11,8 @@ namespace Message.ViewModel
     {
         IView _view;
 
+        
+
         public MessageMainVM(IView View)
         {
             _view = View;
