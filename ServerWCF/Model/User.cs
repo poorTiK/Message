@@ -34,11 +34,13 @@ namespace ServerWCF.Model
         public byte[] Avatar { get; set; }
 
         [DataMember]
-        public DateTime lastOnline { get; set; }
+        public DateTime LastOnline { get; set; }
 
-        public User()
+        public User(string loginId, string password, string shownName)
         {
-
+            LoginId = loginId;
+            Password = password;
+            ShownName = shownName;
         }
     }
 }
