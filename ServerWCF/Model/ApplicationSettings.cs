@@ -11,11 +11,8 @@ namespace ServerWCF.Model
     [DataContract]
     public class ApplicationSettings
     {
-        
-        [ForeignKey("UserFK")]
-        public User User { get; set; }
 
-        [DataMember]
+        [ForeignKey("User")]
         public string UserFK { get; set; }
 
         [DataMember]
@@ -23,6 +20,8 @@ namespace ServerWCF.Model
 
         [DataMember]
         public int Language { get; set; }
+
+        public virtual User User { get; set; }
 
         public ApplicationSettings(int windowSize, int language)
         {

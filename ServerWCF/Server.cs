@@ -21,9 +21,10 @@ namespace ServerWCF
                     ApplicationSettingsContext applicationSettingsContext = new ApplicationSettingsContext();
                     User admin = new User("admin", "admin", "admin"); /*{ , Password = "admin", ShownName = "admin", Bio = "admin", Email = "admin", Phone = "99999999" };*/
                     ApplicationSettings applicationSettings = new ApplicationSettings(100, 1);
-                    applicationSettings.User = admin;
+                    applicationSettings.UserFK = admin.LoginId;
                     db.Users.Add(value);
                     applicationSettingsContext.ApplicationSettings.Add(applicationSettings);
+
 
                     db.SaveChangesAsync();
 
