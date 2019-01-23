@@ -22,18 +22,20 @@ namespace ServerWCF.Model
         [DataMember]
         public byte[] Content { get; set; }
 
-        [ForeignKey("User")]
+        [ForeignKey("SenderFK")]
+        public User Sender { get; set; }
+
         [DataMember]
-        public int SenderId { get; set; }
+        public string SenderFK { get; set; }
 
         [DataMember]
         public DateTime DateOfSending { get; set; }
 
-        public Message(int type, byte[] content, int senderId)
+        public Message(int type, byte[] content, string senderFK)
         {
             Type = type;
             Content = content;
-            SenderId = senderId;
+            SenderFK = senderFK;
             DateOfSending = new DateTime();
         }
 

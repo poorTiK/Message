@@ -92,8 +92,7 @@ namespace Message.ViewModel
 
         void ExecuteOnLogin()
         {
-
-            //proxy.AddNewUser(new User());
+            proxy.AddNewUser(new User());
             
             MessageMainWnd wnd = new MessageMainWnd();
             wnd.Show();

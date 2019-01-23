@@ -18,9 +18,12 @@ namespace ServerWCF
             {
                 try
                 {
-                    //User admin = new User { LoginId = "admin", Password = "admin", ShownName = "admin", Bio = "admin", Email = "admin", Phone = "99999999" };
-
+                    ApplicationSettingsContext applicationSettingsContext = new ApplicationSettingsContext();
+                    User admin = new User("admin", "admin", "admin"); /*{ , Password = "admin", ShownName = "admin", Bio = "admin", Email = "admin", Phone = "99999999" };*/
+                    ApplicationSettings applicationSettings = new ApplicationSettings(100, 1);
+                    applicationSettings.User = admin;
                     db.Users.Add(value);
+                    applicationSettingsContext.ApplicationSettings.Add(applicationSettings);
 
                     db.SaveChangesAsync();
 
