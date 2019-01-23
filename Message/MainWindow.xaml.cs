@@ -95,9 +95,19 @@ namespace Message
             customMessageBox.ShowDialog();
         }
 
-        public string GetPassword()
+        public string GetPasswordForLogin()
         {
             return PasswordBox.Password;
+        }
+
+        public string GetPasswordForRegistration()
+        {
+            return RPasswordBox.Password;
+        }
+
+        public string GetRepPasswordForRegistration()
+        {
+            return Rep_RPasswordBox.Password;
         }
     }
 }

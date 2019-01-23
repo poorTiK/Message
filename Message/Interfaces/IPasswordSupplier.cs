@@ -8,6 +8,8 @@ namespace Message.Interfaces
 {
     public interface IPasswordSupplier
     {
-        string GetPassword();
+        string GetPasswordForLogin();
+        string GetPasswordForRegistration();
+        string GetRepPasswordForRegistration();
     }
 }

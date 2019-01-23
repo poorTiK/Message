@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-
+        xmlns:validate="clr-namespace:Message.ValidationRules"
         
         Name="MainWnd" Height="250" Width="450" 
         WindowStartupLocation="CenterScreen" WindowStyle="None"
@@ -94,30 +94,75 @@
                         <RowDefinition Height="auto"/>
                     </Grid.RowDefinitions>
                     <StackPanel Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0" Orientation="Vertical" VerticalAlignment="Center">
-                        <TextBox Text="{Binding Name}"
-                            materialDesign:HintAssist.Hint="Name Surname"
+                        <TextBox
+                            materialDesign:HintAssist.Hint="First Name"
                             Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                            Foreground="White" CaretBrush="{x:Null}" SelectionBrush="{x:Null}" Margin="0,0,0,5"/>
+                            Foreground="White" CaretBrush="{x:Null}" SelectionBrush="{x:Null}" Margin="0,0,0,20">
+                            <TextBox.Text>
+                                <Binding Path="Name" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                                    <Binding.ValidationRules>
+                                        <validate:NameSurname_ValidationRule ValidatesOnTargetUpdated="True"/>
+                                    </Binding.ValidationRules>
+                                </Binding>
+                            </TextBox.Text>
+                        </TextBox>
 
-                        <TextBox Text="{Binding UserLogin}"
+                        <TextBox
+                            materialDesign:HintAssist.Hint="Last Name"
+                            Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                            Foreground="White" CaretBrush="{x:Null}" SelectionBrush="{x:Null}" Margin="0,0,0,20">
+                            <TextBox.Text>
+                                <Binding Path="Surname" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                                    <Binding.ValidationRules>
+                                        <validate:NameSurname_ValidationRule ValidatesOnTargetUpdated="True"/>
+                                    </Binding.ValidationRules>
+                                </Binding>
+                            </TextBox.Text>
+                        </TextBox>
+
+                        <TextBox
                             materialDesign:HintAssist.Hint="Login"
                             Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                            Foreground="White" CaretBrush="{x:Null}" SelectionBrush="{x:Null}" Margin="0,0,0,5"/>
+                            Foreground="White" CaretBrush="{x:Null}" SelectionBrush="{x:Null}" Margin="0,0,0,20">
+                            <TextBox.Text>
+                                <Binding Path="UserLogin" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                                    <Binding.ValidationRules>
+                                        <validate:Login_ValidationRule ValidatesOnTargetUpdated="True"/>
+                                    </Binding.ValidationRules>
+                                </Binding>
+                            </TextBox.Text>
+                        </TextBox>
 
                         <PasswordBox Name="RPasswordBox"
                             Foreground="White" CaretBrush="{x:Null}" SelectionBrush="{x:Null}"
                             materialDesign:HintAssist.Hint="Password" 
-                            Style="{StaticResource MaterialDesignFloatingHintPasswordBox}" Margin="0,0,0,5"/>
+                            Style="{StaticResource MaterialDesignFloatingHintPasswordBox}" Margin="0,0,0,20">
+                        </PasswordBox>
 
-                        <TextBox Text="{Binding Email}"
+                        <PasswordBox Name="Rep_RPasswordBox"
+                            Foreground="White" CaretBrush="{x:Null}" SelectionBrush="{x:Null}"
+                            materialDesign:HintAssist.Hint="Repeat Password" 
+                            Style="{StaticResource MaterialDesignFloatingHintPasswordBox}" Margin="0,0,0,20"/>
+
+                        <TextBox
                             materialDesign:HintAssist.Hint="Email"
                             Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                            Foreground="White" CaretBrush="{x:Null}" SelectionBrush="{x:Null}"/>
+                            Foreground="White" CaretBrush="{x:Null}" SelectionBrush="{x:Null}">
+                            <TextBox.Text>
+                                <Binding Path="Email" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                                    <Binding.ValidationRules>
+                                        <validate:Email_ValidationRule ValidatesOnTargetUpdated="True"/>
+                                    </Binding.ValidationRules>
+                                </Binding>
+                            </TextBox.Text>
+                        </TextBox>
 
                     </StackPanel>
 
                     <Button Grid.Column="0" Grid.Row="1" Margin="0,0,0,15" 
-                            Width="84" Content="Register"></Button>
+                            Width="84" Content="Register"
+                            Command="{Binding Register}"
+                            ></Button>
                     <Button Grid.Column="1" Grid.Row="1" Margin="0,0,0,15" 
                             Width="84" Content="Back"
                             Command="{Binding BackCommand}">

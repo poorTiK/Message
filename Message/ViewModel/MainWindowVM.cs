@@ -25,6 +25,10 @@ namespace Message.ViewModel
         private DelegateCommand _onForgotPassword;
         public DelegateCommand OnForgotPassword =>
             _onForgotPassword ?? (_onForgotPassword = new DelegateCommand(ExecuteOnForgotPassword));
+
+        private DelegateCommand _register;
+        public DelegateCommand Register =>
+            _register ?? (_register = new DelegateCommand(ExecuteOnRegister));
         
         private DelegateCommand _onBackCommand;
         public DelegateCommand BackCommand =>
@@ -56,7 +60,7 @@ namespace Message.ViewModel
         public string Password
         {
             get {
-                return passwordSupplier.GetPassword();
+                return passwordSupplier.GetPasswordForLogin();
             }
             set { SetProperty(ref _password, value); }
         }
@@ -69,6 +73,13 @@ namespace Message.ViewModel
         {
             get { return _name; }
             set { SetProperty(ref _name, value); }
+        }
+
+        private string _surname;
+        public string Surname
+        {
+            get { return _surname; }
+            set { SetProperty(ref _surname, value); }
         }
 
         private string _userLogin;
@@ -84,6 +95,21 @@ namespace Message.ViewModel
             get { return _email; }
             set { SetProperty(ref _email, value); }
         }
+
+        private string _RPassword;
+        public string RPassword
+        {
+            get { return passwordSupplier.GetPasswordForRegistration(); }
+            set { SetProperty(ref _RPassword, value); }
+        }
+
+        private string _Rep_RPassword;
+        public string Rep_RPassword
+        {
+            get { return passwordSupplier.GetRepPasswordForRegistration(); }
+            set { SetProperty(ref _Rep_RPassword, value); }
+        }
+
         #endregion
 
         public MainWindowVM(IView iView, IPasswordSupplier ipasswordSupplier)
@@ -100,7 +126,7 @@ namespace Message.ViewModel
         void ExecuteOnStartRegister()
         {
             if (IsSignUpVisible) {
-                view.AnimatedResize(300, 280);
+                view.AnimatedResize(450, 310);
                 IsSignUpVisible = false;
                 IsRegisterVisible = true;
             } else {
@@ -133,6 +159,31 @@ namespace Message.ViewModel
             MessageMainWnd wnd = new MessageMainWnd();
             wnd.Show();
             view.CloseWindow();
+        }
+
+        private void ExecuteOnRegister()
+        {
+            if (!string.IsNullOrWhiteSpace(Name) && !string.IsNullOrWhiteSpace(UserLogin) && !string.IsNullOrWhiteSpace(RPassword) && !string.IsNullOrWhiteSpace(Rep_RPassword) 
+                && !string.IsNullOrWhiteSpace(Email) && (RPassword == Rep_RPassword))
+            {
+                var user = new User()
+                {
+                    LoginId = UserLogin,
+                    Password = RPassword,
+                    ShownName = Name,
+                    Email = Email,
+                };
+
+                if (proxy.AddNewUser(user))
+                {
+                    //mesage "Succesfull registration"
+                    ExecuteOnBackCommand();
+                }
+            }
+            else
+            {
+                //mesage box "You enter wrong data"
+            }
         }
 
         private void ExecuteOnForgotPassword()
