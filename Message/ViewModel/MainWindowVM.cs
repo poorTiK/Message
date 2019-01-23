@@ -1,6 +1,7 @@
 ﻿using Message.Interfaces;
 using Message.ServiceReference1;
 using Prism.Commands;
+using System;
 using System.Net;
 
 namespace Message.ViewModel
@@ -8,6 +9,7 @@ namespace Message.ViewModel
     class MainWindowVM : Prism.Mvvm.BindableBase
     {
         IView view;
+        IPasswordSupplier passwordSupplier;
 
         ServerClient proxy;
         const string HOST = "localhost";
@@ -20,6 +22,10 @@ namespace Message.ViewModel
         public DelegateCommand OnLogin =>
             _onLogin ?? (_onLogin = new DelegateCommand(ExecuteOnLogin));
 
+        private DelegateCommand _onForgotPassword;
+        public DelegateCommand OnForgotPassword =>
+            _onForgotPassword ?? (_onForgotPassword = new DelegateCommand(ExecuteOnForgotPassword));
+        
         private DelegateCommand _onBackCommand;
         public DelegateCommand BackCommand =>
             _onBackCommand ?? (_onBackCommand = new DelegateCommand(ExecuteOnBackCommand));
@@ -38,18 +44,52 @@ namespace Message.ViewModel
             set { SetProperty(ref _isRegisterVisible, value); }
         }
 
-        #region registration data
-        private string fieldName;
-        public string PropertyName
+        #region Login data
+        private string _loginText;
+        public string LoginText
         {
-            get { return fieldName; }
-            set { SetProperty(ref fieldName, value); }
+            get { return _loginText; }
+            set { SetProperty(ref _loginText, value); }
+        }
+
+        private string _password;
+        public string Password
+        {
+            get {
+                return passwordSupplier.GetPassword();
+            }
+            set { SetProperty(ref _password, value); }
+        }
+
+        #endregion
+
+        #region registration data
+        private string _name;
+        public string Name
+        {
+            get { return _name; }
+            set { SetProperty(ref _name, value); }
+        }
+
+        private string _userLogin;
+        public string UserLogin
+        {
+            get { return _userLogin; }
+            set { SetProperty(ref _userLogin, value); }
+        }
+
+        private string _email;
+        public string Email
+        {
+            get { return _email; }
+            set { SetProperty(ref _email, value); }
         }
         #endregion
 
-        public MainWindowVM(IView iView)
+        public MainWindowVM(IView iView, IPasswordSupplier ipasswordSupplier)
         {
             view = iView;
+            passwordSupplier = ipasswordSupplier;
 
             proxy = new ServerClient();
 
@@ -59,19 +99,15 @@ namespace Message.ViewModel
 
         void ExecuteOnStartRegister()
         {
-            if (IsSignUpVisible)
-            {
-                view.AnimatedResize(380, 350);
+            if (IsSignUpVisible) {
+                view.AnimatedResize(300, 280);
                 IsSignUpVisible = false;
                 IsRegisterVisible = true;
-            }
-            else
-            {
+            } else {
                 view.AnimatedResize(250, 450);
                 IsSignUpVisible = true;
                 IsRegisterVisible = false;
             }
-
         }
 
         private void ExecuteOnBackCommand()
@@ -97,6 +133,11 @@ namespace Message.ViewModel
             MessageMainWnd wnd = new MessageMainWnd();
             wnd.Show();
             view.CloseWindow();
+        }
+
+        private void ExecuteOnForgotPassword()
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -23,7 +23,7 @@ namespace Message
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window, IView
+    public partial class MainWindow : Window, IView, IPasswordSupplier
     {
         public MainWindow()
         {
@@ -33,7 +33,7 @@ namespace Message
             CloseButton.Click += (s, e) => Close();
 
 
-            DataContext = new MainWindowVM(this);
+            DataContext = new MainWindowVM(this, this);
         }
 
         public void AnimatedResize(int h, int w)
@@ -93,6 +93,11 @@ namespace Message
         {
             CustomMessageBox customMessageBox = new CustomMessageBox(caption, message, CustomMessageBoxType.OkCancel);
             customMessageBox.ShowDialog();
+        }
+
+        public string GetPassword()
+        {
+            return PasswordBox.Password;
         }
     }
 }
