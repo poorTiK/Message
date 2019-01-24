@@ -13,13 +13,19 @@ namespace ServerWCF.Model
     {
         [Key]
         [DataMember]
-        public string LoginId { get; set; }
+        public int Id { get; set; }
+
+        [DataMember]
+        public string Login { get; set; }
 
         [DataMember]
         public string Password { get; set; }
 
         [DataMember]
-        public string ShownName { get; set; }
+        public string FirstName { get; set; }
+
+        [DataMember]
+        public string LastName { get; set; }
 
         [DataMember]
         public string Phone { get; set; }
@@ -36,11 +42,18 @@ namespace ServerWCF.Model
         [DataMember]
         public DateTime LastOnline { get; set; }
 
-        public User(string loginId, string password, string shownName)
+        [DataMember]
+        public ApplicationSettings ApplicationSettings { get; set; }
+
+        [DataMember]
+        public ICollection<MessageT> Messages { get; set; }
+
+        public User(string firstName, string loginId, string password, string email)
         {
-            LoginId = loginId;
+            Login = loginId;
             Password = password;
-            ShownName = shownName;
+            FirstName = firstName;
+            LastOnline = new DateTime(2015, 7, 20);
         }
     }
 }

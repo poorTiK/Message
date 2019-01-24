@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Runtime.Serialization;
@@ -11,17 +12,15 @@ namespace ServerWCF.Model
     [DataContract]
     public class ApplicationSettings
     {
-
+        [Key]
         [ForeignKey("User")]
-        public string UserFK { get; set; }
+        public int UserId { get; set; }
 
-        [DataMember]
         public int WindowSize { get; set; }
 
-        [DataMember]
         public int Language { get; set; }
 
-        public virtual User User { get; set; }
+        public User User { get; set; }
 
         public ApplicationSettings(int windowSize, int language)
         {

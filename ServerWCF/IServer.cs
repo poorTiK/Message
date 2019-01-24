@@ -15,6 +15,9 @@ namespace ServerWCF
         [OperationContract]
         bool AddNewUser(User user);
 
+        [OperationContract]
+        User GetUser(string login, string password);
+
 
         //[OperationContract]
         //CompositeType GetDataUsingDataContract(CompositeType composite);

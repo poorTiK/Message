@@ -12,28 +12,41 @@ namespace ServerWCF
     // NOTE: You can use the "Rename" command on the "Refactor" menu to change the class name "Service1" in both code and config file together.
     public class Server : IServer
     {
-        public bool AddNewUser(User value)
+        public bool AddNewUser(User UserThatShouldBeAdded)
         {
             using (UserContext db = new UserContext())
             {
                 try
                 {
-                    ApplicationSettingsContext applicationSettingsContext = new ApplicationSettingsContext();
-                    User admin = new User("admin", "admin", "admin"); /*{ , Password = "admin", ShownName = "admin", Bio = "admin", Email = "admin", Phone = "99999999" };*/
-                    ApplicationSettings applicationSettings = new ApplicationSettings(100, 1);
-                    applicationSettings.UserFK = admin.LoginId;
-                    db.Users.Add(value);
-                    applicationSettingsContext.ApplicationSettings.Add(applicationSettings);
-
-
+                    db.Users.Add(UserThatShouldBeAdded);
                     db.SaveChangesAsync();
-
                     return true;
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
                     return false;
-                    throw;
+                }
+            }
+        }
+
+        public User GetUser(string login, string password)
+        {
+            using (UserContext db = new UserContext())
+            {
+                try
+                {
+
+                    foreach (User user in db.Users)
+                    {
+                        if (user.Login == login && user.Password == password)
+                            return user;
+                    }
+
+                    return null;
+                }
+                catch (Exception ex)
+                {
+                    return null;
                 }
             }
         }

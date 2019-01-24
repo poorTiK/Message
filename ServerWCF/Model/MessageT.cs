@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace ServerWCF.Model
 {
     [DataContract]
-    public class Message
+    public class MessageT
     {
         [Key]
         [DataMember]
@@ -22,21 +22,21 @@ namespace ServerWCF.Model
         [DataMember]
         public byte[] Content { get; set; }
 
-        [ForeignKey("SenderFK")]
-        public User Sender { get; set; }
-
         [DataMember]
-        public string SenderFK { get; set; }
+        [ForeignKey("Sender")]
+        public int SenderId { get; set; }
+
+        public User Sender { get; set; }
 
         [DataMember]
         public DateTime DateOfSending { get; set; }
 
-        public Message(int type, byte[] content, string senderFK)
+        public MessageT(int type, byte[] content, User sender)
         {
             Type = type;
             Content = content;
-            SenderFK = senderFK;
-            DateOfSending = new DateTime();
+            Sender = sender;
+            DateOfSending = new DateTime(2015, 7, 20);
         }
 
     }
