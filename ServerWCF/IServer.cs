@@ -16,7 +16,7 @@ namespace ServerWCF
         bool AddNewUser(User user);
 
         [OperationContract]
-        User GetUser(string login, string password);
+        User GetUser(string login, string password); 
 
 
         //[OperationContract]
