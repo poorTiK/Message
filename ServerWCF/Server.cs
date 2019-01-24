@@ -16,16 +16,9 @@ namespace ServerWCF
         {
             using (UserContext db = new UserContext())
             {
-                try
-                {
                     db.Users.Add(UserThatShouldBeAdded);
-                    db.SaveChangesAsync();
+                    db.SaveChanges();
                     return true;
-                }
-                catch (Exception ex)
-                {
-                    return false;
-                }
             }
         }
 

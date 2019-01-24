@@ -154,7 +154,16 @@ namespace Message.ViewModel
 
         void ExecuteOnLogin()
         {
-            proxy.AddNewUser(new User());
+            var user = new User()
+            {
+                Login = "test",
+                Password = "test",
+                FirstName = "test",
+                Email = "test",
+                LastOnline = new DateTime(2015, 12, 12)
+            };
+
+            proxy.AddNewUser(user);
             
             MessageMainWnd wnd = new MessageMainWnd();
             wnd.Show();
@@ -168,10 +177,12 @@ namespace Message.ViewModel
             {
                 var user = new User()
                 {
-                    LoginId = UserLogin,
+                    Login = UserLogin,
                     Password = RPassword,
-                    ShownName = Name,
+                    FirstName = Name,
                     Email = Email,
+                    LastOnline = new DateTime(2015, 12, 12)
+                    
                 };
 
                 if (proxy.AddNewUser(user))
