@@ -1,4 +1,5 @@
-﻿using Message.Interfaces;
+﻿using Message.AdditionalItems;
+using Message.Interfaces;
 using Message.ServiceReference1;
 using Prism.Commands;
 using System;
@@ -162,6 +163,7 @@ namespace Message.ViewModel
                 wnd.Show();
 
                 view.CloseWindow();
+                return;
             }
             if (ValidateOnLogin())
             {
@@ -193,17 +195,17 @@ namespace Message.ViewModel
                 {
                     if (proxy.AddNewUser(user))
                     {
-                        MessageBox.Show("Succesfull  regestration");
+                        CustomMessageBox.Show("Registration done");
                         ExecuteOnBackCommand();
                     }
                     else
                     {
-                        MessageBox.Show("Regestration ERROR!!!");
+                        CustomMessageBox.Show("Error!!!", "Registration error");
                     }
                 }
                 else
                 {
-                    MessageBox.Show("User with same login already exist");
+                    CustomMessageBox.Show("Error!!!", "Same user exists");
                 }
             }
         }
@@ -217,22 +219,22 @@ namespace Message.ViewModel
         {
             if (string.IsNullOrWhiteSpace(UserLogin))
             {
-                MessageBox.Show("Login is empty!!!");
+                CustomMessageBox.Show("Login is empty!!!");
                 return false;
             }
             else if (RPassword.Length < 8 || string.IsNullOrWhiteSpace(RPassword) || RPassword == string.Empty || !Regex.IsMatch(RPassword, @"^[a-zA-Z0-9]{8,}$"))
             {
-                MessageBox.Show("Password shoud be 8 symbols lenght, use numbers and english symbols", "Error!");
+                CustomMessageBox.Show("Error!", "Password shoud be 8 symbols lenght, use numbers and english symbols");
                 return false;
             }
             else if (RPassword != Rep_RPassword)
             {
-                MessageBox.Show("Password not match", "Error!");
+                CustomMessageBox.Show("Error!", "Password not match");
                 return false;
             }
             else if (string.IsNullOrWhiteSpace(Email) || Email == string.Empty || !Regex.IsMatch(Email, @"\A(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)\Z", RegexOptions.IgnoreCase))
             {
-                MessageBox.Show("Wrong Email", "Error!");
+                CustomMessageBox.Show("Error!", "Wrong Email");
                 return false;
             }
             else
@@ -245,12 +247,12 @@ namespace Message.ViewModel
         {
             if (string.IsNullOrWhiteSpace(LoginText))
             {
-                MessageBox.Show("Login is empty!!!");
+                CustomMessageBox.Show("Login is empty!!!");
                 return false;
             }
             else if (Password.Length < 8 || string.IsNullOrWhiteSpace(Password) || Password == string.Empty || !Regex.IsMatch(Password, @"^[a-zA-Z0-9]{8,}$"))
             {
-                MessageBox.Show("Password shoud be 8 symbols lenght, use numbers and english symbols", "Error!");
+                CustomMessageBox.Show("Error!", "Password shoud be 8 symbols lenght, use numbers and english symbols");
                 return false;
             }
             else

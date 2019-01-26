@@ -8,7 +8,7 @@
         
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         
-        Name="MainWnd" Height="150" Width="250" 
+        Height="150" Width="250" 
         WindowStartupLocation="CenterScreen" WindowStyle="None"
         BorderThickness="0" ResizeMode="NoResize">
     <WindowChrome.WindowChrome>
@@ -21,7 +21,7 @@
     
     <Grid Background="#262626">
         <Grid VerticalAlignment="Top" Background="#353636" Height="22">
-            <TextBlock HorizontalAlignment="Left" VerticalAlignment="Bottom" 
+            <TextBlock HorizontalAlignment="Left" Name="MessageTitle" VerticalAlignment="Bottom" 
                        Foreground="White" FontSize="15" Margin="15,0,0,0" 
                        Text="{Binding Caption}"></TextBlock>
             <StackPanel  WindowChrome.IsHitTestVisibleInChrome="True" VerticalAlignment="Bottom" Orientation="Horizontal" Margin="0" HorizontalAlignment="Right">
@@ -38,12 +38,12 @@
                 <RowDefinition/>
                 <RowDefinition Height="75"/>
             </Grid.RowDefinitions>
-            <TextBlock Grid.Row="0" Margin="15" FontSize="16" Foreground="White" Text="{Binding Message}"></TextBlock>
+            <TextBlock Grid.Row="0" Name="txtMsg" Margin="15" FontSize="16" Foreground="White" Text="{Binding Message}"></TextBlock>
             <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,10,0">
-                <Button Margin="5,0" Visibility="{Binding YesNoVisibility, Converter={StaticResource BoolToVisConverter}}">Yes</Button>
-                <Button Margin="5,0" Visibility="{Binding YesNoVisibility, Converter={StaticResource BoolToVisConverter}}">No</Button>
-                <Button Margin="5,0" Visibility="{Binding OkVisibility, Converter={StaticResource BoolToVisConverter}}">Ok</Button>
-                <Button Margin="5,0" Visibility="{Binding CancelVisibility, Converter={StaticResource BoolToVisConverter}}">Cancel</Button>
+                <Button Margin="5,0" Name="Yes" Click="Button_Click">Yes</Button>
+                <Button Margin="5,0" Name="No" Click="Button_Click">No</Button>
+                <Button Margin="5,0" Name="Ok" Click="Button_Click">Ok</Button>
+                <Button Margin="5,0" Name="Cancel" Click="Button_Click">Cancel</Button>
             </StackPanel>
         </Grid>
     </Grid>
