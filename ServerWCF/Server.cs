@@ -1,24 +1,28 @@
 ﻿using ServerWCF.Context;
 using ServerWCF.Model;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Serialization;
-using System.ServiceModel;
-using System.Text;
 
 namespace ServerWCF
 {
     // NOTE: You can use the "Rename" command on the "Refactor" menu to change the class name "Service1" in both code and config file together.
     public class Server : IServer
     {
-        public bool AddNewUser(User UserThatShouldBeAdded)
+        public bool AddNewUser(User user)
         {
             using (UserContext db = new UserContext())
             {
-                    db.Users.Add(UserThatShouldBeAdded);
+                try
+                {
+                    db.Users.Add(user);
                     db.SaveChanges();
                     return true;
+                }
+                catch (Exception)
+                {
+                    return false;
+                    throw;
+                }
             }
         }
 
@@ -28,16 +32,14 @@ namespace ServerWCF
             {
                 try
                 {
-
-                    foreach (User user in db.Users)
+                    foreach (var user in db.Users)
                     {
                         if (user.Login == login && user.Password == password)
                             return user;
                     }
-
                     return null;
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     return null;
                 }
