@@ -35,7 +35,7 @@
         </Grid>
         <Grid Margin="0,22,0,0">
             <Grid.RowDefinitions>
-                <RowDefinition/>
+                <RowDefinition Height="auto"/>
                 <RowDefinition Height="75"/>
             </Grid.RowDefinitions>
             <TextBlock Grid.Row="0" Name="txtMsg" Margin="15" FontSize="16" Foreground="White" Text="{Binding Message}"></TextBlock>

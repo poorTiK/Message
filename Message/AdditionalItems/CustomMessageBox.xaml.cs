@@ -29,15 +29,6 @@ namespace Message.AdditionalItems
         Warning
     }
 
-    public enum MessageBoxImage
-    {
-        Warning = 0,
-        Question,
-        Information,
-        Error,
-        None
-    }
-
     public partial class CustomMessageBox : Window
     {
         public CustomMessageBox()
