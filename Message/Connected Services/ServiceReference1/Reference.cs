@@ -23,22 +23,40 @@ namespace Message.ServiceReference1 {
         private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private Message.ServiceReference1.ApplicationSettings ApplicationSettingsField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private byte[] AvatarField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string BioField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string EmailField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private string LoginIdField;
+        private string FirstNameField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int IdField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string LastNameField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private System.DateTime LastOnlineField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string LoginField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private Message.ServiceReference1.MessageT[] MessagesField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string PasswordField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string PhoneField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private string ShownNameField;
         
         [global::System.ComponentModel.BrowsableAttribute(false)]
         public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
@@ -47,6 +65,32 @@ namespace Message.ServiceReference1 {
             }
             set {
                 this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public Message.ServiceReference1.ApplicationSettings ApplicationSettings {
+            get {
+                return this.ApplicationSettingsField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.ApplicationSettingsField, value) != true)) {
+                    this.ApplicationSettingsField = value;
+                    this.RaisePropertyChanged("ApplicationSettings");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public byte[] Avatar {
+            get {
+                return this.AvatarField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.AvatarField, value) != true)) {
+                    this.AvatarField = value;
+                    this.RaisePropertyChanged("Avatar");
+                }
             }
         }
         
@@ -77,14 +121,79 @@ namespace Message.ServiceReference1 {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public string LoginId {
+        public string FirstName {
             get {
-                return this.LoginIdField;
+                return this.FirstNameField;
             }
             set {
-                if ((object.ReferenceEquals(this.LoginIdField, value) != true)) {
-                    this.LoginIdField = value;
-                    this.RaisePropertyChanged("LoginId");
+                if ((object.ReferenceEquals(this.FirstNameField, value) != true)) {
+                    this.FirstNameField = value;
+                    this.RaisePropertyChanged("FirstName");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int Id {
+            get {
+                return this.IdField;
+            }
+            set {
+                if ((this.IdField.Equals(value) != true)) {
+                    this.IdField = value;
+                    this.RaisePropertyChanged("Id");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string LastName {
+            get {
+                return this.LastNameField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.LastNameField, value) != true)) {
+                    this.LastNameField = value;
+                    this.RaisePropertyChanged("LastName");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.DateTime LastOnline {
+            get {
+                return this.LastOnlineField;
+            }
+            set {
+                if ((this.LastOnlineField.Equals(value) != true)) {
+                    this.LastOnlineField = value;
+                    this.RaisePropertyChanged("LastOnline");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Login {
+            get {
+                return this.LoginField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.LoginField, value) != true)) {
+                    this.LoginField = value;
+                    this.RaisePropertyChanged("Login");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public Message.ServiceReference1.MessageT[] Messages {
+            get {
+                return this.MessagesField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.MessagesField, value) != true)) {
+                    this.MessagesField = value;
+                    this.RaisePropertyChanged("Messages");
                 }
             }
         }
@@ -115,15 +224,140 @@ namespace Message.ServiceReference1 {
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string ShownName {
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="ApplicationSettings", Namespace="http://schemas.datacontract.org/2004/07/ServerWCF.Model")]
+    [System.SerializableAttribute()]
+    public partial class ApplicationSettings : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+        
+        [System.NonSerializedAttribute()]
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
             get {
-                return this.ShownNameField;
+                return this.extensionDataField;
             }
             set {
-                if ((object.ReferenceEquals(this.ShownNameField, value) != true)) {
-                    this.ShownNameField = value;
-                    this.RaisePropertyChanged("ShownName");
+                this.extensionDataField = value;
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="MessageT", Namespace="http://schemas.datacontract.org/2004/07/ServerWCF.Model")]
+    [System.SerializableAttribute()]
+    public partial class MessageT : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+        
+        [System.NonSerializedAttribute()]
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private byte[] ContentField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private System.DateTime DateOfSendingField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int IdField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int SenderIdField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int TypeField;
+        
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+            get {
+                return this.extensionDataField;
+            }
+            set {
+                this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public byte[] Content {
+            get {
+                return this.ContentField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.ContentField, value) != true)) {
+                    this.ContentField = value;
+                    this.RaisePropertyChanged("Content");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.DateTime DateOfSending {
+            get {
+                return this.DateOfSendingField;
+            }
+            set {
+                if ((this.DateOfSendingField.Equals(value) != true)) {
+                    this.DateOfSendingField = value;
+                    this.RaisePropertyChanged("DateOfSending");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int Id {
+            get {
+                return this.IdField;
+            }
+            set {
+                if ((this.IdField.Equals(value) != true)) {
+                    this.IdField = value;
+                    this.RaisePropertyChanged("Id");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int SenderId {
+            get {
+                return this.SenderIdField;
+            }
+            set {
+                if ((this.SenderIdField.Equals(value) != true)) {
+                    this.SenderIdField = value;
+                    this.RaisePropertyChanged("SenderId");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int Type {
+            get {
+                return this.TypeField;
+            }
+            set {
+                if ((this.TypeField.Equals(value) != true)) {
+                    this.TypeField = value;
+                    this.RaisePropertyChanged("Type");
                 }
             }
         }
@@ -147,6 +381,12 @@ namespace Message.ServiceReference1 {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IServer/AddNewUser", ReplyAction="http://tempuri.org/IServer/AddNewUserResponse")]
         System.Threading.Tasks.Task<bool> AddNewUserAsync(Message.ServiceReference1.User user);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IServer/GetUser", ReplyAction="http://tempuri.org/IServer/GetUserResponse")]
+        Message.ServiceReference1.User GetUser(string login, string password);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IServer/GetUser", ReplyAction="http://tempuri.org/IServer/GetUserResponse")]
+        System.Threading.Tasks.Task<Message.ServiceReference1.User> GetUserAsync(string login, string password);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -182,6 +422,14 @@ namespace Message.ServiceReference1 {
         
         public System.Threading.Tasks.Task<bool> AddNewUserAsync(Message.ServiceReference1.User user) {
             return base.Channel.AddNewUserAsync(user);
+        }
+        
+        public Message.ServiceReference1.User GetUser(string login, string password) {
+            return base.Channel.GetUser(login, password);
+        }
+        
+        public System.Threading.Tasks.Task<Message.ServiceReference1.User> GetUserAsync(string login, string password) {
+            return base.Channel.GetUserAsync(login, password);
         }
     }
 }

@@ -23,7 +23,7 @@
                         <RowDefinition Height="auto"/>
 
                     </Grid.RowDefinitions>
-                    <TextBlock Name="MessageText" Padding="15,5" TextWrapping="Wrap" Grid.Row="0" Foreground="#FFC7C7C7"> Hello my  friend</TextBlock>
+                    <TextBlock Name="MessageText" Padding="15,5" TextWrapping="Wrap" Grid.Row="0" Foreground="#FFC7C7C7" FontSize="14"> Hello my  friend</TextBlock>
                     <TextBlock Name="SendTime" Margin="0,0,15,0" Grid.Row="1" FontWeight="Bold" Foreground="#FF63A35D" VerticalAlignment="Bottom" HorizontalAlignment="Right">20:11</TextBlock>
                 </Grid>
             </Border>

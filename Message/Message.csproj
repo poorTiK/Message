@@ -98,7 +98,6 @@
     <Compile Include="ValidationRules\Email_ValidationRule.cs" />
     <Compile Include="ValidationRules\Login_ValidationRule.cs" />
     <Compile Include="ValidationRules\NameSurname_ValidationRule.cs" />
-    <Compile Include="ViewModel\CustomMessageBoxVM.cs" />
     <Compile Include="ViewModel\MainWindowVM.cs" />
     <Compile Include="ViewModel\MessageMainVM.cs" />
     <Page Include="AdditionalItems\CustomMessageBox.xaml">
@@ -149,6 +148,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="Connected Services\ServiceReference1\Message.ServiceReference1.User.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
     <None Include="Connected Services\ServiceReference1\ServerWCF.Model.xsd">
       <SubType>Designer</SubType>
     </None>

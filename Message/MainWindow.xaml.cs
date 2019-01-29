@@ -91,8 +91,8 @@ namespace Message
 
         public void ShowMessage(string message, string caption)
         {
-            CustomMessageBox customMessageBox = new CustomMessageBox(caption, message, CustomMessageBoxType.OkCancel);
-            customMessageBox.ShowDialog();
+            //CustomMessageBox customMessageBox = new CustomMessageBox(caption, message, CustomMessageBoxType.OkCancel);
+            //customMessageBox.ShowDialog();
         }
 
         public string GetPasswordForLogin()

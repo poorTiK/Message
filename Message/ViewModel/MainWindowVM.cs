@@ -1,8 +1,11 @@
-﻿using Message.Interfaces;
+﻿using Message.AdditionalItems;
+using Message.Interfaces;
 using Message.ServiceReference1;
 using Prism.Commands;
 using System;
 using System.Net;
+using System.Text.RegularExpressions;
+using System.Windows;
 
 namespace Message.ViewModel
 {
@@ -154,41 +157,108 @@ namespace Message.ViewModel
 
         void ExecuteOnLogin()
         {
-            proxy.AddNewUser(new User());
-            
-            MessageMainWnd wnd = new MessageMainWnd();
-            wnd.Show();
-            view.CloseWindow();
+            if(LoginText == "admin")
+            {
+                MessageMainWnd wnd = new MessageMainWnd();
+                wnd.Show();
+
+                view.CloseWindow();
+                return;
+            }
+            if (ValidateOnLogin())
+            {
+                if(proxy.GetUser(LoginText, Password) != null)
+                {
+                    MessageMainWnd wnd = new MessageMainWnd();
+                    wnd.Show();
+
+                    view.CloseWindow();
+                }
+            }
         }
 
         private void ExecuteOnRegister()
         {
-            if (!string.IsNullOrWhiteSpace(Name) && !string.IsNullOrWhiteSpace(UserLogin) && !string.IsNullOrWhiteSpace(RPassword) && !string.IsNullOrWhiteSpace(Rep_RPassword) 
-                && !string.IsNullOrWhiteSpace(Email) && (RPassword == Rep_RPassword))
+            if (ValidateOnRegister())
             {
                 var user = new User()
                 {
-                    LoginId = UserLogin,
+                    Login = UserLogin,
                     Password = RPassword,
-                    ShownName = Name,
+                    FirstName = Name,
+                    LastName = Surname,
                     Email = Email,
+                    LastOnline = DateTime.Now.Date
                 };
 
-                if (proxy.AddNewUser(user))
+                if (proxy.GetUser(UserLogin, RPassword) == null)
                 {
-                    //mesage "Succesfull registration"
-                    ExecuteOnBackCommand();
+                    if (proxy.AddNewUser(user))
+                    {
+                        CustomMessageBox.Show("Registration done");
+                        ExecuteOnBackCommand();
+                    }
+                    else
+                    {
+                        CustomMessageBox.Show("Error!!!", "Registration error");
+                    }
                 }
-            }
-            else
-            {
-                //mesage box "You enter wrong data"
+                else
+                {
+                    CustomMessageBox.Show("Error!!!", "Same user exists");
+                }
             }
         }
 
         private void ExecuteOnForgotPassword()
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
+        }
+
+        private bool ValidateOnRegister()
+        {
+            if (string.IsNullOrWhiteSpace(UserLogin))
+            {
+                CustomMessageBox.Show("Login is empty!!!");
+                return false;
+            }
+            else if (RPassword.Length < 8 || string.IsNullOrWhiteSpace(RPassword) || RPassword == string.Empty || !Regex.IsMatch(RPassword, @"^[a-zA-Z0-9]{8,}$"))
+            {
+                CustomMessageBox.Show("Error!", "Password shoud be 8 symbols lenght, use numbers and english symbols");
+                return false;
+            }
+            else if (RPassword != Rep_RPassword)
+            {
+                CustomMessageBox.Show("Error!", "Password not match");
+                return false;
+            }
+            else if (string.IsNullOrWhiteSpace(Email) || Email == string.Empty || !Regex.IsMatch(Email, @"\A(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)\Z", RegexOptions.IgnoreCase))
+            {
+                CustomMessageBox.Show("Error!", "Wrong Email");
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+        private bool ValidateOnLogin()
+        {
+            if (string.IsNullOrWhiteSpace(LoginText))
+            {
+                CustomMessageBox.Show("Login is empty!!!");
+                return false;
+            }
+            else if (Password.Length < 8 || string.IsNullOrWhiteSpace(Password) || Password == string.Empty || !Regex.IsMatch(Password, @"^[a-zA-Z0-9]{8,}$"))
+            {
+                CustomMessageBox.Show("Error!", "Password shoud be 8 symbols lenght, use numbers and english symbols");
+                return false;
+            }
+            else
+            {
+                return true;
+            }
         }
     }
 }

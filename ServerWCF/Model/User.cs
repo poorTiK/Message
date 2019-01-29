@@ -53,7 +53,19 @@ namespace ServerWCF.Model
             Login = loginId;
             Password = password;
             FirstName = firstName;
-            LastOnline = new DateTime(2015, 7, 20);
+            LastOnline = DateTime.Now;
+        }
+        public User()
+        {
+            Login = "";
+            Password = "";
+            FirstName = "";
+            LastName = "";
+            Phone = "";
+            Email = "";
+            Bio = "";
+            Avatar = new byte[0];
+            LastOnline = DateTime.Now;
         }
     }
 }

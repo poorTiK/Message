@@ -13,16 +13,35 @@
   <wsdl:message name="IServer_AddNewUser_OutputMessage">
     <wsdl:part name="parameters" element="tns:AddNewUserResponse" />
   </wsdl:message>
+  <wsdl:message name="IServer_GetUser_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetUser" />
+  </wsdl:message>
+  <wsdl:message name="IServer_GetUser_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetUserResponse" />
+  </wsdl:message>
   <wsdl:portType name="IServer">
     <wsdl:operation name="AddNewUser">
       <wsdl:input wsaw:Action="http://tempuri.org/IServer/AddNewUser" message="tns:IServer_AddNewUser_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IServer/AddNewUserResponse" message="tns:IServer_AddNewUser_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetUser">
+      <wsdl:input wsaw:Action="http://tempuri.org/IServer/GetUser" message="tns:IServer_GetUser_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IServer/GetUserResponse" message="tns:IServer_GetUser_OutputMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="BasicHttpBinding_IServer" type="tns:IServer">
     <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
     <wsdl:operation name="AddNewUser">
       <soap:operation soapAction="http://tempuri.org/IServer/AddNewUser" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetUser">
+      <soap:operation soapAction="http://tempuri.org/IServer/GetUser" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
