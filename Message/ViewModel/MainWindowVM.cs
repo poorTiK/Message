@@ -1,6 +1,8 @@
 ﻿using Message.AdditionalItems;
 using Message.Interfaces;
-using Message.ServiceReference1;
+using Message.ApplicationSettingsServiceReference;
+using Message.MessageTServiceReference;
+using Message.UserServiceReference;
 using Prism.Commands;
 using System;
 using System.Net;
@@ -14,7 +16,11 @@ namespace Message.ViewModel
         IView view;
         IPasswordSupplier passwordSupplier;
 
-        ServerClient proxy;
+        UserServiceClient UserServiceClient;
+        ApplicationSettingsServiceClient ApplicationSettingsService;
+        MessageTServiceClient MessageTServiceClient;
+        
+
         const string HOST = "localhost";
 
         private DelegateCommand _onStartRegister;
@@ -120,10 +126,15 @@ namespace Message.ViewModel
             view = iView;
             passwordSupplier = ipasswordSupplier;
 
-            proxy = new ServerClient();
+            UserServiceClient = new UserServiceClient();
+            MessageTServiceClient = new MessageTServiceClient();
+            ApplicationSettingsService = new ApplicationSettingsServiceClient();
 
             IsSignUpVisible = true;
             IsRegisterVisible = false;
+
+            TestApplicationSettings();
+            TestMessageT();
         }
 
         void ExecuteOnStartRegister()
@@ -167,7 +178,7 @@ namespace Message.ViewModel
             }
             if (ValidateOnLogin())
             {
-                if(proxy.GetUser(LoginText, Password) != null)
+                if(UserServiceClient.GetUser(LoginText, Password) != null)
                 {
                     MessageMainWnd wnd = new MessageMainWnd();
                     wnd.Show();
@@ -191,9 +202,9 @@ namespace Message.ViewModel
                     LastOnline = DateTime.Now.Date
                 };
 
-                if (proxy.GetUser(UserLogin, RPassword) == null)
+                if (UserServiceClient.GetUser(UserLogin, RPassword) == null)
                 {
-                    if (proxy.AddNewUser(user))
+                    if (UserServiceClient.AddNewUser(user))
                     {
                         CustomMessageBox.Show("Registration done");
                         ExecuteOnBackCommand();
@@ -259,6 +270,15 @@ namespace Message.ViewModel
             {
                 return true;
             }
+        }
+
+        private void TestApplicationSettings()
+        {
+            MessageBox.Show(ApplicationSettingsService.Test().ToString());
+        }
+        private void TestMessageT()
+        {
+            MessageBox.Show(MessageTServiceClient.Test().ToString());
         }
     }
 }

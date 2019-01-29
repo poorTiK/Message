@@ -1,23 +1,16 @@
 ﻿using ServerWCF.Model;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Serialization;
 using System.ServiceModel;
-using System.Text;
 
-namespace ServerWCF
+namespace ServerWCF.Contracts
 {
-    // NOTE: You can use the "Rename" command on the "Refactor" menu to change the interface name "IService1" in both code and config file together.
     [ServiceContract]
-    public interface IServer
+    public interface IUserService
     {
         [OperationContract]
         bool AddNewUser(User user);
 
         [OperationContract]
-        User GetUser(string login, string password); 
-
+        User GetUser(string login, string password);
 
         //[OperationContract]
         //CompositeType GetDataUsingDataContract(CompositeType composite);

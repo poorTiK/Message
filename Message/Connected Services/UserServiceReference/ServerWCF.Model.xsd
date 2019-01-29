@@ -12,6 +12,8 @@
       <xs:element minOccurs="0" name="LastOnline" type="xs:dateTime" />
       <xs:element minOccurs="0" name="Login" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="Messages" nillable="true" type="tns:ArrayOfMessageT" />
+      <xs:element minOccurs="0" name="Owned" nillable="true" type="tns:ArrayOfUser" />
+      <xs:element minOccurs="0" name="Owners" nillable="true" type="tns:ArrayOfUser" />
       <xs:element minOccurs="0" name="Password" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="Phone" nillable="true" type="xs:string" />
     </xs:sequence>
@@ -37,4 +39,10 @@
     </xs:sequence>
   </xs:complexType>
   <xs:element name="MessageT" nillable="true" type="tns:MessageT" />
+  <xs:complexType name="ArrayOfUser">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="User" nillable="true" type="tns:User" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfUser" nillable="true" type="tns:ArrayOfUser" />
 </xs:schema>

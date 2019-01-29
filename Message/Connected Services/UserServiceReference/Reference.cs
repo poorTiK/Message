@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Message.ServiceReference1 {
+namespace Message.UserServiceReference {
     using System.Runtime.Serialization;
     using System;
     
@@ -23,7 +23,7 @@ namespace Message.ServiceReference1 {
         private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private Message.ServiceReference1.ApplicationSettings ApplicationSettingsField;
+        private Message.UserServiceReference.ApplicationSettings ApplicationSettingsField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private byte[] AvatarField;
@@ -50,7 +50,13 @@ namespace Message.ServiceReference1 {
         private string LoginField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private Message.ServiceReference1.MessageT[] MessagesField;
+        private Message.UserServiceReference.MessageT[] MessagesField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private Message.UserServiceReference.User[] OwnedField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private Message.UserServiceReference.User[] OwnersField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string PasswordField;
@@ -69,7 +75,7 @@ namespace Message.ServiceReference1 {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public Message.ServiceReference1.ApplicationSettings ApplicationSettings {
+        public Message.UserServiceReference.ApplicationSettings ApplicationSettings {
             get {
                 return this.ApplicationSettingsField;
             }
@@ -186,7 +192,7 @@ namespace Message.ServiceReference1 {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public Message.ServiceReference1.MessageT[] Messages {
+        public Message.UserServiceReference.MessageT[] Messages {
             get {
                 return this.MessagesField;
             }
@@ -194,6 +200,32 @@ namespace Message.ServiceReference1 {
                 if ((object.ReferenceEquals(this.MessagesField, value) != true)) {
                     this.MessagesField = value;
                     this.RaisePropertyChanged("Messages");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public Message.UserServiceReference.User[] Owned {
+            get {
+                return this.OwnedField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.OwnedField, value) != true)) {
+                    this.OwnedField = value;
+                    this.RaisePropertyChanged("Owned");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public Message.UserServiceReference.User[] Owners {
+            get {
+                return this.OwnersField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.OwnersField, value) != true)) {
+                    this.OwnersField = value;
+                    this.RaisePropertyChanged("Owners");
                 }
             }
         }
@@ -373,62 +405,62 @@ namespace Message.ServiceReference1 {
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="ServiceReference1.IServer")]
-    public interface IServer {
+    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="UserServiceReference.IUserService")]
+    public interface IUserService {
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IServer/AddNewUser", ReplyAction="http://tempuri.org/IServer/AddNewUserResponse")]
-        bool AddNewUser(Message.ServiceReference1.User user);
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/AddNewUser", ReplyAction="http://tempuri.org/IUserService/AddNewUserResponse")]
+        bool AddNewUser(Message.UserServiceReference.User user);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IServer/AddNewUser", ReplyAction="http://tempuri.org/IServer/AddNewUserResponse")]
-        System.Threading.Tasks.Task<bool> AddNewUserAsync(Message.ServiceReference1.User user);
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/AddNewUser", ReplyAction="http://tempuri.org/IUserService/AddNewUserResponse")]
+        System.Threading.Tasks.Task<bool> AddNewUserAsync(Message.UserServiceReference.User user);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IServer/GetUser", ReplyAction="http://tempuri.org/IServer/GetUserResponse")]
-        Message.ServiceReference1.User GetUser(string login, string password);
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/GetUser", ReplyAction="http://tempuri.org/IUserService/GetUserResponse")]
+        Message.UserServiceReference.User GetUser(string login, string password);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IServer/GetUser", ReplyAction="http://tempuri.org/IServer/GetUserResponse")]
-        System.Threading.Tasks.Task<Message.ServiceReference1.User> GetUserAsync(string login, string password);
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/GetUser", ReplyAction="http://tempuri.org/IUserService/GetUserResponse")]
+        System.Threading.Tasks.Task<Message.UserServiceReference.User> GetUserAsync(string login, string password);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public interface IServerChannel : Message.ServiceReference1.IServer, System.ServiceModel.IClientChannel {
+    public interface IUserServiceChannel : Message.UserServiceReference.IUserService, System.ServiceModel.IClientChannel {
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public partial class ServerClient : System.ServiceModel.ClientBase<Message.ServiceReference1.IServer>, Message.ServiceReference1.IServer {
+    public partial class UserServiceClient : System.ServiceModel.ClientBase<Message.UserServiceReference.IUserService>, Message.UserServiceReference.IUserService {
         
-        public ServerClient() {
+        public UserServiceClient() {
         }
         
-        public ServerClient(string endpointConfigurationName) : 
+        public UserServiceClient(string endpointConfigurationName) : 
                 base(endpointConfigurationName) {
         }
         
-        public ServerClient(string endpointConfigurationName, string remoteAddress) : 
+        public UserServiceClient(string endpointConfigurationName, string remoteAddress) : 
                 base(endpointConfigurationName, remoteAddress) {
         }
         
-        public ServerClient(string endpointConfigurationName, System.ServiceModel.EndpointAddress remoteAddress) : 
+        public UserServiceClient(string endpointConfigurationName, System.ServiceModel.EndpointAddress remoteAddress) : 
                 base(endpointConfigurationName, remoteAddress) {
         }
         
-        public ServerClient(System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress) : 
+        public UserServiceClient(System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress) : 
                 base(binding, remoteAddress) {
         }
         
-        public bool AddNewUser(Message.ServiceReference1.User user) {
+        public bool AddNewUser(Message.UserServiceReference.User user) {
             return base.Channel.AddNewUser(user);
         }
         
-        public System.Threading.Tasks.Task<bool> AddNewUserAsync(Message.ServiceReference1.User user) {
+        public System.Threading.Tasks.Task<bool> AddNewUserAsync(Message.UserServiceReference.User user) {
             return base.Channel.AddNewUserAsync(user);
         }
         
-        public Message.ServiceReference1.User GetUser(string login, string password) {
+        public Message.UserServiceReference.User GetUser(string login, string password) {
             return base.Channel.GetUser(login, password);
         }
         
-        public System.Threading.Tasks.Task<Message.ServiceReference1.User> GetUserAsync(string login, string password) {
+        public System.Threading.Tasks.Task<Message.UserServiceReference.User> GetUserAsync(string login, string password) {
             return base.Channel.GetUserAsync(login, password);
         }
     }

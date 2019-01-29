@@ -1,12 +1,11 @@
 ﻿using ServerWCF.Context;
+using ServerWCF.Contracts;
 using ServerWCF.Model;
 using System;
-using System.Linq;
 
-namespace ServerWCF
+namespace ServerWCF.Services
 {
-    // NOTE: You can use the "Rename" command on the "Refactor" menu to change the class name "Service1" in both code and config file together.
-    public class Server : IServer
+    public class UserService : IUserService
     {
         public bool AddNewUser(User user)
         {

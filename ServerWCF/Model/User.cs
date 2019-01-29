@@ -48,6 +48,12 @@ namespace ServerWCF.Model
         [DataMember]
         public ICollection<MessageT> Messages { get; set; }
 
+        [DataMember]
+        public virtual ICollection<User> Owners { get; set; }
+
+        [DataMember]
+        public virtual ICollection<User> Owned { get; set; }
+
         public User(string firstName, string loginId, string password, string email)
         {
             Login = loginId;

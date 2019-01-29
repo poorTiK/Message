@@ -52,20 +52,26 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Context\ApplicationSettingsContext.cs" />
+    <Compile Include="Context\ContactsContext.cs" />
     <Compile Include="Context\MessageContext.cs" />
     <Compile Include="Context\UserContext.cs" />
-    <Compile Include="IServer.cs" />
+    <Compile Include="Contracts\IApplicationSettingsService.cs" />
+    <Compile Include="Contracts\IMessageTService.cs" />
+    <Compile Include="Contracts\IUserService.cs" />
     <Compile Include="Model\ApplicationSettings.cs" />
+    <Compile Include="Model\Contacts.cs" />
     <Compile Include="Model\MessageT.cs" />
     <Compile Include="Model\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Server.cs" />
+    <Compile Include="Services\ApplicationSettingsService.cs" />
+    <Compile Include="Services\MessageTService.cs" />
+    <Compile Include="Services\UserService.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config">
+    <None Include="Configs\App.config">
       <SubType>Designer</SubType>
     </None>
-    <None Include="packages.config" />
+    <None Include="Configs\packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
