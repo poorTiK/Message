@@ -4,6 +4,7 @@ using System;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Interop;
+using System.Windows.Media.Animation;
 
 namespace Message
 {
@@ -132,6 +133,11 @@ namespace Message
         {
             InitializeComponent();
 
+            //Timeline.DesiredFrameRateProperty.OverrideMetadata(
+            //    typeof(Timeline),
+            //    new FrameworkPropertyMetadata { DefaultValue = 40 }
+            //    );
+
             SourceInitialized += (s, e) =>
             {
                 IntPtr handle = (new WindowInteropHelper(this)).Handle;
@@ -150,11 +156,13 @@ namespace Message
             MinimizeButton.Click += (s, e) => WindowState = WindowState.Minimized;
             MaximizeMinimizeButton.Click += (s, e) => WindowState = WindowState == WindowState.Maximized ? WindowState.Normal : WindowState.Maximized;
             CloseButton.Click += (s, e) => Close();
+
+            List.Items.Add(new object());
         }
 
         public void AnimatedResize(int h, int w)
         {
-            throw new NotImplementedException();
+            
         }
 
         public void CloseWindow()
@@ -162,9 +170,47 @@ namespace Message
             Close();
         }
 
-        public void ShowMessage(string message, string caption)
+        private void ButtonOpen_Click(object sender, RoutedEventArgs e)
         {
-            throw new NotImplementedException();
+            SineEase eEase = new SineEase();
+            eEase.EasingMode = EasingMode.EaseInOut;
+
+            Storyboard storyboard = new Storyboard();
+
+            DoubleAnimation daWidth = new DoubleAnimation(SideMenu.ActualWidth, 200, new Duration(TimeSpan.FromSeconds(0.4)));
+            daWidth.EasingFunction = eEase;
+
+            storyboard.Children.Add(daWidth);
+
+            Storyboard.SetTarget(daWidth, SideMenu);
+            Storyboard.SetTargetProperty(daWidth, new PropertyPath(WidthProperty));
+
+            SideMenu.BeginStoryboard(storyboard);
+
+            SideMenu.Focus();
+        }
+
+        private void ButtonClose_Click(object sender, RoutedEventArgs e)
+        {
+            SineEase eEase = new SineEase();
+            eEase.EasingMode = EasingMode.EaseInOut;
+
+            Storyboard storyboard = new Storyboard();
+
+            DoubleAnimation daWidth = new DoubleAnimation(SideMenu.ActualWidth, 0, new Duration(TimeSpan.FromSeconds(0.4)));
+            daWidth.EasingFunction = eEase;
+
+            storyboard.Children.Add(daWidth);
+
+            Storyboard.SetTarget(daWidth, SideMenu);
+            Storyboard.SetTargetProperty(daWidth, new PropertyPath(WidthProperty));
+
+            SideMenu.BeginStoryboard(storyboard);
+        }
+
+        private void SideMenu_LostFocus(object sender, RoutedEventArgs e)
+        {
+            ButtonClose_Click(null, null);
         }
     }
 }

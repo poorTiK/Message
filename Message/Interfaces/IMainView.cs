@@ -8,7 +8,6 @@ namespace Message.Interfaces
 {
     interface IMainView
     {
-        void ShowMessage(string message, string caption);
         void CloseWindow();
         void AnimatedResize(int h, int w);
     }

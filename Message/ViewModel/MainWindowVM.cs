@@ -176,7 +176,7 @@ namespace Message.ViewModel
                 view.CloseWindow();
                 return;
             }
-            if (ValidateOnLogin())
+            else if (ValidateOnLogin())
             {
                 if(UserServiceClient.GetUser(LoginText, Password) != null)
                 {
@@ -274,11 +274,11 @@ namespace Message.ViewModel
 
         private void TestApplicationSettings()
         {
-            MessageBox.Show(ApplicationSettingsService.Test().ToString());
+            //MessageBox.Show(ApplicationSettingsService.Test().ToString());
         }
         private void TestMessageT()
         {
-            MessageBox.Show(MessageTServiceClient.Test().ToString());
+            //MessageBox.Show(MessageTServiceClient.Test().ToString());
         }
     }
 }
