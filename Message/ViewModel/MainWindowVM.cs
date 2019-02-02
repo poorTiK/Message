@@ -286,19 +286,31 @@ namespace Message.ViewModel
         {
             //MessageBox.Show(ApplicationSettingsService.Test().ToString());
         }
+
         private void TestMessageT()
         {
             //MessageBox.Show(MessageTServiceClient.Test().ToString());
         }
+
         private void TestContacts()
         {
-            User userOwned = new User()
+            User firstOwned = new User()
             {
-                Email = "mail@mail.ru",
-                Login = "owned",
+                Email = "mail123456@mail.ru",
+                Login = "firstOwned",
                 Password = "123123",
                 FirstName = "Vasua",
                 LastName = "Petrov",
+                LastOnline = DateTime.Now
+            };
+
+            User secondOwned = new User()
+            {
+                Email = "mail123456@mail.ru",
+                Login = "secondOwned",
+                Password = "123123",
+                FirstName = "George",
+                LastName = "Volodin",
                 LastOnline = DateTime.Now
             };
 
@@ -312,17 +324,18 @@ namespace Message.ViewModel
                 LastOnline = DateTime.Now
             };
 
-            userOwner.Owners = new User[1];
-            userOwner.Owners[0] = userOwned;
+            userOwner.Owners = new User[2];
+            userOwner.Owners[0] = firstOwned;
+            userOwner.Owners[1] = secondOwned;
 
             //ICollection<User> users = userOwner.Owned;
             //users.Add(userOwned);
 
             UserServiceClient.AddNewUser(userOwner);
 
-            var user = UserServiceClient.GetUser(userOwner.Login, userOwner.Password);
-            var user2 = UserServiceClient.GetUser(userOwned.Login, userOwned.Password);
-            MessageBox.Show(user.Contacts[0].FirstName);
+            //var user = UserServiceClient.GetUser(userOwner.Login, userOwner.Password);
+            //var user2 = UserServiceClient.GetUser(userOwned.Login, userOwned.Password);
+            //MessageBox.Show(user.Contacts[0].FirstName);
         }
     }
 }
