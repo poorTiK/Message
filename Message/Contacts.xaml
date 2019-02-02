@@ -1,0 +1,65 @@
+﻿<Window x:Class="Message.Contacts"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Message"
+        mc:Ignorable="d"
+        
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        
+        Name="ContactsWnd"
+        WindowStartupLocation="CenterScreen" WindowStyle="None"
+        BorderThickness="0" ResizeMode="NoResize"
+        Title="Contacts" Height="450" Width="259">
+
+    <WindowChrome.WindowChrome>
+        <WindowChrome CaptionHeight="0"/>
+    </WindowChrome.WindowChrome>
+
+    <Grid Background="#353636">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <StackPanel Grid.Column="0" Grid.ColumnSpan="2" Margin="5"
+                    Orientation="Horizontal" VerticalAlignment="Center">
+            <materialDesign:PackIcon Kind="Magnify" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" />
+            <TextBox Margin="0,10,10,10" Foreground="White" Width="257" SelectionBrush="#FF919191"/>
+        </StackPanel>
+
+        <ListBox Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1" Margin="10" >
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Ellipse Height="45" Width="45" Grid.Column="0" Grid.Row="0" Grid.RowSpan="2">
+                            <Ellipse.Fill>
+                                <ImageBrush ImageSource="Resources/Test.jpg"/>
+                            </Ellipse.Fill>
+                        </Ellipse>
+
+                        <TextBlock Grid.Column="1" Grid.Row="0" Margin="10,0,0,0">Name Surname</TextBlock>
+                        <TextBlock Grid.Column="1" Grid.Row="1" Margin="10,0,0,0" Foreground="#FF63A35D">Online</TextBlock>
+                    </Grid>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+
+        <Button Command="{Binding AddContactCommand}" Grid.Column="0" Grid.Row="2" Margin="10,0,10,10">Add contact</Button>
+        <Button Command="{Binding CloseCommand}" Grid.Column="1" Grid.Row="2" Margin="10,0,10,10">Close</Button>
+    </Grid>
+</Window>
