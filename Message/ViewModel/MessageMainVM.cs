@@ -1,4 +1,5 @@
 ﻿using Message.Interfaces;
+using Message.UserServiceReference;
 using Prism.Commands;
 using System;
 using System.Collections.Generic;
@@ -12,11 +13,31 @@ namespace Message.ViewModel
     {
         IView _view;
 
-        
+        public User CurrentUser { get; set; }
+
+        private string _currentUserName;
+        public string CurrentUserName
+        {
+            get { return CurrentUser.FirstName + " " + CurrentUser.LastName; }
+            set { SetProperty(ref _currentUserName, value); }
+        }
+
+        private string _currentUserLogin;
+        public string CurrentUserLogin
+        {
+            get { return "@" + CurrentUser.Login; }
+            set { SetProperty(ref _currentUserLogin, value); }
+        }
 
         public MessageMainVM(IView View)
         {
             _view = View;
+        }
+
+        public MessageMainVM(IView View, User user)
+        {
+            _view = View;
+            CurrentUser = user;
         }
 
         private DelegateCommand _onContactsCommand;

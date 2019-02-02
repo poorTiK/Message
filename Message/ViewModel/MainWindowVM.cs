@@ -170,7 +170,14 @@ namespace Message.ViewModel
         {
             if(LoginText == "admin")
             {
-                MessageMainWnd wnd = new MessageMainWnd();
+                //var admin = UserServiceClient.GetUser("admin", "admin");
+                var admin = new User()
+                {
+                    Login = "admin",
+                    FirstName = "admin",
+                    LastName = "admin"
+                };
+                MessageMainWnd wnd = new MessageMainWnd(admin);
                 wnd.Show();
 
                 view.CloseWindow();
@@ -178,9 +185,10 @@ namespace Message.ViewModel
             }
             else if (ValidateOnLogin())
             {
-                if(UserServiceClient.GetUser(LoginText, Password) != null)
+                var user = UserServiceClient.GetUser(LoginText, Password);
+                if (user != null)
                 {
-                    MessageMainWnd wnd = new MessageMainWnd();
+                    MessageMainWnd wnd = new MessageMainWnd(user);
                     wnd.Show();
 
                     view.CloseWindow();

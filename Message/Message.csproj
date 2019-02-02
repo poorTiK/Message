@@ -217,13 +217,13 @@
     <WCFMetadataStorage Include="Connected Services\UserServiceReference\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Connected Services\ApplicationSettingsServiceReference\configuration91.svcinfo" />
+    <None Include="Connected Services\UserServiceReference\configuration91.svcinfo" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Connected Services\ApplicationSettingsServiceReference\configuration.svcinfo" />
+    <None Include="Connected Services\UserServiceReference\configuration.svcinfo" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Connected Services\ApplicationSettingsServiceReference\Reference.svcmap">
+    <None Include="Connected Services\UserServiceReference\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
@@ -241,13 +241,13 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Connected Services\UserServiceReference\configuration91.svcinfo" />
+    <None Include="Connected Services\ApplicationSettingsServiceReference\configuration91.svcinfo" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Connected Services\UserServiceReference\configuration.svcinfo" />
+    <None Include="Connected Services\ApplicationSettingsServiceReference\configuration.svcinfo" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Connected Services\UserServiceReference\Reference.svcmap">
+    <None Include="Connected Services\ApplicationSettingsServiceReference\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>

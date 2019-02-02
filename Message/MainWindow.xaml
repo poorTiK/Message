@@ -61,8 +61,8 @@
 
                             </TextBox>
                             <PasswordBox Name="PasswordBox"
-                    Foreground="White" CaretBrush="{x:Null}" SelectionBrush="{x:Null}"
-                    materialDesign:HintAssist.Hint="Password" Margin="0,0,0,15"
+                    Foreground="White" CaretBrush="{x:Null}" SelectionBrush="#FF919191"
+                    materialDesign:HintAssist.Hint="Password" Margin="0,0,0,15" 
                     Style="{StaticResource MaterialDesignFloatingHintPasswordBox}"
                     />
                             <Button Content="Sign In" Margin="0,0,0,15"
@@ -97,7 +97,7 @@
                         <TextBox
                             materialDesign:HintAssist.Hint="First Name"
                             Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                            Foreground="White" CaretBrush="{x:Null}" SelectionBrush="{x:Null}" Margin="0,0,0,20">
+                            Foreground="White" CaretBrush="{x:Null}" SelectionBrush="#FF919191" Margin="0,0,0,20">
                             <TextBox.Text>
                                 <Binding Path="Name" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
                                     <Binding.ValidationRules>
@@ -110,7 +110,7 @@
                         <TextBox
                             materialDesign:HintAssist.Hint="Last Name"
                             Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                            Foreground="White" CaretBrush="{x:Null}" SelectionBrush="{x:Null}" Margin="0,0,0,20">
+                            Foreground="White" CaretBrush="{x:Null}" SelectionBrush="#FF919191" Margin="0,0,0,20">
                             <TextBox.Text>
                                 <Binding Path="Surname" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
                                     <Binding.ValidationRules>
@@ -123,7 +123,7 @@
                         <TextBox
                             materialDesign:HintAssist.Hint="Login"
                             Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                            Foreground="White" CaretBrush="{x:Null}" SelectionBrush="{x:Null}" Margin="0,0,0,20">
+                            Foreground="White" CaretBrush="{x:Null}" SelectionBrush="#FF919191" Margin="0,0,0,20">
                             <TextBox.Text>
                                 <Binding Path="UserLogin" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
                                     <Binding.ValidationRules>
@@ -134,20 +134,20 @@
                         </TextBox>
 
                         <PasswordBox Name="RPasswordBox"
-                            Foreground="White" CaretBrush="{x:Null}" SelectionBrush="{x:Null}"
+                            Foreground="White" CaretBrush="{x:Null}" SelectionBrush="#FF919191"
                             materialDesign:HintAssist.Hint="Password" 
                             Style="{StaticResource MaterialDesignFloatingHintPasswordBox}" Margin="0,0,0,20">
                         </PasswordBox>
 
                         <PasswordBox Name="Rep_RPasswordBox"
-                            Foreground="White" CaretBrush="{x:Null}" SelectionBrush="{x:Null}"
+                            Foreground="White" CaretBrush="{x:Null}" SelectionBrush="#FF919191"
                             materialDesign:HintAssist.Hint="Repeat Password" 
                             Style="{StaticResource MaterialDesignFloatingHintPasswordBox}" Margin="0,0,0,20"/>
 
                         <TextBox
                             materialDesign:HintAssist.Hint="Email"
                             Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                            Foreground="White" CaretBrush="{x:Null}" SelectionBrush="{x:Null}">
+                            Foreground="White" CaretBrush="{x:Null}" SelectionBrush="#FF919191">
                             <TextBox.Text>
                                 <Binding Path="Email" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
                                     <Binding.ValidationRules>

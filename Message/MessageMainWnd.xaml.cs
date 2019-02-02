@@ -1,4 +1,5 @@
 ﻿using Message.Interfaces;
+using Message.UserServiceReference;
 using Message.ViewModel;
 using System;
 using System.Runtime.InteropServices;
@@ -133,18 +134,27 @@ namespace Message
         {
             InitializeComponent();
 
-            //Timeline.DesiredFrameRateProperty.OverrideMetadata(
-            //    typeof(Timeline),
-            //    new FrameworkPropertyMetadata { DefaultValue = 40 }
-            //    );
+            DataContext = new MessageMainVM(this);
 
+            init();
+        }
+
+        public MessageMainWnd(User user)
+        {
+            InitializeComponent();
+
+            DataContext = new MessageMainVM(this, user);
+
+            init();
+        }
+
+        void init()
+        {
             SourceInitialized += (s, e) =>
             {
                 IntPtr handle = (new WindowInteropHelper(this)).Handle;
                 HwndSource.FromHwnd(handle).AddHook(new HwndSourceHook(WindowProc));
             };
-
-            DataContext = new MessageMainVM(this);
 
             for (int i = 0; i < 100; i++)
             {
@@ -157,13 +167,10 @@ namespace Message
             MaximizeMinimizeButton.Click += (s, e) => WindowState = WindowState == WindowState.Maximized ? WindowState.Normal : WindowState.Maximized;
             CloseButton.Click += (s, e) => Close();
 
-            List.Items.Add(new object());
+            //List.Items.Add(new object());
         }
 
-        public void AnimatedResize(int h, int w)
-        {
-            
-        }
+        public void AnimatedResize(int h, int w){ }
 
         public void CloseWindow()
         {

@@ -31,7 +31,7 @@
         <StackPanel Grid.Column="0" Grid.ColumnSpan="2" Margin="5"
                     Orientation="Horizontal" VerticalAlignment="Center">
             <materialDesign:PackIcon Kind="Magnify" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" />
-            <TextBox Margin="0,10,10,10" Foreground="White" Width="257" />
+            <TextBox Margin="0,10,10,10" Foreground="White" Width="257" SelectionBrush="#FF919191"/>
         </StackPanel>
 
         <ListBox Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="1" Margin="10" >

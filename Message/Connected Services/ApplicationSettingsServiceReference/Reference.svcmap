@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="bbe593f7-76b5-48ee-9b90-1517e5383691" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="d40d40b3-eac9-4104-a26a-b2ba09e33bd3" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
   <ClientOptions>
     <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
     <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
@@ -22,9 +22,9 @@
     <MetadataSource Address="http://localhost:8733/Design_Time_Addresses/ServerWCF/IApplicationSettingsService/mex" Protocol="mex" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="service.wsdl" MetadataType="Wsdl" ID="c65e3cce-e1f4-43d0-9157-20a8d551c355" SourceId="1" SourceUrl="http://localhost:8733/Design_Time_Addresses/ServerWCF/IApplicationSettingsService/mex" />
-    <MetadataFile FileName="service.xsd" MetadataType="Schema" ID="38eaf9a9-d13b-4a65-b670-a2cde4283478" SourceId="1" SourceUrl="http://localhost:8733/Design_Time_Addresses/ServerWCF/IApplicationSettingsService/mex" />
-    <MetadataFile FileName="service1.xsd" MetadataType="Schema" ID="98e04e6e-2a50-4941-ad93-b719d91ddfef" SourceId="1" SourceUrl="http://localhost:8733/Design_Time_Addresses/ServerWCF/IApplicationSettingsService/mex" />
+    <MetadataFile FileName="service.wsdl" MetadataType="Wsdl" ID="74478a30-3067-4132-ac56-5483eb27265c" SourceId="1" SourceUrl="http://localhost:8733/Design_Time_Addresses/ServerWCF/IApplicationSettingsService/mex" />
+    <MetadataFile FileName="service.xsd" MetadataType="Schema" ID="23fff378-b322-45d5-b2b3-834c4f2fef0d" SourceId="1" SourceUrl="http://localhost:8733/Design_Time_Addresses/ServerWCF/IApplicationSettingsService/mex" />
+    <MetadataFile FileName="service1.xsd" MetadataType="Schema" ID="464a180f-8bca-48ab-bdea-a96255753afd" SourceId="1" SourceUrl="http://localhost:8733/Design_Time_Addresses/ServerWCF/IApplicationSettingsService/mex" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
