@@ -32,6 +32,9 @@ namespace Message.UserServiceReference {
         private string BioField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private Message.UserServiceReference.User[] ContactsField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string EmailField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
@@ -51,9 +54,6 @@ namespace Message.UserServiceReference {
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private Message.UserServiceReference.MessageT[] MessagesField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private Message.UserServiceReference.User[] OwnedField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private Message.UserServiceReference.User[] OwnersField;
@@ -109,6 +109,19 @@ namespace Message.UserServiceReference {
                 if ((object.ReferenceEquals(this.BioField, value) != true)) {
                     this.BioField = value;
                     this.RaisePropertyChanged("Bio");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public Message.UserServiceReference.User[] Contacts {
+            get {
+                return this.ContactsField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.ContactsField, value) != true)) {
+                    this.ContactsField = value;
+                    this.RaisePropertyChanged("Contacts");
                 }
             }
         }
@@ -200,19 +213,6 @@ namespace Message.UserServiceReference {
                 if ((object.ReferenceEquals(this.MessagesField, value) != true)) {
                     this.MessagesField = value;
                     this.RaisePropertyChanged("Messages");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public Message.UserServiceReference.User[] Owned {
-            get {
-                return this.OwnedField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.OwnedField, value) != true)) {
-                    this.OwnedField = value;
-                    this.RaisePropertyChanged("Owned");
                 }
             }
         }

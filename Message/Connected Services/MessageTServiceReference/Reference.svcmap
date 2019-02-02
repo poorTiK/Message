@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="57514a74-aee7-469d-9d7c-1ee6f259c27f" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="00f767f9-56dc-4a3e-923c-14c8c8fefe2e" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
   <ClientOptions>
     <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
     <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
@@ -22,9 +22,9 @@
     <MetadataSource Address="http://localhost:8733/Design_Time_Addresses/ServerWCF/IMessageTService/mex" Protocol="mex" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="service.wsdl" MetadataType="Wsdl" ID="2245e57c-3d73-4dd2-99da-1793793a0a37" SourceId="1" SourceUrl="http://localhost:8733/Design_Time_Addresses/ServerWCF/IMessageTService/mex" />
-    <MetadataFile FileName="service.xsd" MetadataType="Schema" ID="7974c0bc-e5bd-45ff-b682-538a07f7f8cf" SourceId="1" SourceUrl="http://localhost:8733/Design_Time_Addresses/ServerWCF/IMessageTService/mex" />
-    <MetadataFile FileName="service1.xsd" MetadataType="Schema" ID="f88dfe28-c5a1-409d-9c34-99b6839fa65a" SourceId="1" SourceUrl="http://localhost:8733/Design_Time_Addresses/ServerWCF/IMessageTService/mex" />
+    <MetadataFile FileName="service.wsdl" MetadataType="Wsdl" ID="04a378cf-8e71-404e-ab9f-a26cb2e844c1" SourceId="1" SourceUrl="http://localhost:8733/Design_Time_Addresses/ServerWCF/IMessageTService/mex" />
+    <MetadataFile FileName="service.xsd" MetadataType="Schema" ID="ff417d1a-262d-4b10-a3cc-fda9baa5ce94" SourceId="1" SourceUrl="http://localhost:8733/Design_Time_Addresses/ServerWCF/IMessageTService/mex" />
+    <MetadataFile FileName="service1.xsd" MetadataType="Schema" ID="593aa5af-f114-4fcb-adab-51a3008b82e3" SourceId="1" SourceUrl="http://localhost:8733/Design_Time_Addresses/ServerWCF/IMessageTService/mex" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />

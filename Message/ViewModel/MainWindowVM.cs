@@ -296,6 +296,7 @@ namespace Message.ViewModel
             {
                 Email = "mail@mail.ru",
                 Login = "owned",
+                Password = "123123",
                 FirstName = "Vasua",
                 LastName = "Petrov",
                 LastOnline = DateTime.Now
@@ -305,18 +306,23 @@ namespace Message.ViewModel
             {
                 Email = "mail2@mail.ru",
                 Login = "owned2",
+                Password = "123123",
                 FirstName = "Petua",
                 LastName = "Petin",
                 LastOnline = DateTime.Now
             };
 
-            userOwner.Owned = new User[1];
-            userOwner.Owned[0] = userOwned;
+            userOwner.Owners = new User[1];
+            userOwner.Owners[0] = userOwned;
 
             //ICollection<User> users = userOwner.Owned;
             //users.Add(userOwned);
 
             UserServiceClient.AddNewUser(userOwner);
+
+            var user = UserServiceClient.GetUser(userOwner.Login, userOwner.Password);
+            var user2 = UserServiceClient.GetUser(userOwned.Login, userOwned.Password);
+            MessageBox.Show(user.Contacts[0].FirstName);
         }
     }
 }
