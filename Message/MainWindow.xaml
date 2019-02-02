@@ -57,7 +57,7 @@
                             <TextBox Text="{Binding LoginText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                 materialDesign:HintAssist.Hint="Login"
                          Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                 Foreground="White" CaretBrush="{x:Null}" SelectionBrush="{x:Null}" Margin="0,0,0,15">
+                 Foreground="White" CaretBrush="{x:Null}" SelectionBrush="#FF919191" Margin="0,0,0,15">
 
                             </TextBox>
                             <PasswordBox Name="PasswordBox"

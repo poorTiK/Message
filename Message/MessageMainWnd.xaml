@@ -152,7 +152,7 @@
                     </Border>
                 </Grid>
             </Grid>
-            <Grid x:Name="SideMenu" Focusable="True" Width="0" HorizontalAlignment="Left" Background="#DDFFFFFF" RenderTransformOrigin="0.5,0.5" Margin="0,22,0,0">
+            <Grid x:Name="SideMenu" Focusable="True" Width="250" HorizontalAlignment="Left" Background="#DDFFFFFF" RenderTransformOrigin="0.5,0.5" Margin="0,22,0,0">
                 <StackPanel Background="#262626">
                     <Grid Height="140" Background="#195E4D">
                         <Grid.RowDefinitions>
@@ -176,7 +176,21 @@
                         <ListViewItem Height="45" Padding="0">
                             <StackPanel Orientation="Horizontal" Margin="10 0">
                                 <materialDesign:PackIcon Kind="AccountSupervisor" Width="20" Height="20" Foreground="Gray" Margin="5" VerticalAlignment="Center"/>
-                                <TextBlock Text="Contacts" FontSize="15" Margin="10" Foreground="White"/>
+                                <TextBlock Text="Contacts" FontSize="15" Margin="10" Foreground="White">
+                                    <TextBlock.InputBindings>
+                                        <MouseBinding Command="{Binding ContactsCommand}" MouseAction="LeftClick" />
+                                    </TextBlock.InputBindings>
+                                </TextBlock>
+                            </StackPanel>
+                        </ListViewItem>
+                        <ListViewItem Height="45" Padding="0">
+                            <StackPanel Orientation="Horizontal" Margin="10 0">
+                                <materialDesign:PackIcon Kind="AccountSupervisor" Width="20" Height="20" Foreground="Gray" Margin="5" VerticalAlignment="Center"/>
+                                <TextBlock Text="Settings" FontSize="15" Margin="10" Foreground="White">
+                                    <TextBlock.InputBindings>
+                                        <MouseBinding Command="{Binding SettingsCommand}" MouseAction="LeftClick" />
+                                    </TextBlock.InputBindings>
+                                </TextBlock>
                             </StackPanel>
                         </ListViewItem>
                     </ListView>

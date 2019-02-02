@@ -172,13 +172,10 @@ namespace Message
 
         private void ButtonOpen_Click(object sender, RoutedEventArgs e)
         {
-            SineEase eEase = new SineEase();
-            eEase.EasingMode = EasingMode.EaseInOut;
 
             Storyboard storyboard = new Storyboard();
 
             DoubleAnimation daWidth = new DoubleAnimation(SideMenu.ActualWidth, 200, new Duration(TimeSpan.FromSeconds(0.4)));
-            daWidth.EasingFunction = eEase;
 
             storyboard.Children.Add(daWidth);
 
@@ -192,13 +189,10 @@ namespace Message
 
         private void ButtonClose_Click(object sender, RoutedEventArgs e)
         {
-            SineEase eEase = new SineEase();
-            eEase.EasingMode = EasingMode.EaseInOut;
 
             Storyboard storyboard = new Storyboard();
 
             DoubleAnimation daWidth = new DoubleAnimation(SideMenu.ActualWidth, 0, new Duration(TimeSpan.FromSeconds(0.4)));
-            daWidth.EasingFunction = eEase;
 
             storyboard.Children.Add(daWidth);
 
