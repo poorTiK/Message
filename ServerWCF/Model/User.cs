@@ -66,6 +66,8 @@ namespace ServerWCF.Model
 
         public User()
         {
+            Owners = new List<User>();
+            Contacts = new List<User>();
             Login = "";
             Password = "";
             FirstName = "";
