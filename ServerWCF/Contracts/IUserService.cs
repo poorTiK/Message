@@ -1,4 +1,5 @@
 ﻿using ServerWCF.Model;
+using System.Collections.Generic;
 using System.ServiceModel;
 
 namespace ServerWCF.Contracts

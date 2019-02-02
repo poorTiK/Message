@@ -8,6 +8,7 @@ using System;
 using System.Net;
 using System.Text.RegularExpressions;
 using System.Windows;
+using System.Collections.Generic;
 
 namespace Message.ViewModel
 {
@@ -135,6 +136,7 @@ namespace Message.ViewModel
 
             TestApplicationSettings();
             TestMessageT();
+            TestContacts();
         }
 
         void ExecuteOnStartRegister()
@@ -279,6 +281,34 @@ namespace Message.ViewModel
         private void TestMessageT()
         {
             MessageBox.Show(MessageTServiceClient.Test().ToString());
+        }
+        private void TestContacts()
+        {
+            User userOwned = new User()
+            {
+                Email = "mail@mail.ru",
+                Login = "owned",
+                FirstName = "Vasua",
+                LastName = "Petrov",
+                LastOnline = DateTime.Now
+            };
+
+            User userOwner = new User()
+            {
+                Email = "mail2@mail.ru",
+                Login = "owned2",
+                FirstName = "Petua",
+                LastName = "Petin",
+                LastOnline = DateTime.Now
+            };
+
+            userOwner.Owned = new User[1];
+            userOwner.Owned[0] = userOwned;
+
+            //ICollection<User> users = userOwner.Owned;
+            //users.Add(userOwned);
+
+            UserServiceClient.AddNewUser(userOwner);
         }
     }
 }

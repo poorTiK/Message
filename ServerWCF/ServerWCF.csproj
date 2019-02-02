@@ -52,7 +52,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Context\ApplicationSettingsContext.cs" />
-    <Compile Include="Context\ContactsContext.cs" />
     <Compile Include="Context\MessageContext.cs" />
     <Compile Include="Context\UserContext.cs" />
     <Compile Include="Contracts\IApplicationSettingsService.cs" />

@@ -49,10 +49,10 @@ namespace ServerWCF.Model
         public ICollection<MessageT> Messages { get; set; }
 
         [DataMember]
-        public virtual ICollection<User> Owners { get; set; }
+        public ICollection<User> Owners { get; set; }
 
         [DataMember]
-        public virtual ICollection<User> Owned { get; set; }
+        public ICollection<User> Contacts { get; set; }
 
         public User(string firstName, string loginId, string password, string email)
         {
@@ -61,6 +61,7 @@ namespace ServerWCF.Model
             FirstName = firstName;
             LastOnline = DateTime.Now;
         }
+
         public User()
         {
             Login = "";

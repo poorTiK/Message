@@ -11,17 +11,17 @@ namespace ServerWCF.Services
         {
             using (UserContext db = new UserContext())
             {
-                try
-                {
+                //try
+                //{
                     db.Users.Add(user);
                     db.SaveChanges();
                     return true;
-                }
-                catch (Exception)
-                {
-                    return false;
-                    throw;
-                }
+                //}
+                //catch (Exception)
+                //{
+                //    return false;
+                //    throw;
+                //}
             }
         }
 
