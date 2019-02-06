@@ -25,6 +25,13 @@ namespace Message
         {
             InitializeComponent();
             DataContext = new ContatsWindowVM(this);
+
+            Loaded += Contacts_Loaded;
+        }
+
+        private void Contacts_Loaded(object sender, RoutedEventArgs e)
+        {
+            SearchBox.Focus();
         }
 
         public void AnimatedResize(int h, int w)

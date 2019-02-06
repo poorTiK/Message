@@ -1,4 +1,5 @@
 ﻿using Message.Interfaces;
+using Message.Model;
 using Message.UserServiceReference;
 using Prism.Commands;
 using System;
@@ -11,10 +12,12 @@ namespace Message.ViewModel
 {
     class MessageMainVM : Prism.Mvvm.BindableBase
     {
+        UserServiceClient UserServiceClient;
+
         IView _view;
 
         public User CurrentUser { get; set; }
-
+        
         private string _currentUserName;
         public string CurrentUserName
         {
@@ -32,12 +35,16 @@ namespace Message.ViewModel
         public MessageMainVM(IView View)
         {
             _view = View;
+
+            UserServiceClient = new UserServiceClient();
         }
 
         public MessageMainVM(IView View, User user)
         {
             _view = View;
             CurrentUser = user;
+            GlobalBase.CurrentUser = user;
+            UserServiceClient = new UserServiceClient();
         }
 
         private DelegateCommand _onContactsCommand;
@@ -57,6 +64,11 @@ namespace Message.ViewModel
         {
             var wnd = new Contacts();
             wnd.ShowDialog();
+        }
+
+        public static void Update()
+        {
+
         }
     }
 }

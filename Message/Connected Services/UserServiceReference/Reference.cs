@@ -32,7 +32,7 @@ namespace Message.UserServiceReference {
         private string BioField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private Message.UserServiceReference.User[] ContactsField;
+        private System.Collections.Generic.List<Message.UserServiceReference.User> ContactsField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string EmailField;
@@ -53,10 +53,10 @@ namespace Message.UserServiceReference {
         private string LoginField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private Message.UserServiceReference.MessageT[] MessagesField;
+        private System.Collections.Generic.List<Message.UserServiceReference.MessageT> MessagesField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private Message.UserServiceReference.User[] OwnersField;
+        private System.Collections.Generic.List<Message.UserServiceReference.User> OwnersField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string PasswordField;
@@ -114,7 +114,7 @@ namespace Message.UserServiceReference {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public Message.UserServiceReference.User[] Contacts {
+        public System.Collections.Generic.List<Message.UserServiceReference.User> Contacts {
             get {
                 return this.ContactsField;
             }
@@ -205,7 +205,7 @@ namespace Message.UserServiceReference {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public Message.UserServiceReference.MessageT[] Messages {
+        public System.Collections.Generic.List<Message.UserServiceReference.MessageT> Messages {
             get {
                 return this.MessagesField;
             }
@@ -218,7 +218,7 @@ namespace Message.UserServiceReference {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public Message.UserServiceReference.User[] Owners {
+        public System.Collections.Generic.List<Message.UserServiceReference.User> Owners {
             get {
                 return this.OwnersField;
             }
@@ -419,6 +419,30 @@ namespace Message.UserServiceReference {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/GetUser", ReplyAction="http://tempuri.org/IUserService/GetUserResponse")]
         System.Threading.Tasks.Task<Message.UserServiceReference.User> GetUserAsync(string login, string password);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/AddContact", ReplyAction="http://tempuri.org/IUserService/AddContactResponse")]
+        Message.UserServiceReference.User AddContact(Message.UserServiceReference.User owner, Message.UserServiceReference.User contact);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/AddContact", ReplyAction="http://tempuri.org/IUserService/AddContactResponse")]
+        System.Threading.Tasks.Task<Message.UserServiceReference.User> AddContactAsync(Message.UserServiceReference.User owner, Message.UserServiceReference.User contact);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/GetAllContacts", ReplyAction="http://tempuri.org/IUserService/GetAllContactsResponse")]
+        System.Collections.Generic.List<Message.UserServiceReference.User> GetAllContacts(Message.UserServiceReference.User owner);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/GetAllContacts", ReplyAction="http://tempuri.org/IUserService/GetAllContactsResponse")]
+        System.Threading.Tasks.Task<System.Collections.Generic.List<Message.UserServiceReference.User>> GetAllContactsAsync(Message.UserServiceReference.User owner);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/GetAllUsers", ReplyAction="http://tempuri.org/IUserService/GetAllUsersResponse")]
+        System.Collections.Generic.List<Message.UserServiceReference.User> GetAllUsers();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/GetAllUsers", ReplyAction="http://tempuri.org/IUserService/GetAllUsersResponse")]
+        System.Threading.Tasks.Task<System.Collections.Generic.List<Message.UserServiceReference.User>> GetAllUsersAsync();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/GetAllUsersByLogin", ReplyAction="http://tempuri.org/IUserService/GetAllUsersByLoginResponse")]
+        System.Collections.Generic.List<Message.UserServiceReference.User> GetAllUsersByLogin(string login);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/GetAllUsersByLogin", ReplyAction="http://tempuri.org/IUserService/GetAllUsersByLoginResponse")]
+        System.Threading.Tasks.Task<System.Collections.Generic.List<Message.UserServiceReference.User>> GetAllUsersByLoginAsync(string login);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -462,6 +486,38 @@ namespace Message.UserServiceReference {
         
         public System.Threading.Tasks.Task<Message.UserServiceReference.User> GetUserAsync(string login, string password) {
             return base.Channel.GetUserAsync(login, password);
+        }
+        
+        public Message.UserServiceReference.User AddContact(Message.UserServiceReference.User owner, Message.UserServiceReference.User contact) {
+            return base.Channel.AddContact(owner, contact);
+        }
+        
+        public System.Threading.Tasks.Task<Message.UserServiceReference.User> AddContactAsync(Message.UserServiceReference.User owner, Message.UserServiceReference.User contact) {
+            return base.Channel.AddContactAsync(owner, contact);
+        }
+        
+        public System.Collections.Generic.List<Message.UserServiceReference.User> GetAllContacts(Message.UserServiceReference.User owner) {
+            return base.Channel.GetAllContacts(owner);
+        }
+        
+        public System.Threading.Tasks.Task<System.Collections.Generic.List<Message.UserServiceReference.User>> GetAllContactsAsync(Message.UserServiceReference.User owner) {
+            return base.Channel.GetAllContactsAsync(owner);
+        }
+        
+        public System.Collections.Generic.List<Message.UserServiceReference.User> GetAllUsers() {
+            return base.Channel.GetAllUsers();
+        }
+        
+        public System.Threading.Tasks.Task<System.Collections.Generic.List<Message.UserServiceReference.User>> GetAllUsersAsync() {
+            return base.Channel.GetAllUsersAsync();
+        }
+        
+        public System.Collections.Generic.List<Message.UserServiceReference.User> GetAllUsersByLogin(string login) {
+            return base.Channel.GetAllUsersByLogin(login);
+        }
+        
+        public System.Threading.Tasks.Task<System.Collections.Generic.List<Message.UserServiceReference.User>> GetAllUsersByLoginAsync(string login) {
+            return base.Channel.GetAllUsersByLoginAsync(login);
         }
     }
 }

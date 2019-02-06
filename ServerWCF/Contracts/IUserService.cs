@@ -13,6 +13,18 @@ namespace ServerWCF.Contracts
         [OperationContract]
         User GetUser(string login, string password);
 
+        [OperationContract]
+        User AddContact(User owner, User contact);
+
+        [OperationContract]
+        ICollection<User> GetAllContacts(User owner);
+
+        [OperationContract]
+        ICollection<User> GetAllUsers();
+
+        [OperationContract]
+        ICollection<User> GetAllUsersByLogin(string login);
+
         //[OperationContract]
         //CompositeType GetDataUsingDataContract(CompositeType composite);
 
