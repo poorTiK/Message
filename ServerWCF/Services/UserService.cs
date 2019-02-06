@@ -55,10 +55,10 @@ namespace ServerWCF.Services
                 {
                     //ICollection<User> contacts = db.Users.Where(x => x.Owners.Contains(owner)).ToList();
 
-                    if (contacts != null)
-                    {
-                        return contacts;
-                    }
+                    //if (contacts != null)
+                    //{
+                    //    return contacts;
+                    //}
                     return null;
                 }
                 catch (Exception)
