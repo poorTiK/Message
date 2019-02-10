@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace Message.ViewModel
 {
@@ -51,7 +52,6 @@ namespace Message.ViewModel
             view = iview;
 
             UserServiceClient = new UserServiceClient();
-
             ContactsList = UserServiceClient.GetAllContacts(GlobalBase.CurrentUser);
         }
 

@@ -329,51 +329,51 @@ namespace Message.ViewModel
             //MessageBox.Show(MessageTServiceClient.Test().ToString());
         }
 
-        //private void TestContacts()
-        //{
-        //    User firstOwned = new User()
-        //    {
-        //        Email = "mail123456@mail.ru",
-        //        Login = "firstOwned",
-        //        Password = "123123",
-        //        FirstName = "Vasua",
-        //        LastName = "Petrov",
-        //        LastOnline = DateTime.Now
-        //    };
+        private void TestContacts()
+        {
+            User firstOwned = new User()
+            {
+                Email = "mail123456@mail.ru",
+                Login = "firstOwned",
+                Password = "123123",
+                FirstName = "Vasua",
+                LastName = "Petrov",
+                LastOnline = DateTime.Now
+            };
 
-        //    User secondOwned = new User()
-        //    {
-        //        Email = "mail123456@mail.ru",
-        //        Login = "secondOwned",
-        //        Password = "123123",
-        //        FirstName = "George",
-        //        LastName = "Volodin",
-        //        LastOnline = DateTime.Now
-        //    };
+            User secondOwned = new User()
+            {
+                Email = "mail123456@mail.ru",
+                Login = "secondOwned",
+                Password = "123123",
+                FirstName = "George",
+                LastName = "Volodin",
+                LastOnline = DateTime.Now
+            };
 
-        //    User userOwner = new User()
-        //    {
-        //        Email = "mail2@mail.ru",
-        //        Login = "owned2",
-        //        Password = "123123",
-        //        FirstName = "Petua",
-        //        LastName = "Petin",
-        //        LastOnline = DateTime.Now
-        //    };
+            User userOwner = new User()
+            {
+                Email = "mail2@mail.ru",
+                Login = "owner",
+                Password = "123123",
+                FirstName = "Petua",
+                LastName = "Petin",
+                LastOnline = DateTime.Now
+            };
 
-        //    userOwner.Owners = new User[2];
-        //    userOwner.Owners[0] = firstOwned;
-        //    userOwner.Owners[1] = secondOwned;
+            userOwner.Contacts = new List<User>();
+            userOwner.Contacts.Add(firstOwned);
+            userOwner.Contacts.Add(secondOwned);
 
-        //    //ICollection<User> users = userOwner.Owned;
-        //    //users.Add(userOwned);
+            //ICollection<User> users = userOwner.Owned;
+            //users.Add(userOwned);
 
-        //    UserServiceClient.AddNewUser(userOwner);
+            UserServiceClient.AddNewUser(userOwner);
 
-        //    var user = UserServiceClient.GetUser(userOwner.Login, userOwner.Password);
-        //    var user2 = UserServiceClient.GetUser(secondOwned.Login, secondOwned.Password);
-        //    var user3 = UserServiceClient.GetUser(firstOwned.Login, firstOwned.Password);
-        //    MessageBox.Show(user.Contacts[0].FirstName);
-        //}
+            //var user = UserServiceClient.GetUser(userOwner.Login, userOwner.Password);
+            //var user2 = UserServiceClient.GetUser(secondOwned.Login, secondOwned.Password);
+            //var user3 = UserServiceClient.GetUser(firstOwned.Login, firstOwned.Password);
+            //MessageBox.Show(user.Contacts[0].FirstName);
+        }
     }
 }

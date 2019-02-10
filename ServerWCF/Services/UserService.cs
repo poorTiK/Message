@@ -53,20 +53,21 @@ namespace ServerWCF.Services
             {
                 try
                 {
-                    //ICollection<User> contacts = db.Users.Where(x => x.Owners.Contains(owner)).ToList();
+                    var userId = owner.Id;
 
-                    //if (contacts != null)
-                    //{
-                    //    return contacts;
-                    //}
-                    return null;
+                    return db.Users.SqlQuery(" Select * " +
+                        "from Users " +
+                        "where Users.Id in (select UserUsers.User_Id1" +
+                        " from Users INNER JOIN UserUsers " +
+                        "on Users.Id = UserUsers.User_Id" +
+                        " where Users.Id = @p0)", userId).ToList();
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
                     return null;
-                    throw;
                 }
             }
+            
         }
 
         public ICollection<User> GetAllUsers()
@@ -98,7 +99,7 @@ namespace ServerWCF.Services
                     return null;
                     throw;
                 }
-            }
+        }
         }
 
         public User GetUser(string login, string password)
