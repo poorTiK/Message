@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using Message.AdditionalItems;
 
 namespace Message.ViewModel
 {
@@ -52,7 +53,7 @@ namespace Message.ViewModel
             view = iview;
 
             UserServiceClient = new UserServiceClient();
-            ContactsList = UserServiceClient.GetAllContacts(GlobalBase.CurrentUser);
+            ContactsList = GlobalBase.CurrentUser.Contacts;
         }
 
         private DelegateCommand _onAddContact;
@@ -72,7 +73,16 @@ namespace Message.ViewModel
         {
             if (SelectedContact != null)
             {
-                UserServiceClient.AddContact(GlobalBase.CurrentUser, SelectedContact);
+                var user = UserServiceClient.AddContact(GlobalBase.CurrentUser, SelectedContact);
+                if (user != null)
+                {
+                    GlobalBase.CurrentUser = user;
+                    CustomMessageBox.Show("Info", "New contact added");
+                }
+                else
+                {
+                    CustomMessageBox.Show("Error", "Can't add this contact");
+                }
                 //UpdateContacts();
             }
         }

@@ -9,6 +9,7 @@ using System.Net;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Collections.Generic;
+using MaterialDesignThemes.Wpf;
 
 namespace Message.ViewModel
 {
@@ -270,7 +271,8 @@ namespace Message.ViewModel
 
         private void ExecuteOnForgotPassword()
         {
-            //throw new NotImplementedException();
+            ForgotPassWindow passWindow = new ForgotPassWindow();
+            passWindow.ShowDialog();
         }
 
         private bool ValidateOnRegister()
@@ -369,6 +371,8 @@ namespace Message.ViewModel
             //users.Add(userOwned);
 
             UserServiceClient.AddNewUser(userOwner);
+
+            //var c = UserServiceClient.GetAllContacts(userOwner);
 
             //var user = UserServiceClient.GetUser(userOwner.Login, userOwner.Password);
             //var user2 = UserServiceClient.GetUser(secondOwned.Login, secondOwned.Password);

@@ -95,6 +95,9 @@
     <Compile Include="Contacts.xaml.cs">
       <DependentUpon>Contacts.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ForgotPassWindow.xaml.cs">
+      <DependentUpon>ForgotPassWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Interfaces\IMainView.cs" />
     <Compile Include="Interfaces\IView.cs" />
     <Compile Include="MessageMainWnd.xaml.cs">
@@ -111,6 +114,7 @@
     <Compile Include="ValidationRules\Login_ValidationRule.cs" />
     <Compile Include="ValidationRules\NameSurname_ValidationRule.cs" />
     <Compile Include="ViewModel\ContatsWindowVM.cs" />
+    <Compile Include="ViewModel\ForgotPassWindowVM.cs" />
     <Compile Include="ViewModel\MainWindowVM.cs" />
     <Compile Include="ViewModel\MessageMainVM.cs" />
     <Page Include="AdditionalItems\CustomMessageBox.xaml">
@@ -118,6 +122,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Contacts.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ForgotPassWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
