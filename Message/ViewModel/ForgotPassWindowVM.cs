@@ -58,7 +58,7 @@ namespace Message.ViewModel
 
         private void OnSend()
         {
-            if (!string.IsNullOrWhiteSpace(Email)) //find user with this mail
+            if (!string.IsNullOrWhiteSpace(Email))
             {
                 var user = userServiceClient.GetAllUsers().First(x => x.Email == Email);
                 if (user != null)
