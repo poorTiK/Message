@@ -6,6 +6,7 @@ using System.Net.Mail;
 using System.Text;
 using System.Threading.Tasks;
 using Message.Interfaces;
+using Message.UserServiceReference;
 using Prism.Commands;
 
 namespace Message.ViewModel
@@ -14,9 +15,12 @@ namespace Message.ViewModel
     {
         private IView view;
 
+        UserServiceClient userServiceClient;
+
         public ForgotPassWindowVM(IView view)
         {
             this.view = view;
+            userServiceClient = new UserServiceClient();
             IsLogin = true;
         }
 
@@ -56,7 +60,11 @@ namespace Message.ViewModel
         {
             if (!string.IsNullOrWhiteSpace(Email)) //find user with this mail
             {
-                SendPassWithMail(Email);
+                var user = userServiceClient.GetAllUsers().First(x => x.Email == Email);
+                if (user != null)
+                {
+                    SendPassWithMail(user);
+                }
             }
         }
 
@@ -69,14 +77,14 @@ namespace Message.ViewModel
             view.CloseWindow();
         }
 
-        private void SendPassWithMail(string email)
+        private void SendPassWithMail(User user)
         {
             MailAddress from = new MailAddress("sh3rgame@gmail.com"); // make custom mail adress
-            MailAddress to = new MailAddress(email);
+            MailAddress to = new MailAddress(user.Email);
 
             MailMessage message = new MailMessage(from, to);
             message.Subject = "Password restore";
-            message.Body = "Your pass - ...";
+            message.Body = "Your pass - " + user.Password;
 
             SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587);
             smtp.Credentials = new NetworkCredential("sh3rgame@gmail.com", "Ap98Msh77");
