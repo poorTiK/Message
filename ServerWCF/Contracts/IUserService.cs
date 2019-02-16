@@ -14,6 +14,9 @@ namespace ServerWCF.Contracts
         User GetUser(string login, string password);
 
         [OperationContract]
+        User GetUserByEmail(string email);
+
+        [OperationContract]
         bool AddContact(User owner, User owned);
 
         [OperationContract]

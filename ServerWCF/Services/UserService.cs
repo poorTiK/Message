@@ -154,7 +154,20 @@ namespace ServerWCF.Services
                 //}
             }
         }
-        
+
+        public User GetUserByEmail(string email)
+        {
+            using (UserContext db = new UserContext())
+            {
+                foreach (var user in db.Users)
+                {
+                    if (user.Email == email)
+                        return user;
+                }
+                return null;
+            }
+        }
+
         //public CompositeType GetDataUsingDataContract(CompositeType composite)
         //{
         //    if (composite == null)

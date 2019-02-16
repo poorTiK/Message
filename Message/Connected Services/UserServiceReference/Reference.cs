@@ -497,6 +497,12 @@ namespace Message.UserServiceReference {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/GetUser", ReplyAction="http://tempuri.org/IUserService/GetUserResponse")]
         System.Threading.Tasks.Task<Message.UserServiceReference.User> GetUserAsync(string login, string password);
         
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/GetUserByEmail", ReplyAction="http://tempuri.org/IUserService/GetUserByEmailResponse")]
+        Message.UserServiceReference.User GetUserByEmail(string email);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/GetUserByEmail", ReplyAction="http://tempuri.org/IUserService/GetUserByEmailResponse")]
+        System.Threading.Tasks.Task<Message.UserServiceReference.User> GetUserByEmailAsync(string email);
+        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/AddContact", ReplyAction="http://tempuri.org/IUserService/AddContactResponse")]
         bool AddContact(Message.UserServiceReference.User owner, Message.UserServiceReference.User owned);
         
@@ -569,6 +575,14 @@ namespace Message.UserServiceReference {
         
         public System.Threading.Tasks.Task<Message.UserServiceReference.User> GetUserAsync(string login, string password) {
             return base.Channel.GetUserAsync(login, password);
+        }
+        
+        public Message.UserServiceReference.User GetUserByEmail(string email) {
+            return base.Channel.GetUserByEmail(email);
+        }
+        
+        public System.Threading.Tasks.Task<Message.UserServiceReference.User> GetUserByEmailAsync(string email) {
+            return base.Channel.GetUserByEmailAsync(email);
         }
         
         public bool AddContact(Message.UserServiceReference.User owner, Message.UserServiceReference.User owned) {
