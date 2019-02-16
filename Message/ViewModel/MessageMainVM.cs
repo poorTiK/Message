@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Message.AdditionalItems;
 
 namespace Message.ViewModel
 {
@@ -32,6 +33,13 @@ namespace Message.ViewModel
             set { SetProperty(ref _currentUserLogin, value); }
         }
 
+        private bool _isDialogSearchVisible;
+        public bool IsDialogSearchVisible
+        {
+            get { return _isDialogSearchVisible; }
+            set { SetProperty(ref _isDialogSearchVisible, value); }
+        }
+
         public MessageMainVM(IView View)
         {
             _view = View;
@@ -54,6 +62,11 @@ namespace Message.ViewModel
         private DelegateCommand _onSettingsCommand;
         public DelegateCommand SettingsCommand =>
             _onSettingsCommand ?? (_onSettingsCommand = new DelegateCommand(ExecuteOnSettingsCommand));
+
+        private DelegateCommand _dialogSearchCommand;
+        public DelegateCommand DialogSearchCommand =>
+            _dialogSearchCommand ?? (_dialogSearchCommand = new DelegateCommand(() => { IsDialogSearchVisible = !IsDialogSearchVisible; }));
+
 
         private void ExecuteOnSettingsCommand()
         {

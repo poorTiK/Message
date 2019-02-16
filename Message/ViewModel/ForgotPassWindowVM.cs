@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Net;
 using System.Net.Mail;
-using System.Text;
-using System.Threading.Tasks;
 using Message.Interfaces;
 using Message.UserServiceReference;
 using Prism.Commands;
@@ -79,14 +75,14 @@ namespace Message.ViewModel
 
         private void SendPassWithMail(User user)
         {
-            MailAddress from = new MailAddress("sh3rgame@gmail.com"); // make custom mail adress
-            MailAddress to = new MailAddress(user.Email);
+            var from = new MailAddress("sh3rgame@gmail.com"); // make custom mail adress
+            var to = new MailAddress(user.Email);
 
-            MailMessage message = new MailMessage(from, to);
+            var message = new MailMessage(from, to);
             message.Subject = "Password restore";
             message.Body = "Your pass - " + user.Password;
 
-            SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587);
+            var smtp = new SmtpClient("smtp.gmail.com", 587);
             smtp.Credentials = new NetworkCredential("sh3rgame@gmail.com", "Ap98Msh77");
             smtp.EnableSsl = true;
             smtp.SendMailAsync(message);
