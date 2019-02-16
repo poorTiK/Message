@@ -4,8 +4,10 @@ using Message.ViewModel;
 using System;
 using System.Runtime.InteropServices;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Interop;
 using System.Windows.Media.Animation;
+using System.Windows.Navigation;
 
 namespace Message
 {
@@ -212,6 +214,16 @@ namespace Message
         private void SideMenu_LostFocus(object sender, RoutedEventArgs e)
         {
             ButtonClose_Click(null, null);
+        }
+
+        private void Hyperlink_OnRequestNavigate(object sender, RequestNavigateEventArgs e)
+        {
+            System.Diagnostics.Process.Start(e.Uri.ToString());
+        }
+
+        public void SetOpacity(double opacity)
+        {
+            //MessageMainWindow.Opacity = opacity;
         }
     }
 }

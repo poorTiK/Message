@@ -1,6 +1,4 @@
-﻿using Message.Interfaces;
-using Message.ViewModel;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,25 +11,21 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Message.Interfaces;
+using Message.ViewModel;
 
 namespace Message
 {
     /// <summary>
-    /// Interaction logic for Contacts.xaml
+    /// Interaction logic for ForgotPassWindow.xaml
     /// </summary>
-    public partial class Contacts : Window, IView
+    public partial class ForgotPassWindow : Window, IView
     {
-        public Contacts()
+        public ForgotPassWindow()
         {
             InitializeComponent();
-            DataContext = new ContatsWindowVM(this);
 
-            Loaded += Contacts_Loaded;
-        }
-
-        private void Contacts_Loaded(object sender, RoutedEventArgs e)
-        {
-            SearchBox.Focus();
+            DataContext = new ForgotPassWindowVM(this);
         }
 
         public void AnimatedResize(int h, int w)
@@ -46,7 +40,7 @@ namespace Message
 
         public void SetOpacity(double opacity)
         {
-            
+            throw new NotImplementedException();
         }
     }
 }

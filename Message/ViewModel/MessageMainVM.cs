@@ -7,6 +7,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+using Message.AdditionalItems;
 
 namespace Message.ViewModel
 {
@@ -32,6 +34,13 @@ namespace Message.ViewModel
             set { SetProperty(ref _currentUserLogin, value); }
         }
 
+        private bool _isDialogSearchVisible;
+        public bool IsDialogSearchVisible
+        {
+            get { return _isDialogSearchVisible; }
+            set { SetProperty(ref _isDialogSearchVisible, value); }
+        }
+
         public MessageMainVM(IView View)
         {
             _view = View;
@@ -55,15 +64,31 @@ namespace Message.ViewModel
         public DelegateCommand SettingsCommand =>
             _onSettingsCommand ?? (_onSettingsCommand = new DelegateCommand(ExecuteOnSettingsCommand));
 
+        private DelegateCommand _dialogSearchCommand;
+        public DelegateCommand DialogSearchCommand =>
+            _dialogSearchCommand ?? (_dialogSearchCommand = new DelegateCommand(() => { IsDialogSearchVisible = !IsDialogSearchVisible; }));
+
+
         private void ExecuteOnSettingsCommand()
         {
-            //throw new NotImplementedException();
+            _view.SetOpacity(0.5);
+            
+            var wnd = new SettingsWindow();
+            wnd.Owner = (Window)_view;
+            wnd.ShowDialog();
+
+            _view.SetOpacity(1);
         }
 
         private void ExecuteOnContacts()
         {
+            _view.SetOpacity(0.5);
+
             var wnd = new Contacts();
+            wnd.Owner = (Window)_view;
             wnd.ShowDialog();
+
+            _view.SetOpacity(1);
         }
 
         public static void Update()

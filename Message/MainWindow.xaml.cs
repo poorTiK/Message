@@ -103,5 +103,15 @@ namespace Message
         {
             return Rep_RPasswordBox.Password;
         }
+
+        public void SetOpacity(double opacity)
+        {
+            
+        }
+
+        private void FrameworkElement_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            LoginText.Focus();
+        }
     }
 }

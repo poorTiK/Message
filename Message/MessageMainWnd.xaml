@@ -7,13 +7,17 @@
         mc:Ignorable="d"
         
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-        
+        Name="MessageMainWindow"
         MinWidth="450" MinHeight="600" Height="601" Width="700"
-             WindowStartupLocation="CenterScreen" WindowStyle="None"
-        BorderThickness="0">
+             WindowStartupLocation="CenterScreen" OpacityMask="Black"
+        BorderThickness="0" Background="Black" AllowsTransparency="False" WindowStyle="None" BorderBrush="Black">
     <WindowChrome.WindowChrome>
         <WindowChrome CaptionHeight="22"/>
     </WindowChrome.WindowChrome>
+
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVisConverter" />
+    </Window.Resources>
 
     <Grid>
         <Grid>
@@ -59,8 +63,16 @@
                                 <TextBlock Foreground="White">Name Surname</TextBlock>
                                 <TextBlock Foreground="#FF63A35D">Online</TextBlock>
                             </StackPanel>
+
+                            <StackPanel Name="DialogSearch" Visibility="{Binding IsDialogSearchVisible, Converter={StaticResource BoolToVisConverter}}"
+                                Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,122,0">
+                                <materialDesign:PackIcon Kind="Magnify" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" />
+                                <TextBox Margin="0,10,10,10" Width="122" Foreground="White" SelectionBrush="#FF919191"/>
+                            </StackPanel>
+
                             <Menu Background="#262626" HorizontalAlignment="Right" >
-                                <MenuItem Background="{x:Null}" BorderBrush="{x:Null}" Height="53" >
+                                <MenuItem Background="{x:Null}" BorderBrush="{x:Null}" Height="53" 
+                                          Command="{Binding DialogSearchCommand}">
                                     <MenuItem.Header>
                                         <materialDesign:PackIcon Kind="CommentSearchOutline" Width="25" Height="25" Foreground="White" />
                                     </MenuItem.Header>
@@ -126,24 +138,35 @@
                     </Grid>
                 </Border>
                 <Grid Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2" Margin="0,0,0,30">
-                    <ScrollViewer Name="ScrollV">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="3*"/>
+                        <ColumnDefinition Width="38*"/>
+                    </Grid.ColumnDefinitions>
+                    <ScrollViewer Name="ScrollV" Grid.ColumnSpan="2">
                         <StackPanel Name="MessageControl" Orientation="Vertical">
 
                         </StackPanel>
                     </ScrollViewer>
                 </Grid>
                 <Grid Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2">
-                    <Border Height="30" Background="#262626" VerticalAlignment="Bottom">
+                    <Border Height="35" Background="#262626" VerticalAlignment="Bottom">
                         <Grid>
                             <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition/>
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
 
-                            <TextBox SelectionBrush="#FF919191"
-                        materialDesign:HintAssist.Hint="Write a message..." 
-                            Foreground="White" Margin="10,2,48,2" VerticalAlignment="Center" />
-                            <Button Style="{StaticResource MaterialDesignFlatButton}" HorizontalAlignment="Right"
+                            <Button Grid.Column="0" Style="{StaticResource MaterialDesignFlatButton}">
+                                <materialDesign:PackIcon Kind="Paperclip" Foreground="White"/>
+                            </Button>
+                            <TextBox Grid.Column="1"
+                                SelectionBrush="#FF919191" TextWrapping="Wrap" 
+                                     VerticalContentAlignment="Stretch" Name="MessageTextBox"
+                                     materialDesign:HintAssist.Hint="Write a message..." VerticalScrollBarVisibility="Auto"
+                                     Foreground="White" Margin="10,2,0,2" VerticalAlignment="Center" 
+                                    Text="{Binding MessageText}"/>
+                            <Button Grid.Column="2" Style="{StaticResource MaterialDesignFlatButton}" HorizontalAlignment="Right"
                                 Command="{Binding OnSendMessage}">
                                 <materialDesign:PackIcon Kind="MessageTextOutline" Foreground="White" />
                             </Button>
@@ -185,7 +208,7 @@
                         </ListViewItem>
                         <ListViewItem Height="45" Padding="0">
                             <StackPanel Orientation="Horizontal" Margin="10 0">
-                                <materialDesign:PackIcon Kind="AccountSupervisor" Width="20" Height="20" Foreground="Gray" Margin="5" VerticalAlignment="Center"/>
+                                <materialDesign:PackIcon Kind="GearBox" Width="20" Height="20" Foreground="Gray" Margin="5" VerticalAlignment="Center"/>
                                 <TextBlock Text="Settings" FontSize="15" Margin="10" Foreground="White">
                                     <TextBlock.InputBindings>
                                         <MouseBinding Command="{Binding SettingsCommand}" MouseAction="LeftClick" />
@@ -194,6 +217,13 @@
                             </StackPanel>
                         </ListViewItem>
                     </ListView>
+                </StackPanel>
+                <StackPanel VerticalAlignment="Bottom" Margin="10,0,10,10">
+                    <TextBlock Foreground="White" FontWeight="Bold" >Message Desktop</TextBlock>
+                    <TextBlock Foreground="White">Version 1.0</TextBlock>
+                    <TextBlock Foreground="White">
+                        <Hyperlink NavigateUri="https://github.com/poorTiK/Message" RequestNavigate="Hyperlink_OnRequestNavigate" Foreground="#FF63A35D" >Source code</Hyperlink>
+                    </TextBlock>
                 </StackPanel>
                 <Button x:Name="ButtonClose" Click="ButtonClose_Click" HorizontalAlignment="Right" VerticalAlignment="Top" Background="{x:Null}" BorderBrush="{x:Null}" Width="30" Height="30" Padding="0">
                     <materialDesign:PackIcon Kind="Close"/>

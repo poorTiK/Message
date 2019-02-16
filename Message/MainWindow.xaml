@@ -21,7 +21,7 @@
         <BooleanToVisibilityConverter x:Key="BoolToVisConverter" />
     </Window.Resources>
 
-    <Grid>
+    <Grid Loaded="FrameworkElement_OnLoaded">
         <Grid VerticalAlignment="Top" Background="#353636" Height="22">
             <StackPanel  WindowChrome.IsHitTestVisibleInChrome="True" VerticalAlignment="Bottom" Orientation="Horizontal" Margin="0" HorizontalAlignment="Right">
                 <Button Name="MinimizeButton" Background="{x:Null}" BorderBrush="{x:Null}" 
@@ -54,7 +54,7 @@
                         </Grid.RowDefinitions>
 
                         <StackPanel Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" Margin="3">
-                            <TextBox Text="{Binding LoginText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                            <TextBox Name="LoginText" Focusable="True" Text="{Binding LoginText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                 materialDesign:HintAssist.Hint="Login"
                          Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                  Foreground="White" CaretBrush="{x:Null}" SelectionBrush="#FF919191" Margin="0,0,0,15">
