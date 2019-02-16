@@ -108,5 +108,10 @@ namespace Message
         {
             
         }
+
+        private void FrameworkElement_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            LoginText.Focus();
+        }
     }
 }

@@ -18,6 +18,7 @@ namespace Message.ViewModel
             this.view = view;
             userServiceClient = new UserServiceClient();
             IsLogin = true;
+            IsMail = false;
         }
 
         private string _login;
@@ -41,8 +42,8 @@ namespace Message.ViewModel
             set { SetProperty(ref _isLogin, value); }
         }
 
-        private string _isMail;
-        public string IsMail
+        private bool _isMail;
+        public bool IsMail
         {
             get { return _isMail; }
             set { SetProperty(ref _isMail, value); }

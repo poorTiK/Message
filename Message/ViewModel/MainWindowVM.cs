@@ -272,6 +272,7 @@ namespace Message.ViewModel
         private void ExecuteOnForgotPassword()
         {
             ForgotPassWindow passWindow = new ForgotPassWindow();
+            passWindow.Owner = (Window)view;
             passWindow.ShowDialog();
         }
 
