@@ -10,21 +10,52 @@ namespace ServerWCF.Services
 {
     public class UserService : IUserService
     {
-        public User AddContact(User owner, User contact)
+        public bool AddContact(User owner, User owned)
         {
-            using (UserContext db = new UserContext())
+            using (ContactContext db = new ContactContext())
             {
-                try
-                {
-                    db.Users.First(x => x.Login == owner.Login).Contacts.Add(contact);
-                    db.SaveChanges();
+                //try
+                //{
 
-                    return owner;
-                }
-                catch (Exception)
-                {
-                    return null;
-                    throw;
+                    Contact contact = new Contact();
+                    contact.UserOwner = owner;
+                    contact.UserOwned = owned;
+                    
+                    db.Contacts.Add(contact);
+                    db.SaveChanges();
+                //}
+                //catch (Exception ex)
+                //{
+                //    return false;
+                //}
+
+                return true;
+            }
+        }
+
+        public bool RemoveContact(User owner, User owned)
+        {
+            using (ContactContext db = new ContactContext())
+            {
+                using (UserContext userContext = new UserContext()) {
+                    List<Contact> contacts = db.Contacts.Include("UserOwner")
+                        .Include("UserOwned")
+                        .ToList();
+
+                    User ownerFromDb = userContext.Users.Where(u => u.Login == owner.Login).First();
+                    User ownedFromDb = userContext.Users.Where(u => u.Login == owned.Login).First();
+
+                    foreach (Contact contact in contacts)
+                    {
+                        if (contact.UserOwner.Id == ownerFromDb.Id && contact.UserOwned.Id == ownedFromDb.Id)
+                        {
+                            db.Contacts.Remove(contact);
+                            db.SaveChanges();
+                            return true;
+                        }
+                    }
+
+                    return false;
                 }
             }
         }
@@ -33,17 +64,17 @@ namespace ServerWCF.Services
         {
             using (UserContext db = new UserContext())
             {
-                try
-                {
+                //try
+                //{
                     db.Users.Add(user);
                     db.SaveChanges();
                     return true;
-                }
-                catch (Exception)
-                {
-                    return false;
-                    throw;
-                }
+                //}
+                //catch (Exception)
+                //{
+                //    return false;
+                //    throw;
+                //}
             }
         }
 
@@ -51,21 +82,23 @@ namespace ServerWCF.Services
         {
             using (UserContext db = new UserContext())
             {
-                try
-                {
+                List<User> contactsForOwner = null;
+                //try
+                //{
                     var userId = owner.Id;
 
-                    return db.Users.SqlQuery(" Select * " +
-                        "from Users " +
-                        "where Users.Id in (select UserUsers.User_Id1" +
-                        " from Users INNER JOIN UserUsers " +
-                        "on Users.Id = UserUsers.User_Id" +
-                        " where Users.Id = @p0)", userId).ToList();
-                }
-                catch (Exception ex)
-                {
-                    return null;
-                }
+                    contactsForOwner = db.Users.SqlQuery(" select * " +
+                            "from Users " +
+                            "where Users.Id in (select UserOwned_Id " +
+                            "from Contacts " +
+                            "where Contacts.UserOwner_Id = @p0);", userId).ToList();
+                //}
+                //catch (Exception ex)
+                //{
+
+                //}
+
+                return contactsForOwner;
             }
             
         }
@@ -74,15 +107,15 @@ namespace ServerWCF.Services
         {
             using (UserContext db = new UserContext())
             {
-                try
-                {
+                //try
+                //{
                     return db.Users.ToList();
-                }
-                catch (Exception)
-                {
-                    return null;
-                    throw;
-                }
+                //}
+                //catch (Exception)
+                //{
+                //    return null;
+                //    throw;
+                //}
             }
         }
 
@@ -90,15 +123,15 @@ namespace ServerWCF.Services
         {
             using (UserContext db = new UserContext())
             {
-                try
-                {
+                //try
+                //{
                     return db.Users.Where(x => x.Login.Contains(login)).ToList();
-                }
-                catch (Exception)
-                {
-                    return null;
-                    throw;
-                }
+                //}
+                //catch (Exception)
+                //{
+                //    return null;
+                //    throw;
+                //}
         }
         }
 
@@ -106,24 +139,22 @@ namespace ServerWCF.Services
         {
             using (UserContext db = new UserContext())
             {
-                try
-                {
+                //try
+                //{
                     foreach (var user in db.Users)
                     {
                         if (user.Login == login && user.Password == password)
                             return user;
                     }
                     return null;
-                }
-                catch (Exception)
-                {
-                    return null;
-                }
+                //}
+                //catch (Exception)
+                //{
+                //    return null;
+                //}
             }
         }
-
-
-
+        
         //public CompositeType GetDataUsingDataContract(CompositeType composite)
         //{
         //    if (composite == null)

@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Message.UserServiceReference {
+namespace Message.ContactsServiceReference {
     using System.Runtime.Serialization;
     using System;
     
@@ -23,7 +23,7 @@ namespace Message.UserServiceReference {
         private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private Message.UserServiceReference.ApplicationSettings ApplicationSettingsField;
+        private Message.ContactsServiceReference.ApplicationSettings ApplicationSettingsField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private byte[] AvatarField;
@@ -32,7 +32,7 @@ namespace Message.UserServiceReference {
         private string BioField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private System.Collections.Generic.List<Message.UserServiceReference.Contact> ContactsField;
+        private Message.ContactsServiceReference.Contact[] ContactsField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string EmailField;
@@ -53,10 +53,10 @@ namespace Message.UserServiceReference {
         private string LoginField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private System.Collections.Generic.List<Message.UserServiceReference.MessageT> MessagesField;
+        private Message.ContactsServiceReference.MessageT[] MessagesField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private System.Collections.Generic.List<Message.UserServiceReference.Contact> OwnersField;
+        private Message.ContactsServiceReference.Contact[] OwnersField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string PasswordField;
@@ -75,7 +75,7 @@ namespace Message.UserServiceReference {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public Message.UserServiceReference.ApplicationSettings ApplicationSettings {
+        public Message.ContactsServiceReference.ApplicationSettings ApplicationSettings {
             get {
                 return this.ApplicationSettingsField;
             }
@@ -114,7 +114,7 @@ namespace Message.UserServiceReference {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.Collections.Generic.List<Message.UserServiceReference.Contact> Contacts {
+        public Message.ContactsServiceReference.Contact[] Contacts {
             get {
                 return this.ContactsField;
             }
@@ -205,7 +205,7 @@ namespace Message.UserServiceReference {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.Collections.Generic.List<Message.UserServiceReference.MessageT> Messages {
+        public Message.ContactsServiceReference.MessageT[] Messages {
             get {
                 return this.MessagesField;
             }
@@ -218,7 +218,7 @@ namespace Message.UserServiceReference {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.Collections.Generic.List<Message.UserServiceReference.Contact> Owners {
+        public Message.ContactsServiceReference.Contact[] Owners {
             get {
                 return this.OwnersField;
             }
@@ -308,10 +308,10 @@ namespace Message.UserServiceReference {
         private int IdField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private Message.UserServiceReference.User UserOwnedField;
+        private Message.ContactsServiceReference.User UserOwnedField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private Message.UserServiceReference.User UserOwnerField;
+        private Message.ContactsServiceReference.User UserOwnerField;
         
         [global::System.ComponentModel.BrowsableAttribute(false)]
         public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
@@ -337,7 +337,7 @@ namespace Message.UserServiceReference {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public Message.UserServiceReference.User UserOwned {
+        public Message.ContactsServiceReference.User UserOwned {
             get {
                 return this.UserOwnedField;
             }
@@ -350,7 +350,7 @@ namespace Message.UserServiceReference {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public Message.UserServiceReference.User UserOwner {
+        public Message.ContactsServiceReference.User UserOwner {
             get {
                 return this.UserOwnerField;
             }
@@ -482,133 +482,49 @@ namespace Message.UserServiceReference {
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="UserServiceReference.IUserService")]
-    public interface IUserService {
+    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="ContactsServiceReference.IContactsService")]
+    public interface IContactsService {
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/AddNewUser", ReplyAction="http://tempuri.org/IUserService/AddNewUserResponse")]
-        bool AddNewUser(Message.UserServiceReference.User user);
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IContactsService/GetContacts", ReplyAction="http://tempuri.org/IContactsService/GetContactsResponse")]
+        Message.ContactsServiceReference.Contact[] GetContacts(Message.ContactsServiceReference.User user);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/AddNewUser", ReplyAction="http://tempuri.org/IUserService/AddNewUserResponse")]
-        System.Threading.Tasks.Task<bool> AddNewUserAsync(Message.UserServiceReference.User user);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/GetUser", ReplyAction="http://tempuri.org/IUserService/GetUserResponse")]
-        Message.UserServiceReference.User GetUser(string login, string password);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/GetUser", ReplyAction="http://tempuri.org/IUserService/GetUserResponse")]
-        System.Threading.Tasks.Task<Message.UserServiceReference.User> GetUserAsync(string login, string password);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/AddContact", ReplyAction="http://tempuri.org/IUserService/AddContactResponse")]
-        bool AddContact(Message.UserServiceReference.User owner, Message.UserServiceReference.User owned);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/AddContact", ReplyAction="http://tempuri.org/IUserService/AddContactResponse")]
-        System.Threading.Tasks.Task<bool> AddContactAsync(Message.UserServiceReference.User owner, Message.UserServiceReference.User owned);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/RemoveContact", ReplyAction="http://tempuri.org/IUserService/RemoveContactResponse")]
-        bool RemoveContact(Message.UserServiceReference.User owner, Message.UserServiceReference.User owned);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/RemoveContact", ReplyAction="http://tempuri.org/IUserService/RemoveContactResponse")]
-        System.Threading.Tasks.Task<bool> RemoveContactAsync(Message.UserServiceReference.User owner, Message.UserServiceReference.User owned);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/GetAllContacts", ReplyAction="http://tempuri.org/IUserService/GetAllContactsResponse")]
-        System.Collections.Generic.List<Message.UserServiceReference.User> GetAllContacts(Message.UserServiceReference.User owner);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/GetAllContacts", ReplyAction="http://tempuri.org/IUserService/GetAllContactsResponse")]
-        System.Threading.Tasks.Task<System.Collections.Generic.List<Message.UserServiceReference.User>> GetAllContactsAsync(Message.UserServiceReference.User owner);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/GetAllUsers", ReplyAction="http://tempuri.org/IUserService/GetAllUsersResponse")]
-        System.Collections.Generic.List<Message.UserServiceReference.User> GetAllUsers();
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/GetAllUsers", ReplyAction="http://tempuri.org/IUserService/GetAllUsersResponse")]
-        System.Threading.Tasks.Task<System.Collections.Generic.List<Message.UserServiceReference.User>> GetAllUsersAsync();
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/GetAllUsersByLogin", ReplyAction="http://tempuri.org/IUserService/GetAllUsersByLoginResponse")]
-        System.Collections.Generic.List<Message.UserServiceReference.User> GetAllUsersByLogin(string login);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/GetAllUsersByLogin", ReplyAction="http://tempuri.org/IUserService/GetAllUsersByLoginResponse")]
-        System.Threading.Tasks.Task<System.Collections.Generic.List<Message.UserServiceReference.User>> GetAllUsersByLoginAsync(string login);
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IContactsService/GetContacts", ReplyAction="http://tempuri.org/IContactsService/GetContactsResponse")]
+        System.Threading.Tasks.Task<Message.ContactsServiceReference.Contact[]> GetContactsAsync(Message.ContactsServiceReference.User user);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public interface IUserServiceChannel : Message.UserServiceReference.IUserService, System.ServiceModel.IClientChannel {
+    public interface IContactsServiceChannel : Message.ContactsServiceReference.IContactsService, System.ServiceModel.IClientChannel {
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public partial class UserServiceClient : System.ServiceModel.ClientBase<Message.UserServiceReference.IUserService>, Message.UserServiceReference.IUserService {
+    public partial class ContactsServiceClient : System.ServiceModel.ClientBase<Message.ContactsServiceReference.IContactsService>, Message.ContactsServiceReference.IContactsService {
         
-        public UserServiceClient() {
+        public ContactsServiceClient() {
         }
         
-        public UserServiceClient(string endpointConfigurationName) : 
+        public ContactsServiceClient(string endpointConfigurationName) : 
                 base(endpointConfigurationName) {
         }
         
-        public UserServiceClient(string endpointConfigurationName, string remoteAddress) : 
+        public ContactsServiceClient(string endpointConfigurationName, string remoteAddress) : 
                 base(endpointConfigurationName, remoteAddress) {
         }
         
-        public UserServiceClient(string endpointConfigurationName, System.ServiceModel.EndpointAddress remoteAddress) : 
+        public ContactsServiceClient(string endpointConfigurationName, System.ServiceModel.EndpointAddress remoteAddress) : 
                 base(endpointConfigurationName, remoteAddress) {
         }
         
-        public UserServiceClient(System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress) : 
+        public ContactsServiceClient(System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress) : 
                 base(binding, remoteAddress) {
         }
         
-        public bool AddNewUser(Message.UserServiceReference.User user) {
-            return base.Channel.AddNewUser(user);
+        public Message.ContactsServiceReference.Contact[] GetContacts(Message.ContactsServiceReference.User user) {
+            return base.Channel.GetContacts(user);
         }
         
-        public System.Threading.Tasks.Task<bool> AddNewUserAsync(Message.UserServiceReference.User user) {
-            return base.Channel.AddNewUserAsync(user);
-        }
-        
-        public Message.UserServiceReference.User GetUser(string login, string password) {
-            return base.Channel.GetUser(login, password);
-        }
-        
-        public System.Threading.Tasks.Task<Message.UserServiceReference.User> GetUserAsync(string login, string password) {
-            return base.Channel.GetUserAsync(login, password);
-        }
-        
-        public bool AddContact(Message.UserServiceReference.User owner, Message.UserServiceReference.User owned) {
-            return base.Channel.AddContact(owner, owned);
-        }
-        
-        public System.Threading.Tasks.Task<bool> AddContactAsync(Message.UserServiceReference.User owner, Message.UserServiceReference.User owned) {
-            return base.Channel.AddContactAsync(owner, owned);
-        }
-        
-        public bool RemoveContact(Message.UserServiceReference.User owner, Message.UserServiceReference.User owned) {
-            return base.Channel.RemoveContact(owner, owned);
-        }
-        
-        public System.Threading.Tasks.Task<bool> RemoveContactAsync(Message.UserServiceReference.User owner, Message.UserServiceReference.User owned) {
-            return base.Channel.RemoveContactAsync(owner, owned);
-        }
-        
-        public System.Collections.Generic.List<Message.UserServiceReference.User> GetAllContacts(Message.UserServiceReference.User owner) {
-            return base.Channel.GetAllContacts(owner);
-        }
-        
-        public System.Threading.Tasks.Task<System.Collections.Generic.List<Message.UserServiceReference.User>> GetAllContactsAsync(Message.UserServiceReference.User owner) {
-            return base.Channel.GetAllContactsAsync(owner);
-        }
-        
-        public System.Collections.Generic.List<Message.UserServiceReference.User> GetAllUsers() {
-            return base.Channel.GetAllUsers();
-        }
-        
-        public System.Threading.Tasks.Task<System.Collections.Generic.List<Message.UserServiceReference.User>> GetAllUsersAsync() {
-            return base.Channel.GetAllUsersAsync();
-        }
-        
-        public System.Collections.Generic.List<Message.UserServiceReference.User> GetAllUsersByLogin(string login) {
-            return base.Channel.GetAllUsersByLogin(login);
-        }
-        
-        public System.Threading.Tasks.Task<System.Collections.Generic.List<Message.UserServiceReference.User>> GetAllUsersByLoginAsync(string login) {
-            return base.Channel.GetAllUsersByLoginAsync(login);
+        public System.Threading.Tasks.Task<Message.ContactsServiceReference.Contact[]> GetContactsAsync(Message.ContactsServiceReference.User user) {
+            return base.Channel.GetContactsAsync(user);
         }
     }
 }

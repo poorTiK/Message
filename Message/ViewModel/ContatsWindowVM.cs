@@ -51,6 +51,13 @@ namespace Message.ViewModel
         {
             view = iview;
 
+            //todo: remove this before release
+            if(GlobalBase.CurrentUser.Login == "admin")
+            {
+            GlobalBase.CurrentUser = new User();
+            GlobalBase.CurrentUser.Id = 2;
+            }
+
             UserServiceClient = new UserServiceClient();
             ContactsList = UserServiceClient.GetAllContacts(GlobalBase.CurrentUser);
         }
@@ -73,12 +80,14 @@ namespace Message.ViewModel
             if (SelectedContact != null)
             {
                 UserServiceClient.AddContact(GlobalBase.CurrentUser, SelectedContact);
-                //UpdateContacts();
+                UpdateContacts();
             }
         }
 
         private void UpdateContacts()
         {
+
+
             ContactsList = UserServiceClient.GetAllContacts(GlobalBase.CurrentUser);
         }
     }

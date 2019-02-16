@@ -1,13 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Script.Serialization;
 
 namespace ServerWCF.Model
 {
+    [Table("Users")]
     [DataContract]
     public class User
     {
@@ -46,18 +49,27 @@ namespace ServerWCF.Model
         public ApplicationSettings ApplicationSettings { get; set; }
 
         [DataMember]
-        public ICollection<MessageT> Messages { get; set; }
+        public List<MessageT> Messages { get; set; }
 
         [DataMember]
-        public ICollection<User> Owners { get; set; }
+        public List<Contact> Owners { get; set; }
 
         [DataMember]
-        public ICollection<User> Contacts { get; set; }
+        public List<Contact> Contacts { get; set; }
+
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null) return false;
+            User objAsUser = obj as User;
+            if (objAsUser == null) return false;
+             return objAsUser.Id == Id;
+        }
 
         public User(string firstName, string loginId, string password, string email)
         {
-            Owners = new List<User>();
-            Contacts = new List<User>();
+            Owners = new List<Contact>();
+            Contacts = new List<Contact>();
             Login = loginId;
             Password = password;
             FirstName = firstName;
@@ -66,8 +78,8 @@ namespace ServerWCF.Model
 
         public User()
         {
-            Owners = new List<User>();
-            Contacts = new List<User>();
+            Owners = new List<Contact>();
+            Contacts = new List<Contact>();
             Login = "";
             Password = "";
             FirstName = "";

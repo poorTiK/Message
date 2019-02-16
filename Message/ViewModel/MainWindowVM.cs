@@ -9,6 +9,7 @@ using System.Net;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Collections.Generic;
+using Message.Model;
 
 namespace Message.ViewModel
 {
@@ -134,46 +135,61 @@ namespace Message.ViewModel
             IsSignUpVisible = true;
             IsRegisterVisible = false;
 
-            //fillUsers();
+            fillUsers();
             //TestApplicationSettings();
             //TestMessageT();
-            //TestContacts();
         }
 
         private void fillUsers()
         {
-            User firstOwned = new User()
+            User admin = new User()
             {
-                Email = "mail123456@mail.ru",
+                Email = "admin@mail.ru",
+                Login = "admin",
+                Password = "123123",
+                FirstName = "Admin",
+                LastName = "Purdik",
+                LastOnline = DateTime.Now
+            };
+
+            User steveOwned = new User()
+            {
+                Email = "firstOwned@mail.ru",
                 Login = "firstOwned",
                 Password = "123123",
-                FirstName = "Vasua",
-                LastName = "Petrov",
+                FirstName = "Steve",
+                LastName = "Jobs",
                 LastOnline = DateTime.Now
             };
 
-            User secondOwned = new User()
+            User billOwned = new User()
             {
-                Email = "mail123456@mail.ru",
+                Email = "secondOwned@mail.ru",
                 Login = "secondOwned",
                 Password = "123123",
-                FirstName = "George",
-                LastName = "Volodin",
+                FirstName = "Bill",
+                LastName = "Gates",
                 LastOnline = DateTime.Now
             };
 
-            User userOwner = new User()
+            User markOwner = new User()
             {
-                Email = "mail2@mail.ru",
-                Login = "owned2",
+                Email = "owner@mail.ru",
+                Login = "owner",
                 Password = "123123",
-                FirstName = "Petua",
-                LastName = "Petin",
+                FirstName = "Mark",
+                LastName = "Zuckerberg",
                 LastOnline = DateTime.Now
             };
-            UserServiceClient.AddNewUser(firstOwned);
-            UserServiceClient.AddNewUser(secondOwned);
-            UserServiceClient.AddNewUser(userOwner);
+
+            //attaching new contact for Mark
+            UserServiceClient.AddContact(markOwner, billOwned);
+
+            //just another user in db
+            UserServiceClient.AddNewUser(steveOwned);
+
+            //verify that contact is detached
+            //UserServiceClient.RemoveContact(markOwner, billOwned);
         }
 
         void ExecuteOnStartRegister()
@@ -211,7 +227,7 @@ namespace Message.ViewModel
             {
                 //var admin = UserServiceClient.GetUser("admin", "admin");
                 var admin = new User()
-                {
+                {   Id = 4,
                     Login = "admin",
                     FirstName = "admin",
                     LastName = "admin"
@@ -327,53 +343,6 @@ namespace Message.ViewModel
         private void TestMessageT()
         {
             //MessageBox.Show(MessageTServiceClient.Test().ToString());
-        }
-
-        private void TestContacts()
-        {
-            User firstOwned = new User()
-            {
-                Email = "mail123456@mail.ru",
-                Login = "firstOwned",
-                Password = "123123",
-                FirstName = "Vasua",
-                LastName = "Petrov",
-                LastOnline = DateTime.Now
-            };
-
-            User secondOwned = new User()
-            {
-                Email = "mail123456@mail.ru",
-                Login = "secondOwned",
-                Password = "123123",
-                FirstName = "George",
-                LastName = "Volodin",
-                LastOnline = DateTime.Now
-            };
-
-            User userOwner = new User()
-            {
-                Email = "mail2@mail.ru",
-                Login = "owner",
-                Password = "123123",
-                FirstName = "Petua",
-                LastName = "Petin",
-                LastOnline = DateTime.Now
-            };
-
-            userOwner.Contacts = new List<User>();
-            userOwner.Contacts.Add(firstOwned);
-            userOwner.Contacts.Add(secondOwned);
-
-            //ICollection<User> users = userOwner.Owned;
-            //users.Add(userOwned);
-
-            UserServiceClient.AddNewUser(userOwner);
-
-            //var user = UserServiceClient.GetUser(userOwner.Login, userOwner.Password);
-            //var user2 = UserServiceClient.GetUser(secondOwned.Login, secondOwned.Password);
-            //var user3 = UserServiceClient.GetUser(firstOwned.Login, firstOwned.Password);
-            //MessageBox.Show(user.Contacts[0].FirstName);
         }
     }
 }

@@ -14,7 +14,10 @@ namespace ServerWCF.Contracts
         User GetUser(string login, string password);
 
         [OperationContract]
-        User AddContact(User owner, User contact);
+        bool AddContact(User owner, User owned);
+
+        [OperationContract]
+        bool RemoveContact(User owner, User owned);
 
         [OperationContract]
         ICollection<User> GetAllContacts(User owner);
