@@ -13,7 +13,5 @@ namespace ServerWCF.Context
         public UserContext() : base("DbConnection") { }
 
         public DbSet<User> Users { get; set; }
-
-
     }
 }

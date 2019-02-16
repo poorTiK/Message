@@ -37,5 +37,10 @@ namespace Message
         {
             Close();
         }
+
+        public void SetOpacity(double opacity)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

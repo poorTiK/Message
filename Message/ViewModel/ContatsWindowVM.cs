@@ -83,7 +83,6 @@ namespace Message.ViewModel
                 {
                     CustomMessageBox.Show("Error", "Can't add this contact");
                 }
-                //UpdateContacts();
             }
         }
 

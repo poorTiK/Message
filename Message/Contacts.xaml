@@ -9,9 +9,9 @@
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         
         Name="ContactsWnd"
-        WindowStartupLocation="CenterScreen" WindowStyle="None"
+        WindowStartupLocation="CenterOwner" WindowStyle="None"
         BorderThickness="0" ResizeMode="NoResize"
-        Title="Contacts" Height="450" Width="259">
+        Height="450" Width="259">
 
     <WindowChrome.WindowChrome>
         <WindowChrome CaptionHeight="0"/>

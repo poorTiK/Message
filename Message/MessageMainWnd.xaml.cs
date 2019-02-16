@@ -220,5 +220,10 @@ namespace Message
         {
             System.Diagnostics.Process.Start(e.Uri.ToString());
         }
+
+        public void SetOpacity(double opacity)
+        {
+            //MessageMainWindow.Opacity = opacity;
+        }
     }
 }

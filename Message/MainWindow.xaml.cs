@@ -103,5 +103,10 @@ namespace Message
         {
             return Rep_RPasswordBox.Password;
         }
+
+        public void SetOpacity(double opacity)
+        {
+            
+        }
     }
 }

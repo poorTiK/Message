@@ -10,5 +10,6 @@ namespace Message.Interfaces
     {
         void CloseWindow();
         void AnimatedResize(int h, int w);
+        void SetOpacity(double opasity);
     }
 }

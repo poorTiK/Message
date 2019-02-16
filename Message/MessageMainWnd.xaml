@@ -7,10 +7,10 @@
         mc:Ignorable="d"
         
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-        
+        Name="MessageMainWindow"
         MinWidth="450" MinHeight="600" Height="601" Width="700"
-             WindowStartupLocation="CenterScreen" WindowStyle="None"
-        BorderThickness="0">
+             WindowStartupLocation="CenterScreen" OpacityMask="Black"
+        BorderThickness="0" Background="Black" AllowsTransparency="False" WindowStyle="None" BorderBrush="Black">
     <WindowChrome.WindowChrome>
         <WindowChrome CaptionHeight="22"/>
     </WindowChrome.WindowChrome>
@@ -138,7 +138,11 @@
                     </Grid>
                 </Border>
                 <Grid Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2" Margin="0,0,0,30">
-                    <ScrollViewer Name="ScrollV">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="3*"/>
+                        <ColumnDefinition Width="38*"/>
+                    </Grid.ColumnDefinitions>
+                    <ScrollViewer Name="ScrollV" Grid.ColumnSpan="2">
                         <StackPanel Name="MessageControl" Orientation="Vertical">
 
                         </StackPanel>

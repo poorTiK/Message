@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using Message.AdditionalItems;
 
 namespace Message.ViewModel
@@ -70,13 +71,24 @@ namespace Message.ViewModel
 
         private void ExecuteOnSettingsCommand()
         {
-            //throw new NotImplementedException();
+            _view.SetOpacity(0.5);
+            
+            var wnd = new SettingsWindow();
+            wnd.Owner = (Window)_view;
+            wnd.ShowDialog();
+
+            _view.SetOpacity(1);
         }
 
         private void ExecuteOnContacts()
         {
+            _view.SetOpacity(0.5);
+
             var wnd = new Contacts();
+            wnd.Owner = (Window)_view;
             wnd.ShowDialog();
+
+            _view.SetOpacity(1);
         }
 
         public static void Update()
