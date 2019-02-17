@@ -9,6 +9,7 @@ using System.Net;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Message.Model;
 
 namespace Message.ViewModel
@@ -57,6 +58,20 @@ namespace Message.ViewModel
         {
             get { return _isRegisterVisible; }
             set { SetProperty(ref _isRegisterVisible, value); }
+        }
+
+        private bool _isLoginProgress;
+        public bool IsLoginProgress
+        {
+            get { return _isLoginProgress; }
+            set { SetProperty(ref _isLoginProgress, value); }
+        }
+
+        private bool _isRegisterProgress;
+        public bool IsRegisterProgress
+        {
+            get { return _isRegisterProgress; }
+            set { SetProperty(ref _isRegisterProgress, value); }
         }
 
         #region Login data
@@ -132,10 +147,13 @@ namespace Message.ViewModel
             //MessageTServiceClient = new MessageTServiceClient();
             //ApplicationSettingsService = new ApplicationSettingsServiceClient();
 
+            IsLoginProgress = false;
+            IsRegisterProgress = false;
+
             IsSignUpVisible = true;
             IsRegisterVisible = false;
 
-            fillUsers();
+            //fillUsers();
             //TestApplicationSettings();
             //TestMessageT();
         }
@@ -223,92 +241,125 @@ namespace Message.ViewModel
 
         void ExecuteOnLogin()
         {
-            if(LoginText == "admin")
+            IsLoginProgress = true;
+            Task.Run(() =>
             {
-                //var admin = UserServiceClient.GetUser("admin", "admin");
-                var admin = new User()
-                {   Id = 4,
-                    Login = "admin",
-                    FirstName = "admin",
-                    LastName = "admin"
-                };
-                MessageMainWnd wnd = new MessageMainWnd(admin);
-                wnd.Show();
-
-                view.CloseWindow();
-                return;
-            }
-            else if (ValidateOnLogin())
-            {
-                var user = UserServiceClient.GetUser(LoginText, Password);
-                if (user != null)
+                if (LoginText == "admin")
                 {
-                    MessageMainWnd wnd = new MessageMainWnd(user);
+                    //var admin = UserServiceClient.GetUser("admin", "admin");
+                    var admin = new User()
+                    {
+                        Id = 4,
+                        Login = "admin",
+                        FirstName = "admin",
+                        LastName = "admin"
+                    };
+                    MessageMainWnd wnd = new MessageMainWnd(admin);
                     wnd.Show();
 
                     view.CloseWindow();
+                    return;
                 }
-            }
+                else if (ValidateOnLogin())
+                {
+                    var user = UserServiceClient.GetUser(LoginText, Password);
+                    if (user != null)
+                    {
+                        Application.Current.Dispatcher.Invoke(new Action((() =>
+                        {
+                            MessageMainWnd wnd = new MessageMainWnd(user);
+                            wnd.Show();
+
+                            view.CloseWindow();
+                        })));
+                    }
+                }
+            }).ContinueWith(task => { IsLoginProgress = false; });
+
         }
 
         private void ExecuteOnRegister()
         {
-            if (ValidateOnRegister())
+            IsRegisterProgress = true;
+            Task.Run(() =>
             {
-                var user = new User()
+                if (ValidateOnRegister())
                 {
-                    Login = UserLogin,
-                    Password = RPassword,
-                    FirstName = Name,
-                    LastName = Surname,
-                    Email = Email,
-                    LastOnline = DateTime.Now.Date
-                };
-
-                if (UserServiceClient.GetUser(UserLogin, RPassword) == null)
-                {
-                    if (UserServiceClient.AddNewUser(user))
+                    var user = new User()
                     {
-                        CustomMessageBox.Show("Registration done");
-                        ExecuteOnBackCommand();
+                        Login = UserLogin,
+                        Password = RPassword,
+                        FirstName = Name,
+                        LastName = Surname,
+                        Email = Email,
+                        LastOnline = DateTime.Now.Date
+                    };
+
+                    if (UserServiceClient.GetUser(UserLogin, RPassword) == null)
+                    {
+                        if (UserServiceClient.AddNewUser(user))
+                        {
+                            Application.Current.Dispatcher.Invoke(new Action((() =>
+                            {
+                                CustomMessageBox.Show("Registration done");
+                                ExecuteOnBackCommand();
+                            })));
+                        }
+                        else
+                        {
+                            Application.Current.Dispatcher.Invoke(new Action((() =>
+                            {
+                                CustomMessageBox.Show("Error!!!", "Registration error");
+                            })));
+                        }
                     }
                     else
                     {
-                        CustomMessageBox.Show("Error!!!", "Registration error");
+                        Application.Current.Dispatcher.Invoke(new Action((() =>
+                        {
+                            CustomMessageBox.Show("Error!!!", "Same user exists");
+                        })));
                     }
                 }
-                else
-                {
-                    CustomMessageBox.Show("Error!!!", "Same user exists");
-                }
-            }
+            }).ContinueWith(task => { IsRegisterProgress = false; });
+
         }
 
         private void ExecuteOnForgotPassword()
         {
-            //throw new NotImplementedException();
+            ForgotPassWindow passWindow = new ForgotPassWindow();
+            passWindow.Owner = (Window)view;
+            passWindow.ShowDialog();
         }
 
         private bool ValidateOnRegister()
         {
             if (string.IsNullOrWhiteSpace(UserLogin))
             {
-                CustomMessageBox.Show("Login is empty!!!");
+                Application.Current.Dispatcher.Invoke(
+                    new Action((() => { CustomMessageBox.Show("Login is empty!!!"); })));
                 return false;
             }
             else if (RPassword.Length < 8 || string.IsNullOrWhiteSpace(RPassword) || RPassword == string.Empty || !Regex.IsMatch(RPassword, @"^[a-zA-Z0-9]{8,}$"))
             {
-                CustomMessageBox.Show("Error!", "Password shoud be 8 symbols lenght, use numbers and english symbols");
-                return false;
+                Application.Current.Dispatcher.Invoke(
+                    new Action((() =>
+                    {
+                        CustomMessageBox.Show("Error!",
+                            "Password shoud be 8 symbols lenght, use numbers and english symbols");
+                    })));
+            return false;
             }
             else if (RPassword != Rep_RPassword)
             {
-                CustomMessageBox.Show("Error!", "Password not match");
+                Application.Current.Dispatcher.Invoke(
+                    new Action((() => { CustomMessageBox.Show("Error!", "Password not match"); })));
                 return false;
             }
             else if (string.IsNullOrWhiteSpace(Email) || Email == string.Empty || !Regex.IsMatch(Email, @"\A(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)\Z", RegexOptions.IgnoreCase))
             {
-                CustomMessageBox.Show("Error!", "Wrong Email");
+                Application.Current.Dispatcher.Invoke(
+                    new Action((() => { CustomMessageBox.Show("Error!", "Wrong Email"); })));
                 return false;
             }
             else
@@ -321,13 +372,19 @@ namespace Message.ViewModel
         {
             if (string.IsNullOrWhiteSpace(LoginText))
             {
-                CustomMessageBox.Show("Login is empty!!!");
+                Application.Current.Dispatcher.Invoke(
+                    new Action((() => { CustomMessageBox.Show("Login is empty!!!"); })));
                 return false;
             }
             else if (Password.Length < 8 || string.IsNullOrWhiteSpace(Password) || Password == string.Empty || !Regex.IsMatch(Password, @"^[a-zA-Z0-9]{8,}$"))
             {
-                CustomMessageBox.Show("Error!", "Password shoud be 8 symbols lenght, use numbers and english symbols");
-                return false;
+                Application.Current.Dispatcher.Invoke(
+                    new Action((() =>
+                    {
+                        CustomMessageBox.Show("Error!",
+                            "Password shoud be 8 symbols lenght, use numbers and english symbols");
+                    })));
+            return false;
             }
             else
             {

@@ -66,6 +66,9 @@
                     Style="{StaticResource MaterialDesignFloatingHintPasswordBox}"
                     />
                             <Button Content="Sign In" Margin="0,0,0,15"
+                                    materialDesign:ButtonProgressAssist.Value="-1"
+                                    materialDesign:ButtonProgressAssist.IsIndicatorVisible="{Binding IsLoginProgress}"
+                                    materialDesign:ButtonProgressAssist.IsIndeterminate="{Binding IsLoginProgress}"
                         Command="{Binding OnLogin}"
                         ></Button>
 
@@ -161,6 +164,9 @@
 
                     <Button Grid.Column="0" Grid.Row="1" Margin="0,0,0,15" 
                             Width="84" Content="Register"
+                            materialDesign:ButtonProgressAssist.Value="-1"
+                            materialDesign:ButtonProgressAssist.IsIndicatorVisible="{Binding IsRegisterProgress}"
+                            materialDesign:ButtonProgressAssist.IsIndeterminate="{Binding IsRegisterProgress}"
                             Command="{Binding Register}"
                             ></Button>
                     <Button Grid.Column="1" Grid.Row="1" Margin="0,0,0,15" 
