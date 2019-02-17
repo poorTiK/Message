@@ -5,8 +5,6 @@ using Prism.Commands;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -17,8 +15,9 @@ namespace Message.ViewModel
     {
         UserServiceClient UserServiceClient;
         IView view;
-        private List<UserServiceReference.User> _contacts;
-        public List<UserServiceReference.User> ContactsList
+
+        private List<User> _contacts;
+        public List<User> ContactsList
         {
             get { return _contacts; }
             set { SetProperty(ref _contacts, value); }
@@ -50,18 +49,17 @@ namespace Message.ViewModel
         public ContatsWindowVM(IView iview)
         {
             view = iview;
-            
+
+            //todo: remove this before release
+            //if(GlobalBase.CurrentUser.Login == "admin")
+            //{
+            //GlobalBase.CurrentUser = new User();
+            //GlobalBase.CurrentUser.Id = 2;
+            //}
+
             UserServiceClient = new UserServiceClient();
 
-            foreach (var item in UserServiceClient.GetAllContacts(GlobalBase.CurrentUser))
-            {
-                ContactsList.Add(new User()
-                {
-                    FirstName = item.FirstName,
-                    LastName = item.LastName,
-                    LastOnline = item.LastOnline
-                });
-            }
+            ContactsList = UserServiceClient.GetAllContacts(GlobalBase.CurrentUser);
         }
 
         private DelegateCommand _onAddContact;
@@ -88,21 +86,7 @@ namespace Message.ViewModel
 
         private void UpdateContacts()
         {
-            var res = UserServiceClient.GetAllContacts(new User() { Login = GlobalBase.CurrentUser.Login });
-            foreach (var item in res)
-            {
-                ContactsList.Add(new User()
-                {
-                    FirstName = item.FirstName,
-                    LastName = item.LastName,
-                    LastOnline = item.LastOnline
-                });
-            }
-        }
-
-        public void Test()
-        {
-            throw new NotImplementedException();
+            ContactsList = UserServiceClient.GetAllContacts(GlobalBase.CurrentUser);
         }
     }
 }

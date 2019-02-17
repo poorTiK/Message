@@ -1,7 +1,6 @@
 ﻿using Message.Interfaces;
 using Message.Model;
 using Message.UserServiceReference;
-using Message.MessageServiceReference;
 using Prism.Commands;
 using System;
 using System.Collections.Generic;
@@ -10,20 +9,12 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using Message.AdditionalItems;
-using System.Net;
-using System.ServiceModel;
 
 namespace Message.ViewModel
 {
-    class MessageMainVM : Prism.Mvvm.BindableBase, IMessageServiceCallback
+    class MessageMainVM : Prism.Mvvm.BindableBase
     {
         UserServiceClient userServiceClient;
-        MessageServiceClient messageService;
-
-        IMessageServiceCallback callback;
-        IPAddress groupAddress;
-        InstanceContext site;
-        const string HOST = "192.168.0.255";
 
         IView _view;
 
@@ -70,27 +61,9 @@ namespace Message.ViewModel
             CurrentUser = user;
             GlobalBase.CurrentUser = user;
 
-            groupAddress = IPAddress.Parse(HOST);
-            callback = this;
-
-            site = new InstanceContext(callback);
-
-            messageService = new MessageServiceClient(site);
             userServiceClient = new UserServiceClient();
 
             ContactsList = userServiceClient.GetAllContacts(GlobalBase.CurrentUser);
-
-            messageService.SendMessage(null);
-            //var res = contactsServiceClient.GetContacts(new ContactsServiceReference.User() { Login = GlobalBase.CurrentUser.Login });
-            //foreach (var item in res)
-            //{
-            //    ContactsList.Add(new UserServiceReference.User()
-            //    {
-            //        FirstName = item.UserOwned.FirstName,
-            //        LastName = item.UserOwned.LastName,
-            //        LastOnline = item.UserOwned.LastOnline
-            //    });
-            //}
         }
 
         private DelegateCommand _onContactsCommand;
@@ -143,16 +116,6 @@ namespace Message.ViewModel
             //        LastOnline = item.UserOwned.LastOnline
             //    });
             //}
-        }
-
-        public void Test()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void ReceiveMessage(MessageServiceReference.MessageT message)
-        {
-            MessageBox.Show("Works");
         }
     }
 }
