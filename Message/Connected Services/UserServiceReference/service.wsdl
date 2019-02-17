@@ -7,11 +7,11 @@
       <xsd:import namespace="http://schemas.datacontract.org/2004/07/ServerWCF.Model" />
     </xsd:schema>
   </wsdl:types>
-  <wsdl:message name="IUserService_AddNewUser_InputMessage">
-    <wsdl:part name="parameters" element="tns:AddNewUser" />
+  <wsdl:message name="IUserService_AddOrUpdateUser_InputMessage">
+    <wsdl:part name="parameters" element="tns:AddOrUpdateUser" />
   </wsdl:message>
-  <wsdl:message name="IUserService_AddNewUser_OutputMessage">
-    <wsdl:part name="parameters" element="tns:AddNewUserResponse" />
+  <wsdl:message name="IUserService_AddOrUpdateUser_OutputMessage">
+    <wsdl:part name="parameters" element="tns:AddOrUpdateUserResponse" />
   </wsdl:message>
   <wsdl:message name="IUserService_GetUser_InputMessage">
     <wsdl:part name="parameters" element="tns:GetUser" />
@@ -55,10 +55,22 @@
   <wsdl:message name="IUserService_GetAllUsersByLogin_OutputMessage">
     <wsdl:part name="parameters" element="tns:GetAllUsersByLoginResponse" />
   </wsdl:message>
+  <wsdl:message name="IUserService_GetMessages_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetMessages" />
+  </wsdl:message>
+  <wsdl:message name="IUserService_GetMessages_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetMessagesResponse" />
+  </wsdl:message>
+  <wsdl:message name="IUserService_FindMessage_InputMessage">
+    <wsdl:part name="parameters" element="tns:FindMessage" />
+  </wsdl:message>
+  <wsdl:message name="IUserService_FindMessage_OutputMessage">
+    <wsdl:part name="parameters" element="tns:FindMessageResponse" />
+  </wsdl:message>
   <wsdl:portType name="IUserService">
-    <wsdl:operation name="AddNewUser">
-      <wsdl:input wsaw:Action="http://tempuri.org/IUserService/AddNewUser" message="tns:IUserService_AddNewUser_InputMessage" />
-      <wsdl:output wsaw:Action="http://tempuri.org/IUserService/AddNewUserResponse" message="tns:IUserService_AddNewUser_OutputMessage" />
+    <wsdl:operation name="AddOrUpdateUser">
+      <wsdl:input wsaw:Action="http://tempuri.org/IUserService/AddOrUpdateUser" message="tns:IUserService_AddOrUpdateUser_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IUserService/AddOrUpdateUserResponse" message="tns:IUserService_AddOrUpdateUser_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation name="GetUser">
       <wsdl:input wsaw:Action="http://tempuri.org/IUserService/GetUser" message="tns:IUserService_GetUser_InputMessage" />
@@ -88,11 +100,19 @@
       <wsdl:input wsaw:Action="http://tempuri.org/IUserService/GetAllUsersByLogin" message="tns:IUserService_GetAllUsersByLogin_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IUserService/GetAllUsersByLoginResponse" message="tns:IUserService_GetAllUsersByLogin_OutputMessage" />
     </wsdl:operation>
+    <wsdl:operation name="GetMessages">
+      <wsdl:input wsaw:Action="http://tempuri.org/IUserService/GetMessages" message="tns:IUserService_GetMessages_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IUserService/GetMessagesResponse" message="tns:IUserService_GetMessages_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="FindMessage">
+      <wsdl:input wsaw:Action="http://tempuri.org/IUserService/FindMessage" message="tns:IUserService_FindMessage_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IUserService/FindMessageResponse" message="tns:IUserService_FindMessage_OutputMessage" />
+    </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="BasicHttpBinding_IUserService" type="tns:IUserService">
     <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
-    <wsdl:operation name="AddNewUser">
-      <soap:operation soapAction="http://tempuri.org/IUserService/AddNewUser" style="document" />
+    <wsdl:operation name="AddOrUpdateUser">
+      <soap:operation soapAction="http://tempuri.org/IUserService/AddOrUpdateUser" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -156,6 +176,24 @@
     </wsdl:operation>
     <wsdl:operation name="GetAllUsersByLogin">
       <soap:operation soapAction="http://tempuri.org/IUserService/GetAllUsersByLogin" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetMessages">
+      <soap:operation soapAction="http://tempuri.org/IUserService/GetMessages" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FindMessage">
+      <soap:operation soapAction="http://tempuri.org/IUserService/FindMessage" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>

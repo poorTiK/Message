@@ -14,8 +14,9 @@ namespace ServerWCF.Context
         public UserContext() : base("DbConnection") { }
 
         public DbSet<User> Users { get; set; }
-
         public DbSet<Contact> Contacts { get; set; }
+        public DbSet<MessageT> Messages { get; set; }
+        public DbSet<ApplicationSettings> ApplicationSettings { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -26,6 +27,17 @@ namespace ServerWCF.Context
 
             modelBuilder.Entity<Contact>()
                 .HasRequired(s => s.UserOwner)
+                .WithMany()
+                .WillCascadeOnDelete(false);
+
+
+            modelBuilder.Entity<MessageT>()
+                .HasRequired(s => s.Sender)
+                .WithMany()
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<MessageT>()
+                .HasRequired(s => s.Receiver)
                 .WithMany()
                 .WillCascadeOnDelete(false);
         }

@@ -17,26 +17,40 @@ namespace ServerWCF.Model
         public int Id { get; set; }
 
         [DataMember]
-        public int Type { get; set; }
+        public int SenderId { get; set; }
+
+        [ForeignKey("SenderId")]
+        public User Sender { get; set; }
+
+        [DataMember]
+        public int ReceiverId { get; set; }
+
+        [ForeignKey("ReceiverId")]
+        public User Receiver { get; set; }
+
+        [DataMember]
+        public string Type { get; set; }
 
         [DataMember]
         public byte[] Content { get; set; }
 
         [DataMember]
-        [ForeignKey("Sender")]
-        public int SenderId { get; set; }
-
-        public User Sender { get; set; }
-
-        [DataMember]
         public DateTime DateOfSending { get; set; }
 
-        public MessageT(int type, byte[] content, User sender)
+        public MessageT()
+        {
+            Type = "TEXT";
+            Content = new byte[0];
+            DateOfSending = DateTime.Now;
+        }
+
+        public MessageT(string type, byte[] content, User sender, User reveiver)
         {
             Type = type;
             Content = content;
             Sender = sender;
-            DateOfSending = new DateTime(2015, 7, 20);
+            Receiver = reveiver;
+            DateOfSending = DateTime.Now;
         }
 
     }

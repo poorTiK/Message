@@ -1,8 +1,7 @@
 ﻿using Message.AdditionalItems;
 using Message.Interfaces;
-using Message.ApplicationSettingsServiceReference;
-using Message.MessageTServiceReference;
 using Message.UserServiceReference;
+using Message.MessageServiceReference;
 using Prism.Commands;
 using System;
 using System.Net;
@@ -11,6 +10,7 @@ using System.Windows;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Message.Model;
+using System.ServiceModel;
 
 namespace Message.ViewModel
 {
@@ -20,10 +20,7 @@ namespace Message.ViewModel
         IPasswordSupplier passwordSupplier;
 
         UserServiceClient UserServiceClient;
-        //ApplicationSettingsServiceClient ApplicationSettingsService;
-        //MessageTServiceClient MessageTServiceClient;
 
-        const string HOST = "localhost";
 
         private DelegateCommand _onStartRegister;
         public DelegateCommand OnStartRegister =>
@@ -143,8 +140,7 @@ namespace Message.ViewModel
             passwordSupplier = ipasswordSupplier;
 
             UserServiceClient = new UserServiceClient();
-            //MessageTServiceClient = new MessageTServiceClient();
-            //ApplicationSettingsService = new ApplicationSettingsServiceClient();
+
 
             IsLoginProgress = false;
             IsRegisterProgress = false;
@@ -152,7 +148,7 @@ namespace Message.ViewModel
             IsSignUpVisible = true;
             IsRegisterVisible = false;
 
-            //fillUsers();
+            fillUsers();
             //TestApplicationSettings();
             //TestMessageT();
         }
@@ -200,20 +196,19 @@ namespace Message.ViewModel
             };
 
 
-            UserServiceClient.AddNewUser(markOwner);
-            UserServiceClient.AddNewUser(billOwned);
-
-            //attaching new contact for Mark
-            UserServiceClient.AddContact(markOwner, billOwned);
+            UserServiceClient.AddOrUpdateUser(markOwner);
+            UserServiceClient.AddOrUpdateUser(billOwned);
 
             //attaching new contact for Mark
             UserServiceClient.AddContact(markOwner, billOwned);
 
             //just another user in db
-            UserServiceClient.AddNewUser(steveOwned);
+            UserServiceClient.AddOrUpdateUser(steveOwned);
 
-            //verify that contact is detached
-            UserServiceClient.RemoveContact(markOwner, billOwned);
+            ////verify that contact is detached
+            //UserServiceClient.RemoveContact(markOwner, billOwned);
+
+            //UserServiceClient.GetMessages(markOwner, billOwned, 10);
         }
 
         void ExecuteOnStartRegister()
@@ -303,7 +298,7 @@ namespace Message.ViewModel
 
                     if (UserServiceClient.GetUser(UserLogin, RPassword) == null)
                     {
-                        if (UserServiceClient.AddNewUser(user))
+                        if (UserServiceClient.AddOrUpdateUser(user))
                         {
                             Application.Current.Dispatcher.Invoke(new Action((() =>
                             {
@@ -396,16 +391,6 @@ namespace Message.ViewModel
             {
                 return true;
             }
-        }
-
-        private void TestApplicationSettings()
-        {
-            //MessageBox.Show(ApplicationSettingsService.Test().ToString());
-        }
-
-        private void TestMessageT()
-        {
-            //MessageBox.Show(MessageTServiceClient.Test().ToString());
         }
     }
 }

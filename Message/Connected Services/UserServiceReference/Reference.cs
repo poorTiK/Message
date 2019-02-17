@@ -53,9 +53,6 @@ namespace Message.UserServiceReference {
         private string LoginField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private System.Collections.Generic.List<Message.UserServiceReference.MessageT> MessagesField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
         private System.Collections.Generic.List<Message.UserServiceReference.Contact> OwnersField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
@@ -200,19 +197,6 @@ namespace Message.UserServiceReference {
                 if ((object.ReferenceEquals(this.LoginField, value) != true)) {
                     this.LoginField = value;
                     this.RaisePropertyChanged("Login");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.Collections.Generic.List<Message.UserServiceReference.MessageT> Messages {
-            get {
-                return this.MessagesField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.MessagesField, value) != true)) {
-                    this.MessagesField = value;
-                    this.RaisePropertyChanged("Messages");
                 }
             }
         }
@@ -391,10 +375,13 @@ namespace Message.UserServiceReference {
         private int IdField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int ReceiverIdField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
         private int SenderIdField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private int TypeField;
+        private string TypeField;
         
         [global::System.ComponentModel.BrowsableAttribute(false)]
         public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
@@ -446,6 +433,19 @@ namespace Message.UserServiceReference {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
+        public int ReceiverId {
+            get {
+                return this.ReceiverIdField;
+            }
+            set {
+                if ((this.ReceiverIdField.Equals(value) != true)) {
+                    this.ReceiverIdField = value;
+                    this.RaisePropertyChanged("ReceiverId");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
         public int SenderId {
             get {
                 return this.SenderIdField;
@@ -459,12 +459,12 @@ namespace Message.UserServiceReference {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public int Type {
+        public string Type {
             get {
                 return this.TypeField;
             }
             set {
-                if ((this.TypeField.Equals(value) != true)) {
+                if ((object.ReferenceEquals(this.TypeField, value) != true)) {
                     this.TypeField = value;
                     this.RaisePropertyChanged("Type");
                 }
@@ -485,11 +485,11 @@ namespace Message.UserServiceReference {
     [System.ServiceModel.ServiceContractAttribute(ConfigurationName="UserServiceReference.IUserService")]
     public interface IUserService {
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/AddNewUser", ReplyAction="http://tempuri.org/IUserService/AddNewUserResponse")]
-        bool AddNewUser(Message.UserServiceReference.User user);
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/AddOrUpdateUser", ReplyAction="http://tempuri.org/IUserService/AddOrUpdateUserResponse")]
+        bool AddOrUpdateUser(Message.UserServiceReference.User user);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/AddNewUser", ReplyAction="http://tempuri.org/IUserService/AddNewUserResponse")]
-        System.Threading.Tasks.Task<bool> AddNewUserAsync(Message.UserServiceReference.User user);
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/AddOrUpdateUser", ReplyAction="http://tempuri.org/IUserService/AddOrUpdateUserResponse")]
+        System.Threading.Tasks.Task<bool> AddOrUpdateUserAsync(Message.UserServiceReference.User user);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/GetUser", ReplyAction="http://tempuri.org/IUserService/GetUserResponse")]
         Message.UserServiceReference.User GetUser(string login, string password);
@@ -532,6 +532,18 @@ namespace Message.UserServiceReference {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/GetAllUsersByLogin", ReplyAction="http://tempuri.org/IUserService/GetAllUsersByLoginResponse")]
         System.Threading.Tasks.Task<System.Collections.Generic.List<Message.UserServiceReference.User>> GetAllUsersByLoginAsync(string login);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/GetMessages", ReplyAction="http://tempuri.org/IUserService/GetMessagesResponse")]
+        System.Collections.Generic.List<Message.UserServiceReference.MessageT> GetMessages(Message.UserServiceReference.User sender, Message.UserServiceReference.User receiver, int limin);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/GetMessages", ReplyAction="http://tempuri.org/IUserService/GetMessagesResponse")]
+        System.Threading.Tasks.Task<System.Collections.Generic.List<Message.UserServiceReference.MessageT>> GetMessagesAsync(Message.UserServiceReference.User sender, Message.UserServiceReference.User receiver, int limin);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/FindMessage", ReplyAction="http://tempuri.org/IUserService/FindMessageResponse")]
+        System.Collections.Generic.List<Message.UserServiceReference.MessageT> FindMessage(string keyWord);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/FindMessage", ReplyAction="http://tempuri.org/IUserService/FindMessageResponse")]
+        System.Threading.Tasks.Task<System.Collections.Generic.List<Message.UserServiceReference.MessageT>> FindMessageAsync(string keyWord);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -561,12 +573,12 @@ namespace Message.UserServiceReference {
                 base(binding, remoteAddress) {
         }
         
-        public bool AddNewUser(Message.UserServiceReference.User user) {
-            return base.Channel.AddNewUser(user);
+        public bool AddOrUpdateUser(Message.UserServiceReference.User user) {
+            return base.Channel.AddOrUpdateUser(user);
         }
         
-        public System.Threading.Tasks.Task<bool> AddNewUserAsync(Message.UserServiceReference.User user) {
-            return base.Channel.AddNewUserAsync(user);
+        public System.Threading.Tasks.Task<bool> AddOrUpdateUserAsync(Message.UserServiceReference.User user) {
+            return base.Channel.AddOrUpdateUserAsync(user);
         }
         
         public Message.UserServiceReference.User GetUser(string login, string password) {
@@ -623,6 +635,22 @@ namespace Message.UserServiceReference {
         
         public System.Threading.Tasks.Task<System.Collections.Generic.List<Message.UserServiceReference.User>> GetAllUsersByLoginAsync(string login) {
             return base.Channel.GetAllUsersByLoginAsync(login);
+        }
+        
+        public System.Collections.Generic.List<Message.UserServiceReference.MessageT> GetMessages(Message.UserServiceReference.User sender, Message.UserServiceReference.User receiver, int limin) {
+            return base.Channel.GetMessages(sender, receiver, limin);
+        }
+        
+        public System.Threading.Tasks.Task<System.Collections.Generic.List<Message.UserServiceReference.MessageT>> GetMessagesAsync(Message.UserServiceReference.User sender, Message.UserServiceReference.User receiver, int limin) {
+            return base.Channel.GetMessagesAsync(sender, receiver, limin);
+        }
+        
+        public System.Collections.Generic.List<Message.UserServiceReference.MessageT> FindMessage(string keyWord) {
+            return base.Channel.FindMessage(keyWord);
+        }
+        
+        public System.Threading.Tasks.Task<System.Collections.Generic.List<Message.UserServiceReference.MessageT>> FindMessageAsync(string keyWord) {
+            return base.Channel.FindMessageAsync(keyWord);
         }
     }
 }

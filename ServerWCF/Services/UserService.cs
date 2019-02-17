@@ -5,6 +5,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.ServiceModel;
+using System.Threading;
 
 namespace ServerWCF.Services
 {
@@ -14,6 +16,8 @@ namespace ServerWCF.Services
         {
             using (UserContext userContext = new UserContext())
             {
+                try
+                {
                     Contact contact = new Contact();
 
                     User ownerFromDb = userContext.Users.Where(dbUser => dbUser.Login == owner.Login).First();
@@ -26,6 +30,11 @@ namespace ServerWCF.Services
                     userContext.SaveChanges();
 
                     return true;
+                }
+                catch (Exception ex)
+                {
+                    return false;
+                }
             }
         }
 
@@ -33,6 +42,8 @@ namespace ServerWCF.Services
         {
             using (UserContext userContext = new UserContext())
             {
+                try
+                {
                     List<Contact> contacts = userContext.Contacts.Include("UserOwner")
                         .Include("UserOwned")
                         .ToList();
@@ -50,25 +61,47 @@ namespace ServerWCF.Services
                         }
                     }
 
+                    return true;
+                } catch (Exception ex)
+                {
                     return false;
+                }
+                    
             }
         }
 
-        public bool AddNewUser(User user)
+        public bool AddOrUpdateUser(User user)
         {
             using (UserContext db = new UserContext())
             {
-                //try
-                //{
-                    db.Users.Add(user);
+                try
+                {
+                    User result = db.Users.FirstOrDefault(u => u.Login == user.Login);
+
+                    if (result != null)
+                    { 
+                        result.Email = user.Email;
+                        result.Bio = user.Bio;
+                        result.Avatar = user.Avatar;
+                        result.FirstName = user.FirstName;
+                        result.LastOnline = user.LastOnline;
+                        result.Phone = user.Phone;
+                        result.Password = user.Password;
+                    }
+                    else
+                    {
+                        db.Users.Add(user);
+                    }
+
                     db.SaveChanges();
+
                     return true;
-                //}
-                //catch (Exception)
-                //{
-                //    return false;
-                //    throw;
-                //}
+                }
+                catch (Exception ex)
+                {
+                    return false;
+                }
+
             }
         }
 
@@ -77,8 +110,8 @@ namespace ServerWCF.Services
             using (UserContext db = new UserContext())
             {
                 List<User> contactsForOwner = null;
-                //try
-                //{
+                try
+                {
                     var userId = owner.Id;
 
                     contactsForOwner = db.Users.SqlQuery(" select * " +
@@ -86,11 +119,11 @@ namespace ServerWCF.Services
                             "where Users.Id in (select UserOwned_Id " +
                             "from Contacts " +
                             "where Contacts.UserOwner_Id = @p0);", userId).ToList();
-                //}
-                //catch (Exception ex)
-                //{
+                }
+                catch (Exception ex)
+                {
 
-                //}
+                }
 
                 return contactsForOwner;
             }
@@ -101,15 +134,15 @@ namespace ServerWCF.Services
         {
             using (UserContext db = new UserContext())
             {
-                //try
-                //{
+                try
+                {
                     return db.Users.ToList();
-                //}
-                //catch (Exception)
-                //{
-                //    return null;
-                //    throw;
-                //}
+                }
+                catch (Exception)
+                {
+                    return null;
+                    throw;
+                }
             }
         }
 
@@ -117,35 +150,35 @@ namespace ServerWCF.Services
         {
             using (UserContext db = new UserContext())
             {
-                //try
-                //{
+                try
+                {
                     return db.Users.Where(x => x.Login.Contains(login)).ToList();
-                //}
-                //catch (Exception)
-                //{
-                //    return null;
-                //    throw;
-                //}
-        }
+                }
+                catch (Exception)
+                {
+                    return null;
+                    throw;
+                }
+            }
         }
 
         public User GetUser(string login, string password)
         {
             using (UserContext db = new UserContext())
             {
-                //try
-                //{
+                try
+                {
                     foreach (var user in db.Users)
                     {
                         if (user.Login == login && user.Password == password)
                             return user;
                     }
                     return null;
-                //}
-                //catch (Exception)
-                //{
-                //    return null;
-                //}
+                }
+                catch (Exception)
+                {
+                    return null;
+                }
             }
         }
 
@@ -153,26 +186,73 @@ namespace ServerWCF.Services
         {
             using (UserContext db = new UserContext())
             {
-                foreach (var user in db.Users)
+                try
                 {
-                    if (user.Email == email)
-                        return user;
+                    foreach (var user in db.Users)
+                    {
+                        if (user.Email == email)
+                            return user;
+                    }
+                    return null;
                 }
-                return null;
+                catch(Exception ex)
+                {
+                    return null;
+                }
             }
         }
 
-        //public CompositeType GetDataUsingDataContract(CompositeType composite)
-        //{
-        //    if (composite == null)
-        //    {
-        //        throw new ArgumentNullException("composite");
-        //    }
-        //    if (composite.BoolValue)
-        //    {
-        //        composite.StringValue += "Suffix";
-        //    }
-        //    return composite;
-        //}
+        public List<MessageT> GetMessages(User sender, User receiver, int limin)
+        {
+            using(UserContext context = new UserContext())
+            {
+                try
+                {
+                    List<MessageT> messagesToReturn = new List<MessageT>();
+                    foreach (MessageT message in context.Messages.Include("Sender").Include("Receiver"))
+                    {
+                        if (messagesToReturn.Count == limin)
+                        {
+                            break;
+                        }
+
+                        if (message.Sender.Login == sender.Login &&
+                            message.Receiver.Login == receiver.Login)
+                        {
+                            messagesToReturn.Add(message);
+                        }
+                    }
+                    return messagesToReturn;
+                }
+                catch (Exception ex)
+                {
+                    return null;
+                }
+            }
+        }
+
+        public List<MessageT> FindMessage(string keyWord)
+        {
+            using (UserContext userContext = new UserContext())
+            {
+                try
+                {
+                    List<MessageT> searchingResult = new List<MessageT>();
+                    foreach (MessageT message in userContext.Messages.Where(mes => mes.Type == "TEXT").ToList())
+                    {
+                        string textMessage = System.Text.Encoding.UTF8.GetString(message.Content);
+                        if (textMessage.Contains(keyWord))
+                        {
+                            searchingResult.Add(message);
+                        }
+                    }
+                    return searchingResult;
+                }
+                catch (Exception ex)
+                {
+                    return null;
+                }
+            }
+        }
     }
 }

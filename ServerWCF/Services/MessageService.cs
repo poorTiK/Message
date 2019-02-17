@@ -1,0 +1,59 @@
+﻿using ServerWCF.Context;
+using ServerWCF.Contracts;
+using ServerWCF.Model;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.ServiceModel;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+
+namespace ServerWCF.Services
+{
+    public class MessageService : IMessageService
+    {
+        private struct MessageData
+        {
+            public MessageT message;
+            public IClientCallback callback;
+        }
+
+        public void SendMessage(MessageT message)
+        {
+            using(UserContext userContext = new UserContext())
+            {
+                try
+                {
+                    User dbSender = userContext.Users.Where(u => u.Login == message.Sender.Login).First();
+                    User dbReceiver = userContext.Users.Where(u => u.Login == message.Receiver.Login).First();
+
+                    message.Sender = dbSender;
+                    message.Receiver = dbReceiver;
+
+                    userContext.Messages.Add(message);
+                    userContext.SaveChanges();
+
+                    IClientCallback callback = OperationContext.Current.GetCallbackChannel<IClientCallback>();
+
+                    MessageData messageData = new MessageData();
+                    messageData.message = message;
+                    messageData.callback = callback;
+
+                    Thread t = new Thread(new ParameterizedThreadStart(ExecuteCallback));
+                    t.IsBackground = true;
+                    t.Start(messageData);
+                }
+                catch (Exception ex)
+                {
+                }
+            }
+        }
+
+        private void ExecuteCallback(object mesDataObj)
+        {
+            MessageData messageData = (MessageData)mesDataObj;
+            (messageData.callback).ReceiveMessage(messageData.message);
+        }
+    }
+}

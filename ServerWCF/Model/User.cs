@@ -10,7 +10,6 @@ using System.Web.Script.Serialization;
 
 namespace ServerWCF.Model
 {
-    [Table("Users")]
     [DataContract]
     public class User
     {
@@ -49,22 +48,10 @@ namespace ServerWCF.Model
         public ApplicationSettings ApplicationSettings { get; set; }
 
         [DataMember]
-        public List<MessageT> Messages { get; set; }
-
-        [DataMember]
         public List<Contact> Owners { get; set; }
 
         [DataMember]
         public List<Contact> Contacts { get; set; }
-
-
-        public override bool Equals(object obj)
-        {
-            if (obj == null) return false;
-            User objAsUser = obj as User;
-            if (objAsUser == null) return false;
-             return objAsUser.Id == Id;
-        }
 
         public User(string firstName, string loginId, string password, string email)
         {

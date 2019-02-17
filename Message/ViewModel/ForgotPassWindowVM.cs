@@ -1,21 +1,24 @@
 ﻿using System.Linq;
 using System.Net;
 using System.Net.Mail;
+using System.ServiceModel;
 using Message.Interfaces;
 using Message.UserServiceReference;
+using Message.MessageServiceReference;
 using Prism.Commands;
+using System.Windows;
 
 namespace Message.ViewModel
 {
-    class ForgotPassWindowVM : Prism.Mvvm.BindableBase
+    class ForgotPassWindowVM : Prism.Mvvm.BindableBase, IMessageServiceCallback
     {
         private IView view;
-
         UserServiceClient userServiceClient;
 
         public ForgotPassWindowVM(IView view)
         {
             this.view = view;
+
             userServiceClient = new UserServiceClient();
             IsLogin = true;
             IsMail = false;
@@ -87,6 +90,16 @@ namespace Message.ViewModel
             smtp.Credentials = new NetworkCredential("sh3rgame@gmail.com", "Ap98Msh77");
             smtp.EnableSsl = true;
             smtp.SendMailAsync(message);
+        }
+
+        public void Test()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void ReceiveMessage(MessageServiceReference.MessageT message)
+        {
+            MessageBox.Show("Works");
         }
     }
 }
