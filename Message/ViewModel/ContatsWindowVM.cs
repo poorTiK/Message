@@ -54,8 +54,8 @@ namespace Message.ViewModel
             //todo: remove this before release
             if(GlobalBase.CurrentUser.Login == "admin")
             {
-            GlobalBase.CurrentUser = new User();
-            GlobalBase.CurrentUser.Id = 2;
+                GlobalBase.CurrentUser = new User();
+                GlobalBase.CurrentUser.Id = 2;
             }
 
             UserServiceClient = new UserServiceClient();

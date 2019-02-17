@@ -82,11 +82,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
-    <Compile Include="Connected Services\ContactsServiceReference\Reference.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Compile>
     <Compile Include="Connected Services\MessageTServiceReference\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -193,19 +188,6 @@
     <None Include="Connected Services\ApplicationSettingsServiceReference\service1.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Connected Services\ContactsServiceReference\Message.ContactsServiceReference.Contact.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Connected Services\ContactsServiceReference\ServerWCF.Model.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Connected Services\ContactsServiceReference\service.wsdl" />
-    <None Include="Connected Services\ContactsServiceReference\service.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Connected Services\ContactsServiceReference\service1.xsd">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="Connected Services\MessageTServiceReference\service.wsdl" />
     <None Include="Connected Services\MessageTServiceReference\service.xsd">
       <SubType>Designer</SubType>
@@ -245,7 +227,6 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadataStorage Include="Connected Services\ApplicationSettingsServiceReference\" />
-    <WCFMetadataStorage Include="Connected Services\ContactsServiceReference\" />
     <WCFMetadataStorage Include="Connected Services\MessageTServiceReference\" />
     <WCFMetadataStorage Include="Connected Services\UserServiceReference\" />
   </ItemGroup>
@@ -281,18 +262,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Connected Services\UserServiceReference\Reference.svcmap">
-      <Generator>WCF Proxy Generator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Connected Services\ContactsServiceReference\configuration91.svcinfo" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Connected Services\ContactsServiceReference\configuration.svcinfo" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Connected Services\ContactsServiceReference\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>

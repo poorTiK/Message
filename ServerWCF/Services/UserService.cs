@@ -12,33 +12,28 @@ namespace ServerWCF.Services
     {
         public bool AddContact(User owner, User owned)
         {
-            using (ContactContext db = new ContactContext())
+            using (UserContext userContext = new UserContext())
             {
-                //try
-                //{
-
                     Contact contact = new Contact();
-                    contact.UserOwner = owner;
-                    contact.UserOwned = owned;
-                    
-                    db.Contacts.Add(contact);
-                    db.SaveChanges();
-                //}
-                //catch (Exception ex)
-                //{
-                //    return false;
-                //}
 
-                return true;
+                    User ownerFromDb = userContext.Users.Where(dbUser => dbUser.Login == owner.Login).First();
+                    User ownedFromDb = userContext.Users.Where(dbUser => dbUser.Login == owned.Login).First();
+
+                    contact.UserOwner = ownerFromDb;
+                    contact.UserOwned = ownedFromDb;
+
+                    userContext.Contacts.Add(contact);
+                    userContext.SaveChanges();
+
+                    return true;
             }
         }
 
         public bool RemoveContact(User owner, User owned)
         {
-            using (ContactContext db = new ContactContext())
+            using (UserContext userContext = new UserContext())
             {
-                using (UserContext userContext = new UserContext()) {
-                    List<Contact> contacts = db.Contacts.Include("UserOwner")
+                    List<Contact> contacts = userContext.Contacts.Include("UserOwner")
                         .Include("UserOwned")
                         .ToList();
 
@@ -49,14 +44,13 @@ namespace ServerWCF.Services
                     {
                         if (contact.UserOwner.Id == ownerFromDb.Id && contact.UserOwned.Id == ownedFromDb.Id)
                         {
-                            db.Contacts.Remove(contact);
-                            db.SaveChanges();
+                            userContext.Contacts.Remove(contact);
+                            userContext.SaveChanges();
                             return true;
                         }
                     }
 
                     return false;
-                }
             }
         }
 

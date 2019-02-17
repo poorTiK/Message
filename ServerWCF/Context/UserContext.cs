@@ -15,34 +15,19 @@ namespace ServerWCF.Context
 
         public DbSet<User> Users { get; set; }
 
+        public DbSet<Contact> Contacts { get; set; }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            //modelBuilder.Entity<User>()
-            //  .HasMany(user => user.Contacts)
-            //  .WithRequired(contact => contact.UserOwned)
-            //  .Map(config =>
-            //  {
-            //      config.MapKey("UserOwnedId");
-            //      config.ToTable("Contacts");
-            //  });
+            modelBuilder.Entity<Contact>()
+                .HasRequired(s => s.UserOwned)
+                .WithMany()
+                .WillCascadeOnDelete(false);
 
-            //modelBuilder.Entity<User>()
-            //  .HasMany(user => user.Owners)
-            //  .WithRequired(contact => contact.UserOwner)
-            //  .Map(config =>
-            //  {
-            //      config.MapKey("UserOwnerId");
-            //      config.ToTable("Contacts");
-            //  });
-
-            //modelBuilder
-            //    .Entity<User>()
-            //    .HasMany(user => user.Contacts)
-            //    .WithRequired()
-            //    .Map(config =>
-            //    {
-            //        config.MapKey("UserOwnerId");
-            //    });
+            modelBuilder.Entity<Contact>()
+                .HasRequired(s => s.UserOwner)
+                .WithMany()
+                .WillCascadeOnDelete(false);
         }
     }
 }
