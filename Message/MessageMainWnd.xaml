@@ -111,7 +111,7 @@
                         <DropShadowEffect BlurRadius="40" ShadowDepth="3" Direction="281" Opacity="0.33"/>
                     </Border.Effect>
                     <Grid Background="#262626">
-                        <ListBox Foreground="#DDFFFFFF" Name="List">
+                        <ListBox Foreground="#DDFFFFFF" Name="List" ItemsSource="{Binding ContactsList}">
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
                                     <Grid>
@@ -129,8 +129,15 @@
                                             </Ellipse.Fill>
                                         </Ellipse>
 
-                                        <TextBlock Grid.Column="1" Grid.Row="0" Margin="10,0,0,0">Name Surname</TextBlock>
-                                        <TextBlock Grid.Column="1" Grid.Row="1" Margin="10,0,0,0" Foreground="#FF63A35D">Online</TextBlock>
+                                        <TextBlock Grid.Column="1" Grid.Row="0" Margin="10,0,0,0">
+                                            <TextBlock.Text>
+                                                <MultiBinding StringFormat="{}{0} + {1}">
+                                                    <Binding Path="FirstName" />
+                                                    <Binding Path="LastName" />
+                                                </MultiBinding>
+                                            </TextBlock.Text>
+                                        </TextBlock>
+                                        <TextBlock Grid.Column="1" Grid.Row="1" Margin="10,0,0,0" Foreground="#FF63A35D" Text="{Binding Path=LastOnline}"></TextBlock>
                                     </Grid>
                                 </DataTemplate>
                             </ListBox.ItemTemplate>

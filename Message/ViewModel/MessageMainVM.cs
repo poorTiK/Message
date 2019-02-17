@@ -9,16 +9,19 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using Message.AdditionalItems;
+using Message.ContactsServiceReference;
+using Contact = Message.ContactsServiceReference.Contact;
 
 namespace Message.ViewModel
 {
     class MessageMainVM : Prism.Mvvm.BindableBase
     {
-        UserServiceClient UserServiceClient;
+        UserServiceClient userServiceClient;
+        ContactsServiceClient contactsServiceClient;
 
         IView _view;
 
-        public User CurrentUser { get; set; }
+        public UserServiceReference.User CurrentUser { get; set; }
         
         private string _currentUserName;
         public string CurrentUserName
@@ -41,19 +44,41 @@ namespace Message.ViewModel
             set { SetProperty(ref _isDialogSearchVisible, value); }
         }
 
+        private List<UserServiceReference.User> _contactsList;
+        public List<UserServiceReference.User> ContactsList
+        {
+            get { return _contactsList; }
+            set { SetProperty(ref _contactsList, value); }
+        }
+
         public MessageMainVM(IView View)
         {
             _view = View;
 
-            UserServiceClient = new UserServiceClient();
+            userServiceClient = new UserServiceClient();
+            contactsServiceClient = new ContactsServiceClient();
         }
 
-        public MessageMainVM(IView View, User user)
+        public MessageMainVM(IView View, UserServiceReference.User user)
         {
             _view = View;
             CurrentUser = user;
             GlobalBase.CurrentUser = user;
-            UserServiceClient = new UserServiceClient();
+
+            userServiceClient = new UserServiceClient();
+            contactsServiceClient = new ContactsServiceClient();
+
+            ContactsList = userServiceClient.GetAllContacts(GlobalBase.CurrentUser);
+            //var res = contactsServiceClient.GetContacts(new ContactsServiceReference.User() { Login = GlobalBase.CurrentUser.Login });
+            //foreach (var item in res)
+            //{
+            //    ContactsList.Add(new UserServiceReference.User()
+            //    {
+            //        FirstName = item.UserOwned.FirstName,
+            //        LastName = item.UserOwned.LastName,
+            //        LastOnline = item.UserOwned.LastOnline
+            //    });
+            //}
         }
 
         private DelegateCommand _onContactsCommand;
@@ -77,6 +102,8 @@ namespace Message.ViewModel
             wnd.Owner = (Window)_view;
             wnd.ShowDialog();
 
+            Update();
+
             _view.SetOpacity(1);
         }
 
@@ -91,9 +118,19 @@ namespace Message.ViewModel
             _view.SetOpacity(1);
         }
 
-        public static void Update()
+        public void Update()
         {
-
+            ContactsList = userServiceClient.GetAllContacts(GlobalBase.CurrentUser);
+            //var res = contactsServiceClient.GetContacts(new ContactsServiceReference.User() { Login = GlobalBase.CurrentUser.Login });
+            //foreach (var item in res)
+            //{
+            //    ContactsList.Add(new UserServiceReference.User()
+            //    {
+            //        FirstName = item.UserOwned.FirstName,
+            //        LastName = item.UserOwned.LastName,
+            //        LastOnline = item.UserOwned.LastOnline
+            //    });
+            //}
         }
     }
 }

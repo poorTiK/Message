@@ -1,4 +1,5 @@
-﻿using Message.Interfaces;
+﻿using Message.ContactsServiceReference;
+using Message.Interfaces;
 using Message.Model;
 using Message.UserServiceReference;
 using Prism.Commands;
@@ -14,18 +15,18 @@ namespace Message.ViewModel
     class ContatsWindowVM : Prism.Mvvm.BindableBase
     {
         UserServiceClient UserServiceClient;
-
+        ContactsServiceClient contactsServiceClient;
         IView view;
 
-        private List<User> _contacts;
-        public List<User> ContactsList
+        private List<UserServiceReference.User> _contacts;
+        public List<UserServiceReference.User> ContactsList
         {
             get { return _contacts; }
             set { SetProperty(ref _contacts, value); }
         }
 
-        private User _selectedContact;
-        public User SelectedContact
+        private UserServiceReference.User _selectedContact;
+        public UserServiceReference.User SelectedContact
         {
             get { return _selectedContact; }
             set { SetProperty(ref _selectedContact, value); }
@@ -52,14 +53,25 @@ namespace Message.ViewModel
             view = iview;
 
             //todo: remove this before release
-            if(GlobalBase.CurrentUser.Login == "admin")
-            {
-                GlobalBase.CurrentUser = new User();
-                GlobalBase.CurrentUser.Id = 2;
-            }
+            //if(GlobalBase.CurrentUser.Login == "admin")
+            //{
+            //GlobalBase.CurrentUser = new User();
+            //GlobalBase.CurrentUser.Id = 2;
+            //}
 
             UserServiceClient = new UserServiceClient();
-            ContactsList = UserServiceClient.GetAllContacts(GlobalBase.CurrentUser);
+            contactsServiceClient = new ContactsServiceClient();
+
+            var res = contactsServiceClient.GetContacts(new ContactsServiceReference.User() { Login = GlobalBase.CurrentUser.Login });
+            foreach (var item in res)
+            {
+                ContactsList.Add(new UserServiceReference.User()
+                {
+                    FirstName = item.UserOwned.FirstName,
+                    LastName = item.UserOwned.LastName,
+                    LastOnline = item.UserOwned.LastOnline
+                });
+            }
         }
 
         private DelegateCommand _onAddContact;
@@ -86,9 +98,16 @@ namespace Message.ViewModel
 
         private void UpdateContacts()
         {
-
-
-            ContactsList = UserServiceClient.GetAllContacts(GlobalBase.CurrentUser);
+            var res = contactsServiceClient.GetContacts(new ContactsServiceReference.User() { Login = GlobalBase.CurrentUser.Login });
+            foreach (var item in res)
+            {
+                ContactsList.Add(new UserServiceReference.User()
+                {
+                    FirstName = item.UserOwned.FirstName,
+                    LastName = item.UserOwned.LastName,
+                    LastOnline = item.UserOwned.LastOnline
+                });
+            }
         }
     }
 }
