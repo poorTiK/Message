@@ -9,15 +9,12 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using Message.AdditionalItems;
-using Message.ContactsServiceReference;
-using Contact = Message.ContactsServiceReference.Contact;
 
 namespace Message.ViewModel
 {
     class MessageMainVM : Prism.Mvvm.BindableBase
     {
         UserServiceClient userServiceClient;
-        ContactsServiceClient contactsServiceClient;
 
         IView _view;
 
@@ -56,7 +53,6 @@ namespace Message.ViewModel
             _view = View;
 
             userServiceClient = new UserServiceClient();
-            contactsServiceClient = new ContactsServiceClient();
         }
 
         public MessageMainVM(IView View, UserServiceReference.User user)
@@ -66,19 +62,8 @@ namespace Message.ViewModel
             GlobalBase.CurrentUser = user;
 
             userServiceClient = new UserServiceClient();
-            contactsServiceClient = new ContactsServiceClient();
 
             ContactsList = userServiceClient.GetAllContacts(GlobalBase.CurrentUser);
-            //var res = contactsServiceClient.GetContacts(new ContactsServiceReference.User() { Login = GlobalBase.CurrentUser.Login });
-            //foreach (var item in res)
-            //{
-            //    ContactsList.Add(new UserServiceReference.User()
-            //    {
-            //        FirstName = item.UserOwned.FirstName,
-            //        LastName = item.UserOwned.LastName,
-            //        LastOnline = item.UserOwned.LastOnline
-            //    });
-            //}
         }
 
         private DelegateCommand _onContactsCommand;

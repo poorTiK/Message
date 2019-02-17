@@ -1,5 +1,4 @@
-﻿using Message.ContactsServiceReference;
-using Message.Interfaces;
+﻿using Message.Interfaces;
 using Message.Model;
 using Message.UserServiceReference;
 using Prism.Commands;
@@ -15,11 +14,10 @@ namespace Message.ViewModel
     class ContatsWindowVM : Prism.Mvvm.BindableBase
     {
         UserServiceClient UserServiceClient;
-        ContactsServiceClient contactsServiceClient;
         IView view;
 
-        private List<UserServiceReference.User> _contacts;
-        public List<UserServiceReference.User> ContactsList
+        private List<User> _contacts;
+        public List<User> ContactsList
         {
             get { return _contacts; }
             set { SetProperty(ref _contacts, value); }
@@ -60,18 +58,8 @@ namespace Message.ViewModel
             //}
 
             UserServiceClient = new UserServiceClient();
-            contactsServiceClient = new ContactsServiceClient();
 
-            var res = contactsServiceClient.GetContacts(new ContactsServiceReference.User() { Login = GlobalBase.CurrentUser.Login });
-            foreach (var item in res)
-            {
-                ContactsList.Add(new UserServiceReference.User()
-                {
-                    FirstName = item.UserOwned.FirstName,
-                    LastName = item.UserOwned.LastName,
-                    LastOnline = item.UserOwned.LastOnline
-                });
-            }
+            ContactsList = UserServiceClient.GetAllContacts(GlobalBase.CurrentUser);
         }
 
         private DelegateCommand _onAddContact;
@@ -98,16 +86,7 @@ namespace Message.ViewModel
 
         private void UpdateContacts()
         {
-            var res = contactsServiceClient.GetContacts(new ContactsServiceReference.User() { Login = GlobalBase.CurrentUser.Login });
-            foreach (var item in res)
-            {
-                ContactsList.Add(new UserServiceReference.User()
-                {
-                    FirstName = item.UserOwned.FirstName,
-                    LastName = item.UserOwned.LastName,
-                    LastOnline = item.UserOwned.LastOnline
-                });
-            }
+            ContactsList = UserServiceClient.GetAllContacts(GlobalBase.CurrentUser);
         }
     }
 }

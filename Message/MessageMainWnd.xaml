@@ -131,7 +131,7 @@
 
                                         <TextBlock Grid.Column="1" Grid.Row="0" Margin="10,0,0,0">
                                             <TextBlock.Text>
-                                                <MultiBinding StringFormat="{}{0} + {1}">
+                                                <MultiBinding StringFormat="{}{0} {1}">
                                                     <Binding Path="FirstName" />
                                                     <Binding Path="LastName" />
                                                 </MultiBinding>
