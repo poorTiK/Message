@@ -181,8 +181,12 @@ namespace Message.ViewModel
                 LastOnline = DateTime.Now
             };
 
+
             UserServiceClient.AddNewUser(markOwner);
             UserServiceClient.AddNewUser(billOwned);
+
+            //attaching new contact for Mark
+            UserServiceClient.AddContact(markOwner, billOwned);
 
             //attaching new contact for Mark
             UserServiceClient.AddContact(markOwner, billOwned);
