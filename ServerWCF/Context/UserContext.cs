@@ -40,6 +40,7 @@ namespace ServerWCF.Context
                 .HasRequired(s => s.Receiver)
                 .WithMany()
                 .WillCascadeOnDelete(false);
+
         }
     }
 }

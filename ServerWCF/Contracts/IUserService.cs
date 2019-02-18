@@ -36,5 +36,11 @@ namespace ServerWCF.Contracts
 
         [OperationContract]
         List<MessageT> FindMessage(string keyWord);
+
+        [OperationContract]
+        ApplicationSettings getAppSettings(User user);
+
+        [OperationContract]
+        bool saveAppSettings(ApplicationSettings appSettings);
     }
 }

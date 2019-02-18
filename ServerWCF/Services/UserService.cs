@@ -254,5 +254,45 @@ namespace ServerWCF.Services
                 }
             }
         }
+
+        public ApplicationSettings getAppSettings(User user)
+        {
+            using (UserContext context =  new UserContext())
+            {
+                ApplicationSettings appSettings = context.ApplicationSettings.Where(set => set.UserId == user.Id).FirstOrDefault();
+                return appSettings;
+            }
+        }
+
+        public bool saveAppSettings(ApplicationSettings appSettings)
+        {
+            using (UserContext context = new UserContext())
+            {
+                try
+                {
+                    ApplicationSettings appSettingsDb = context.ApplicationSettings.Where(set => set.UserId == appSettings.UserId).FirstOrDefault();
+
+                    if (appSettingsDb != null)
+                    {
+                        appSettingsDb.Language = appSettings.Language;
+                        appSettingsDb.Theme = appSettings.Theme;
+                        appSettingsDb.UserId = appSettings.UserId;
+                        appSettingsDb.WindowSize = appSettings.WindowSize;
+                        appSettingsDb.AllowNotifications = appSettings.AllowNotifications;
+                    }
+                    else
+                    {
+                        context.ApplicationSettings.Add(appSettings);
+                    }
+
+                    context.SaveChanges();
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    return false;
+                }
+            }
+        }
     }
 }

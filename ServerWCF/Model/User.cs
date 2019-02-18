@@ -45,9 +45,6 @@ namespace ServerWCF.Model
         public DateTime LastOnline { get; set; }
 
         [DataMember]
-        public ApplicationSettings ApplicationSettings { get; set; }
-
-        [DataMember]
         public List<Contact> Owners { get; set; }
 
         [DataMember]

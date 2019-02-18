@@ -13,19 +13,33 @@ namespace ServerWCF.Model
     public class ApplicationSettings
     {
         [Key]
-        [ForeignKey("User")]
-        public int UserId { get; set; }
+        [DataMember]
+        public int Id { get; set; }
 
+        [DataMember]
         public int WindowSize { get; set; }
 
+        [DataMember]
         public int Language { get; set; }
 
+        [DataMember]
+        public string Theme { get; set; }
+
+        [DataMember]
+        public int UserId{ get; set; }
+
+        [DataMember]
+        public bool AllowNotifications { get;set }
+
+        [ForeignKey("UserId")]
+        [DataMember]
         public User User { get; set; }
 
-        public ApplicationSettings(int windowSize, int language)
+        public ApplicationSettings(int windowSize, int language, string theme)
         {
             WindowSize = windowSize;
             Language = language;
+            Theme = theme;
         }
     }
 }
