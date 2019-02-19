@@ -28,7 +28,7 @@ namespace Message
         public ReceiveMessage(string text, DateTime date)
         {
             MessageText.Text = text;
-            SendTime.Text = date.ToString();
+            SendTime.Text = date.Hour + ":" + date.Minute;
         }
     }
 }

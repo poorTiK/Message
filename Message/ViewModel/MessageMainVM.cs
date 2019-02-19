@@ -102,18 +102,21 @@ namespace Message.ViewModel
             {
                 _view.MessageList.Clear();
                 var res = userServiceClient.GetMessages(GlobalBase.CurrentUser, SelectedContact, 50);
-                foreach (var mes in res)
+                if (res != null)
                 {
-                    _view.MessageList.Add(new MessageT()
+                    foreach (var mes in res)
                     {
-                        Content = mes.Content,
-                        DateOfSending = mes.DateOfSending,
-                        ReceiverId = mes.ReceiverId,
-                        SenderId = mes.SenderId,
-                        Type = mes.Type
-                    });
+                        _view.MessageList.Add(new MessageT()
+                        {
+                            Content = mes.Content,
+                            DateOfSending = mes.DateOfSending,
+                            ReceiverId = mes.ReceiverId,
+                            SenderId = mes.SenderId,
+                            Type = mes.Type
+                        });
+                    }
+                    _view.UpdateMessageList();
                 }
-                _view.UpdateMessageList();
             }
         }
 
@@ -150,6 +153,8 @@ namespace Message.ViewModel
                 _view.MessageList.Add(message);
 
                 _view.UpdateMessageList();
+
+                MessageText = string.Empty;
             }
         }
 
@@ -186,7 +191,21 @@ namespace Message.ViewModel
 
         public void ReceiveMessage(MessageT message)
         {
-            
+            if (message.SenderId == GlobalBase.CurrentUser.Id)
+            {
+                // test
+                //var user = userServiceClient.GetAllUsers().FirstOrDefault(x => x.Id == message.SenderId);
+                //var mes = "New message from  @" + user.Login + "\n" + "\"" + GlobalBase.Base64Decode(message.Content) + "\"";
+                //GlobalBase.ShowNotify("New message", mes);
+                //
+                return;
+            }
+            else
+            {
+                var user = userServiceClient.GetAllUsers().FirstOrDefault(x => x.Id == message.SenderId);
+                var mes = "New message from  @" + user.Login + "\n" + "\"" + GlobalBase.Base64Decode(message.Content) + "\"";
+                GlobalBase.ShowNotify("New message", mes);
+            }
         }
     }
 }

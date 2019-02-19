@@ -60,7 +60,14 @@
                     <Grid Background="#262626">
                         <Grid Margin="0">
                             <StackPanel Orientation="Vertical" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="15,5,0,0">
-                                <TextBlock Foreground="White">Name Surname</TextBlock>
+                                <TextBlock Foreground="White">
+                                    <TextBlock.Text>
+                                        <MultiBinding StringFormat="{}{0} {1}">
+                                            <Binding Path="SelectedContact.FirstName" />
+                                            <Binding Path="SelectedContact.LastName" />
+                                        </MultiBinding>
+                                    </TextBlock.Text>
+                                </TextBlock>
                                 <TextBlock Foreground="#FF63A35D">Online</TextBlock>
                             </StackPanel>
 
@@ -149,7 +156,7 @@
                         <ColumnDefinition Width="3*"/>
                         <ColumnDefinition Width="38*"/>
                     </Grid.ColumnDefinitions>
-                    <ScrollViewer Name="ScrollV" Grid.ColumnSpan="2">
+                    <ScrollViewer Name="ScrollV" Grid.ColumnSpan="2" VerticalAlignment="Bottom">
                         <StackPanel Name="MessageControl" Orientation="Vertical">
 
                         </StackPanel>
@@ -172,7 +179,11 @@
                                      VerticalContentAlignment="Stretch" Name="MessageTextBox"
                                      materialDesign:HintAssist.Hint="Write a message..." VerticalScrollBarVisibility="Auto"
                                      Foreground="White" Margin="10,2,0,2" VerticalAlignment="Center" 
-                                    Text="{Binding MessageText}"/>
+                                    Text="{Binding MessageText, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+                                <TextBox.InputBindings>
+                                    <KeyBinding Command="{Binding Path = OnSendMessage}" Key="Enter"/>
+                                </TextBox.InputBindings>
+                            </TextBox>
                             <Button Grid.Column="2" Style="{StaticResource MaterialDesignFlatButton}" HorizontalAlignment="Right"
                                 Command="{Binding OnSendMessage}">
                                 <materialDesign:PackIcon Kind="MessageTextOutline" Foreground="White" />

@@ -31,7 +31,7 @@ namespace Message
             InitializeComponent();
 
             MessageText.Text = text;
-            SendTime.Text = date.ToString();
+            SendTime.Text = date.Hour + ":" + date.Minute;
         }
     }
 }

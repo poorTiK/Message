@@ -170,8 +170,8 @@ namespace Message
 
             MinimizeButton.Click += (s, e) => WindowState = WindowState.Minimized;
             MaximizeMinimizeButton.Click += (s, e) => WindowState = WindowState == WindowState.Maximized ? WindowState.Normal : WindowState.Maximized;
-            CloseButton.Click += (s, e) => Close();
-            
+            CloseButton.Click += (s, e) => Application.Current.Shutdown(0);
+
         }
 
         public void AnimatedResize(int h, int w){ }
@@ -235,7 +235,7 @@ namespace Message
             foreach (var message in MessageList)
             {
                 if (message.SenderId == GlobalBase.CurrentUser.Id)
-                    MessageControl.Children.Add(new SendMessage(message.Content.ToString(), message.DateOfSending));
+                    MessageControl.Children.Add(new SendMessage(GlobalBase.Base64Decode(message.Content), message.DateOfSending));
                 else
                     MessageControl.Children.Add(new ReceiveMessage(message.Content.ToString(), message.DateOfSending));
             }
