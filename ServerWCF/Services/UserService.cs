@@ -221,6 +221,12 @@ namespace ServerWCF.Services
                         {
                             messagesToReturn.Add(message);
                         }
+
+                        if(message.Sender.Login == receiver.Login && 
+                            message.Receiver.Login == sender.Login)
+                        {
+                            messagesToReturn.Add(message);
+                        }
                     }
                     return messagesToReturn;
                 }
