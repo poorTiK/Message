@@ -25,8 +25,8 @@ namespace ServerWCF.Services
             {
                 try
                 {
-                    User dbSender = userContext.Users.Where(u => u.Login == message.Sender.Login).First();
-                    User dbReceiver = userContext.Users.Where(u => u.Login == message.Receiver.Login).First();
+                    User dbSender = userContext.Users.Where(u => u.Id == message.SenderId).First();
+                    User dbReceiver = userContext.Users.Where(u => u.Id == message.ReceiverId).First();
 
                     message.Sender = dbSender;
                     message.Receiver = dbReceiver;
