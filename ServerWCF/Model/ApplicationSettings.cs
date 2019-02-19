@@ -29,7 +29,7 @@ namespace ServerWCF.Model
         public int UserId{ get; set; }
 
         [DataMember]
-        public bool AllowNotifications { get;set }
+        public bool AllowNotifications { get; set; }
 
         [ForeignKey("UserId")]
         [DataMember]

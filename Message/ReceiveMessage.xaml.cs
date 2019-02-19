@@ -24,5 +24,11 @@ namespace Message
         {
             InitializeComponent();
         }
+
+        public ReceiveMessage(string text, DateTime date)
+        {
+            MessageText.Text = text;
+            SendTime.Text = date.ToString();
+        }
     }
 }

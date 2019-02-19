@@ -111,7 +111,7 @@
                         <DropShadowEffect BlurRadius="40" ShadowDepth="3" Direction="281" Opacity="0.33"/>
                     </Border.Effect>
                     <Grid Background="#262626">
-                        <ListBox Foreground="#DDFFFFFF" Name="List" ItemsSource="{Binding ContactsList}">
+                        <ListBox Foreground="#DDFFFFFF" Name="List" ItemsSource="{Binding ContactsList}" SelectedItem="{Binding SelectedContact, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
                                     <Grid>

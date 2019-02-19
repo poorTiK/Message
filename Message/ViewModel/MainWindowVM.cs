@@ -255,10 +255,13 @@ namespace Message.ViewModel
                         FirstName = "admin",
                         LastName = "admin"
                     };
-                    MessageMainWnd wnd = new MessageMainWnd(admin);
-                    wnd.Show();
+                    Application.Current.Dispatcher.Invoke(new Action((() =>
+                    {
+                        MessageMainWnd wnd = new MessageMainWnd(admin);
+                        wnd.Show();
 
-                    view.CloseWindow();
+                        view.CloseWindow();
+                    })));
                     return;
                 }
                 else if (ValidateOnLogin())

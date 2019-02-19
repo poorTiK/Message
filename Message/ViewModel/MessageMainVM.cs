@@ -4,21 +4,26 @@ using Message.UserServiceReference;
 using Prism.Commands;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using Message.AdditionalItems;
+using Message.MessageServiceReference;
+using MessageT = Message.MessageServiceReference.MessageT;
+using System.ServiceModel;
+using System.Text;
 
 namespace Message.ViewModel
 {
-    class MessageMainVM : Prism.Mvvm.BindableBase
+    class MessageMainVM : Prism.Mvvm.BindableBase, IMessageServiceCallback
     {
-        UserServiceClient userServiceClient;
+        private UserServiceClient userServiceClient;
+        private MessageServiceClient _messageServiceClient;
+        private IMessageServiceCallback _messageServiceCallback;
+        private InstanceContext site;
 
-        IView _view;
+        IMessaging _view;
 
-        public UserServiceReference.User CurrentUser { get; set; }
+        public User CurrentUser { get; set; }
         
         private string _currentUserName;
         public string CurrentUserName
@@ -41,21 +46,39 @@ namespace Message.ViewModel
             set { SetProperty(ref _isDialogSearchVisible, value); }
         }
 
-        private List<UserServiceReference.User> _contactsList;
-        public List<UserServiceReference.User> ContactsList
+        private List<User> _contactsList;
+        public List<User> ContactsList
         {
             get { return _contactsList; }
             set { SetProperty(ref _contactsList, value); }
         }
 
-        public MessageMainVM(IView View)
+        private User _selectedContact;
+        public User SelectedContact
+        {
+            get { return _selectedContact; }
+            set
+            {
+                SetProperty(ref _selectedContact, value);
+                SelectedContactChanged();
+            }
+        }
+
+        private string _messageText;
+        public string MessageText
+        {
+            get { return _messageText; }
+            set { SetProperty(ref _messageText, value); }
+        }
+
+        public MessageMainVM(IMessaging View)
         {
             _view = View;
 
             userServiceClient = new UserServiceClient();
         }
 
-        public MessageMainVM(IView View, UserServiceReference.User user)
+        public MessageMainVM(IMessaging View, User user)
         {
             _view = View;
             CurrentUser = user;
@@ -63,7 +86,35 @@ namespace Message.ViewModel
 
             userServiceClient = new UserServiceClient();
 
+            _messageServiceCallback = this;
+            site = new InstanceContext(_messageServiceCallback);
+
+            _messageServiceClient = new MessageServiceClient(site);
+
             ContactsList = userServiceClient.GetAllContacts(GlobalBase.CurrentUser);
+            SelectedContact = new User();
+            
+        }
+
+        private void SelectedContactChanged()
+        {
+            if (_view.MessageList != null)
+            {
+                _view.MessageList.Clear();
+                var res = userServiceClient.GetMessages(GlobalBase.CurrentUser, SelectedContact, 50);
+                foreach (var mes in res)
+                {
+                    _view.MessageList.Add(new MessageT()
+                    {
+                        Content = mes.Content,
+                        DateOfSending = mes.DateOfSending,
+                        ReceiverId = mes.ReceiverId,
+                        SenderId = mes.SenderId,
+                        Type = mes.Type
+                    });
+                }
+                _view.UpdateMessageList();
+            }
         }
 
         private DelegateCommand _onContactsCommand;
@@ -78,6 +129,29 @@ namespace Message.ViewModel
         public DelegateCommand DialogSearchCommand =>
             _dialogSearchCommand ?? (_dialogSearchCommand = new DelegateCommand(() => { IsDialogSearchVisible = !IsDialogSearchVisible; }));
 
+        private DelegateCommand _onSendMessage;
+        public DelegateCommand OnSendMessage =>
+            _onSendMessage ?? (_onSendMessage = new DelegateCommand(ExecuteOnSendMessage));
+
+        private void ExecuteOnSendMessage()
+        {
+            if (SelectedContact != null && !string.IsNullOrWhiteSpace(MessageText))
+            {
+                var message = new MessageT()
+                {
+                    Content = Encoding.UTF8.GetBytes(MessageText),
+                    DateOfSending = DateTime.Now,
+                    SenderId = GlobalBase.CurrentUser.Id,
+                    ReceiverId = SelectedContact.Id,
+                    Type = "TEXT",
+                };
+
+                _messageServiceClient.SendMessage(message);
+                _view.MessageList.Add(message);
+
+                _view.UpdateMessageList();
+            }
+        }
 
         private void ExecuteOnSettingsCommand()
         {
@@ -101,21 +175,18 @@ namespace Message.ViewModel
             wnd.ShowDialog();
 
             _view.SetOpacity(1);
+
+            Update();
         }
 
         public void Update()
         {
             ContactsList = userServiceClient.GetAllContacts(GlobalBase.CurrentUser);
-            //var res = contactsServiceClient.GetContacts(new ContactsServiceReference.User() { Login = GlobalBase.CurrentUser.Login });
-            //foreach (var item in res)
-            //{
-            //    ContactsList.Add(new UserServiceReference.User()
-            //    {
-            //        FirstName = item.UserOwned.FirstName,
-            //        LastName = item.UserOwned.LastName,
-            //        LastOnline = item.UserOwned.LastOnline
-            //    });
-            //}
+        }
+
+        public void ReceiveMessage(MessageT message)
+        {
+            
         }
     }
 }

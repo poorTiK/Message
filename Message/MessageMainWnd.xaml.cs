@@ -1,20 +1,24 @@
 ﻿using Message.Interfaces;
+using Message.MessageServiceReference;
 using Message.UserServiceReference;
 using Message.ViewModel;
 using System;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Interop;
 using System.Windows.Media.Animation;
 using System.Windows.Navigation;
+using Message.Model;
+using MessageT = Message.MessageServiceReference.MessageT;
 
 namespace Message
 {
     /// <summary>
     /// Interaction logic for MessageMainWnd.xaml
     /// </summary>
-    public partial class MessageMainWnd : Window, IView
+    public partial class MessageMainWnd : Window, IMessaging
     {
         #region Win32 Magic
         private static IntPtr WindowProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
@@ -132,6 +136,8 @@ namespace Message
         internal static extern IntPtr MonitorFromWindow(IntPtr handle, int flags);
         #endregion
 
+        public List<MessageServiceReference.MessageT> MessageList { get; set; }
+
         public MessageMainWnd()
         {
             InitializeComponent();
@@ -148,6 +154,8 @@ namespace Message
             DataContext = new MessageMainVM(this, user);
 
             init();
+
+            MessageList = new List<MessageT>();
         }
 
         void init()
@@ -158,18 +166,12 @@ namespace Message
                 HwndSource.FromHwnd(handle).AddHook(new HwndSourceHook(WindowProc));
             };
 
-            for (int i = 0; i < 100; i++)
-            {
-                MessageControl.Children.Add(new SendMessage());
-                MessageControl.Children.Add(new ReceiveMessage());
-            }
             ScrollV.ScrollToEnd();
 
             MinimizeButton.Click += (s, e) => WindowState = WindowState.Minimized;
             MaximizeMinimizeButton.Click += (s, e) => WindowState = WindowState == WindowState.Maximized ? WindowState.Normal : WindowState.Maximized;
             CloseButton.Click += (s, e) => Close();
-
-            //List.Items.Add(new object());
+            
         }
 
         public void AnimatedResize(int h, int w){ }
@@ -224,6 +226,21 @@ namespace Message
         public void SetOpacity(double opacity)
         {
             //MessageMainWindow.Opacity = opacity;
+        }
+
+        public void UpdateMessageList()
+        {
+            MessageControl.Children.Clear();
+
+            foreach (var message in MessageList)
+            {
+                if (message.SenderId == GlobalBase.CurrentUser.Id)
+                    MessageControl.Children.Add(new SendMessage(message.Content.ToString(), message.DateOfSending));
+                else
+                    MessageControl.Children.Add(new ReceiveMessage(message.Content.ToString(), message.DateOfSending));
+            }
+
+            ScrollV.ScrollToEnd();
         }
     }
 }

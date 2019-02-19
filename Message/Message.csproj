@@ -94,6 +94,7 @@
       <DependentUpon>ForgotPassWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Interfaces\IMainView.cs" />
+    <Compile Include="Interfaces\IMessaging.cs" />
     <Compile Include="Interfaces\IView.cs" />
     <Compile Include="MessageMainWnd.xaml.cs">
       <DependentUpon>MessageMainWnd.xaml</DependentUpon>

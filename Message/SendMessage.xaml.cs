@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Automation.Peers;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
@@ -23,6 +24,14 @@ namespace Message
         public SendMessage()
         {
             InitializeComponent();
+        }
+
+        public SendMessage(string text, DateTime date)
+        {
+            InitializeComponent();
+
+            MessageText.Text = text;
+            SendTime.Text = date.ToString();
         }
     }
 }
