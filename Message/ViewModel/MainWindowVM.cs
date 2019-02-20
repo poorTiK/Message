@@ -122,14 +122,22 @@ namespace Message.ViewModel
         public string RPassword
         {
             get { return passwordSupplier.GetPasswordForRegistration(); }
-            set { SetProperty(ref _RPassword, value); }
+            set
+            {
+                SetProperty(ref _RPassword, value);
+                passwordSupplier.ClearPassword();
+            }
         }
 
         private string _Rep_RPassword;
         public string Rep_RPassword
         {
             get { return passwordSupplier.GetRepPasswordForRegistration(); }
-            set { SetProperty(ref _Rep_RPassword, value); }
+            set
+            {
+                SetProperty(ref _Rep_RPassword, value);
+                passwordSupplier.ClearPassword();
+            }
         }
 
         #endregion
@@ -306,6 +314,7 @@ namespace Message.ViewModel
                             Application.Current.Dispatcher.Invoke(new Action((() =>
                             {
                                 CustomMessageBox.Show("Registration done");
+                                Clear();
                                 ExecuteOnBackCommand();
                             })));
                         }
@@ -394,6 +403,16 @@ namespace Message.ViewModel
             {
                 return true;
             }
+        }
+
+        private void Clear()
+        {
+            Name = string.Empty;
+            Surname = string.Empty;
+            UserLogin = string.Empty;
+            Email = string.Empty;
+            RPassword = string.Empty;
+            Rep_RPassword = string.Empty;
         }
     }
 }

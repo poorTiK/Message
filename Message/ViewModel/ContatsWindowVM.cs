@@ -30,8 +30,8 @@ namespace Message.ViewModel
             set { SetProperty(ref _caption, value); }
         }
 
-        private UserServiceReference.User _selectedContact;
-        public UserServiceReference.User SelectedContact
+        private User _selectedContact;
+        public User SelectedContact
         {
             get { return _selectedContact; }
             set { SetProperty(ref _selectedContact, value); }
@@ -41,15 +41,15 @@ namespace Message.ViewModel
         public string ContactsSearch
         {
             get { return _contactsSearch; }
-            set { SetProperty(ref _contactsSearch, value);
+            set
+            {
+                SetProperty(ref _contactsSearch, value);
+
                 if (!string.IsNullOrEmpty(value))
-                {
                     ContactsList = UserServiceClient.GetAllUsersByLogin(ContactsSearch);
-                }
                 else
-                {
                     UpdateContacts();
-                }
+
                 ManageControls();
             }
         }
@@ -57,13 +57,6 @@ namespace Message.ViewModel
         public ContatsWindowVM(IView iview)
         {
             view = iview;
-
-            //todo: remove this before release
-            //if(GlobalBase.CurrentUser.Login == "admin")
-            //{
-            //GlobalBase.CurrentUser = new User();
-            //GlobalBase.CurrentUser.Id = 2;
-            //}
 
             UserServiceClient = new UserServiceClient();
 

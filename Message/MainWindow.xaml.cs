@@ -104,6 +104,12 @@ namespace Message
             return Rep_RPasswordBox.Password;
         }
 
+        public void ClearPassword()
+        {
+            RPasswordBox.Password = string.Empty;
+            Rep_RPasswordBox.Password = string.Empty;
+        }
+
         public void SetOpacity(double opacity)
         {
             

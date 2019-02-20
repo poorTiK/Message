@@ -11,5 +11,6 @@ namespace Message.Interfaces
         string GetPasswordForLogin();
         string GetPasswordForRegistration();
         string GetRepPasswordForRegistration();
+        void ClearPassword();
     }
 }
