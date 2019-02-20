@@ -68,6 +68,17 @@ namespace Message.ViewModel
             }
         }
 
+        private string _dialogSearchStr;
+        public string DialogSearchStr
+        {
+            get { return _dialogSearchStr; }
+            set
+            {
+                SetProperty(ref _dialogSearchStr, value);
+                OnDialogSearch();
+            }
+        }
+
         private string _messageText;
         public string MessageText
         {
@@ -134,8 +145,14 @@ namespace Message.ViewModel
             _onSettingsCommand ?? (_onSettingsCommand = new DelegateCommand(ExecuteOnSettingsCommand));
 
         private DelegateCommand _dialogSearchCommand;
+
         public DelegateCommand DialogSearchCommand =>
-            _dialogSearchCommand ?? (_dialogSearchCommand = new DelegateCommand(() => { IsDialogSearchVisible = !IsDialogSearchVisible; }));
+            _dialogSearchCommand ?? (_dialogSearchCommand = new DelegateCommand(() =>
+            {
+                IsDialogSearchVisible = !IsDialogSearchVisible;
+                if (!IsDialogSearchVisible)
+                    SelectedContactChanged();
+            }));
 
         private DelegateCommand _onSendMessage;
         public DelegateCommand OnSendMessage =>
@@ -187,6 +204,41 @@ namespace Message.ViewModel
             _view.SetOpacity(1);
 
             Update();
+        }
+
+        void OnDialogSearch()
+        {
+            if (IsDialogSearchVisible)
+            {
+                if (SelectedContact != null)
+                {
+                    _view.MessageList.Clear();
+                    var res = userServiceClient.GetMessages(GlobalBase.CurrentUser, SelectedContact, 50);
+                    if (res != null)
+                    {
+                        foreach (var mes in res)
+                        {
+                            var message = new MessageT()
+                            {
+                                Content = mes.Content,
+                                DateOfSending = mes.DateOfSending,
+                                ReceiverId = mes.ReceiverId,
+                                SenderId = mes.SenderId,
+                                Type = mes.Type
+                            };
+                            if (GlobalBase.Base64Decode(mes.Content).Contains(DialogSearchStr))
+                            {
+                                _view.MessageList.Add(message);
+                            }
+                        }
+                        _view.UpdateMessageList();
+                    }
+                }
+            }
+            else
+            {
+                SelectedContactChanged();
+            }
         }
 
         public void Update()

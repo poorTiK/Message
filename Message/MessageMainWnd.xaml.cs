@@ -237,7 +237,7 @@ namespace Message
                 if (message.SenderId == GlobalBase.CurrentUser.Id)
                     MessageControl.Children.Add(new SendMessage(GlobalBase.Base64Decode(message.Content), message.DateOfSending));
                 else
-                    MessageControl.Children.Add(new ReceiveMessage(message.Content.ToString(), message.DateOfSending));
+                    MessageControl.Children.Add(new ReceiveMessage(GlobalBase.Base64Decode(message.Content), message.DateOfSending));
             }
 
             ScrollV.ScrollToEnd();

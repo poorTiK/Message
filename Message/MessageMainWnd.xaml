@@ -74,7 +74,7 @@
                             <StackPanel Name="DialogSearch" Visibility="{Binding IsDialogSearchVisible, Converter={StaticResource BoolToVisConverter}}"
                                 Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,122,0">
                                 <materialDesign:PackIcon Kind="Magnify" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" />
-                                <TextBox Margin="0,10,10,10" Width="122" Foreground="White" SelectionBrush="#FF919191"/>
+                                <TextBox Margin="0,10,10,10" Width="122" Text="{Binding DialogSearchStr, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Foreground="White" SelectionBrush="#FF919191"/>
                             </StackPanel>
 
                             <Menu Background="#262626" HorizontalAlignment="Right" >
