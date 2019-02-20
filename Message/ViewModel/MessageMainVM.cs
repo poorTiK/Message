@@ -11,15 +11,19 @@ using Message.MessageServiceReference;
 using MessageT = Message.MessageServiceReference.MessageT;
 using System.ServiceModel;
 using System.Text;
+using System.Net;
 
 namespace Message.ViewModel
 {
     class MessageMainVM : Prism.Mvvm.BindableBase, IMessageServiceCallback
     {
         private UserServiceClient userServiceClient;
+
+        private InstanceContext site;
         private MessageServiceClient _messageServiceClient;
         private IMessageServiceCallback _messageServiceCallback;
-        private InstanceContext site;
+        const string HOST = "192.168.0.255";
+        IPAddress groupAddress;
 
         IMessaging _view;
 
@@ -86,9 +90,10 @@ namespace Message.ViewModel
 
             userServiceClient = new UserServiceClient();
 
+            //callback
+            groupAddress = IPAddress.Parse(HOST);
             _messageServiceCallback = this;
             site = new InstanceContext(_messageServiceCallback);
-
             _messageServiceClient = new MessageServiceClient(site);
 
             ContactsList = userServiceClient.GetAllContacts(GlobalBase.CurrentUser);
