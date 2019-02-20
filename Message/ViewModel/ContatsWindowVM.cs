@@ -23,6 +23,13 @@ namespace Message.ViewModel
             set { SetProperty(ref _contacts, value); }
         }
 
+        private string _caption;
+        public string Caption
+        {
+            get { return _caption; }
+            set { SetProperty(ref _caption, value); }
+        }
+
         private UserServiceReference.User _selectedContact;
         public UserServiceReference.User SelectedContact
         {
@@ -35,15 +42,16 @@ namespace Message.ViewModel
         {
             get { return _contactsSearch; }
             set { SetProperty(ref _contactsSearch, value);
-                ContactsList = UserServiceClient.GetAllUsersByLogin(ContactsSearch);
+                if (!string.IsNullOrEmpty(value))
+                {
+                    ContactsList = UserServiceClient.GetAllUsersByLogin(ContactsSearch);
+                }
+                else
+                {
+                    UpdateContacts();
+                }
+                ManageControls();
             }
-        }
-
-        private string _searchString;
-        public string SearchString
-        {
-            get { return _searchString; }
-            set { SetProperty(ref _searchString, value); }
         }
 
         public ContatsWindowVM(IView iview)
@@ -60,6 +68,8 @@ namespace Message.ViewModel
             UserServiceClient = new UserServiceClient();
 
             ContactsList = UserServiceClient.GetAllContacts(GlobalBase.CurrentUser);
+
+            ManageControls();
         }
 
         private DelegateCommand _onAddContact;
@@ -82,11 +92,23 @@ namespace Message.ViewModel
                 UserServiceClient.AddContact(GlobalBase.CurrentUser, SelectedContact);
                 UpdateContacts();
             }
+
+            ManageControls();
         }
 
         private void UpdateContacts()
         {
             ContactsList = UserServiceClient.GetAllContacts(GlobalBase.CurrentUser);
+
+            ManageControls();
+        }
+
+        void ManageControls()
+        {
+            if (string.IsNullOrEmpty(ContactsSearch))
+                Caption = "Contacts";
+            else
+                Caption = "Contacts search";
         }
     }
 }
