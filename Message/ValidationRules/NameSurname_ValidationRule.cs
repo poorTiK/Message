@@ -15,7 +15,7 @@ namespace Message.ValidationRules
                     return new ValidationResult(true, null);
                 }
             }
-            return new ValidationResult(false, "\"Enter name in format \"Name Surname\"");
+            return new ValidationResult(false, "Field must be filled");
         }
     }
 }

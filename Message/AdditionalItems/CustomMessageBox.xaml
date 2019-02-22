@@ -38,7 +38,7 @@
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="75"/>
             </Grid.RowDefinitions>
-            <TextBlock Grid.Row="0" Name="txtMsg" Margin="15" FontSize="16" Foreground="White" Text="{Binding Message}"></TextBlock>
+            <TextBlock Grid.Row="0" Name="txtMsg" Margin="15" FontSize="16" Foreground="White" Text="{Binding Message}"/>
             <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,10,0">
                 <Button Margin="5,0" Name="Yes" Click="Button_Click">Yes</Button>
                 <Button Margin="5,0" Name="No" Click="Button_Click">No</Button>

@@ -2,11 +2,15 @@
 using System.Net;
 using System.Net.Mail;
 using System.ServiceModel;
+using System.Threading.Tasks;
 using Message.Interfaces;
 using Message.UserServiceReference;
 using Message.MessageServiceReference;
 using Prism.Commands;
 using System.Windows;
+using Message.AdditionalItems;
+using System;
+using System.Threading;
 
 namespace Message.ViewModel
 {
@@ -52,20 +56,61 @@ namespace Message.ViewModel
             set { SetProperty(ref _isMail, value); }
         }
 
+        private bool _isSending;
+        public bool IsSending
+        {
+            get { return _isSending; }
+            set { SetProperty(ref _isSending, value); }
+        }
+
         private DelegateCommand _onSend;
         public DelegateCommand Send =>
             _onSend ?? (_onSend = new DelegateCommand(OnSend));
 
         private void OnSend()
         {
-            if (!string.IsNullOrWhiteSpace(Email))
+            IsSending = true;
+
+            var ts = new CancellationTokenSource();
+            CancellationToken ct = ts.Token;
+            Task.Factory.StartNew(() =>
             {
-                var user = userServiceClient.GetAllUsers().First(x => x.Email == Email);
-                if (user != null)
+                if (!string.IsNullOrWhiteSpace(Email))
                 {
-                    SendPassWithMail(user);
+                    var user = userServiceClient.GetAllUsers().First(x => x.Email == Email);
+                    if (user != null)
+                    {
+                        SendPassWithMail(user);
+                        return;
+                    }
                 }
-            }
+
+                if (!string.IsNullOrWhiteSpace(Login))
+                {
+                    var user = userServiceClient.GetAllUsersByLogin(Login).FirstOrDefault();
+                    if (user != null)
+                    {
+                        SendPassWithMail(user);
+                        return;
+                    }
+                }
+
+                Application.Current.Dispatcher.Invoke(new Action((() =>
+                {
+                    CustomMessageBox.Show("Error", "Can't find user :(");
+                    ts.Cancel();
+                })));
+            }, ct).ContinueWith((task =>
+            {
+                if (!ct.IsCancellationRequested)
+                {
+                    Application.Current.Dispatcher.Invoke(new Action((() =>
+                    {
+                        CustomMessageBox.Show("Password restore", "The message has been sent to email");
+                    })));
+                }
+                IsSending = false;
+            }));
         }
 
         private DelegateCommand _onBack;
@@ -79,17 +124,24 @@ namespace Message.ViewModel
 
         private void SendPassWithMail(User user)
         {
-            var from = new MailAddress("sh3rgame@gmail.com"); // make custom mail adress
-            var to = new MailAddress(user.Email);
+                var from = new MailAddress("messagePassRestoration@gmail.com"); // make custom mail adress
+                var to = new MailAddress(user.Email);
 
-            var message = new MailMessage(from, to);
-            message.Subject = "Password restore";
-            message.Body = "Your pass - " + user.Password;
+                var message = new MailMessage(from, to);
+                message.Subject = "Password restore";
+                message.Body = "Your pass - " + user.Password;
 
-            var smtp = new SmtpClient("smtp.gmail.com", 587);
-            smtp.Credentials = new NetworkCredential("sh3rgame@gmail.com", "Ap98Msh77");
-            smtp.EnableSsl = true;
-            smtp.SendMailAsync(message);
+                var smtp = new SmtpClient("smtp.gmail.com", 587);
+                smtp.Credentials = new NetworkCredential("messagePassRestoration@gmail.com", "messageApp1");
+                smtp.EnableSsl = true;
+                smtp.SendMailAsync(message);
+
+                Application.Current.Dispatcher.Invoke(new Action((() =>
+                {
+                    CustomMessageBox.Show("Password restore", "The message has been sent to email");
+                    IsSending = false;
+                })));
+            
         }
 
         public void Test()

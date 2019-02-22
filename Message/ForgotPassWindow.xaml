@@ -16,6 +16,10 @@
         <WindowChrome CaptionHeight="0"/>
     </WindowChrome.WindowChrome>
 
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVisConverter" />
+    </Window.Resources>
+
     <Grid Background="#353636" Width="300">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="50"/>
@@ -64,7 +68,11 @@
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
 
-            <Button Grid.Column="0" Margin="5" Command="{Binding Send}">Send</Button>
+            <Button Grid.Column="0" Margin="5" Command="{Binding Send}"
+                    materialDesign:ButtonProgressAssist.Value="-1"
+                    materialDesign:ButtonProgressAssist.IsIndicatorVisible="{Binding IsSending}"
+                    materialDesign:ButtonProgressAssist.IsIndeterminate="{Binding IsSending}"
+                    >Send</Button>
             <Button Grid.Column="1" Margin="5" Command="{Binding Back}">Back</Button>
         </Grid>
     </Grid>

@@ -15,7 +15,7 @@ namespace Message.ValidationRules
                     return new ValidationResult(true, null);
                 }
             }
-            return new ValidationResult(false, "\"Enter login in format \"Login123\"");
+            return new ValidationResult(false, "\"Login123\"");
         }
     }
 }

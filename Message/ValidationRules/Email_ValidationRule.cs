@@ -15,7 +15,7 @@ namespace Message.ValidationRules
                     return new ValidationResult(true, null);
                 }
             }
-            return new ValidationResult(false, "Use Email like : \"example@domain.com\"");
+            return new ValidationResult(false, "\"example@domain.com\"");
         }
     }
 }
