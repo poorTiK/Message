@@ -338,7 +338,11 @@ namespace ServerWCF.Services
                 {
                     usersOnline.Remove(callbackData);
 
-                    foreach(CallbackData innerCallbackData in usersOnline)
+                    User userToChangeStatus = userContext.Users.Where(u => u.Id == user.Id).FirstOrDefault();
+                    userToChangeStatus.Status = DateTime.Now.ToString();
+                    userContext.SaveChanges();
+
+                    foreach (CallbackData innerCallbackData in usersOnline)
                     {
                         Thread t = new Thread(new ParameterizedThreadStart(userLeaveCallback));
                         t.IsBackground = true;
@@ -354,10 +358,10 @@ namespace ServerWCF.Services
 
             foreach (CallbackData innerCallbackData in usersOnline)
             {
-                //if (innerCallbackData != callbackData)
-                //{
+                if (innerCallbackData != callbackData)
+                {
                     innerCallbackData.UserCallback.UserCame(callbackData.User);
-                //}
+                }
             }
         }
 
