@@ -4,7 +4,7 @@ using System.ServiceModel;
 
 namespace ServerWCF.Contracts
 {
-    [ServiceContract]
+    [ServiceContract(CallbackContract = typeof(IUserCallback))]
     public interface IUserService
     {
         [OperationContract]
@@ -23,13 +23,13 @@ namespace ServerWCF.Contracts
         bool RemoveContact(User owner, User owned);
 
         [OperationContract]
-        ICollection<User> GetAllContacts(User owner);
+        List<User> GetAllContacts(User owner);
 
         [OperationContract]
-        ICollection<User> GetAllUsers();
+        List<User> GetAllUsers();
 
         [OperationContract]
-        ICollection<User> GetAllUsersByLogin(string login);
+        User GetUserByLogin(string login);
 
         [OperationContract]
         List<MessageT> GetMessages(User sender, User receiver, int limin);
@@ -42,5 +42,23 @@ namespace ServerWCF.Contracts
 
         [OperationContract]
         bool saveAppSettings(ApplicationSettings appSettings);
+
+        [OperationContract]
+        List<User> FindUsersByLogin(string login);
+
+        [OperationContract(IsOneWay = true)]
+        void onUserCame(User user);
+
+        [OperationContract(IsOneWay = true)]
+        void onUserLeave(User user);
+    }
+
+    public interface IUserCallback
+    {
+        [OperationContract(IsOneWay = true)]
+        void UserLeave(User user);
+
+        [OperationContract(IsOneWay = true)]
+        void UserCame(User user);
     }
 }

@@ -1,7 +1,7 @@
 ﻿using Message.Interfaces;
 using Message.MessageServiceReference;
-using Message.Model;
 using Message.UserServiceReference;
+using Message.Model;
 using Prism.Commands;
 using System;
 using System.Collections.Generic;
@@ -14,15 +14,20 @@ using MessageT = Message.MessageServiceReference.MessageT;
 
 namespace Message.ViewModel
 {
-    internal class MessageMainVM : Prism.Mvvm.BindableBase, IMessageServiceCallback
+    internal class MessageMainVM : Prism.Mvvm.BindableBase, IMessageServiceCallback, IUserServiceCallback
     {
+
+
+        private const string HOST = "192.168.0.255";
+        private IPAddress groupAddress;
+
+        private InstanceContext usersSite;
         private UserServiceClient userServiceClient;
+        private IUserServiceCallback _userServiceCallback;
 
         private InstanceContext site;
         private MessageServiceClient _messageServiceClient;
         private IMessageServiceCallback _messageServiceCallback;
-        private const string HOST = "192.168.0.255";
-        private IPAddress groupAddress;
 
         private IMessaging _view;
 
@@ -95,19 +100,19 @@ namespace Message.ViewModel
         public MessageMainVM(IMessaging View)
         {
             _view = View;
-
-            userServiceClient = new UserServiceClient();
+            
+            //callback for user
+            _userServiceCallback = this;
+            usersSite = new InstanceContext(_userServiceCallback);
+            userServiceClient = new UserServiceClient(usersSite);
         }
 
-        public MessageMainVM(IMessaging View, User user)
+        public MessageMainVM(IMessaging View, User user) : this(View)
         {
-            _view = View;
             CurrentUser = user;
             GlobalBase.CurrentUser = user;
 
-            userServiceClient = new UserServiceClient();
-
-            //callback
+            //callback for messages
             groupAddress = IPAddress.Parse(HOST);
             _messageServiceCallback = this;
             site = new InstanceContext(_messageServiceCallback);
@@ -115,6 +120,8 @@ namespace Message.ViewModel
 
             ContactsList = userServiceClient.GetAllContacts(GlobalBase.CurrentUser);
             SelectedContact = new User();
+
+            userServiceClient.onUserCame(user);
         }
 
         private void SelectedContactChanged()
@@ -268,6 +275,16 @@ namespace Message.ViewModel
                 var mes = "New message from  @" + user.Login + "\n" + "\"" + GlobalBase.Base64Decode(message.Content) + "\"";
                 GlobalBase.ShowNotify("New message", mes);
             }
+        }
+
+        public void UserLeave(User user)
+        {
+            MessageBox.Show("Works(Leave) - " + user.FirstName + " - (currentUser - " + GlobalBase.CurrentUser.FirstName + ")");
+        }
+
+        public void UserCame(User user)
+        {
+            MessageBox.Show("Works(Came) - " + user.FirstName + " - (currentUser - " + GlobalBase.CurrentUser.FirstName +  ")");
         }
     }
 }

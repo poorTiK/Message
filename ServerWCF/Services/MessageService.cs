@@ -16,7 +16,7 @@ namespace ServerWCF.Services
         private struct MessageData
         {
             public MessageT message;
-            public IClientCallback callback;
+            public IMessageCallback callback;
         }
 
         public void SendMessage(MessageT message)
@@ -34,7 +34,7 @@ namespace ServerWCF.Services
                     userContext.Messages.Add(message);
                     userContext.SaveChanges();
 
-                    IClientCallback callback = OperationContext.Current.GetCallbackChannel<IClientCallback>();
+                    IMessageCallback callback = OperationContext.Current.GetCallbackChannel<IMessageCallback>();
 
                     MessageData messageData = new MessageData();
                     messageData.message = message;

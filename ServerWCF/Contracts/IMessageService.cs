@@ -1,21 +1,16 @@
 ﻿using ServerWCF.Model;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.ServiceModel;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ServerWCF.Contracts
 {
-    [ServiceContract(CallbackContract = typeof(IClientCallback))]
+    [ServiceContract(CallbackContract = typeof(IMessageCallback))]
     public interface IMessageService
     {
         [OperationContract(IsOneWay = true)]
         void SendMessage(MessageT message);
     }
 
-    public interface IClientCallback
+    public interface IMessageCallback
     {
         [OperationContract(IsOneWay = true)]
         void ReceiveMessage(MessageT message);

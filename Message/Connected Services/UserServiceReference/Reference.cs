@@ -23,9 +23,6 @@ namespace Message.UserServiceReference {
         private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private Message.UserServiceReference.ApplicationSettings ApplicationSettingsField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
         private byte[] AvatarField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
@@ -47,9 +44,6 @@ namespace Message.UserServiceReference {
         private string LastNameField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private System.DateTime LastOnlineField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string LoginField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
@@ -61,6 +55,9 @@ namespace Message.UserServiceReference {
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string PhoneField;
         
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string StatusField;
+        
         [global::System.ComponentModel.BrowsableAttribute(false)]
         public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
             get {
@@ -68,19 +65,6 @@ namespace Message.UserServiceReference {
             }
             set {
                 this.extensionDataField = value;
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public Message.UserServiceReference.ApplicationSettings ApplicationSettings {
-            get {
-                return this.ApplicationSettingsField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.ApplicationSettingsField, value) != true)) {
-                    this.ApplicationSettingsField = value;
-                    this.RaisePropertyChanged("ApplicationSettings");
-                }
             }
         }
         
@@ -176,19 +160,6 @@ namespace Message.UserServiceReference {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.DateTime LastOnline {
-            get {
-                return this.LastOnlineField;
-            }
-            set {
-                if ((this.LastOnlineField.Equals(value) != true)) {
-                    this.LastOnlineField = value;
-                    this.RaisePropertyChanged("LastOnline");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
         public string Login {
             get {
                 return this.LoginField;
@@ -240,32 +211,16 @@ namespace Message.UserServiceReference {
             }
         }
         
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        
-        protected void RaisePropertyChanged(string propertyName) {
-            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
-            if ((propertyChanged != null)) {
-                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
-            }
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="ApplicationSettings", Namespace="http://schemas.datacontract.org/2004/07/ServerWCF.Model")]
-    [System.SerializableAttribute()]
-    public partial class ApplicationSettings : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
-        
-        [System.NonSerializedAttribute()]
-        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
-        
-        [global::System.ComponentModel.BrowsableAttribute(false)]
-        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Status {
             get {
-                return this.extensionDataField;
+                return this.StatusField;
             }
             set {
-                this.extensionDataField = value;
+                if ((object.ReferenceEquals(this.StatusField, value) != true)) {
+                    this.StatusField = value;
+                    this.RaisePropertyChanged("Status");
+                }
             }
         }
         
@@ -481,8 +436,149 @@ namespace Message.UserServiceReference {
         }
     }
     
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="ApplicationSettings", Namespace="http://schemas.datacontract.org/2004/07/ServerWCF.Model")]
+    [System.SerializableAttribute()]
+    public partial class ApplicationSettings : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+        
+        [System.NonSerializedAttribute()]
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private bool AllowNotificationsField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int IdField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int LanguageField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string ThemeField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private Message.UserServiceReference.User UserField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int UserIdField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int WindowSizeField;
+        
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+            get {
+                return this.extensionDataField;
+            }
+            set {
+                this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public bool AllowNotifications {
+            get {
+                return this.AllowNotificationsField;
+            }
+            set {
+                if ((this.AllowNotificationsField.Equals(value) != true)) {
+                    this.AllowNotificationsField = value;
+                    this.RaisePropertyChanged("AllowNotifications");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int Id {
+            get {
+                return this.IdField;
+            }
+            set {
+                if ((this.IdField.Equals(value) != true)) {
+                    this.IdField = value;
+                    this.RaisePropertyChanged("Id");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int Language {
+            get {
+                return this.LanguageField;
+            }
+            set {
+                if ((this.LanguageField.Equals(value) != true)) {
+                    this.LanguageField = value;
+                    this.RaisePropertyChanged("Language");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Theme {
+            get {
+                return this.ThemeField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.ThemeField, value) != true)) {
+                    this.ThemeField = value;
+                    this.RaisePropertyChanged("Theme");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public Message.UserServiceReference.User User {
+            get {
+                return this.UserField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.UserField, value) != true)) {
+                    this.UserField = value;
+                    this.RaisePropertyChanged("User");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int UserId {
+            get {
+                return this.UserIdField;
+            }
+            set {
+                if ((this.UserIdField.Equals(value) != true)) {
+                    this.UserIdField = value;
+                    this.RaisePropertyChanged("UserId");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int WindowSize {
+            get {
+                return this.WindowSizeField;
+            }
+            set {
+                if ((this.WindowSizeField.Equals(value) != true)) {
+                    this.WindowSizeField = value;
+                    this.RaisePropertyChanged("WindowSize");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="UserServiceReference.IUserService")]
+    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="UserServiceReference.IUserService", CallbackContract=typeof(Message.UserServiceReference.IUserServiceCallback))]
     public interface IUserService {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/AddOrUpdateUser", ReplyAction="http://tempuri.org/IUserService/AddOrUpdateUserResponse")]
@@ -527,11 +623,11 @@ namespace Message.UserServiceReference {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/GetAllUsers", ReplyAction="http://tempuri.org/IUserService/GetAllUsersResponse")]
         System.Threading.Tasks.Task<System.Collections.Generic.List<Message.UserServiceReference.User>> GetAllUsersAsync();
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/GetAllUsersByLogin", ReplyAction="http://tempuri.org/IUserService/GetAllUsersByLoginResponse")]
-        System.Collections.Generic.List<Message.UserServiceReference.User> GetAllUsersByLogin(string login);
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/GetUserByLogin", ReplyAction="http://tempuri.org/IUserService/GetUserByLoginResponse")]
+        Message.UserServiceReference.User GetUserByLogin(string login);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/GetAllUsersByLogin", ReplyAction="http://tempuri.org/IUserService/GetAllUsersByLoginResponse")]
-        System.Threading.Tasks.Task<System.Collections.Generic.List<Message.UserServiceReference.User>> GetAllUsersByLoginAsync(string login);
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/GetUserByLogin", ReplyAction="http://tempuri.org/IUserService/GetUserByLoginResponse")]
+        System.Threading.Tasks.Task<Message.UserServiceReference.User> GetUserByLoginAsync(string login);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/GetMessages", ReplyAction="http://tempuri.org/IUserService/GetMessagesResponse")]
         System.Collections.Generic.List<Message.UserServiceReference.MessageT> GetMessages(Message.UserServiceReference.User sender, Message.UserServiceReference.User receiver, int limin);
@@ -544,6 +640,46 @@ namespace Message.UserServiceReference {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/FindMessage", ReplyAction="http://tempuri.org/IUserService/FindMessageResponse")]
         System.Threading.Tasks.Task<System.Collections.Generic.List<Message.UserServiceReference.MessageT>> FindMessageAsync(string keyWord);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/getAppSettings", ReplyAction="http://tempuri.org/IUserService/getAppSettingsResponse")]
+        Message.UserServiceReference.ApplicationSettings getAppSettings(Message.UserServiceReference.User user);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/getAppSettings", ReplyAction="http://tempuri.org/IUserService/getAppSettingsResponse")]
+        System.Threading.Tasks.Task<Message.UserServiceReference.ApplicationSettings> getAppSettingsAsync(Message.UserServiceReference.User user);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/saveAppSettings", ReplyAction="http://tempuri.org/IUserService/saveAppSettingsResponse")]
+        bool saveAppSettings(Message.UserServiceReference.ApplicationSettings appSettings);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/saveAppSettings", ReplyAction="http://tempuri.org/IUserService/saveAppSettingsResponse")]
+        System.Threading.Tasks.Task<bool> saveAppSettingsAsync(Message.UserServiceReference.ApplicationSettings appSettings);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/FindUsersByLogin", ReplyAction="http://tempuri.org/IUserService/FindUsersByLoginResponse")]
+        System.Collections.Generic.List<Message.UserServiceReference.User> FindUsersByLogin(string login);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/FindUsersByLogin", ReplyAction="http://tempuri.org/IUserService/FindUsersByLoginResponse")]
+        System.Threading.Tasks.Task<System.Collections.Generic.List<Message.UserServiceReference.User>> FindUsersByLoginAsync(string login);
+        
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IUserService/onUserCame")]
+        void onUserCame(Message.UserServiceReference.User user);
+        
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IUserService/onUserCame")]
+        System.Threading.Tasks.Task onUserCameAsync(Message.UserServiceReference.User user);
+        
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IUserService/onUserLeave")]
+        void onUserLeave(Message.UserServiceReference.User user);
+        
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IUserService/onUserLeave")]
+        System.Threading.Tasks.Task onUserLeaveAsync(Message.UserServiceReference.User user);
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    public interface IUserServiceCallback {
+        
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IUserService/UserLeave")]
+        void UserLeave(Message.UserServiceReference.User user);
+        
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IUserService/UserCame")]
+        void UserCame(Message.UserServiceReference.User user);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -552,25 +688,26 @@ namespace Message.UserServiceReference {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public partial class UserServiceClient : System.ServiceModel.ClientBase<Message.UserServiceReference.IUserService>, Message.UserServiceReference.IUserService {
+    public partial class UserServiceClient : System.ServiceModel.DuplexClientBase<Message.UserServiceReference.IUserService>, Message.UserServiceReference.IUserService {
         
-        public UserServiceClient() {
+        public UserServiceClient(System.ServiceModel.InstanceContext callbackInstance) : 
+                base(callbackInstance) {
         }
         
-        public UserServiceClient(string endpointConfigurationName) : 
-                base(endpointConfigurationName) {
+        public UserServiceClient(System.ServiceModel.InstanceContext callbackInstance, string endpointConfigurationName) : 
+                base(callbackInstance, endpointConfigurationName) {
         }
         
-        public UserServiceClient(string endpointConfigurationName, string remoteAddress) : 
-                base(endpointConfigurationName, remoteAddress) {
+        public UserServiceClient(System.ServiceModel.InstanceContext callbackInstance, string endpointConfigurationName, string remoteAddress) : 
+                base(callbackInstance, endpointConfigurationName, remoteAddress) {
         }
         
-        public UserServiceClient(string endpointConfigurationName, System.ServiceModel.EndpointAddress remoteAddress) : 
-                base(endpointConfigurationName, remoteAddress) {
+        public UserServiceClient(System.ServiceModel.InstanceContext callbackInstance, string endpointConfigurationName, System.ServiceModel.EndpointAddress remoteAddress) : 
+                base(callbackInstance, endpointConfigurationName, remoteAddress) {
         }
         
-        public UserServiceClient(System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress) : 
-                base(binding, remoteAddress) {
+        public UserServiceClient(System.ServiceModel.InstanceContext callbackInstance, System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress) : 
+                base(callbackInstance, binding, remoteAddress) {
         }
         
         public bool AddOrUpdateUser(Message.UserServiceReference.User user) {
@@ -629,12 +766,12 @@ namespace Message.UserServiceReference {
             return base.Channel.GetAllUsersAsync();
         }
         
-        public System.Collections.Generic.List<Message.UserServiceReference.User> GetAllUsersByLogin(string login) {
-            return base.Channel.GetAllUsersByLogin(login);
+        public Message.UserServiceReference.User GetUserByLogin(string login) {
+            return base.Channel.GetUserByLogin(login);
         }
         
-        public System.Threading.Tasks.Task<System.Collections.Generic.List<Message.UserServiceReference.User>> GetAllUsersByLoginAsync(string login) {
-            return base.Channel.GetAllUsersByLoginAsync(login);
+        public System.Threading.Tasks.Task<Message.UserServiceReference.User> GetUserByLoginAsync(string login) {
+            return base.Channel.GetUserByLoginAsync(login);
         }
         
         public System.Collections.Generic.List<Message.UserServiceReference.MessageT> GetMessages(Message.UserServiceReference.User sender, Message.UserServiceReference.User receiver, int limin) {
@@ -651,6 +788,46 @@ namespace Message.UserServiceReference {
         
         public System.Threading.Tasks.Task<System.Collections.Generic.List<Message.UserServiceReference.MessageT>> FindMessageAsync(string keyWord) {
             return base.Channel.FindMessageAsync(keyWord);
+        }
+        
+        public Message.UserServiceReference.ApplicationSettings getAppSettings(Message.UserServiceReference.User user) {
+            return base.Channel.getAppSettings(user);
+        }
+        
+        public System.Threading.Tasks.Task<Message.UserServiceReference.ApplicationSettings> getAppSettingsAsync(Message.UserServiceReference.User user) {
+            return base.Channel.getAppSettingsAsync(user);
+        }
+        
+        public bool saveAppSettings(Message.UserServiceReference.ApplicationSettings appSettings) {
+            return base.Channel.saveAppSettings(appSettings);
+        }
+        
+        public System.Threading.Tasks.Task<bool> saveAppSettingsAsync(Message.UserServiceReference.ApplicationSettings appSettings) {
+            return base.Channel.saveAppSettingsAsync(appSettings);
+        }
+        
+        public System.Collections.Generic.List<Message.UserServiceReference.User> FindUsersByLogin(string login) {
+            return base.Channel.FindUsersByLogin(login);
+        }
+        
+        public System.Threading.Tasks.Task<System.Collections.Generic.List<Message.UserServiceReference.User>> FindUsersByLoginAsync(string login) {
+            return base.Channel.FindUsersByLoginAsync(login);
+        }
+        
+        public void onUserCame(Message.UserServiceReference.User user) {
+            base.Channel.onUserCame(user);
+        }
+        
+        public System.Threading.Tasks.Task onUserCameAsync(Message.UserServiceReference.User user) {
+            return base.Channel.onUserCameAsync(user);
+        }
+        
+        public void onUserLeave(Message.UserServiceReference.User user) {
+            base.Channel.onUserLeave(user);
+        }
+        
+        public System.Threading.Tasks.Task onUserLeaveAsync(Message.UserServiceReference.User user) {
+            return base.Channel.onUserLeaveAsync(user);
         }
     }
 }

@@ -42,7 +42,7 @@ namespace ServerWCF.Model
         public byte[] Avatar { get; set; }
 
         [DataMember]
-        public DateTime LastOnline { get; set; }
+        public string Status { get; set; }
 
         [DataMember]
         public List<Contact> Owners { get; set; }
@@ -57,7 +57,7 @@ namespace ServerWCF.Model
             Login = loginId;
             Password = password;
             FirstName = firstName;
-            LastOnline = DateTime.Now;
+            Status = "online";
         }
 
         public User()
@@ -72,7 +72,7 @@ namespace ServerWCF.Model
             Email = "";
             Bio = "";
             Avatar = new byte[0];
-            LastOnline = DateTime.Now;
+            Status = "online";
         }
     }
 }

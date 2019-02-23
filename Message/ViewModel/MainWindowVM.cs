@@ -3,18 +3,21 @@ using Message.Interfaces;
 using Message.UserServiceReference;
 using Prism.Commands;
 using System;
+using System.ServiceModel;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 
 namespace Message.ViewModel
 {
-    internal class MainWindowVM : Prism.Mvvm.BindableBase
+    internal class MainWindowVM : Prism.Mvvm.BindableBase, IUserServiceCallback
     {
         private IView view;
         private IPasswordSupplier passwordSupplier;
 
+        private InstanceContext usersSite;
         private UserServiceClient UserServiceClient;
+        private IUserServiceCallback _userServiceCallback;
 
         private DelegateCommand _onStartRegister;
 
@@ -161,7 +164,11 @@ namespace Message.ViewModel
             view = iView;
             passwordSupplier = ipasswordSupplier;
 
-            UserServiceClient = new UserServiceClient();
+
+            //callback for user
+            _userServiceCallback = this;
+            usersSite = new InstanceContext(_userServiceCallback);
+            UserServiceClient = new UserServiceClient(usersSite);
 
             IsLoginProgress = false;
             IsRegisterProgress = false;
@@ -183,7 +190,7 @@ namespace Message.ViewModel
                 Password = "123123",
                 FirstName = "Admin",
                 LastName = "Purdik",
-                LastOnline = DateTime.Now
+                Status = "online"
             };
 
             User steveOwned = new User()
@@ -193,7 +200,7 @@ namespace Message.ViewModel
                 Password = "123123",
                 FirstName = "Steve",
                 LastName = "Jobs",
-                LastOnline = DateTime.Now
+                Status = "online"
             };
 
             User billOwned = new User()
@@ -203,7 +210,7 @@ namespace Message.ViewModel
                 Password = "123123",
                 FirstName = "Bill",
                 LastName = "Gates",
-                LastOnline = DateTime.Now
+                Status = "online"
             };
 
             User markOwner = new User()
@@ -213,7 +220,7 @@ namespace Message.ViewModel
                 Password = "123123",
                 FirstName = "Mark",
                 LastName = "Zuckerberg",
-                LastOnline = DateTime.Now
+                Status = "online"
             };
 
             UserServiceClient.AddOrUpdateUser(markOwner);
@@ -224,11 +231,6 @@ namespace Message.ViewModel
 
             //just another user in db
             UserServiceClient.AddOrUpdateUser(steveOwned);
-
-            ////verify that contact is detached
-            //UserServiceClient.RemoveContact(markOwner, billOwned);
-
-            //UserServiceClient.GetMessages(markOwner, billOwned, 10);
         }
 
         private void ExecuteOnStartRegister()
@@ -299,10 +301,10 @@ namespace Message.ViewModel
                         FirstName = Name,
                         LastName = Surname,
                         Email = Email,
-                        LastOnline = DateTime.Now.Date
+                        Status = "online"
                     };
 
-                    if (UserServiceClient.GetAllUsersByLogin(UserLogin) == null) //if time move validation parts to ValidateOnRegister()
+                    if (UserServiceClient.GetUserByLogin(UserLogin) == null) //if time move validation parts to ValidateOnRegister()
                     {
                         if (UserServiceClient.AddOrUpdateUser(user))
                         {
@@ -404,6 +406,16 @@ namespace Message.ViewModel
             Email = string.Empty;
             RPassword = string.Empty;
             Rep_RPassword = string.Empty;
+        }
+
+        public void UserLeave(User user)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UserCame(User user)
+        {
+            throw new NotImplementedException();
         }
     }
 }
