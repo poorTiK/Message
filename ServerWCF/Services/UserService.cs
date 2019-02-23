@@ -354,10 +354,10 @@ namespace ServerWCF.Services
 
             foreach (CallbackData innerCallbackData in usersOnline)
             {
-                //if (innerCallbackData != callbackData)
-                //{
+                if (innerCallbackData != callbackData)
+                {
                     innerCallbackData.UserCallback.UserCame(callbackData.User);
-                //}
+                }
             }
         }
 

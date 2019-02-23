@@ -4,17 +4,20 @@ using Message.Model;
 using Message.UserServiceReference;
 using Prism.Commands;
 using System;
+using System.ServiceModel;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 
 namespace Message.ViewModel
 {
-    internal class UserProfileWindowVM : Prism.Mvvm.BindableBase
+    internal class UserProfileWindowVM : Prism.Mvvm.BindableBase, IUserServiceCallback
     {
         private IView _view;
 
+        private InstanceContext usersSite;
         private UserServiceClient UserServiceClient;
+        private IUserServiceCallback _userServiceCallback;
 
         private string _currentUserName;
 
@@ -119,7 +122,9 @@ namespace Message.ViewModel
         public UserProfileWindowVM(IView view)
         {
             _view = view;
-            UserServiceClient = new UserServiceClient();
+            _userServiceCallback = this;
+            usersSite = new InstanceContext(_userServiceCallback);
+            UserServiceClient = new UserServiceClient(usersSite);
 
             UserName = GlobalBase.CurrentUser.FirstName;
             UserLastName = GlobalBase.CurrentUser.LastName;
@@ -198,6 +203,16 @@ namespace Message.ViewModel
             {
                 IsNewChanges = true;
             }
+        }
+
+        public void UserLeave(User user)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UserCame(User user)
+        {
+            throw new NotImplementedException();
         }
     }
 }
