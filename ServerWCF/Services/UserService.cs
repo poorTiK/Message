@@ -12,6 +12,8 @@ namespace ServerWCF.Services
 {
     public class UserService : IUserService
     {
+        private static List<CallbackData> usersOnline = new List<CallbackData>();
+
         public bool AddContact(User owner, User owned)
         {
             using (UserContext userContext = new UserContext())
@@ -84,7 +86,7 @@ namespace ServerWCF.Services
                         result.Bio = user.Bio;
                         result.Avatar = user.Avatar;
                         result.FirstName = user.FirstName;
-                        result.LastOnline = user.LastOnline;
+                        result.Status = user.Status;
                         result.Phone = user.Phone;
                         result.Password = user.Password;
                     }
@@ -105,11 +107,11 @@ namespace ServerWCF.Services
             }
         }
 
-        public ICollection<User> GetAllContacts(User owner)
+        public List<User> GetAllContacts(User owner)
         {
             using (UserContext db = new UserContext())
             {
-                List<User> contactsForOwner = null;
+                List<User> contactsForOwner = new List<User>();
                 try
                 {
                     var userId = owner.Id;
@@ -122,7 +124,7 @@ namespace ServerWCF.Services
                 }
                 catch (Exception ex)
                 {
-
+                    contactsForOwner = new List<User>();
                 }
 
                 return contactsForOwner;
@@ -130,34 +132,34 @@ namespace ServerWCF.Services
             
         }
 
-        public ICollection<User> GetAllUsers()
+        public List<User> GetAllUsers()
         {
             using (UserContext db = new UserContext())
             {
+                List<User> allUsers = new List<User>();
                 try
                 {
-                    return db.Users.ToList();
+                    allUsers = db.Users.ToList();
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    return null;
-                    throw;
+                    allUsers = new List<User>();
                 }
+                return allUsers;
             }
         }
 
-        public ICollection<User> GetAllUsersByLogin(string login)
+        public User GetUserByLogin(string login)
         {
             using (UserContext db = new UserContext())
             {
                 try
                 {
-                    return db.Users.Where(x => x.Login.Contains(login)).ToList();
+                    return db.Users.Where(x => x.Login.Contains(login)).FirstOrDefault();
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
                     return null;
-                    throw;
                 }
             }
         }
@@ -206,11 +208,11 @@ namespace ServerWCF.Services
         {
             using(UserContext context = new UserContext())
             {
+                List<MessageT> messagesToReturn = new List<MessageT>();
                 try
                 {
-                    List<MessageT> messagesToReturn = new List<MessageT>();
                     foreach (MessageT message in context.Messages.Include("Sender").Include("Receiver"))
-                    {
+                    {   
                         if (messagesToReturn.Count == limin)
                         {
                             break;
@@ -228,12 +230,13 @@ namespace ServerWCF.Services
                             messagesToReturn.Add(message);
                         }
                     }
-                    return messagesToReturn;
                 }
                 catch (Exception ex)
                 {
-                    return null;
+                    messagesToReturn = new List<MessageT>();
                 }
+
+                return messagesToReturn;
             }
         }
 
@@ -241,9 +244,10 @@ namespace ServerWCF.Services
         {
             using (UserContext userContext = new UserContext())
             {
+                List<MessageT> searchingResult = new List<MessageT>();
+
                 try
                 {
-                    List<MessageT> searchingResult = new List<MessageT>();
                     foreach (MessageT message in userContext.Messages.Where(mes => mes.Type == "TEXT").ToList())
                     {
                         string textMessage = System.Text.Encoding.UTF8.GetString(message.Content);
@@ -252,12 +256,13 @@ namespace ServerWCF.Services
                             searchingResult.Add(message);
                         }
                     }
-                    return searchingResult;
                 }
                 catch (Exception ex)
                 {
-                    return null;
+                    searchingResult = new List<MessageT>();
                 }
+
+                return searchingResult;
             }
         }
 
@@ -298,6 +303,101 @@ namespace ServerWCF.Services
                 {
                     return false;
                 }
+            }
+        }
+
+        public void onUserCame(User user)
+        {
+            using(UserContext userContext = new UserContext())
+            {
+                User dbUser = userContext.Users.Where(u => u.Id == user.Id).FirstOrDefault();
+
+                if (dbUser != null)
+                {
+                    CallbackData callbackData = new CallbackData();
+                    callbackData.User = dbUser;
+
+                    IUserCallback callback = OperationContext.Current.GetCallbackChannel<IUserCallback>();
+                    callbackData.UserCallback = callback;
+
+                    usersOnline.Add(callbackData);
+
+                    Thread t = new Thread(new ParameterizedThreadStart(userCameCallback));
+                    t.IsBackground = true;
+                    t.Start(callbackData);
+                }
+            }
+        }
+
+        public void onUserLeave(User user)
+        {
+            using (UserContext userContext = new UserContext())
+            {
+                CallbackData callbackData = usersOnline.Where(cd => cd.User.Id == user.Id).FirstOrDefault();
+                if (callbackData != null)
+                {
+                    usersOnline.Remove(callbackData);
+
+                    foreach(CallbackData innerCallbackData in usersOnline)
+                    {
+                        Thread t = new Thread(new ParameterizedThreadStart(userLeaveCallback));
+                        t.IsBackground = true;
+                        t.Start(innerCallbackData);
+                    }
+                }
+            }
+        }
+
+        private void userCameCallback(object callbackDataObj)
+        {
+            CallbackData callbackData = callbackDataObj as CallbackData;
+
+            foreach (CallbackData innerCallbackData in usersOnline)
+            {
+                //if (innerCallbackData != callbackData)
+                //{
+                    innerCallbackData.UserCallback.UserCame(callbackData.User);
+                //}
+            }
+        }
+
+        private void userLeaveCallback(object callbackDataObj)
+        {
+            CallbackData callbackData = callbackDataObj as CallbackData;
+
+            foreach(CallbackData innerCallbackData in usersOnline)
+            {
+                innerCallbackData.UserCallback.UserLeave(callbackData.User);
+            }
+        }
+
+        public List<User> FindUsersByLogin(string keyWorkForLogin)
+        {
+            using(UserContext usersContext = new UserContext()) 
+            {
+                List<User> searchinfResult = new List<User>();
+                try
+                {
+                    searchinfResult = usersContext.Users.Where(u => u.Login.Contains(keyWorkForLogin)).ToList();
+                }
+                catch(Exception ex)
+                {
+                    searchinfResult = new List<User>();
+                }
+
+                return searchinfResult;
+            } 
+        }
+
+        private class CallbackData
+        {
+            public User User
+            {
+                get;set;
+            }
+            public IUserCallback UserCallback
+            {
+                get;set;
             }
         }
     }

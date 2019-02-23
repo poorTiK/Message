@@ -4,12 +4,18 @@ using Message.UserServiceReference;
 using Prism.Commands;
 using System;
 using System.Collections.Generic;
+using System.ServiceModel;
+using System.Windows;
 
 namespace Message.ViewModel
 {
-    internal class ContatsWindowVM : Prism.Mvvm.BindableBase
+    internal class ContatsWindowVM : Prism.Mvvm.BindableBase, IUserServiceCallback
     {
+        private InstanceContext usersSite;
         private UserServiceClient UserServiceClient;
+        private IUserServiceCallback _userServiceCallback;
+
+
         private IView view;
 
         private List<User> _contacts;
@@ -47,7 +53,7 @@ namespace Message.ViewModel
 
                 if (!string.IsNullOrEmpty(value))
                 {
-                    ContactsList = UserServiceClient.GetAllUsersByLogin(ContactsSearch);
+                    ContactsList = UserServiceClient.FindUsersByLogin(ContactsSearch);
                 }
                 else
                 {
@@ -62,7 +68,9 @@ namespace Message.ViewModel
         {
             view = iview;
 
-            UserServiceClient = new UserServiceClient();
+            _userServiceCallback = this;
+            usersSite = new InstanceContext(_userServiceCallback);
+            UserServiceClient = new UserServiceClient(usersSite);
 
             ContactsList = UserServiceClient.GetAllContacts(GlobalBase.CurrentUser);
 
@@ -122,6 +130,16 @@ namespace Message.ViewModel
             {
                 Caption = "Contacts search";
             }
+        }
+
+        public void UserLeave(User user)
+        {
+            int test = 10;
+        }
+
+        public void UserCame(User user)
+        {
+            int test = 20;
         }
     }
 }

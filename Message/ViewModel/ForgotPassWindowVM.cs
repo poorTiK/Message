@@ -7,22 +7,30 @@ using System;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
+using System.ServiceModel;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 
 namespace Message.ViewModel
 {
-    internal class ForgotPassWindowVM : Prism.Mvvm.BindableBase, IMessageServiceCallback
+    internal class ForgotPassWindowVM : Prism.Mvvm.BindableBase, IUserServiceCallback
     {
         private IView view;
+
+        private InstanceContext usersSite;
         private UserServiceClient userServiceClient;
+        private IUserServiceCallback _userServiceCallback;
 
         public ForgotPassWindowVM(IView view)
         {
             this.view = view;
 
-            userServiceClient = new UserServiceClient();
+            //callback for user
+            _userServiceCallback = this;
+            usersSite = new InstanceContext(_userServiceCallback);
+            userServiceClient = new UserServiceClient(usersSite);
+
             IsLogin = true;
             IsMail = false;
         }
@@ -92,7 +100,7 @@ namespace Message.ViewModel
 
                 if (!string.IsNullOrWhiteSpace(Login))
                 {
-                    var user = userServiceClient.GetAllUsersByLogin(Login).FirstOrDefault();
+                    var user = userServiceClient.GetUserByLogin(Login);
                     if (user != null)
                     {
                         SendPassWithMail(user);
@@ -149,9 +157,14 @@ namespace Message.ViewModel
             })));
         }
 
-        public void ReceiveMessage(MessageServiceReference.MessageT message)
+        public void UserLeave(User user)
         {
-            MessageBox.Show("Works");
+            throw new NotImplementedException();
+        }
+
+        public void UserCame(User user)
+        {
+            throw new NotImplementedException();
         }
     }
 }
