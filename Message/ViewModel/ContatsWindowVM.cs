@@ -73,6 +73,15 @@ namespace Message.ViewModel
         public DelegateCommand CloseCommand =>
             _onClose ?? (_onClose = new DelegateCommand(ExecuteOnCloseCommand));
 
+        private DelegateCommand _openProfile;
+        public DelegateCommand OpenProfile =>
+            _openProfile ?? (_openProfile = new DelegateCommand(ExecuteOnOpenProfile));
+
+        private void ExecuteOnOpenProfile()
+        {
+            throw new NotImplementedException();
+        }
+
         private void ExecuteOnCloseCommand()
         {
             view.CloseWindow();

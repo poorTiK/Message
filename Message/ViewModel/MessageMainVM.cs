@@ -250,11 +250,6 @@ namespace Message.ViewModel
         {
             if (message.SenderId == GlobalBase.CurrentUser.Id)
             {
-                // test
-                //var user = userServiceClient.GetAllUsers().FirstOrDefault(x => x.Id == message.SenderId);
-                //var mes = "New message from  @" + user.Login + "\n" + "\"" + GlobalBase.Base64Decode(message.Content) + "\"";
-                //GlobalBase.ShowNotify("New message", mes);
-                //
                 return;
             }
             else

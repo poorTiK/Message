@@ -61,6 +61,14 @@
 
                         <TextBlock Grid.Column="1" Grid.Row="0" Margin="10,0,0,0" Foreground="White" Text="{Binding Path=FirstName}"></TextBlock>
                         <TextBlock Grid.Column="1" Grid.Row="1" Margin="10,0,0,0" Foreground="#FF63A35D" Text="{Binding Path=Login}"></TextBlock>
+
+                        <Grid.ContextMenu>
+                            <ContextMenu Background="#262626">
+                                <MenuItem Background="#262626" Foreground="White"
+                                          Header="View profile"
+                                          Command="{Binding OpenProfile}"></MenuItem>
+                            </ContextMenu>
+                        </Grid.ContextMenu>
                     </Grid>
                 </DataTemplate>
             </ListBox.ItemTemplate>

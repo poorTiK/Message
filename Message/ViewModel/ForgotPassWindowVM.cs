@@ -144,11 +144,6 @@ namespace Message.ViewModel
             
         }
 
-        public void Test()
-        {
-            throw new System.NotImplementedException();
-        }
-
         public void ReceiveMessage(MessageServiceReference.MessageT message)
         {
             MessageBox.Show("Works");
