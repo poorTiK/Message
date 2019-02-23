@@ -257,5 +257,17 @@ namespace Message
 
             ScrollV.ScrollToEnd();
         }
+
+        public void Hide(bool isVisible)
+        {
+            if (isVisible)
+            {
+                Visibility = Visibility.Visible;
+            }
+            else
+            {
+                Visibility = Visibility.Hidden;
+            }
+        }
     }
 }

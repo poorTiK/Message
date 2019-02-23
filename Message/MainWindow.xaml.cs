@@ -106,5 +106,17 @@ namespace Message
         {
             LoginText.Focus();
         }
+
+        public void Hide(bool isVisible)
+        {
+            if (isVisible)
+            {
+                Visibility = Visibility.Visible;
+            }
+            else
+            {
+                Visibility = Visibility.Hidden;
+            }
+        }
     }
 }

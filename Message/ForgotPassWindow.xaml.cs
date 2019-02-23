@@ -27,6 +27,18 @@ namespace Message
             Close();
         }
 
+        public void Hide(bool isVisible)
+        {
+            if (isVisible)
+            {
+                Visibility = Visibility.Visible;
+            }
+            else
+            {
+                Visibility = Visibility.Hidden;
+            }
+        }
+
         public void SetOpacity(double opacity)
         {
             throw new NotImplementedException();
