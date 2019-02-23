@@ -1,35 +1,35 @@
 ﻿using Message.Interfaces;
+using Message.MessageServiceReference;
 using Message.Model;
 using Message.UserServiceReference;
 using Prism.Commands;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
-using System.Windows;
-using Message.MessageServiceReference;
-using MessageT = Message.MessageServiceReference.MessageT;
+using System.Net;
 using System.ServiceModel;
 using System.Text;
-using System.Net;
+using System.Windows;
+using MessageT = Message.MessageServiceReference.MessageT;
 
 namespace Message.ViewModel
 {
-    class MessageMainVM : Prism.Mvvm.BindableBase, IMessageServiceCallback
+    internal class MessageMainVM : Prism.Mvvm.BindableBase, IMessageServiceCallback
     {
         private UserServiceClient userServiceClient;
 
         private InstanceContext site;
         private MessageServiceClient _messageServiceClient;
         private IMessageServiceCallback _messageServiceCallback;
-        const string HOST = "192.168.0.255";
-        IPAddress groupAddress;
+        private const string HOST = "192.168.0.255";
+        private IPAddress groupAddress;
 
-        IMessaging _view;
+        private IMessaging _view;
 
         public User CurrentUser { get; set; }
-        
+
         private string _currentUserName;
+
         public string CurrentUserName
         {
             get { return CurrentUser.FirstName + " " + CurrentUser.LastName; }
@@ -37,6 +37,7 @@ namespace Message.ViewModel
         }
 
         private string _currentUserLogin;
+
         public string CurrentUserLogin
         {
             get { return "@" + CurrentUser.Login; }
@@ -44,6 +45,7 @@ namespace Message.ViewModel
         }
 
         private bool _isDialogSearchVisible;
+
         public bool IsDialogSearchVisible
         {
             get { return _isDialogSearchVisible; }
@@ -51,6 +53,7 @@ namespace Message.ViewModel
         }
 
         private List<User> _contactsList;
+
         public List<User> ContactsList
         {
             get { return _contactsList; }
@@ -58,6 +61,7 @@ namespace Message.ViewModel
         }
 
         private User _selectedContact;
+
         public User SelectedContact
         {
             get { return _selectedContact; }
@@ -69,6 +73,7 @@ namespace Message.ViewModel
         }
 
         private string _dialogSearchStr;
+
         public string DialogSearchStr
         {
             get { return _dialogSearchStr; }
@@ -80,6 +85,7 @@ namespace Message.ViewModel
         }
 
         private string _messageText;
+
         public string MessageText
         {
             get { return _messageText; }
@@ -109,7 +115,6 @@ namespace Message.ViewModel
 
             ContactsList = userServiceClient.GetAllContacts(GlobalBase.CurrentUser);
             SelectedContact = new User();
-            
         }
 
         private void SelectedContactChanged()
@@ -137,10 +142,12 @@ namespace Message.ViewModel
         }
 
         private DelegateCommand _onContactsCommand;
+
         public DelegateCommand ContactsCommand =>
             _onContactsCommand ?? (_onContactsCommand = new DelegateCommand(ExecuteOnContacts));
 
         private DelegateCommand _onSettingsCommand;
+
         public DelegateCommand SettingsCommand =>
             _onSettingsCommand ?? (_onSettingsCommand = new DelegateCommand(ExecuteOnSettingsCommand));
 
@@ -151,10 +158,13 @@ namespace Message.ViewModel
             {
                 IsDialogSearchVisible = !IsDialogSearchVisible;
                 if (!IsDialogSearchVisible)
+                {
                     SelectedContactChanged();
+                }
             }));
 
         private DelegateCommand _onSendMessage;
+
         public DelegateCommand OnSendMessage =>
             _onSendMessage ?? (_onSendMessage = new DelegateCommand(ExecuteOnSendMessage));
 
@@ -183,7 +193,7 @@ namespace Message.ViewModel
         private void ExecuteOnSettingsCommand()
         {
             _view.SetOpacity(0.5);
-            
+
             var wnd = new SettingsWindow();
             wnd.Owner = (Window)_view;
             wnd.ShowDialog();
@@ -206,7 +216,7 @@ namespace Message.ViewModel
             Update();
         }
 
-        void OnDialogSearch()
+        private void OnDialogSearch()
         {
             if (IsDialogSearchVisible)
             {

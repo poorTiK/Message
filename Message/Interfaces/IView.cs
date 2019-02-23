@@ -1,14 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Controls;
-
-namespace Message.Interfaces
+﻿namespace Message.Interfaces
 {
-    interface IView : IMainView
+    internal interface IView : IMainView
     {
-        
     }
 }

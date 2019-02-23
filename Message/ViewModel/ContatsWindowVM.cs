@@ -4,19 +4,16 @@ using Message.UserServiceReference;
 using Prism.Commands;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 
 namespace Message.ViewModel
 {
-    class ContatsWindowVM : Prism.Mvvm.BindableBase
+    internal class ContatsWindowVM : Prism.Mvvm.BindableBase
     {
-        UserServiceClient UserServiceClient;
-        IView view;
+        private UserServiceClient UserServiceClient;
+        private IView view;
 
         private List<User> _contacts;
+
         public List<User> ContactsList
         {
             get { return _contacts; }
@@ -24,6 +21,7 @@ namespace Message.ViewModel
         }
 
         private string _caption;
+
         public string Caption
         {
             get { return _caption; }
@@ -31,6 +29,7 @@ namespace Message.ViewModel
         }
 
         private User _selectedContact;
+
         public User SelectedContact
         {
             get { return _selectedContact; }
@@ -38,6 +37,7 @@ namespace Message.ViewModel
         }
 
         private string _contactsSearch;
+
         public string ContactsSearch
         {
             get { return _contactsSearch; }
@@ -46,9 +46,13 @@ namespace Message.ViewModel
                 SetProperty(ref _contactsSearch, value);
 
                 if (!string.IsNullOrEmpty(value))
+                {
                     ContactsList = UserServiceClient.GetAllUsersByLogin(ContactsSearch);
+                }
                 else
+                {
                     UpdateContacts();
+                }
 
                 ManageControls();
             }
@@ -66,14 +70,17 @@ namespace Message.ViewModel
         }
 
         private DelegateCommand _onAddContact;
+
         public DelegateCommand AddContactCommand =>
             _onAddContact ?? (_onAddContact = new DelegateCommand(ExecuteOnAddContactCommand));
 
         private DelegateCommand _onClose;
+
         public DelegateCommand CloseCommand =>
             _onClose ?? (_onClose = new DelegateCommand(ExecuteOnCloseCommand));
 
         private DelegateCommand _openProfile;
+
         public DelegateCommand OpenProfile =>
             _openProfile ?? (_openProfile = new DelegateCommand(ExecuteOnOpenProfile));
 
@@ -105,12 +112,16 @@ namespace Message.ViewModel
             ManageControls();
         }
 
-        void ManageControls()
+        private void ManageControls()
         {
             if (string.IsNullOrEmpty(ContactsSearch))
+            {
                 Caption = "Contacts";
+            }
             else
+            {
                 Caption = "Contacts search";
+            }
         }
     }
 }

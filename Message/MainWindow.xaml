@@ -5,34 +5,32 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Message"
         mc:Ignorable="d"
-        
+
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:validate="clr-namespace:Message.ValidationRules"
-        
-        Name="MainWnd" Height="250" Width="450" 
+
+        Name="MainWnd" Height="250" Width="450"
         WindowStartupLocation="CenterScreen" WindowStyle="None"
-        BorderThickness="0" ResizeMode="NoResize"
-        >
+        BorderThickness="0" ResizeMode="NoResize">
     <WindowChrome.WindowChrome>
-        <WindowChrome CaptionHeight="22"/>
+        <WindowChrome CaptionHeight="22" />
     </WindowChrome.WindowChrome>
 
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVisConverter" />
     </Window.Resources>
 
-
     <Grid Loaded="FrameworkElement_OnLoaded">
         <Grid VerticalAlignment="Top" Background="#353636" Height="22">
             <StackPanel  WindowChrome.IsHitTestVisibleInChrome="True" VerticalAlignment="Bottom" Orientation="Horizontal" Margin="0" HorizontalAlignment="Right">
-                <Button Name="MinimizeButton" Background="{x:Null}" BorderBrush="{x:Null}" 
-                        Foreground="White" Height="auto" HorizontalAlignment="Center" 
+                <Button Name="MinimizeButton" Background="{x:Null}" BorderBrush="{x:Null}"
+                        Foreground="White" Height="auto" HorizontalAlignment="Center"
                         VerticalAlignment="Center">
                     <materialDesign:PackIcon
                         Kind="WindowMinimize" />
                 </Button>
-                <Button Name="CloseButton" Background="{x:Null}" BorderBrush="{x:Null}" 
-                        Foreground="White" Height="auto" HorizontalAlignment="Center" 
+                <Button Name="CloseButton" Background="{x:Null}" BorderBrush="{x:Null}"
+                        Foreground="White" Height="auto" HorizontalAlignment="Center"
                         VerticalAlignment="Center">
                     <materialDesign:PackIcon
                         Kind="WindowClose" />
@@ -44,14 +42,14 @@
                 <Grid Background="#262626">
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition/>
-                            <ColumnDefinition Width="auto"/>
-                            <ColumnDefinition/>
+                            <ColumnDefinition />
+                            <ColumnDefinition Width="auto" />
+                            <ColumnDefinition />
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
-                            <RowDefinition/>
-                            <RowDefinition Height="auto"/>
-                            <RowDefinition/>
+                            <RowDefinition />
+                            <RowDefinition Height="auto" />
+                            <RowDefinition />
                         </Grid.RowDefinitions>
 
                         <StackPanel Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" Margin="3">
@@ -60,16 +58,15 @@
                                 Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                 Foreground="White" CaretBrush="{x:Null}" SelectionBrush="#FF919191" Margin="0,0,0,15">
                                 <TextBox.InputBindings>
-                                    <KeyBinding Command="{Binding Path = OnLogin}" Key="Enter"/>
+                                    <KeyBinding Command="{Binding Path = OnLogin}" Key="Enter" />
                                 </TextBox.InputBindings>
                             </TextBox>
                             <PasswordBox Name="PasswordBox"
                                         Foreground="White" CaretBrush="{x:Null}" SelectionBrush="#FF919191"
-                                        materialDesign:HintAssist.Hint="Password" Margin="0,0,0,15" 
-                                        Style="{StaticResource MaterialDesignFloatingHintPasswordBox}"
-                            >
+                                        materialDesign:HintAssist.Hint="Password" Margin="0,0,0,15"
+                                        Style="{StaticResource MaterialDesignFloatingHintPasswordBox}">
                                 <PasswordBox.InputBindings>
-                                    <KeyBinding Command="{Binding Path = OnLogin}" Key="Enter"/>
+                                    <KeyBinding Command="{Binding Path = OnLogin}" Key="Enter" />
                                 </PasswordBox.InputBindings>
                             </PasswordBox>
                             <Button Content="Sign In" Margin="0,0,0,15"
@@ -82,26 +79,24 @@
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                 <Button Command="{Binding OnStartRegister}" Style="{StaticResource MaterialDesignFlatButton}"
                                         Margin="2,0" FontSize="12" Height="25" Content="Register">
-                                    
                                 </Button>
                                 <Button Style="{StaticResource MaterialDesignFlatButton}"
                                         Command="{Binding OnForgotPassword}"
                                         Margin="2,0" FontSize="12" Height="25">Forgot password?</Button>
                             </StackPanel>
                         </StackPanel>
-
                     </Grid>
                 </Grid>
             </Grid>
             <Grid Margin="0,22,0,0" Background="#262626" Visibility="{Binding IsRegisterVisible, Converter={StaticResource BoolToVisConverter}}">
                 <Grid Margin="15,0">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
-                        <RowDefinition/>
-                        <RowDefinition Height="auto"/>
+                        <RowDefinition />
+                        <RowDefinition Height="auto" />
                     </Grid.RowDefinitions>
                     <StackPanel Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0" Orientation="Vertical" VerticalAlignment="Center">
                         <TextBox
@@ -111,7 +106,7 @@
                             <TextBox.Text>
                                 <Binding Path="Name" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
                                     <Binding.ValidationRules>
-                                        <validate:NameSurname_ValidationRule ValidatesOnTargetUpdated="True"/>
+                                        <validate:NameSurname_ValidationRule ValidatesOnTargetUpdated="True" />
                                     </Binding.ValidationRules>
                                 </Binding>
                             </TextBox.Text>
@@ -124,7 +119,7 @@
                             <TextBox.Text>
                                 <Binding Path="Surname" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
                                     <Binding.ValidationRules>
-                                        <validate:NameSurname_ValidationRule ValidatesOnTargetUpdated="True"/>
+                                        <validate:NameSurname_ValidationRule ValidatesOnTargetUpdated="True" />
                                     </Binding.ValidationRules>
                                 </Binding>
                             </TextBox.Text>
@@ -137,7 +132,7 @@
                             <TextBox.Text>
                                 <Binding Path="UserLogin" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
                                     <Binding.ValidationRules>
-                                        <validate:Login_ValidationRule ValidatesOnTargetUpdated="True"/>
+                                        <validate:Login_ValidationRule ValidatesOnTargetUpdated="True" />
                                     </Binding.ValidationRules>
                                 </Binding>
                             </TextBox.Text>
@@ -145,14 +140,14 @@
 
                         <PasswordBox Name="RPasswordBox"
                             Foreground="White" CaretBrush="{x:Null}" SelectionBrush="#FF919191"
-                            materialDesign:HintAssist.Hint="Password" 
+                            materialDesign:HintAssist.Hint="Password"
                             Style="{StaticResource MaterialDesignFloatingHintPasswordBox}" Margin="0,0,0,20">
                         </PasswordBox>
 
                         <PasswordBox Name="Rep_RPasswordBox"
                             Foreground="White" CaretBrush="{x:Null}" SelectionBrush="#FF919191"
-                            materialDesign:HintAssist.Hint="Repeat Password" 
-                            Style="{StaticResource MaterialDesignFloatingHintPasswordBox}" Margin="0,0,0,20"/>
+                            materialDesign:HintAssist.Hint="Repeat Password"
+                            Style="{StaticResource MaterialDesignFloatingHintPasswordBox}" Margin="0,0,0,20" />
 
                         <TextBox
                             materialDesign:HintAssist.Hint="Email"
@@ -161,27 +156,24 @@
                             <TextBox.Text>
                                 <Binding Path="Email" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
                                     <Binding.ValidationRules>
-                                        <validate:Email_ValidationRule ValidatesOnTargetUpdated="True"/>
+                                        <validate:Email_ValidationRule ValidatesOnTargetUpdated="True" />
                                     </Binding.ValidationRules>
                                 </Binding>
                             </TextBox.Text>
                         </TextBox>
-
                     </StackPanel>
 
-                    <Button Grid.Column="0" Grid.Row="1" Margin="0,0,0,15" 
+                    <Button Grid.Column="0" Grid.Row="1" Margin="0,0,0,15"
                             Width="84" Content="Register"
                             materialDesign:ButtonProgressAssist.Value="-1"
                             materialDesign:ButtonProgressAssist.IsIndicatorVisible="{Binding IsRegisterProgress}"
                             materialDesign:ButtonProgressAssist.IsIndeterminate="{Binding IsRegisterProgress}"
                             Command="{Binding Register}"
                             ></Button>
-                    <Button Grid.Column="1" Grid.Row="1" Margin="0,0,0,15" 
+                    <Button Grid.Column="1" Grid.Row="1" Margin="0,0,0,15"
                             Width="84" Content="Back"
                             Command="{Binding BackCommand}">
-                        
                     </Button>
-                    
                 </Grid>
             </Grid>
         </Grid>

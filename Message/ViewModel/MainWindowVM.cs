@@ -1,48 +1,48 @@
 ﻿using Message.AdditionalItems;
 using Message.Interfaces;
 using Message.UserServiceReference;
-using Message.MessageServiceReference;
 using Prism.Commands;
 using System;
-using System.Net;
 using System.Text.RegularExpressions;
-using System.Windows;
-using System.Collections.Generic;
 using System.Threading.Tasks;
-using Message.Model;
-using System.ServiceModel;
+using System.Windows;
 
 namespace Message.ViewModel
 {
-    class MainWindowVM : Prism.Mvvm.BindableBase
+    internal class MainWindowVM : Prism.Mvvm.BindableBase
     {
-        IView view;
-        IPasswordSupplier passwordSupplier;
+        private IView view;
+        private IPasswordSupplier passwordSupplier;
 
-        UserServiceClient UserServiceClient;
-
+        private UserServiceClient UserServiceClient;
 
         private DelegateCommand _onStartRegister;
+
         public DelegateCommand OnStartRegister =>
             _onStartRegister ?? (_onStartRegister = new DelegateCommand(ExecuteOnStartRegister));
 
         private DelegateCommand _onLogin;
+
         public DelegateCommand OnLogin =>
             _onLogin ?? (_onLogin = new DelegateCommand(ExecuteOnLogin));
 
         private DelegateCommand _onForgotPassword;
+
         public DelegateCommand OnForgotPassword =>
             _onForgotPassword ?? (_onForgotPassword = new DelegateCommand(ExecuteOnForgotPassword));
 
         private DelegateCommand _register;
+
         public DelegateCommand Register =>
             _register ?? (_register = new DelegateCommand(ExecuteOnRegister));
-        
+
         private DelegateCommand _onBackCommand;
+
         public DelegateCommand BackCommand =>
             _onBackCommand ?? (_onBackCommand = new DelegateCommand(ExecuteOnBackCommand));
 
         private bool _isSignUpVisible;
+
         public bool IsSignUpVisible
         {
             get { return _isSignUpVisible; }
@@ -50,6 +50,7 @@ namespace Message.ViewModel
         }
 
         private bool _isRegisterVisible;
+
         public bool IsRegisterVisible
         {
             get { return _isRegisterVisible; }
@@ -57,6 +58,7 @@ namespace Message.ViewModel
         }
 
         private bool _isLoginProgress;
+
         public bool IsLoginProgress
         {
             get { return _isLoginProgress; }
@@ -64,6 +66,7 @@ namespace Message.ViewModel
         }
 
         private bool _isRegisterProgress;
+
         public bool IsRegisterProgress
         {
             get { return _isRegisterProgress; }
@@ -71,7 +74,9 @@ namespace Message.ViewModel
         }
 
         #region Login data
+
         private string _loginText;
+
         public string LoginText
         {
             get { return _loginText; }
@@ -79,18 +84,22 @@ namespace Message.ViewModel
         }
 
         private string _password;
+
         public string Password
         {
-            get {
+            get
+            {
                 return passwordSupplier.GetPasswordForLogin();
             }
             set { SetProperty(ref _password, value); }
         }
 
-        #endregion
+        #endregion Login data
 
         #region registration data
+
         private string _name;
+
         public string Name
         {
             get { return _name; }
@@ -98,6 +107,7 @@ namespace Message.ViewModel
         }
 
         private string _surname;
+
         public string Surname
         {
             get { return _surname; }
@@ -105,6 +115,7 @@ namespace Message.ViewModel
         }
 
         private string _userLogin;
+
         public string UserLogin
         {
             get { return _userLogin; }
@@ -112,6 +123,7 @@ namespace Message.ViewModel
         }
 
         private string _email;
+
         public string Email
         {
             get { return _email; }
@@ -119,6 +131,7 @@ namespace Message.ViewModel
         }
 
         private string _RPassword;
+
         public string RPassword
         {
             get { return passwordSupplier.GetPasswordForRegistration(); }
@@ -130,6 +143,7 @@ namespace Message.ViewModel
         }
 
         private string _Rep_RPassword;
+
         public string Rep_RPassword
         {
             get { return passwordSupplier.GetRepPasswordForRegistration(); }
@@ -140,7 +154,7 @@ namespace Message.ViewModel
             }
         }
 
-        #endregion
+        #endregion registration data
 
         public MainWindowVM(IView iView, IPasswordSupplier ipasswordSupplier)
         {
@@ -148,7 +162,6 @@ namespace Message.ViewModel
             passwordSupplier = ipasswordSupplier;
 
             UserServiceClient = new UserServiceClient();
-
 
             IsLoginProgress = false;
             IsRegisterProgress = false;
@@ -203,7 +216,6 @@ namespace Message.ViewModel
                 LastOnline = DateTime.Now
             };
 
-
             UserServiceClient.AddOrUpdateUser(markOwner);
             UserServiceClient.AddOrUpdateUser(billOwned);
 
@@ -219,13 +231,16 @@ namespace Message.ViewModel
             //UserServiceClient.GetMessages(markOwner, billOwned, 10);
         }
 
-        void ExecuteOnStartRegister()
+        private void ExecuteOnStartRegister()
         {
-            if (IsSignUpVisible) {
+            if (IsSignUpVisible)
+            {
                 view.AnimatedResize(450, 310);
                 IsSignUpVisible = false;
                 IsRegisterVisible = true;
-            } else {
+            }
+            else
+            {
                 view.AnimatedResize(250, 450);
                 IsSignUpVisible = true;
                 IsRegisterVisible = false;
@@ -248,7 +263,7 @@ namespace Message.ViewModel
             }
         }
 
-        void ExecuteOnLogin()
+        private void ExecuteOnLogin()
         {
             IsLoginProgress = true;
             Task.Run(() =>
@@ -268,7 +283,6 @@ namespace Message.ViewModel
                     }
                 }
             }).ContinueWith(task => { IsLoginProgress = false; });
-
         }
 
         private void ExecuteOnRegister()
@@ -316,7 +330,6 @@ namespace Message.ViewModel
                     }
                 }
             }).ContinueWith(task => { IsRegisterProgress = false; });
-
         }
 
         private void ExecuteOnForgotPassword()
@@ -369,7 +382,7 @@ namespace Message.ViewModel
             {
                 message = "Password shoud be 8 symbols lenght,\n use numbers and english symbols";
             }
-            else if(user == null)
+            else if (user == null)
             {
                 message = "Wrong login or password";
             }

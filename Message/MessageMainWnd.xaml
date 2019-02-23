@@ -5,14 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Message"
         mc:Ignorable="d"
-        
+
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         Name="MessageMainWindow"
         MinWidth="450" MinHeight="600" Height="601" Width="700"
              WindowStartupLocation="CenterScreen" OpacityMask="Black"
         BorderThickness="0" Background="Black" AllowsTransparency="False" WindowStyle="None" BorderBrush="Black">
     <WindowChrome.WindowChrome>
-        <WindowChrome CaptionHeight="22"/>
+        <WindowChrome CaptionHeight="22" />
     </WindowChrome.WindowChrome>
 
     <Window.Resources>
@@ -24,19 +24,19 @@
             <Grid VerticalAlignment="Top" Background="#353636" Height="22">
 
                 <StackPanel  WindowChrome.IsHitTestVisibleInChrome="True" VerticalAlignment="Bottom" Orientation="Horizontal" Margin="0" HorizontalAlignment="Right">
-                    <Button Name="MinimizeButton" Background="{x:Null}" BorderBrush="{x:Null}" 
-                        Foreground="White" Height="auto" HorizontalAlignment="Center" 
+                    <Button Name="MinimizeButton" Background="{x:Null}" BorderBrush="{x:Null}"
+                        Foreground="White" Height="auto" HorizontalAlignment="Center"
                         VerticalAlignment="Center">
                         <materialDesign:PackIcon
                         Kind="WindowMinimize" />
                     </Button>
-                    <Button Name="MaximizeMinimizeButton" Background="{x:Null}" BorderBrush="{x:Null}" 
-                        Foreground="White" Height="auto" HorizontalAlignment="Center" 
+                    <Button Name="MaximizeMinimizeButton" Background="{x:Null}" BorderBrush="{x:Null}"
+                        Foreground="White" Height="auto" HorizontalAlignment="Center"
                         VerticalAlignment="Center">
                         <materialDesign:PackIcon Kind="WindowMaximize" />
                     </Button>
-                    <Button Name="CloseButton" Background="{x:Null}" BorderBrush="{x:Null}" 
-                        Foreground="White" Height="auto" HorizontalAlignment="Center" 
+                    <Button Name="CloseButton" Background="{x:Null}" BorderBrush="{x:Null}"
+                        Foreground="White" Height="auto" HorizontalAlignment="Center"
                         VerticalAlignment="Center">
                         <materialDesign:PackIcon
                         Kind="WindowClose" />
@@ -45,17 +45,17 @@
             </Grid>
             <Grid Margin="0,22,0,0" Background="#4A4A4A">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="53"/>
-                    <RowDefinition/>
+                    <RowDefinition Height="53" />
+                    <RowDefinition />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="200"/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
+                    <ColumnDefinition Width="200" />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
                 </Grid.ColumnDefinitions>
                 <Border Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="0">
                     <Border.Effect>
-                        <DropShadowEffect BlurRadius="50" ShadowDepth="3" Direction="264" Opacity="0.33"/>
+                        <DropShadowEffect BlurRadius="50" ShadowDepth="3" Direction="264" Opacity="0.33" />
                     </Border.Effect>
                     <Grid Background="#262626">
                         <Grid Margin="0">
@@ -74,25 +74,25 @@
                             <StackPanel Name="DialogSearch" Visibility="{Binding IsDialogSearchVisible, Converter={StaticResource BoolToVisConverter}}"
                                 Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,122,0">
                                 <materialDesign:PackIcon Kind="Magnify" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" />
-                                <TextBox Margin="0,10,10,10" Width="122" Text="{Binding DialogSearchStr, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Foreground="White" SelectionBrush="#FF919191"/>
+                                <TextBox Margin="0,10,10,10" Width="122" Text="{Binding DialogSearchStr, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Foreground="White" SelectionBrush="#FF919191" />
                             </StackPanel>
 
-                            <Menu Background="#262626" HorizontalAlignment="Right" >
-                                <MenuItem Background="{x:Null}" BorderBrush="{x:Null}" Height="53" 
+                            <Menu Background="#262626" HorizontalAlignment="Right">
+                                <MenuItem Background="{x:Null}" BorderBrush="{x:Null}" Height="53"
                                           Command="{Binding DialogSearchCommand}">
                                     <MenuItem.Header>
                                         <materialDesign:PackIcon Kind="CommentSearchOutline" Width="25" Height="25" Foreground="White" />
                                     </MenuItem.Header>
                                 </MenuItem>
-                                <MenuItem Background="{x:Null}" BorderBrush="{x:Null}" Height="53" >
+                                <MenuItem Background="{x:Null}" BorderBrush="{x:Null}" Height="53">
                                     <MenuItem.Header>
                                         <materialDesign:PackIcon Kind="EllipsisVertical" Width="25" Height="25" Foreground="White" />
                                     </MenuItem.Header>
-                                    <MenuItem Header="View profile" Background="#353636" Foreground="White"/>
-                                    <MenuItem Header="Edit contact" Background="#353636" Foreground="White"/>
-                                    <MenuItem Header="Delete contact" Background="#353636" Foreground="White"/>
-                                    <MenuItem Header="Delete conversation" Background="#353636" Foreground="White"/>
-                                    <MenuItem Header="Block user" Background="#353636" Foreground="White"/>
+                                    <MenuItem Header="View profile" Background="#353636" Foreground="White" />
+                                    <MenuItem Header="Edit contact" Background="#353636" Foreground="White" />
+                                    <MenuItem Header="Delete contact" Background="#353636" Foreground="White" />
+                                    <MenuItem Header="Delete conversation" Background="#353636" Foreground="White" />
+                                    <MenuItem Header="Block user" Background="#353636" Foreground="White" />
                                 </MenuItem>
                             </Menu>
                         </Grid>
@@ -101,8 +101,8 @@
 
                 <Grid Grid.Column="0" Grid.Row="0" Background="#262626" Margin="0">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="auto"/>
-                        <ColumnDefinition/>
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition />
                     </Grid.ColumnDefinitions>
                     <Button x:Name="ButtonOpen" Click="ButtonOpen_Click" Grid.Column="0" Style="{StaticResource MaterialDesignFlatButton}" Foreground="White">
                         <materialDesign:PackIcon Kind="HamburgerMenu" Foreground="White" />
@@ -110,12 +110,12 @@
                     <StackPanel Grid.Column="1" Margin="5"
                     Orientation="Horizontal">
                         <materialDesign:PackIcon Kind="Magnify" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" />
-                        <TextBox Margin="0,10,10,10" Width="122" Foreground="White" SelectionBrush="#FF919191"/>
+                        <TextBox Margin="0,10,10,10" Width="122" Foreground="White" SelectionBrush="#FF919191" />
                     </StackPanel>
                 </Grid>
                 <Border Grid.Column="0" Grid.Row="1">
                     <Border.Effect>
-                        <DropShadowEffect BlurRadius="40" ShadowDepth="3" Direction="281" Opacity="0.33"/>
+                        <DropShadowEffect BlurRadius="40" ShadowDepth="3" Direction="281" Opacity="0.33" />
                     </Border.Effect>
                     <Grid Background="#262626">
                         <ListBox Foreground="#DDFFFFFF" Name="List" ItemsSource="{Binding ContactsList}" SelectedItem="{Binding SelectedContact, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
@@ -123,16 +123,16 @@
                                 <DataTemplate>
                                     <Grid>
                                         <Grid.RowDefinitions>
-                                            <RowDefinition/>
-                                            <RowDefinition/>
+                                            <RowDefinition />
+                                            <RowDefinition />
                                         </Grid.RowDefinitions>
                                         <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="auto"/>
-                                            <ColumnDefinition/>
+                                            <ColumnDefinition Width="auto" />
+                                            <ColumnDefinition />
                                         </Grid.ColumnDefinitions>
                                         <Ellipse Height="45" Width="45" Grid.Column="0" Grid.Row="0" Grid.RowSpan="2">
                                             <Ellipse.Fill>
-                                                <ImageBrush ImageSource="Resources/Test.jpg"/>
+                                                <ImageBrush ImageSource="Resources/Test.jpg" />
                                             </Ellipse.Fill>
                                         </Ellipse>
 
@@ -153,12 +153,11 @@
                 </Border>
                 <Grid Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2" Margin="0,0,0,30">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="3*"/>
-                        <ColumnDefinition Width="38*"/>
+                        <ColumnDefinition Width="3*" />
+                        <ColumnDefinition Width="38*" />
                     </Grid.ColumnDefinitions>
                     <ScrollViewer Name="ScrollV" Grid.ColumnSpan="2" VerticalAlignment="Bottom">
                         <StackPanel Name="MessageControl" Orientation="Vertical">
-
                         </StackPanel>
                     </ScrollViewer>
                 </Grid>
@@ -166,29 +165,28 @@
                     <Border Height="35" Background="#262626" VerticalAlignment="Bottom">
                         <Grid>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition/>
-                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition />
+                                <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
 
                             <Button Grid.Column="0" Style="{StaticResource MaterialDesignFlatButton}">
-                                <materialDesign:PackIcon Kind="Paperclip" Foreground="White"/>
+                                <materialDesign:PackIcon Kind="Paperclip" Foreground="White" />
                             </Button>
                             <TextBox Grid.Column="1"
-                                SelectionBrush="#FF919191" TextWrapping="Wrap" 
+                                SelectionBrush="#FF919191" TextWrapping="Wrap"
                                      VerticalContentAlignment="Stretch" Name="MessageTextBox"
                                      materialDesign:HintAssist.Hint="Write a message..." VerticalScrollBarVisibility="Auto"
-                                     Foreground="White" Margin="10,2,0,2" VerticalAlignment="Center" 
+                                     Foreground="White" Margin="10,2,0,2" VerticalAlignment="Center"
                                     Text="{Binding MessageText, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
                                 <TextBox.InputBindings>
-                                    <KeyBinding Command="{Binding Path = OnSendMessage}" Key="Enter"/>
+                                    <KeyBinding Command="{Binding Path = OnSendMessage}" Key="Enter" />
                                 </TextBox.InputBindings>
                             </TextBox>
                             <Button Grid.Column="2" Style="{StaticResource MaterialDesignFlatButton}" HorizontalAlignment="Right"
                                 Command="{Binding OnSendMessage}">
                                 <materialDesign:PackIcon Kind="MessageTextOutline" Foreground="White" />
                             </Button>
-
                         </Grid>
                     </Border>
                 </Grid>
@@ -197,14 +195,14 @@
                 <StackPanel Background="#262626">
                     <Grid Height="140" Background="#195E4D">
                         <Grid.RowDefinitions>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
                         </Grid.RowDefinitions>
                         <StackPanel Grid.Row="1" HorizontalAlignment="Left" Orientation="Horizontal">
                             <Ellipse Height="45" Width="45" Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" Margin="15,0,0,0">
                                 <Ellipse.Fill>
-                                    <ImageBrush ImageSource="Resources/Test.jpg"/>
+                                    <ImageBrush ImageSource="Resources/Test.jpg" />
                                 </Ellipse.Fill>
                             </Ellipse>
                             <StackPanel Orientation="Vertical" Width="122" VerticalAlignment="Center" Margin="15,7,0,7">
@@ -216,7 +214,7 @@
                     <ListView>
                         <ListViewItem Height="45" Padding="0">
                             <StackPanel Orientation="Horizontal" Margin="10 0">
-                                <materialDesign:PackIcon Kind="AccountSupervisor" Width="20" Height="20" Foreground="Gray" Margin="5" VerticalAlignment="Center"/>
+                                <materialDesign:PackIcon Kind="AccountSupervisor" Width="20" Height="20" Foreground="Gray" Margin="5" VerticalAlignment="Center" />
                                 <TextBlock Text="Contacts" FontSize="15" Margin="10" Foreground="White">
                                     <TextBlock.InputBindings>
                                         <MouseBinding Command="{Binding ContactsCommand}" MouseAction="LeftClick" />
@@ -226,7 +224,7 @@
                         </ListViewItem>
                         <ListViewItem Height="45" Padding="0">
                             <StackPanel Orientation="Horizontal" Margin="10 0">
-                                <materialDesign:PackIcon Kind="GearBox" Width="20" Height="20" Foreground="Gray" Margin="5" VerticalAlignment="Center"/>
+                                <materialDesign:PackIcon Kind="GearBox" Width="20" Height="20" Foreground="Gray" Margin="5" VerticalAlignment="Center" />
                                 <TextBlock Text="Settings" FontSize="15" Margin="10" Foreground="White">
                                     <TextBlock.InputBindings>
                                         <MouseBinding Command="{Binding SettingsCommand}" MouseAction="LeftClick" />
@@ -244,7 +242,7 @@
                     </TextBlock>
                 </StackPanel>
                 <Button x:Name="ButtonClose" Click="ButtonClose_Click" HorizontalAlignment="Right" VerticalAlignment="Top" Background="{x:Null}" BorderBrush="{x:Null}" Width="30" Height="30" Padding="0">
-                    <materialDesign:PackIcon Kind="Close"/>
+                    <materialDesign:PackIcon Kind="Close" />
                 </Button>
             </Grid>
         </Grid>

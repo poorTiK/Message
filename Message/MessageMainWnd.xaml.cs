@@ -1,16 +1,14 @@
 ﻿using Message.Interfaces;
-using Message.MessageServiceReference;
+using Message.Model;
 using Message.UserServiceReference;
 using Message.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Interop;
 using System.Windows.Media.Animation;
 using System.Windows.Navigation;
-using Message.Model;
 using MessageT = Message.MessageServiceReference.MessageT;
 
 namespace Message
@@ -21,6 +19,7 @@ namespace Message
     public partial class MessageMainWnd : Window, IMessaging
     {
         #region Win32 Magic
+
         private static IntPtr WindowProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
         {
             switch (msg)
@@ -57,8 +56,10 @@ namespace Message
         {
             /// <summary>x coordinate of point.</summary>
             public int x;
+
             /// <summary>y coordinate of point.</summary>
             public int y;
+
             /// <summary>Construct a point of coordinates (x,y).</summary>
             public POINT(int x, int y)
             {
@@ -96,6 +97,7 @@ namespace Message
             public static readonly RECT Empty = new RECT();
             public int Width { get { return Math.Abs(right - left); } }
             public int Height { get { return bottom - top; } }
+
             public RECT(int left, int top, int right, int bottom)
             {
                 this.left = left;
@@ -103,6 +105,7 @@ namespace Message
                 this.right = right;
                 this.bottom = bottom;
             }
+
             public RECT(RECT rcSrc)
             {
                 left = rcSrc.left;
@@ -110,21 +113,29 @@ namespace Message
                 right = rcSrc.right;
                 bottom = rcSrc.bottom;
             }
+
             public bool IsEmpty { get { return left >= right || top >= bottom; } }
+
             public override string ToString()
             {
-                if (this == Empty) { return "RECT {Empty}"; }
+                if (this == Empty)
+                { return "RECT {Empty}"; }
                 return "RECT { left : " + left + " / top : " + top + " / right : " + right + " / bottom : " + bottom + " }";
             }
+
             public override bool Equals(object obj)
             {
-                if (!(obj is Rect)) { return false; }
+                if (!(obj is Rect))
+                { return false; }
                 return (this == (RECT)obj);
             }
+
             /// <summary>Return the HashCode for this struct (not garanteed to be unique)</summary>
             public override int GetHashCode() => left.GetHashCode() + top.GetHashCode() + right.GetHashCode() + bottom.GetHashCode();
+
             /// <summary> Determine if 2 RECT are equal (deep compare)</summary>
             public static bool operator ==(RECT rect1, RECT rect2) { return (rect1.left == rect2.left && rect1.top == rect2.top && rect1.right == rect2.right && rect1.bottom == rect2.bottom); }
+
             /// <summary> Determine if 2 RECT are different(deep compare)</summary>
             public static bool operator !=(RECT rect1, RECT rect2) { return !(rect1 == rect2); }
         }
@@ -134,7 +145,8 @@ namespace Message
 
         [DllImport("User32")]
         internal static extern IntPtr MonitorFromWindow(IntPtr handle, int flags);
-        #endregion
+
+        #endregion Win32 Magic
 
         public List<MessageServiceReference.MessageT> MessageList { get; set; }
 
@@ -158,7 +170,7 @@ namespace Message
             MessageList = new List<MessageT>();
         }
 
-        void init()
+        private void init()
         {
             SourceInitialized += (s, e) =>
             {
@@ -171,10 +183,11 @@ namespace Message
             MinimizeButton.Click += (s, e) => WindowState = WindowState.Minimized;
             MaximizeMinimizeButton.Click += (s, e) => WindowState = WindowState == WindowState.Maximized ? WindowState.Normal : WindowState.Maximized;
             CloseButton.Click += (s, e) => Application.Current.Shutdown(0);
-
         }
 
-        public void AnimatedResize(int h, int w){ }
+        public void AnimatedResize(int h, int w)
+        {
+        }
 
         public void CloseWindow()
         {
@@ -183,7 +196,6 @@ namespace Message
 
         private void ButtonOpen_Click(object sender, RoutedEventArgs e)
         {
-
             Storyboard storyboard = new Storyboard();
 
             DoubleAnimation daWidth = new DoubleAnimation(SideMenu.ActualWidth, 200, new Duration(TimeSpan.FromSeconds(0.4)));
@@ -200,7 +212,6 @@ namespace Message
 
         private void ButtonClose_Click(object sender, RoutedEventArgs e)
         {
-
             Storyboard storyboard = new Storyboard();
 
             DoubleAnimation daWidth = new DoubleAnimation(SideMenu.ActualWidth, 0, new Duration(TimeSpan.FromSeconds(0.4)));
@@ -235,9 +246,13 @@ namespace Message
             foreach (var message in MessageList)
             {
                 if (message.SenderId == GlobalBase.CurrentUser.Id)
+                {
                     MessageControl.Children.Add(new SendMessage(GlobalBase.Base64Decode(message.Content), message.DateOfSending));
+                }
                 else
+                {
                     MessageControl.Children.Add(new ReceiveMessage(GlobalBase.Base64Decode(message.Content), message.DateOfSending));
+                }
             }
 
             ScrollV.ScrollToEnd();

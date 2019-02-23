@@ -1,22 +1,9 @@
-﻿using Message.AdditionalItems;
-using Message.Interfaces;
+﻿using Message.Interfaces;
 using Message.ViewModel;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Animation;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace Message
 {
@@ -32,7 +19,6 @@ namespace Message
             MinimizeButton.Click += (s, e) => WindowState = WindowState.Minimized;
             CloseButton.Click += (s, e) => Close();
 
-
             DataContext = new MainWindowVM(this, this);
         }
 
@@ -42,7 +28,7 @@ namespace Message
 
             DoubleAnimation daWidth = new DoubleAnimation(ActualWidth, w, new Duration(TimeSpan.FromSeconds(0.3)));
             DoubleAnimation daHeight = new DoubleAnimation(ActualHeight, h, new Duration(TimeSpan.FromSeconds(0.2)));
-            
+
             storyboard.Children.Add(daWidth);
             storyboard.Children.Add(daHeight);
             daHeight.BeginTime = new TimeSpan(0, 0, 0, 0, 300);
@@ -55,6 +41,7 @@ namespace Message
 
             BeginStoryboard(storyboard);
         }
+
         private void animateWidth(Window wnd, double to)
         {
             double w1 = wnd.ActualWidth;
@@ -69,6 +56,7 @@ namespace Message
                 wnd.BeginAnimation(Window.WidthProperty, aninateWidth);
             }));
         }
+
         private void animateHeight(Window wnd, double to)
         {
             double h1 = wnd.ActualHeight;
@@ -112,7 +100,6 @@ namespace Message
 
         public void SetOpacity(double opacity)
         {
-            
         }
 
         private void FrameworkElement_OnLoaded(object sender, RoutedEventArgs e)

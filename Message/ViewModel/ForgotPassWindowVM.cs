@@ -1,23 +1,22 @@
-﻿using System.Linq;
+﻿using Message.AdditionalItems;
+using Message.Interfaces;
+using Message.MessageServiceReference;
+using Message.UserServiceReference;
+using Prism.Commands;
+using System;
+using System.Linq;
 using System.Net;
 using System.Net.Mail;
-using System.ServiceModel;
-using System.Threading.Tasks;
-using Message.Interfaces;
-using Message.UserServiceReference;
-using Message.MessageServiceReference;
-using Prism.Commands;
-using System.Windows;
-using Message.AdditionalItems;
-using System;
 using System.Threading;
+using System.Threading.Tasks;
+using System.Windows;
 
 namespace Message.ViewModel
 {
-    class ForgotPassWindowVM : Prism.Mvvm.BindableBase, IMessageServiceCallback
+    internal class ForgotPassWindowVM : Prism.Mvvm.BindableBase, IMessageServiceCallback
     {
         private IView view;
-        UserServiceClient userServiceClient;
+        private UserServiceClient userServiceClient;
 
         public ForgotPassWindowVM(IView view)
         {
@@ -29,6 +28,7 @@ namespace Message.ViewModel
         }
 
         private string _login;
+
         public string Login
         {
             get { return _login; }
@@ -36,6 +36,7 @@ namespace Message.ViewModel
         }
 
         private string _email;
+
         public string Email
         {
             get { return _email; }
@@ -43,6 +44,7 @@ namespace Message.ViewModel
         }
 
         private bool _isLogin;
+
         public bool IsLogin
         {
             get { return _isLogin; }
@@ -50,6 +52,7 @@ namespace Message.ViewModel
         }
 
         private bool _isMail;
+
         public bool IsMail
         {
             get { return _isMail; }
@@ -57,6 +60,7 @@ namespace Message.ViewModel
         }
 
         private bool _isSending;
+
         public bool IsSending
         {
             get { return _isSending; }
@@ -64,6 +68,7 @@ namespace Message.ViewModel
         }
 
         private DelegateCommand _onSend;
+
         public DelegateCommand Send =>
             _onSend ?? (_onSend = new DelegateCommand(OnSend));
 
@@ -114,6 +119,7 @@ namespace Message.ViewModel
         }
 
         private DelegateCommand _onBack;
+
         public DelegateCommand Back =>
             _onBack ?? (_onBack = new DelegateCommand(OnBack));
 
@@ -124,24 +130,23 @@ namespace Message.ViewModel
 
         private void SendPassWithMail(User user)
         {
-                var from = new MailAddress("messagePassRestoration@gmail.com"); // make custom mail adress
-                var to = new MailAddress(user.Email);
+            var from = new MailAddress("messagePassRestoration@gmail.com"); // make custom mail adress
+            var to = new MailAddress(user.Email);
 
-                var message = new MailMessage(from, to);
-                message.Subject = "Password restore";
-                message.Body = "Your pass - " + user.Password;
+            var message = new MailMessage(from, to);
+            message.Subject = "Password restore";
+            message.Body = "Your pass - " + user.Password;
 
-                var smtp = new SmtpClient("smtp.gmail.com", 587);
-                smtp.Credentials = new NetworkCredential("messagePassRestoration@gmail.com", "messageApp1");
-                smtp.EnableSsl = true;
-                smtp.SendMailAsync(message);
+            var smtp = new SmtpClient("smtp.gmail.com", 587);
+            smtp.Credentials = new NetworkCredential("messagePassRestoration@gmail.com", "messageApp1");
+            smtp.EnableSsl = true;
+            smtp.SendMailAsync(message);
 
-                Application.Current.Dispatcher.Invoke(new Action((() =>
-                {
-                    CustomMessageBox.Show("Password restore", "The message has been sent to email");
-                    IsSending = false;
-                })));
-            
+            Application.Current.Dispatcher.Invoke(new Action((() =>
+            {
+                CustomMessageBox.Show("Password restore", "The message has been sent to email");
+                IsSending = false;
+            })));
         }
 
         public void ReceiveMessage(MessageServiceReference.MessageT message)

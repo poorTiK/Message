@@ -7,33 +7,33 @@
         mc:Ignorable="d"
 
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-        
+
         Name="SettingsWnd" WindowStartupLocation="CenterOwner" WindowStyle="None"
         BorderThickness="0" ResizeMode="NoResize"
         Height="450" Width="250">
 
     <WindowChrome.WindowChrome>
-        <WindowChrome CaptionHeight="0"/>
+        <WindowChrome CaptionHeight="0" />
     </WindowChrome.WindowChrome>
 
     <Grid Background="#353636">
         <Grid VerticalAlignment="Top">
             <TextBlock Foreground="White" Margin="5,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center">Settings</TextBlock>
             <Button x:Name="ButtonClose" Click="ButtonClose_OnClick" HorizontalAlignment="Right" VerticalAlignment="Top" Background="{x:Null}" BorderBrush="{x:Null}" Width="30" Height="30" Padding="0">
-                <materialDesign:PackIcon Kind="Close"/>
+                <materialDesign:PackIcon Kind="Close" />
             </Button>
         </Grid>
         <ScrollViewer Margin="5,30,0,0">
             <Grid VerticalAlignment="Top">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 <StackPanel Grid.Row="0" Background="#4A4A4A" Height="90" HorizontalAlignment="Left" Orientation="Horizontal" Width="233">
                     <Ellipse Height="45" Width="45" Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" Margin="15,0,0,0">
                         <Ellipse.Fill>
-                            <ImageBrush ImageSource="Resources/Test.jpg"/>
+                            <ImageBrush ImageSource="Resources/Test.jpg" />
                         </Ellipse.Fill>
                     </Ellipse>
                     <StackPanel Orientation="Vertical" Width="122" VerticalAlignment="Center" Margin="15,7,0,7">
@@ -42,29 +42,29 @@
                     </StackPanel>
                 </StackPanel>
 
-                <Grid Grid.Row="1" Background="#4A4A4A" Margin="0,10,0,0" >
+                <Grid Grid.Row="1" Background="#4A4A4A" Margin="0,10,0,0">
                     <ListView>
                         <ListViewItem>
                             <StackPanel Orientation="Horizontal">
-                                <materialDesign:PackIcon Kind="InfoOutline" Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                                <materialDesign:PackIcon Kind="InfoOutline" Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Center" />
                                 <TextBlock Foreground="White" Margin="15,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center">Edit profile</TextBlock>
                             </StackPanel>
                         </ListViewItem>
                         <ListViewItem>
                             <StackPanel Orientation="Horizontal">
-                                <materialDesign:PackIcon Kind="BellRingOutline" Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                                <materialDesign:PackIcon Kind="BellRingOutline" Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Center" />
                                 <TextBlock Foreground="White" Margin="15,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center">Notifications</TextBlock>
                             </StackPanel>
                         </ListViewItem>
                         <ListViewItem>
                             <StackPanel Orientation="Horizontal">
-                                <materialDesign:PackIcon Kind="MessageReply" Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                                <materialDesign:PackIcon Kind="MessageReply" Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Center" />
                                 <TextBlock Foreground="White" Margin="15,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center">Chat settings</TextBlock>
                             </StackPanel>
                         </ListViewItem>
                         <ListViewItem>
                             <StackPanel Orientation="Horizontal">
-                                <materialDesign:PackIcon Kind="Style" Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                                <materialDesign:PackIcon Kind="Style" Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Center" />
                                 <TextBlock Foreground="White" Margin="15,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center">Themes</TextBlock>
                             </StackPanel>
                         </ListViewItem>
@@ -75,7 +75,7 @@
                     <ListView>
                         <ListViewItem>
                             <StackPanel Orientation="Horizontal">
-                                <materialDesign:PackIcon Kind="EmergencyExit" Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                                <materialDesign:PackIcon Kind="EmergencyExit" Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Center" />
                                 <TextBlock Foreground="Salmon" Margin="15,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center">Log out</TextBlock>
                             </StackPanel>
                         </ListViewItem>

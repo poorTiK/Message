@@ -5,28 +5,28 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Message"
         mc:Ignorable="d"
-        
+
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-        
+
         Name="ContactsWnd"
         WindowStartupLocation="CenterOwner" WindowStyle="None"
         BorderThickness="0" ResizeMode="NoResize"
         Height="450" Width="259">
 
     <WindowChrome.WindowChrome>
-        <WindowChrome CaptionHeight="0"/>
+        <WindowChrome CaptionHeight="0" />
     </WindowChrome.WindowChrome>
 
     <Grid Background="#353636">
         <Grid.RowDefinitions>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition/>
-            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition />
+            <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-            <ColumnDefinition/>
+            <ColumnDefinition />
+            <ColumnDefinition />
         </Grid.ColumnDefinitions>
 
         <TextBlock Grid.ColumnSpan="2" Grid.Row="0" Foreground="White"
@@ -36,26 +36,26 @@
         <StackPanel Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Margin="5"
                     Orientation="Horizontal" VerticalAlignment="Center">
             <materialDesign:PackIcon Kind="Magnify" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" />
-            <TextBox Name="SearchBox" Focusable="True" Margin="0,10,10,10" Foreground="White" Width="221" 
-                     SelectionBrush="#FF919191" Text="{Binding ContactsSearch, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            <TextBox Name="SearchBox" Focusable="True" Margin="0,10,10,10" Foreground="White" Width="221"
+                     SelectionBrush="#FF919191" Text="{Binding ContactsSearch, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
         </StackPanel>
 
-        <ListBox Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="2" Margin="10" 
+        <ListBox Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="2" Margin="10"
                  ItemsSource="{Binding ContactsList}" SelectedItem="{Binding SelectedContact}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Grid>
                         <Grid.RowDefinitions>
-                            <RowDefinition/>
-                            <RowDefinition/>
+                            <RowDefinition />
+                            <RowDefinition />
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="auto"/>
-                            <ColumnDefinition/>
+                            <ColumnDefinition Width="auto" />
+                            <ColumnDefinition />
                         </Grid.ColumnDefinitions>
                         <Ellipse Height="45" Width="45" Grid.Column="0" Grid.Row="0" Grid.RowSpan="2">
                             <Ellipse.Fill>
-                                <ImageBrush ImageSource="Resources/Test.jpg"/>
+                                <ImageBrush ImageSource="Resources/Test.jpg" />
                             </Ellipse.Fill>
                         </Ellipse>
 

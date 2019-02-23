@@ -4,7 +4,7 @@ using System.Windows.Controls;
 
 namespace Message.ValidationRules
 {
-    class Login_ValidationRule : ValidationRule
+    internal class Login_ValidationRule : ValidationRule
     {
         public override ValidationResult Validate(object value, CultureInfo cultureInfo)
         {
