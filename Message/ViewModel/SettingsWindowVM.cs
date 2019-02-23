@@ -1,5 +1,7 @@
 ﻿using Message.Interfaces;
 using Message.Model;
+using Prism.Commands;
+using System.Windows;
 
 namespace Message.ViewModel
 {
@@ -26,6 +28,22 @@ namespace Message.ViewModel
         public SettingsWindowVM(IView view)
         {
             this.view = view;
+        }
+
+        private DelegateCommand _onProfileSettings;
+
+        public DelegateCommand ProfileSettings =>
+            _onProfileSettings ?? (_onProfileSettings = new DelegateCommand(ExecuteOnProfileSettings));
+
+        private void ExecuteOnProfileSettings()
+        {
+            view.Hide(false);
+
+            var profEditWnd = new UserProfileWindow();
+            profEditWnd.Owner = (Window)view;
+            profEditWnd.ShowDialog();
+
+            view.Hide(true);
         }
     }
 }

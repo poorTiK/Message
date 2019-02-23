@@ -1,40 +1,29 @@
 ﻿using Message.Interfaces;
 using Message.ViewModel;
-using System;
 using System.Windows;
 
 namespace Message
 {
     /// <summary>
-    /// Interaction logic for Contacts.xaml
+    /// Interaction logic for UserProfileWindow.xaml
     /// </summary>
-    public partial class Contacts : Window, IView
+    public partial class UserProfileWindow : Window, IView
     {
-        public Contacts()
+        public UserProfileWindow()
         {
             InitializeComponent();
-            DataContext = new ContatsWindowVM(this);
 
-            Loaded += Contacts_Loaded;
-        }
-
-        private void Contacts_Loaded(object sender, RoutedEventArgs e)
-        {
-            SearchBox.Focus();
+            DataContext = new UserProfileWindowVM(this);
         }
 
         public void AnimatedResize(int h, int w)
         {
-            throw new NotImplementedException();
+            throw new System.NotImplementedException();
         }
 
         public void CloseWindow()
         {
             Close();
-        }
-
-        public void SetOpacity(double opacity)
-        {
         }
 
         public void Hide(bool isVisible)
@@ -47,6 +36,16 @@ namespace Message
             {
                 Visibility = Visibility.Hidden;
             }
+        }
+
+        public void SetOpacity(double opasity)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        private void ButtonClose_OnClick(object sender, RoutedEventArgs e)
+        {
+            Close();
         }
     }
 }

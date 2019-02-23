@@ -145,6 +145,19 @@
                                             </TextBlock.Text>
                                         </TextBlock>
                                         <TextBlock Grid.Column="1" Grid.Row="1" Margin="10,0,0,0" Foreground="#FF63A35D" Text="{Binding Path=LastOnline}"></TextBlock>
+
+                                        <Grid.ContextMenu>
+                                            <ContextMenu Background="#262626">
+                                                <MenuItem Background="#262626" Foreground="White"
+                                                    Header="View profile"></MenuItem>
+                                                <MenuItem Background="#262626" Foreground="White"
+                                                          Header="Mark as unread"></MenuItem>
+                                                <MenuItem Background="#262626" Foreground="White"
+                                                          Header="Delete dialog"></MenuItem>
+                                                <MenuItem Background="#262626" Foreground="Salmon"
+                                                          Header="Block user"></MenuItem>
+                                            </ContextMenu>
+                                        </Grid.ContextMenu>
                                     </Grid>
                                 </DataTemplate>
                             </ListBox.ItemTemplate>

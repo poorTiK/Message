@@ -47,7 +47,11 @@
                         <ListViewItem>
                             <StackPanel Orientation="Horizontal">
                                 <materialDesign:PackIcon Kind="InfoOutline" Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Center" />
-                                <TextBlock Foreground="White" Margin="15,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center">Edit profile</TextBlock>
+                                <TextBlock Foreground="White" Margin="15,0,0,0" Text="Edit profile" HorizontalAlignment="Left" VerticalAlignment="Center">
+                                    <TextBlock.InputBindings>
+                                        <MouseBinding Command="{Binding ProfileSettings}" MouseAction="LeftClick" />
+                                    </TextBlock.InputBindings>
+                                </TextBlock>
                             </StackPanel>
                         </ListViewItem>
                         <ListViewItem>
