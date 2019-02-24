@@ -97,6 +97,13 @@ namespace Message.ViewModel
             set { SetProperty(ref _messageText, value); }
         }
 
+        private bool _isMenuEnabled;
+        public bool IsMenuEnabled
+        {
+            get { return _isMenuEnabled; }
+            set { SetProperty(ref _isMenuEnabled, value); }
+        }
+
         public MessageMainVM(IMessaging View)
         {
             _view = View;
@@ -121,11 +128,18 @@ namespace Message.ViewModel
             ContactsList = userServiceClient.GetAllContacts(GlobalBase.CurrentUser);
             SelectedContact = new User();
 
+            IsMenuEnabled = false;
+
             userServiceClient.onUserCame(user);
         }
 
         private void SelectedContactChanged()
         {
+            if (SelectedContact != null)
+                IsMenuEnabled = true;
+            else
+                IsMenuEnabled = false;
+
             if (_view.MessageList != null)
             {
                 _view.MessageList.Clear();
@@ -174,6 +188,20 @@ namespace Message.ViewModel
 
         public DelegateCommand OnSendMessage =>
             _onSendMessage ?? (_onSendMessage = new DelegateCommand(ExecuteOnSendMessage));
+
+        private DelegateCommand _onViewProfile;
+
+        public DelegateCommand ViewProfile =>
+            _onViewProfile ?? (_onViewProfile = new DelegateCommand(ExecuteOnViewProfile));
+
+        private void ExecuteOnViewProfile()
+        {
+            var wnd = new ContactProfileWindow(SelectedContact);
+            wnd.Owner = (Window)_view;
+            wnd.ShowDialog();
+
+            Update();
+        }
 
         private void ExecuteOnSendMessage()
         {

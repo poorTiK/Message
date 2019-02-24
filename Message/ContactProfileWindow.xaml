@@ -1,4 +1,4 @@
-﻿<Window x:Class="Message.UserProfileWindow"
+﻿<Window x:Class="Message.ContactProfileWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -6,13 +6,11 @@
         xmlns:local="clr-namespace:Message"
         xmlns:converter="clr-namespace:Message.AdditionalItems"
         mc:Ignorable="d"
-
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
 
         Name="UserProfileWnd" WindowStartupLocation="CenterOwner" WindowStyle="None"
         BorderThickness="0" ResizeMode="NoResize"
-        Height="400" Width="250">
-
+        Height="330.334" Width="250">
     <WindowChrome.WindowChrome>
         <WindowChrome CaptionHeight="0" />
     </WindowChrome.WindowChrome>
@@ -24,7 +22,7 @@
 
     <Grid Background="#353636">
         <Grid VerticalAlignment="Top">
-            <TextBlock Foreground="White" Margin="5,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center">Profile settings</TextBlock>
+            <TextBlock Foreground="White" Margin="5,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center">Profile</TextBlock>
             <Button x:Name="ButtonClose" Click="ButtonClose_OnClick" HorizontalAlignment="Right" VerticalAlignment="Top" Background="{x:Null}" Foreground="White" BorderBrush="{x:Null}" Width="30" Height="30" Padding="0">
                 <materialDesign:PackIcon Kind="Close" />
             </Button>
@@ -68,36 +66,46 @@
                 </Grid.RowDefinitions>
 
                 <materialDesign:PackIcon VerticalAlignment="Bottom" Grid.Column="0" Grid.Row="0" Kind="RenameBox" Foreground="White" Margin="5,0,0,0" />
-                <TextBox Grid.Column="1" Grid.Row="0" Margin="5,0,5,0" Text="{Binding UserName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                         materialDesign:HintAssist.Hint="First name" Foreground="White"></TextBox>
+                <TextBlock Grid.Column="1" Grid.Row="0" Margin="5,0,5,0" Text="{Binding UserName}"
+                         Foreground="White"></TextBlock>
 
                 <materialDesign:PackIcon VerticalAlignment="Bottom" Grid.Column="0" Grid.Row="1" Kind="RenameBox" Foreground="White" Margin="5,0,0,0" />
-                <TextBox Grid.Column="1" Grid.Row="1" Margin="5,10,5,0" Text="{Binding UserLastName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                         materialDesign:HintAssist.Hint="Last name" Foreground="White"></TextBox>
+                <TextBlock Grid.Column="1" Grid.Row="1" Margin="5,10,5,0" Text="{Binding UserLastName}"
+                         Foreground="White"></TextBlock>
 
                 <materialDesign:PackIcon VerticalAlignment="Bottom" Grid.Column="0" Grid.Row="2" Kind="Cellphone" Foreground="White" Margin="5,0,0,0" />
-                <TextBox Grid.Column="1" Grid.Row="2" Margin="5,10,5,0" Text="{Binding UserPhone, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                         materialDesign:HintAssist.Hint="Phone number" Foreground="White"></TextBox>
+                <TextBlock Grid.Column="1" Grid.Row="2" Margin="5,10,5,0" Text="{Binding UserPhone}"
+                         Foreground="White"></TextBlock>
 
                 <materialDesign:PackIcon VerticalAlignment="Bottom" Grid.Column="0" Grid.Row="3" Kind="Gmail" Foreground="White" Margin="5,0,0,0" />
-                <TextBox Grid.Column="1" Grid.Row="3" Margin="5,10,5,0" Text="{Binding UserEmail, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                         materialDesign:HintAssist.Hint="Email" Foreground="White"></TextBox>
+                <TextBlock Grid.Column="1" Grid.Row="3" Margin="5,10,5,0" Text="{Binding UserEmail}"
+                          Foreground="White"></TextBlock>
 
                 <materialDesign:PackIcon VerticalAlignment="Bottom" Grid.Column="0" Grid.Row="4" Kind="CardTextOutline" Foreground="White" Margin="5,0,0,0" />
-                <TextBox Grid.Column="1" Grid.Row="4" Margin="5,10,5,0" Text="{Binding UserBio, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Style="{StaticResource MaterialDesignOutlinedTextFieldTextBox}"
-                         TextWrapping="Wrap"
-                         VerticalScrollBarVisibility="Auto"
-                         materialDesign:HintAssist.Hint="Bio" Foreground="White"></TextBox>
+                <TextBlock Grid.Column="1" Grid.Row="4" Margin="5,10,5,0" Text="{Binding UserBio}"
+                         TextWrapping="Wrap" Foreground="White"></TextBlock>
             </Grid>
 
             <Grid Grid.Row="3" Background="#4A4A4A" Margin="5,0,5,0"></Grid>
 
             <Grid Grid.Row="4">
-                <Button Content="Apply changes" VerticalAlignment="Center" HorizontalAlignment="Center"
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Button Content="Add" VerticalAlignment="Center" HorizontalAlignment="Center"
+                        Grid.Column="0" Width="100"
                         materialDesign:ButtonProgressAssist.Value="-1"
-                        materialDesign:ButtonProgressAssist.IsIndicatorVisible="{Binding IsSavingProgress}"
-                        materialDesign:ButtonProgressAssist.IsIndeterminate="{Binding IsSavingProgress}"
-                        Command="{Binding ApplyChanges}" IsEnabled="{Binding IsNewChanges}"></Button>
+                        materialDesign:ButtonProgressAssist.IsIndicatorVisible="{Binding IsAddingProgress}"
+                        materialDesign:ButtonProgressAssist.IsIndeterminate="{Binding IsAddingProgress}"
+                        Command="{Binding AddContact}" IsEnabled="{Binding IsNonContact}"></Button>
+
+                <Button Content="Delete" VerticalAlignment="Center" HorizontalAlignment="Center"
+                        Grid.Column="1" Width="100" Background="Salmon" BorderBrush="Salmon"
+                        materialDesign:ButtonProgressAssist.Value="-1"
+                        materialDesign:ButtonProgressAssist.IsIndicatorVisible="{Binding IsDeletingProgress}"
+                        materialDesign:ButtonProgressAssist.IsIndeterminate="{Binding IsDeletingProgress}"
+                        Command="{Binding DeleteContact}" IsEnabled="{Binding IsContact}"></Button>
             </Grid>
         </Grid>
     </Grid>
