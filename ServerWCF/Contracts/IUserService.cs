@@ -46,6 +46,9 @@ namespace ServerWCF.Contracts
         [OperationContract]
         List<User> FindUsersByLogin(string login);
 
+        [OperationContract]
+        bool IsExistsInContacts(User owner, User owned);
+
         [OperationContract(IsOneWay = true)]
         void onUserCame(User user);
 

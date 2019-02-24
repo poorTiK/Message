@@ -72,6 +72,13 @@ namespace ServerWCF.Services
             }
         }
 
+        public bool IsExistsInContacts(User owner, User owned)
+        {
+            List<User> contactsForOwner = GetAllContacts(owner);
+
+            return contactsForOwner.Where(u => u.Id == owned.Id).FirstOrDefault() != null;
+        }
+
         public bool AddOrUpdateUser(User user)
         {
             using (UserContext db = new UserContext())

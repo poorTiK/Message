@@ -659,6 +659,12 @@ namespace Message.UserServiceReference {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/FindUsersByLogin", ReplyAction="http://tempuri.org/IUserService/FindUsersByLoginResponse")]
         System.Threading.Tasks.Task<System.Collections.Generic.List<Message.UserServiceReference.User>> FindUsersByLoginAsync(string login);
         
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/IsExistsInContacts", ReplyAction="http://tempuri.org/IUserService/IsExistsInContactsResponse")]
+        bool IsExistsInContacts(Message.UserServiceReference.User owner, Message.UserServiceReference.User owned);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/IsExistsInContacts", ReplyAction="http://tempuri.org/IUserService/IsExistsInContactsResponse")]
+        System.Threading.Tasks.Task<bool> IsExistsInContactsAsync(Message.UserServiceReference.User owner, Message.UserServiceReference.User owned);
+        
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IUserService/onUserCame")]
         void onUserCame(Message.UserServiceReference.User user);
         
@@ -812,6 +818,14 @@ namespace Message.UserServiceReference {
         
         public System.Threading.Tasks.Task<System.Collections.Generic.List<Message.UserServiceReference.User>> FindUsersByLoginAsync(string login) {
             return base.Channel.FindUsersByLoginAsync(login);
+        }
+        
+        public bool IsExistsInContacts(Message.UserServiceReference.User owner, Message.UserServiceReference.User owned) {
+            return base.Channel.IsExistsInContacts(owner, owned);
+        }
+        
+        public System.Threading.Tasks.Task<bool> IsExistsInContactsAsync(Message.UserServiceReference.User owner, Message.UserServiceReference.User owned) {
+            return base.Channel.IsExistsInContactsAsync(owner, owned);
         }
         
         public void onUserCame(Message.UserServiceReference.User user) {
