@@ -10,7 +10,9 @@ using System.Net;
 using System.ServiceModel;
 using System.Text;
 using System.Windows;
+using System.Diagnostics;
 using MessageT = Message.MessageServiceReference.MessageT;
+using Microsoft.Win32;
 
 namespace Message.ViewModel
 {
@@ -95,6 +97,13 @@ namespace Message.ViewModel
         {
             get { return _messageText; }
             set { SetProperty(ref _messageText, value); }
+        }
+
+        private string _filePath;
+        public string FilePath
+        {
+            get { return _filePath; }
+            set { SetProperty(ref _filePath, value); }
         }
 
         private bool _isMenuEnabled;
@@ -194,6 +203,29 @@ namespace Message.ViewModel
         public DelegateCommand ViewProfile =>
             _onViewProfile ?? (_onViewProfile = new DelegateCommand(ExecuteOnViewProfile));
 
+        private DelegateCommand _exit;
+
+        public DelegateCommand Exit =>
+            _exit ?? (_exit = new DelegateCommand(ExecuteOnExit));
+
+        private DelegateCommand _addFile;
+
+        public DelegateCommand AddFile =>
+            _addFile ?? (_addFile = new DelegateCommand(ExecuteOnAddFile));
+
+        private void ExecuteOnAddFile()
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.ShowDialog();
+            FilePath = openFileDialog.FileName;
+        }
+
+        private void ExecuteOnExit()
+        {
+            userServiceClient.onUserLeave(GlobalBase.CurrentUser);
+            _view.CloseWindow();
+        }
+
         private void ExecuteOnViewProfile()
         {
             var wnd = new ContactProfileWindow(SelectedContact);
@@ -288,7 +320,15 @@ namespace Message.ViewModel
 
         public void Update()
         {
+            //todo check if contact still in contacts
+            var temp = SelectedContact;
+
             ContactsList = userServiceClient.GetAllContacts(GlobalBase.CurrentUser);
+
+            if (temp != null)
+            {
+                SelectedContact = temp;
+            }
         }
 
         public void ReceiveMessage(MessageT message)
@@ -307,12 +347,14 @@ namespace Message.ViewModel
 
         public void UserLeave(User user)
         {
-            MessageBox.Show("Works(Leave) - " + user.FirstName + " - (currentUser - " + GlobalBase.CurrentUser.FirstName + ")");
+            Update();
+            Debug.WriteLine("Works(Leave) - " + user.FirstName + " - (currentUser - " + GlobalBase.CurrentUser.FirstName + ")");
         }
 
         public void UserCame(User user)
         {
-            MessageBox.Show("Works(Came) - " + user.FirstName + " - (currentUser - " + GlobalBase.CurrentUser.FirstName +  ")");
+            Update();
+            Debug.WriteLine("Works(Came) - " + user.FirstName + " - (currentUser - " + GlobalBase.CurrentUser.FirstName +  ")");
         }
     }
 }

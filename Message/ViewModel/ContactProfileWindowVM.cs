@@ -157,13 +157,13 @@ namespace Message.ViewModel
         {
             if (IsContact)
             {
-                IsContact = false;
-                IsNonContact = true;
+                IsContact = !IsContact;
+                IsNonContact = !IsNonContact;
             }
             else
             {
-                IsContact = true;
-                IsNonContact = false;
+                IsContact = !IsContact;
+                IsNonContact = !IsNonContact;
             }
         }
 

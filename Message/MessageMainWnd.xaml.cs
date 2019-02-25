@@ -191,7 +191,7 @@ namespace Message
 
         public void CloseWindow()
         {
-            Close();
+            Application.Current.Shutdown(0);
         }
 
         private void ButtonOpen_Click(object sender, RoutedEventArgs e)
@@ -268,6 +268,11 @@ namespace Message
             {
                 Visibility = Visibility.Hidden;
             }
+        }
+
+        private void ScrollV_OnGotFocus(object sender, RoutedEventArgs e)
+        {
+            ButtonClose_Click(null, null);
         }
     }
 }
