@@ -14,6 +14,7 @@ using System.Windows;
 
 namespace Message.ViewModel
 {
+    [CallbackBehavior(ConcurrencyMode = ConcurrencyMode.Reentrant)]
     internal class ForgotPassWindowVM : Prism.Mvvm.BindableBase, IUserServiceCallback
     {
         private IView view;

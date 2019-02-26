@@ -55,7 +55,7 @@ namespace ServerWCF.Contracts
         [OperationContract(IsOneWay = true)]
         void onUserLeave(User user);
     }
-
+ 
     public interface IUserCallback
     {
         [OperationContract(IsOneWay = true)]

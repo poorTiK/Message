@@ -11,6 +11,7 @@ using Prism.Commands;
 
 namespace Message.ViewModel
 {
+    [CallbackBehavior(ConcurrencyMode = ConcurrencyMode.Reentrant)]
     class ContactProfileWindowVM : Prism.Mvvm.BindableBase, IUserServiceCallback
     {
         private IView _view;
