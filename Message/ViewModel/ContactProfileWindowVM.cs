@@ -143,13 +143,13 @@ namespace Message.ViewModel
 
         private void ExecuteOnAddContact()
         {
-            UserServiceClient.AddContact(GlobalBase.CurrentUser, Profile);
+            UserServiceClient.AddContactAsync(GlobalBase.CurrentUser, Profile);
             ManageControls();
         }
 
         private void ExecuteOnDeleteContact()
         {
-            UserServiceClient.RemoveContact(GlobalBase.CurrentUser, Profile);
+            UserServiceClient.RemoveContactAsync(GlobalBase.CurrentUser, Profile);
             ManageControls();
         }
 

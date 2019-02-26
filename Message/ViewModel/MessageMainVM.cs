@@ -248,7 +248,7 @@ namespace Message.ViewModel
                     Type = "TEXT",
                 };
 
-                _messageServiceClient.SendMessage(message);
+                _messageServiceClient.SendMessageAsync(message);
                 _view.MessageList.Add(message);
 
                 _view.UpdateMessageList();
