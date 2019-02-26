@@ -224,14 +224,14 @@ namespace Message.ViewModel
                 Status = "online"
             };
 
-            UserServiceClient.AddOrUpdateUser(markOwner);
-            UserServiceClient.AddOrUpdateUser(billOwned);
+            UserServiceClient.AddOrUpdateUserAsync(markOwner);
+            UserServiceClient.AddOrUpdateUserAsync(billOwned);
 
             //attaching new contact for Mark
-            UserServiceClient.AddContact(markOwner, billOwned);
+            UserServiceClient.AddContactAsync(markOwner, billOwned);
 
             //just another user in db
-            UserServiceClient.AddOrUpdateUser(steveOwned);
+            UserServiceClient.AddOrUpdateUserAsync(steveOwned);
         }
 
         private void ExecuteOnStartRegister()
