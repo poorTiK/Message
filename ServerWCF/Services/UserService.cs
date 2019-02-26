@@ -10,6 +10,7 @@ using System.Threading;
 
 namespace ServerWCF.Services
 {
+    [ServiceBehavior(ConcurrencyMode = ConcurrencyMode.Reentrant)]
     public class UserService : IUserService
     {
         private static List<CallbackData> usersOnline = new List<CallbackData>();
