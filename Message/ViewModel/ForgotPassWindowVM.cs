@@ -1,6 +1,5 @@
 ﻿using Message.AdditionalItems;
 using Message.Interfaces;
-using Message.MessageServiceReference;
 using Message.UserServiceReference;
 using Prism.Commands;
 using System;
@@ -164,6 +163,11 @@ namespace Message.ViewModel
         }
 
         public void UserCame(User user)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ReceiveMessage(MessageT message)
         {
             throw new NotImplementedException();
         }

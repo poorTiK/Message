@@ -401,6 +401,61 @@ namespace ServerWCF.Services
             } 
         }
 
+        public void SendMessage(MessageT message)
+        {
+            using (UserContext userContext = new UserContext())
+            {
+                try
+                {
+                    User dbSender = userContext.Users.Where(u => u.Id == message.SenderId).First();
+
+                    CallbackData callbackData = usersOnline.Where(cd => cd.User.Id == dbSender.Id).FirstOrDefault();
+                    if (callbackData == null)
+                    {
+                        return;
+                    }
+
+                    User dbReceiver = userContext.Users.Where(u => u.Id == message.ReceiverId).First();
+
+                    message.Sender = dbSender;
+                    message.Receiver = dbReceiver;
+
+                    userContext.Messages.Add(message);
+                    userContext.SaveChanges();
+
+                    MessageInfo messageInfo = new MessageInfo();
+                    messageInfo.Message = message;
+                    messageInfo.CallbackData = callbackData;
+
+                    Thread t = new Thread(new ParameterizedThreadStart(receiveMessageCallback));
+                    t.IsBackground = true;
+                    t.Start(messageInfo);
+                }
+                catch (Exception ex)
+                {
+                }
+            }
+        }
+
+        private void receiveMessageCallback(object mesDataObj)
+        {
+            MessageInfo messageInfo = mesDataObj as MessageInfo;
+
+            foreach (CallbackData innerCallbackData in usersOnline)
+            {
+                if (innerCallbackData != messageInfo.CallbackData)
+                {
+                    innerCallbackData.UserCallback.ReceiveMessage(messageInfo.Message);
+                }
+            }
+        }
+
+        private class MessageInfo
+        {
+            public MessageT Message { get; set; }
+            public CallbackData CallbackData { get; set; }
+        }
+
         private class CallbackData
         {
             public User User

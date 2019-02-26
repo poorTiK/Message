@@ -676,6 +676,12 @@ namespace Message.UserServiceReference {
         
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IUserService/onUserLeave")]
         System.Threading.Tasks.Task onUserLeaveAsync(Message.UserServiceReference.User user);
+        
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IUserService/SendMessage")]
+        void SendMessage(Message.UserServiceReference.MessageT message);
+        
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IUserService/SendMessage")]
+        System.Threading.Tasks.Task SendMessageAsync(Message.UserServiceReference.MessageT message);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -686,6 +692,9 @@ namespace Message.UserServiceReference {
         
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IUserService/UserCame")]
         void UserCame(Message.UserServiceReference.User user);
+        
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IUserService/ReceiveMessage")]
+        void ReceiveMessage(Message.UserServiceReference.MessageT message);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -842,6 +851,14 @@ namespace Message.UserServiceReference {
         
         public System.Threading.Tasks.Task onUserLeaveAsync(Message.UserServiceReference.User user) {
             return base.Channel.onUserLeaveAsync(user);
+        }
+        
+        public void SendMessage(Message.UserServiceReference.MessageT message) {
+            base.Channel.SendMessage(message);
+        }
+        
+        public System.Threading.Tasks.Task SendMessageAsync(Message.UserServiceReference.MessageT message) {
+            return base.Channel.SendMessageAsync(message);
         }
     }
 }

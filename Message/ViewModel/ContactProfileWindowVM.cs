@@ -177,5 +177,10 @@ namespace Message.ViewModel
         {
             throw new NotImplementedException();
         }
+
+        public void ReceiveMessage(MessageT message)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

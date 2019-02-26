@@ -9,7 +9,6 @@ using System.Windows;
 using System.Windows.Interop;
 using System.Windows.Media.Animation;
 using System.Windows.Navigation;
-using MessageT = Message.MessageServiceReference.MessageT;
 
 namespace Message
 {
@@ -148,7 +147,7 @@ namespace Message
 
         #endregion Win32 Magic
 
-        public List<MessageServiceReference.MessageT> MessageList { get; set; }
+        public List<MessageT> MessageList { get; set; }
 
         public MessageMainWnd()
         {

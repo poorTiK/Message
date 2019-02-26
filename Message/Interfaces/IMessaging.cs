@@ -1,4 +1,4 @@
-﻿using Message.MessageServiceReference;
+﻿using Message.UserServiceReference;
 using System.Collections.Generic;
 
 namespace Message.Interfaces

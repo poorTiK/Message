@@ -1,5 +1,4 @@
 ﻿using Message.Interfaces;
-using Message.MessageServiceReference;
 using Message.UserServiceReference;
 using Message.Model;
 using Prism.Commands;
@@ -11,26 +10,19 @@ using System.ServiceModel;
 using System.Text;
 using System.Windows;
 using System.Diagnostics;
-using MessageT = Message.MessageServiceReference.MessageT;
 using Microsoft.Win32;
 
 namespace Message.ViewModel
 {
     [CallbackBehavior(ConcurrencyMode = ConcurrencyMode.Reentrant)]
-    internal class MessageMainVM : Prism.Mvvm.BindableBase, IMessageServiceCallback, IUserServiceCallback
+    internal class MessageMainVM : Prism.Mvvm.BindableBase, IUserServiceCallback
     {
-
-
         private const string HOST = "192.168.0.255";
         private IPAddress groupAddress;
 
         private InstanceContext usersSite;
         private UserServiceClient userServiceClient;
         private IUserServiceCallback _userServiceCallback;
-
-        private InstanceContext site;
-        private MessageServiceClient _messageServiceClient;
-        private IMessageServiceCallback _messageServiceCallback;
 
         private IMessaging _view;
 
@@ -131,9 +123,6 @@ namespace Message.ViewModel
 
             //callback for messages
             groupAddress = IPAddress.Parse(HOST);
-            _messageServiceCallback = this;
-            site = new InstanceContext(_messageServiceCallback);
-            _messageServiceClient = new MessageServiceClient(site);
 
             ContactsList = userServiceClient.GetAllContacts(GlobalBase.CurrentUser);
             SelectedContact = new User();
@@ -249,7 +238,7 @@ namespace Message.ViewModel
                     Type = "TEXT",
                 };
 
-                _messageServiceClient.SendMessage(message);
+                userServiceClient.SendMessage(message);
                 _view.MessageList.Add(message);
 
                 _view.UpdateMessageList();

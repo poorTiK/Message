@@ -215,17 +215,31 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
+  <xs:element name="SendMessage">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q24="http://schemas.datacontract.org/2004/07/ServerWCF.Model" minOccurs="0" name="message" nillable="true" type="q24:MessageT" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
   <xs:element name="UserLeave">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q24="http://schemas.datacontract.org/2004/07/ServerWCF.Model" minOccurs="0" name="user" nillable="true" type="q24:User" />
+        <xs:element xmlns:q25="http://schemas.datacontract.org/2004/07/ServerWCF.Model" minOccurs="0" name="user" nillable="true" type="q25:User" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="UserCame">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q25="http://schemas.datacontract.org/2004/07/ServerWCF.Model" minOccurs="0" name="user" nillable="true" type="q25:User" />
+        <xs:element xmlns:q26="http://schemas.datacontract.org/2004/07/ServerWCF.Model" minOccurs="0" name="user" nillable="true" type="q26:User" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ReceiveMessage">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q27="http://schemas.datacontract.org/2004/07/ServerWCF.Model" minOccurs="0" name="message" nillable="true" type="q27:MessageT" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
