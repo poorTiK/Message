@@ -98,6 +98,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
+    <Compile Include="ContactProfileWindow.xaml.cs">
+      <DependentUpon>ContactProfileWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Contacts.xaml.cs">
       <DependentUpon>Contacts.xaml</DependentUpon>
     </Compile>
@@ -126,6 +129,7 @@
     <Compile Include="ValidationRules\Email_ValidationRule.cs" />
     <Compile Include="ValidationRules\Login_ValidationRule.cs" />
     <Compile Include="ValidationRules\NameSurname_ValidationRule.cs" />
+    <Compile Include="ViewModel\ContactProfileWindowVM.cs" />
     <Compile Include="ViewModel\ContatsWindowVM.cs" />
     <Compile Include="ViewModel\ForgotPassWindowVM.cs" />
     <Compile Include="ViewModel\MainWindowVM.cs" />
@@ -133,6 +137,10 @@
     <Compile Include="ViewModel\SettingsWindowVM.cs" />
     <Compile Include="ViewModel\UserProfileWindowVM.cs" />
     <Page Include="AdditionalItems\CustomMessageBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ContactProfileWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

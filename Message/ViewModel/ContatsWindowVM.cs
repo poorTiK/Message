@@ -94,7 +94,11 @@ namespace Message.ViewModel
 
         private void ExecuteOnOpenProfile()
         {
-            throw new NotImplementedException();
+            var wnd = new ContactProfileWindow(SelectedContact);
+            wnd.Owner = (Window)view;
+            wnd.ShowDialog();
+
+            UpdateContacts();
         }
 
         private void ExecuteOnCloseCommand()

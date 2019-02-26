@@ -37,7 +37,7 @@
                     </Button>
                     <Button Name="CloseButton" Background="{x:Null}" BorderBrush="{x:Null}"
                         Foreground="White" Height="auto" HorizontalAlignment="Center"
-                        VerticalAlignment="Center">
+                        VerticalAlignment="Center" Command="{Binding Exit}">
                         <materialDesign:PackIcon
                         Kind="WindowClose" />
                     </Button>
@@ -68,7 +68,7 @@
                                         </MultiBinding>
                                     </TextBlock.Text>
                                 </TextBlock>
-                                <TextBlock Foreground="#FF63A35D">Online</TextBlock>
+                                <TextBlock Foreground="#FF63A35D" Text="{Binding SelectedContact.Status}"></TextBlock>
                             </StackPanel>
 
                             <StackPanel Name="DialogSearch" Visibility="{Binding IsDialogSearchVisible, Converter={StaticResource BoolToVisConverter}}"
@@ -77,7 +77,7 @@
                                 <TextBox Margin="0,10,10,10" Width="122" Text="{Binding DialogSearchStr, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Foreground="White" SelectionBrush="#FF919191" />
                             </StackPanel>
 
-                            <Menu Background="#262626" HorizontalAlignment="Right">
+                            <Menu Background="#262626" HorizontalAlignment="Right" IsEnabled="{Binding IsMenuEnabled}">
                                 <MenuItem Background="{x:Null}" BorderBrush="{x:Null}" Height="53"
                                           Command="{Binding DialogSearchCommand}">
                                     <MenuItem.Header>
@@ -88,7 +88,7 @@
                                     <MenuItem.Header>
                                         <materialDesign:PackIcon Kind="EllipsisVertical" Width="25" Height="25" Foreground="White" />
                                     </MenuItem.Header>
-                                    <MenuItem Header="View profile" Background="#353636" Foreground="White" />
+                                    <MenuItem Header="View profile" Background="#353636" Foreground="White" Command="{Binding ViewProfile}"/>
                                     <MenuItem Header="Edit contact" Background="#353636" Foreground="White" />
                                     <MenuItem Header="Delete contact" Background="#353636" Foreground="White" />
                                     <MenuItem Header="Delete conversation" Background="#353636" Foreground="White" />
@@ -119,6 +119,19 @@
                     </Border.Effect>
                     <Grid Background="#262626">
                         <ListBox Foreground="#DDFFFFFF" Name="List" ItemsSource="{Binding ContactsList}" SelectedItem="{Binding SelectedContact, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+                            <ListBox.ContextMenu>
+                                <ContextMenu Background="#262626">
+                                    <MenuItem Background="#262626" Foreground="White"
+                                              Header="View profile"
+                                              Command="{Binding ViewProfile}"></MenuItem>
+                                    <MenuItem Background="#262626" Foreground="White"
+                                              Header="Mark as unread"></MenuItem>
+                                    <MenuItem Background="#262626" Foreground="White"
+                                              Header="Delete dialog"></MenuItem>
+                                    <MenuItem Background="#262626" Foreground="Salmon"
+                                              Header="Block user"></MenuItem>
+                                </ContextMenu>
+                            </ListBox.ContextMenu>
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
                                     <Grid>
@@ -144,27 +157,15 @@
                                                 </MultiBinding>
                                             </TextBlock.Text>
                                         </TextBlock>
-                                        <TextBlock Grid.Column="1" Grid.Row="1" Margin="10,0,0,0" Foreground="#FF63A35D" Text="{Binding Path=LastOnline}"></TextBlock>
-
-                                        <Grid.ContextMenu>
-                                            <ContextMenu Background="#262626">
-                                                <MenuItem Background="#262626" Foreground="White"
-                                                    Header="View profile"></MenuItem>
-                                                <MenuItem Background="#262626" Foreground="White"
-                                                          Header="Mark as unread"></MenuItem>
-                                                <MenuItem Background="#262626" Foreground="White"
-                                                          Header="Delete dialog"></MenuItem>
-                                                <MenuItem Background="#262626" Foreground="Salmon"
-                                                          Header="Block user"></MenuItem>
-                                            </ContextMenu>
-                                        </Grid.ContextMenu>
+                                        <TextBlock Grid.Column="1" Grid.Row="1" Margin="10,0,0,0" Foreground="#FF63A35D" Text="{Binding Path=Status}"></TextBlock>
                                     </Grid>
                                 </DataTemplate>
                             </ListBox.ItemTemplate>
                         </ListBox>
                     </Grid>
                 </Border>
-                <Grid Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2" Margin="0,0,0,30">
+                <Grid Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2" Margin="0,0,0,30"
+                      Focusable="True" GotFocus="ScrollV_OnGotFocus">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="3*" />
                         <ColumnDefinition Width="38*" />
@@ -183,7 +184,8 @@
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
 
-                            <Button Grid.Column="0" Style="{StaticResource MaterialDesignFlatButton}">
+                            <Button Grid.Column="0" Style="{StaticResource MaterialDesignFlatButton}"
+                                    Command="{Binding AddFile}">
                                 <materialDesign:PackIcon Kind="Paperclip" Foreground="White" />
                             </Button>
                             <TextBox Grid.Column="1"
