@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 
 namespace ServerWCF.Services
 {
+    [ServiceBehavior(ConcurrencyMode = ConcurrencyMode.Reentrant)]
     public class MessageService : IMessageService
     {
         private struct MessageData

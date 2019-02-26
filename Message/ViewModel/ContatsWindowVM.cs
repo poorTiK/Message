@@ -9,6 +9,7 @@ using System.Windows;
 
 namespace Message.ViewModel
 {
+    [CallbackBehavior(ConcurrencyMode = ConcurrencyMode.Reentrant)]
     internal class ContatsWindowVM : Prism.Mvvm.BindableBase, IUserServiceCallback
     {
         private InstanceContext usersSite;

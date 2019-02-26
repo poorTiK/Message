@@ -16,6 +16,7 @@ using Microsoft.Win32;
 
 namespace Message.ViewModel
 {
+    [CallbackBehavior(ConcurrencyMode = ConcurrencyMode.Reentrant)]
     internal class MessageMainVM : Prism.Mvvm.BindableBase, IMessageServiceCallback, IUserServiceCallback
     {
 
