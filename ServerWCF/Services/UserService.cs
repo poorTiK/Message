@@ -319,7 +319,8 @@ namespace ServerWCF.Services
             using(UserContext userContext = new UserContext())
             {
                 User dbUser = userContext.Users.Where(u => u.Id == user.Id).FirstOrDefault();
-
+                dbUser.Status = "online";
+                userContext.SaveChanges();
                 if (dbUser != null)
                 {
                     CallbackData callbackData = new CallbackData();
