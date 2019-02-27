@@ -50,6 +50,10 @@ namespace ServerWCF.Model
         [DataMember]
         public List<Contact> Contacts { get; set; }
 
+        [DataMember]
+        [NotMapped]
+        public int UnreadMessageCount { get; set; }
+
         public User(string firstName, string loginId, string password, string email)
         {
             Owners = new List<Contact>();
