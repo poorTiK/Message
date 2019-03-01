@@ -129,7 +129,7 @@ namespace Message.ViewModel
 
             IsMenuEnabled = false;
 
-            userServiceClient.onUserCame(user);
+            userServiceClient.OnUserCame(user);
         }
 
         private void SelectedContactChanged()
@@ -147,7 +147,7 @@ namespace Message.ViewModel
                 {
                     foreach (var mes in res)
                     {
-                        _view.MessageList.Add(new MessageT()
+                        _view.MessageList.Add(new UserMessage()
                         {
                             Content = mes.Content,
                             DateOfSending = mes.DateOfSending,
@@ -212,7 +212,7 @@ namespace Message.ViewModel
 
         private void ExecuteOnExit()
         {
-            userServiceClient.onUserLeave(GlobalBase.CurrentUser);
+            userServiceClient.OnUserLeave(GlobalBase.CurrentUser);
             _view.CloseWindow();
         }
 
@@ -229,7 +229,7 @@ namespace Message.ViewModel
         {
             if (SelectedContact != null && !string.IsNullOrWhiteSpace(MessageText))
             {
-                var message = new MessageT()
+                var message = new UserMessage()
                 {
                     Content = Encoding.UTF8.GetBytes(MessageText),
                     DateOfSending = DateTime.Now,
@@ -285,7 +285,7 @@ namespace Message.ViewModel
                     {
                         foreach (var mes in res)
                         {
-                            var message = new MessageT()
+                            var message = new UserMessage()
                             {
                                 Content = mes.Content,
                                 DateOfSending = mes.DateOfSending,
@@ -321,7 +321,7 @@ namespace Message.ViewModel
             }
         }
 
-        public void ReceiveMessage(MessageT message)
+        public void ReceiveMessage(UserMessage message)
         {
             if (message.SenderId == GlobalBase.CurrentUser.Id)
             {

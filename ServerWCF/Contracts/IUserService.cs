@@ -8,6 +8,9 @@ namespace ServerWCF.Contracts
     public interface IUserService
     {
         [OperationContract]
+        List<User> GetAllUsers();
+
+        [OperationContract]
         bool AddOrUpdateUser(User user);
 
         [OperationContract]
@@ -15,6 +18,13 @@ namespace ServerWCF.Contracts
 
         [OperationContract]
         User GetUserByEmail(string email);
+
+        [OperationContract]
+        List<User> FindUsersByLogin(string login);
+
+        [OperationContract]
+        User GetUserByLogin(string login);
+
 
         [OperationContract]
         bool AddContact(User owner, User owned);
@@ -26,37 +36,34 @@ namespace ServerWCF.Contracts
         List<User> GetAllContacts(User owner);
 
         [OperationContract]
-        List<User> GetAllUsers();
-
-        [OperationContract]
-        User GetUserByLogin(string login);
-
-        [OperationContract]
-        List<MessageT> GetMessages(User sender, User receiver, int limin);
-
-        [OperationContract]
-        List<MessageT> FindMessage(string keyWord);
-
-        [OperationContract]
-        ApplicationSettings getAppSettings(User user);
-
-        [OperationContract]
-        bool saveAppSettings(ApplicationSettings appSettings);
-
-        [OperationContract]
-        List<User> FindUsersByLogin(string login);
-
-        [OperationContract]
         bool IsExistsInContacts(User owner, User owned);
 
-        [OperationContract(IsOneWay = true)]
-        void onUserCame(User user);
+
+        [OperationContract]
+        ApplicationSettings GetAppSettings(User user);
+
+        [OperationContract]
+        bool SaveAppSettings(ApplicationSettings appSettings);
+
 
         [OperationContract(IsOneWay = true)]
-        void onUserLeave(User user);
+        void OnUserCame(User user);
 
         [OperationContract(IsOneWay = true)]
-        void SendMessage(MessageT message);
+        void OnUserLeave(User user);
+
+
+        [OperationContract(IsOneWay = true)]
+        void SendMessage(UserMessage message);
+
+        [OperationContract]
+        List<UserMessage> GetMessages(User sender, User receiver, int limin);
+
+        [OperationContract]
+        List<UserMessage> FindMessage(string keyWord);
+
+        [OperationContract]
+        bool EditMessage(UserMessage editedMessage);
     }
  
     public interface IUserCallback
@@ -68,6 +75,6 @@ namespace ServerWCF.Contracts
         void UserCame(User user);
 
         [OperationContract(IsOneWay = true)]
-        void ReceiveMessage(MessageT message);
+        void ReceiveMessage(UserMessage message);
     }
 }

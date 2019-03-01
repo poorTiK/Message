@@ -54,29 +54,5 @@ namespace ServerWCF.Model
         [NotMapped]
         public int UnreadMessageCount { get; set; }
 
-        public User(string firstName, string loginId, string password, string email)
-        {
-            Owners = new List<Contact>();
-            Contacts = new List<Contact>();
-            Login = loginId;
-            Password = password;
-            FirstName = firstName;
-            Status = "online";
-        }
-
-        public User()
-        {
-            Owners = new List<Contact>();
-            Contacts = new List<Contact>();
-            Login = "";
-            Password = "";
-            FirstName = "";
-            LastName = "";
-            Phone = "";
-            Email = "";
-            Bio = "";
-            Avatar = new byte[0];
-            Status = "online";
-        }
     }
 }

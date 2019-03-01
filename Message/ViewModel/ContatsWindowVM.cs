@@ -147,7 +147,7 @@ namespace Message.ViewModel
             int test = 20;
         }
 
-        public void ReceiveMessage(MessageT message)
+        public void ReceiveMessage(UserMessage message)
         {
             throw new NotImplementedException();
         }

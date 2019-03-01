@@ -34,12 +34,5 @@ namespace ServerWCF.Model
         [ForeignKey("UserId")]
         [DataMember]
         public User User { get; set; }
-
-        public ApplicationSettings(int windowSize, int language, string theme)
-        {
-            WindowSize = windowSize;
-            Language = language;
-            Theme = theme;
-        }
     }
 }

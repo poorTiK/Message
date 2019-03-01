@@ -1,4 +1,5 @@
 ﻿using ServerWCF.Model;
+using ServerWCF.Model.Messages;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -15,7 +16,7 @@ namespace ServerWCF.Context
 
         public DbSet<User> Users { get; set; }
         public DbSet<Contact> Contacts { get; set; }
-        public DbSet<MessageT> Messages { get; set; }
+        public DbSet<BaseMessage> Messages { get; set; }
         public DbSet<ApplicationSettings> ApplicationSettings { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
@@ -31,12 +32,12 @@ namespace ServerWCF.Context
                 .WillCascadeOnDelete(false);
 
 
-            modelBuilder.Entity<MessageT>()
+            modelBuilder.Entity<UserMessage>()
                 .HasRequired(s => s.Sender)
                 .WithMany()
                 .WillCascadeOnDelete(false);
 
-            modelBuilder.Entity<MessageT>()
+            modelBuilder.Entity<UserMessage>()
                 .HasRequired(s => s.Receiver)
                 .WithMany()
                 .WillCascadeOnDelete(false);

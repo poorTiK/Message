@@ -202,11 +202,14 @@
     <None Include="Connected Services\UserServiceReference\Message.UserServiceReference.ApplicationSettings.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
-    <None Include="Connected Services\UserServiceReference\Message.UserServiceReference.MessageT.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
     <None Include="Connected Services\UserServiceReference\Message.UserServiceReference.User.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\UserServiceReference\Message.UserServiceReference.UserMessage.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\UserServiceReference\ServerWCF.Model.Messages.xsd">
+      <SubType>Designer</SubType>
     </None>
     <None Include="Connected Services\UserServiceReference\ServerWCF.Model.xsd">
       <SubType>Designer</SubType>

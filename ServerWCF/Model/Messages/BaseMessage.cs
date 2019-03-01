@@ -7,10 +7,10 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ServerWCF.Model
+namespace ServerWCF.Model.Messages
 {
     [DataContract]
-    public class MessageT
+    public abstract class BaseMessage
     {
         [Key]
         [DataMember]
@@ -23,12 +23,6 @@ namespace ServerWCF.Model
         public User Sender { get; set; }
 
         [DataMember]
-        public int ReceiverId { get; set; }
-
-        [ForeignKey("ReceiverId")]
-        public User Receiver { get; set; }
-
-        [DataMember]
         public string Type { get; set; }
 
         [DataMember]
@@ -36,22 +30,5 @@ namespace ServerWCF.Model
 
         [DataMember]
         public DateTime DateOfSending { get; set; }
-
-        public MessageT()
-        {
-            Type = "TEXT";
-            Content = new byte[0];
-            DateOfSending = DateTime.Now;
-        }
-
-        public MessageT(string type, byte[] content, User sender, User reveiver)
-        {
-            Type = type;
-            Content = content;
-            Sender = sender;
-            Receiver = reveiver;
-            DateOfSending = DateTime.Now;
-        }
-
     }
 }

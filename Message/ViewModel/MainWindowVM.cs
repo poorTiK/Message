@@ -177,7 +177,7 @@ namespace Message.ViewModel
             IsSignUpVisible = true;
             IsRegisterVisible = false;
 
-            //fillUsers();
+            fillUsers();
             //TestApplicationSettings();
             //TestMessageT();
         }
@@ -419,7 +419,7 @@ namespace Message.ViewModel
             throw new NotImplementedException();
         }
 
-        public void ReceiveMessage(MessageT message)
+        public void ReceiveMessage(UserMessage message)
         {
             throw new NotImplementedException();
         }

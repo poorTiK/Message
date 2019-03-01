@@ -15,6 +15,25 @@ namespace ServerWCF.Services
     {
         private static List<CallbackData> usersOnline = new List<CallbackData>();
 
+        private class MessageInfo
+        {
+            public UserMessage Message { get; set; }
+            public CallbackData CallbackData { get; set; }
+        }
+
+        private class CallbackData
+        {
+            public User User
+            {
+                get; set;
+            }
+            public IUserCallback UserCallback
+            {
+                get; set;
+            }
+        }
+
+
         public bool AddContact(User owner, User owned)
         {
             using (UserContext userContext = new UserContext())
@@ -69,7 +88,7 @@ namespace ServerWCF.Services
                 {
                     return false;
                 }
-                    
+
             }
         }
 
@@ -78,41 +97,6 @@ namespace ServerWCF.Services
             List<User> contactsForOwner = GetAllContacts(owner);
 
             return contactsForOwner.Where(u => u.Id == owned.Id).FirstOrDefault() != null;
-        }
-
-        public bool AddOrUpdateUser(User user)
-        {
-            using (UserContext db = new UserContext())
-            {
-                try
-                {
-                    User result = db.Users.FirstOrDefault(u => u.Login == user.Login);
-
-                    if (result != null)
-                    { 
-                        result.Email = user.Email;
-                        result.Bio = user.Bio;
-                        result.Avatar = user.Avatar;
-                        result.FirstName = user.FirstName;
-                        result.Status = user.Status;
-                        result.Phone = user.Phone;
-                        result.Password = user.Password;
-                    }
-                    else
-                    {
-                        db.Users.Add(user);
-                    }
-
-                    db.SaveChanges();
-
-                    return true;
-                }
-                catch (Exception ex)
-                {
-                    return false;
-                }
-
-            }
         }
 
         public List<User> GetAllContacts(User owner)
@@ -137,8 +121,9 @@ namespace ServerWCF.Services
 
                 return contactsForOwner;
             }
-            
+
         }
+
 
         public List<User> GetAllUsers()
         {
@@ -154,6 +139,40 @@ namespace ServerWCF.Services
                     allUsers = new List<User>();
                 }
                 return allUsers;
+            }
+        }
+
+        public bool AddOrUpdateUser(User user)
+        {
+            using (UserContext db = new UserContext())
+            {
+                try
+                {
+                    User result = db.Users.Where(u => u.Login == user.Login).FirstOrDefault();
+
+                    if (result != null)
+                    {
+                        result.Email = user.Email;
+                        result.Bio = user.Bio;
+                        result.Avatar = user.Avatar;
+                        result.FirstName = user.FirstName;
+                        result.Status = user.Status;
+                        result.Phone = user.Phone;
+                        result.Password = user.Password;
+                    }
+                    else
+                    {
+                        db.Users.Add(user);
+                    }
+
+                    db.SaveChanges();
+
+                        return true;
+                }
+                catch (Exception ex)
+                {
+                    return false;
+                }
             }
         }
 
@@ -205,85 +224,42 @@ namespace ServerWCF.Services
                     }
                     return null;
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     return null;
                 }
             }
         }
 
-        public List<MessageT> GetMessages(User sender, User receiver, int limin)
+        public List<User> FindUsersByLogin(string keyWorkForLogin)
         {
-            using(UserContext context = new UserContext())
+            using (UserContext usersContext = new UserContext())
             {
-                List<MessageT> messagesToReturn = new List<MessageT>();
+                List<User> searchinfResult = new List<User>();
                 try
                 {
-                    foreach (MessageT message in context.Messages.Include("Sender").Include("Receiver"))
-                    {   
-                        if (messagesToReturn.Count == limin)
-                        {
-                            break;
-                        }
-
-                        if (message.Sender.Login == sender.Login &&
-                            message.Receiver.Login == receiver.Login)
-                        {
-                            messagesToReturn.Add(message);
-                        }
-
-                        if(message.Sender.Login == receiver.Login && 
-                            message.Receiver.Login == sender.Login)
-                        {
-                            messagesToReturn.Add(message);
-                        }
-                    }
+                    searchinfResult = usersContext.Users.Where(u => u.Login.Contains(keyWorkForLogin)).ToList();
                 }
                 catch (Exception ex)
                 {
-                    messagesToReturn = new List<MessageT>();
+                    searchinfResult = new List<User>();
                 }
 
-                return messagesToReturn;
+                return searchinfResult;
             }
         }
 
-        public List<MessageT> FindMessage(string keyWord)
+
+        public ApplicationSettings GetAppSettings(User user)
         {
-            using (UserContext userContext = new UserContext())
-            {
-                List<MessageT> searchingResult = new List<MessageT>();
-
-                try
-                {
-                    foreach (MessageT message in userContext.Messages.Where(mes => mes.Type == "TEXT").ToList())
-                    {
-                        string textMessage = System.Text.Encoding.UTF8.GetString(message.Content);
-                        if (textMessage.Contains(keyWord))
-                        {
-                            searchingResult.Add(message);
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    searchingResult = new List<MessageT>();
-                }
-
-                return searchingResult;
-            }
-        }
-
-        public ApplicationSettings getAppSettings(User user)
-        {
-            using (UserContext context =  new UserContext())
+            using (UserContext context = new UserContext())
             {
                 ApplicationSettings appSettings = context.ApplicationSettings.Where(set => set.UserId == user.Id).FirstOrDefault();
                 return appSettings;
             }
         }
 
-        public bool saveAppSettings(ApplicationSettings appSettings)
+        public bool SaveAppSettings(ApplicationSettings appSettings)
         {
             using (UserContext context = new UserContext())
             {
@@ -314,9 +290,10 @@ namespace ServerWCF.Services
             }
         }
 
-        public void onUserCame(User user)
+
+        public void OnUserCame(User user)
         {
-            using(UserContext userContext = new UserContext())
+            using (UserContext userContext = new UserContext())
             {
                 User dbUser = userContext.Users.Where(u => u.Id == user.Id).FirstOrDefault();
                 dbUser.Status = "online";
@@ -338,7 +315,7 @@ namespace ServerWCF.Services
             }
         }
 
-        public void onUserLeave(User user)
+        public void OnUserLeave(User user)
         {
             using (UserContext userContext = new UserContext())
             {
@@ -378,31 +355,107 @@ namespace ServerWCF.Services
         {
             CallbackData callbackData = callbackDataObj as CallbackData;
 
-            foreach(CallbackData innerCallbackData in usersOnline)
+            foreach (CallbackData innerCallbackData in usersOnline)
             {
                 innerCallbackData.UserCallback.UserLeave(callbackData.User);
             }
         }
 
-        public List<User> FindUsersByLogin(string keyWorkForLogin)
+
+        public List<UserMessage> GetMessages(User sender, User receiver, int limin)
         {
-            using(UserContext usersContext = new UserContext()) 
+            using (UserContext context = new UserContext())
             {
-                List<User> searchinfResult = new List<User>();
+                List<UserMessage> messagesToReturn = new List<UserMessage>();
                 try
                 {
-                    searchinfResult = usersContext.Users.Where(u => u.Login.Contains(keyWorkForLogin)).ToList();
+                    foreach (UserMessage message in context.Messages.Include("Sender").Include("Receiver"))
+                    {
+                        if (messagesToReturn.Count == limin)
+                        {
+                            break;
+                        }
+
+                        if (message.Sender.Login == sender.Login &&
+                            message.Receiver.Login == receiver.Login)
+                        {
+                            messagesToReturn.Add(message);
+                        }
+
+                        if (message.Sender.Login == receiver.Login &&
+                            message.Receiver.Login == sender.Login)
+                        {
+                            messagesToReturn.Add(message);
+                        }
+                    }
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
-                    searchinfResult = new List<User>();
+                    messagesToReturn = new List<UserMessage>();
                 }
 
-                return searchinfResult;
-            } 
+                return messagesToReturn;
+            }
         }
 
-        public void SendMessage(MessageT message)
+        public List<UserMessage> FindMessage(string keyWord)
+        {
+            using (UserContext userContext = new UserContext())
+            {
+                List<UserMessage> searchingResult = new List<UserMessage>();
+
+                try
+                {
+                    foreach (UserMessage message in userContext.Messages.Where(mes => mes.Type == "TEXT").ToList())
+                    {
+                        string textMessage = System.Text.Encoding.UTF8.GetString(message.Content);
+                        if (textMessage.Contains(keyWord))
+                        {
+                            searchingResult.Add(message);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    searchingResult = new List<UserMessage>();
+                }
+
+                return searchingResult;
+            }
+        }
+
+        public bool EditMessage(UserMessage editedMessage)
+        {
+            using(UserContext userContext = new UserContext())
+            {
+                try
+                {
+                    UserMessage dbMessage = (UserMessage)userContext.Messages.Where(mes => mes.Id == editedMessage.Id).FirstOrDefault();
+
+                    if (dbMessage != null)
+                    {
+                        dbMessage.Receiver = editedMessage.Receiver;
+                        dbMessage.UserReceiverId = editedMessage.UserReceiverId;
+                        dbMessage.Sender = editedMessage.Sender;
+                        dbMessage.SenderId = editedMessage.SenderId;
+                        dbMessage.Type = editedMessage.Type;
+                        dbMessage.DateOfSending = editedMessage.DateOfSending;
+                        dbMessage.Content = editedMessage.Content;
+
+                        userContext.SaveChanges();
+                        return true;
+                    }
+
+                    return false;
+                }
+                catch (Exception ex)
+                {
+                    return false;
+                } 
+            }
+        }
+
+        public void SendMessage(UserMessage message)
         {
             using (UserContext userContext = new UserContext())
             {
@@ -416,7 +469,7 @@ namespace ServerWCF.Services
                         return;
                     }
 
-                    User dbReceiver = userContext.Users.Where(u => u.Id == message.ReceiverId).First();
+                    User dbReceiver = userContext.Users.Where(u => u.Id == message.UserReceiverId).First();
 
                     message.Sender = dbSender;
                     message.Receiver = dbReceiver;
@@ -428,7 +481,7 @@ namespace ServerWCF.Services
                     messageInfo.Message = message;
                     messageInfo.CallbackData = callbackData;
 
-                    Thread t = new Thread(new ParameterizedThreadStart(receiveMessageCallback));
+                    Thread t = new Thread(new ParameterizedThreadStart(ReceiveMessageCallback));
                     t.IsBackground = true;
                     t.Start(messageInfo);
                 }
@@ -438,7 +491,7 @@ namespace ServerWCF.Services
             }
         }
 
-        private void receiveMessageCallback(object mesDataObj)
+        private void ReceiveMessageCallback(object mesDataObj)
         {
             MessageInfo messageInfo = mesDataObj as MessageInfo;
 
@@ -448,24 +501,6 @@ namespace ServerWCF.Services
                 {
                     innerCallbackData.UserCallback.ReceiveMessage(messageInfo.Message);
                 }
-            }
-        }
-
-        private class MessageInfo
-        {
-            public MessageT Message { get; set; }
-            public CallbackData CallbackData { get; set; }
-        }
-
-        private class CallbackData
-        {
-            public User User
-            {
-                get;set;
-            }
-            public IUserCallback UserCallback
-            {
-                get;set;
             }
         }
     }
