@@ -310,12 +310,12 @@ namespace Message.ViewModel
 
         public void Update()
         {
-            //todo check if contact still in contacts
             var temp = SelectedContact;
 
             ContactsList = userServiceClient.GetAllContacts(GlobalBase.CurrentUser);
+            ContactsList.ForEach(x=>x.UnreadMessageCount = 0);
 
-            if (temp != null)
+            if (ContactsList.Any(x => x.Id == temp.Id) && temp != null)
             {
                 SelectedContact = temp;
             }
@@ -332,6 +332,26 @@ namespace Message.ViewModel
                 var user = userServiceClient.GetAllUsers().FirstOrDefault(x => x.Id == message.SenderId);
                 var mes = "New message from  @" + user.Login + "\n" + "\"" + GlobalBase.Base64Decode(message.Content) + "\"";
                 GlobalBase.ShowNotify("New message", mes);
+
+                if (SelectedContact != null && SelectedContact.Login == user.Login)
+                {
+                    UpdateDialog(user);
+                }
+            }
+        }
+
+        private void UpdateDialog(User user)
+        {
+            SelectedContactChanged();
+
+            var temp = SelectedContact;
+
+            ContactsList = userServiceClient.GetAllContacts(GlobalBase.CurrentUser);
+
+            if (temp != null)
+            {
+                SelectedContact = temp;
+                SelectedContact.UnreadMessageCount = 1;
             }
         }
 
