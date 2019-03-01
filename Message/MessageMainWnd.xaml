@@ -118,7 +118,7 @@
                         <DropShadowEffect BlurRadius="40" ShadowDepth="3" Direction="281" Opacity="0.33" />
                     </Border.Effect>
                     <Grid Background="#262626">
-                        <ListBox Foreground="#DDFFFFFF" Name="List" ItemsSource="{Binding ContactsList}" SelectedItem="{Binding SelectedContact, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+                        <ListBox Foreground="#DDFFFFFF" Name="List" ItemsSource="{Binding ContactsList, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" SelectedItem="{Binding SelectedContact, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
                             <ListBox.ContextMenu>
                                 <ContextMenu Background="#262626">
                                     <MenuItem Background="#262626" Foreground="White"
@@ -143,13 +143,18 @@
                                             <ColumnDefinition Width="auto" />
                                             <ColumnDefinition />
                                         </Grid.ColumnDefinitions>
-                                        <Ellipse Height="45" Width="45" Grid.Column="0" Grid.Row="0" Grid.RowSpan="2">
-                                            <Ellipse.Fill>
-                                                <ImageBrush ImageSource="Resources/Test.jpg" />
-                                            </Ellipse.Fill>
-                                        </Ellipse>
 
-                                        <TextBlock Grid.Column="1" Grid.Row="0" Margin="10,0,0,0">
+                                        <materialDesign:Badged Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" Margin="0,3,0,0"
+                                            x:Name="CountingBadge" Badge="{Binding Path=UnreadMessageCount, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                            BadgeColorZoneMode="PrimaryDark">
+                                            <Ellipse Height="45" Width="45" Grid.Column="0" Grid.Row="0" Grid.RowSpan="2">
+                                                <Ellipse.Fill>
+                                                    <ImageBrush ImageSource="Resources/Test.jpg" />
+                                                </Ellipse.Fill>
+                                            </Ellipse>
+                                        </materialDesign:Badged>
+
+                                        <TextBlock Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="2" Margin="10,0,0,0">
                                             <TextBlock.Text>
                                                 <MultiBinding StringFormat="{}{0} {1}">
                                                     <Binding Path="FirstName" />
@@ -157,7 +162,8 @@
                                                 </MultiBinding>
                                             </TextBlock.Text>
                                         </TextBlock>
-                                        <TextBlock Grid.Column="1" Grid.Row="1" Margin="10,0,0,0" Foreground="#FF63A35D" Text="{Binding Path=Status}"></TextBlock>
+
+                                        <TextBlock Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="1" Margin="10,0,0,0" Foreground="#FF63A35D" Text="{Binding Path=Status}"></TextBlock>
                                     </Grid>
                                 </DataTemplate>
                             </ListBox.ItemTemplate>
