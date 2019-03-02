@@ -151,6 +151,8 @@ namespace Message
 
         public MessageMainWnd()
         {
+            System.Threading.Thread.CurrentThread.CurrentUICulture = GlobalBase.Language;
+
             InitializeComponent();
 
             DataContext = new MessageMainVM(this);
@@ -160,6 +162,8 @@ namespace Message
 
         public MessageMainWnd(User user)
         {
+            System.Threading.Thread.CurrentThread.CurrentUICulture = GlobalBase.Language;
+
             InitializeComponent();
 
             DataContext = new MessageMainVM(this, user);

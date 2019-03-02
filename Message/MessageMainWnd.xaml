@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Message"
+        xmlns:res="clr-namespace:Message.Resources"
         mc:Ignorable="d"
 
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
@@ -88,11 +89,11 @@
                                     <MenuItem.Header>
                                         <materialDesign:PackIcon Kind="EllipsisVertical" Width="25" Height="25" Foreground="White" />
                                     </MenuItem.Header>
-                                    <MenuItem Header="View profile" Background="#353636" Foreground="White" Command="{Binding ViewProfile}"/>
-                                    <MenuItem Header="Edit contact" Background="#353636" Foreground="White" />
-                                    <MenuItem Header="Delete contact" Background="#353636" Foreground="White" />
-                                    <MenuItem Header="Delete conversation" Background="#353636" Foreground="White" />
-                                    <MenuItem Header="Block user" Background="#353636" Foreground="White" />
+                                    <MenuItem Header="{x:Static res:Localization.ViewProfile}" Background="#353636" Foreground="White" Command="{Binding ViewProfile}"/>
+                                    <MenuItem Header="{x:Static res:Localization.EditContact}" Background="#353636" Foreground="White" />
+                                    <MenuItem Header="{x:Static res:Localization.DeleteСontact}" Background="#353636" Foreground="White" />
+                                    <MenuItem Header="{x:Static res:Localization.DeleteConversation}" Background="#353636" Foreground="White" />
+                                    <MenuItem Header="{x:Static res:Localization.BlockUser}" Background="#353636" Foreground="White" />
                                 </MenuItem>
                             </Menu>
                         </Grid>
@@ -122,14 +123,14 @@
                             <ListBox.ContextMenu>
                                 <ContextMenu Background="#262626">
                                     <MenuItem Background="#262626" Foreground="White"
-                                              Header="View profile"
+                                              Header="{x:Static res:Localization.ViewProfile}"
                                               Command="{Binding ViewProfile}"></MenuItem>
                                     <MenuItem Background="#262626" Foreground="White"
-                                              Header="Mark as unread"></MenuItem>
+                                              Header="{x:Static res:Localization.MarkAsUread}"></MenuItem>
                                     <MenuItem Background="#262626" Foreground="White"
-                                              Header="Delete dialog"></MenuItem>
+                                              Header="{x:Static res:Localization.DeleteConversation}"></MenuItem>
                                     <MenuItem Background="#262626" Foreground="Salmon"
-                                              Header="Block user"></MenuItem>
+                                              Header="{x:Static res:Localization.BlockUser}"></MenuItem>
                                 </ContextMenu>
                             </ListBox.ContextMenu>
                             <ListBox.ItemTemplate>
@@ -163,7 +164,8 @@
                                             </TextBlock.Text>
                                         </TextBlock>
 
-                                        <TextBlock Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="1" Margin="10,0,0,0" Foreground="#FF63A35D" Text="{Binding Path=Status}"></TextBlock>
+                                        <TextBlock Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="1" Margin="10,0,0,0" 
+                                                   Foreground="#FF63A35D" Text="{Binding Path=Status}"></TextBlock>
                                     </Grid>
                                 </DataTemplate>
                             </ListBox.ItemTemplate>
@@ -197,7 +199,7 @@
                             <TextBox Grid.Column="1"
                                 SelectionBrush="#FF919191" TextWrapping="Wrap"
                                      VerticalContentAlignment="Stretch" Name="MessageTextBox"
-                                     materialDesign:HintAssist.Hint="Write a message..." VerticalScrollBarVisibility="Auto"
+                                     materialDesign:HintAssist.Hint="{x:Static res:Localization.Write}" VerticalScrollBarVisibility="Auto"
                                      Foreground="White" Margin="10,2,0,2" VerticalAlignment="Center"
                                     Text="{Binding MessageText, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
                                 <TextBox.InputBindings>
@@ -236,7 +238,7 @@
                         <ListViewItem Height="45" Padding="0">
                             <StackPanel Orientation="Horizontal" Margin="10 0">
                                 <materialDesign:PackIcon Kind="AccountSupervisor" Width="20" Height="20" Foreground="Gray" Margin="5" VerticalAlignment="Center" />
-                                <TextBlock Text="Contacts" FontSize="15" Margin="10" Foreground="White">
+                                <TextBlock Text="{x:Static res:Localization.Contacts}" FontSize="15" Margin="10" Foreground="White">
                                     <TextBlock.InputBindings>
                                         <MouseBinding Command="{Binding ContactsCommand}" MouseAction="LeftClick" />
                                     </TextBlock.InputBindings>
@@ -246,7 +248,7 @@
                         <ListViewItem Height="45" Padding="0">
                             <StackPanel Orientation="Horizontal" Margin="10 0">
                                 <materialDesign:PackIcon Kind="GearBox" Width="20" Height="20" Foreground="Gray" Margin="5" VerticalAlignment="Center" />
-                                <TextBlock Text="Settings" FontSize="15" Margin="10" Foreground="White">
+                                <TextBlock Text="{x:Static res:Localization.Settings}" FontSize="15" Margin="10" Foreground="White">
                                     <TextBlock.InputBindings>
                                         <MouseBinding Command="{Binding SettingsCommand}" MouseAction="LeftClick" />
                                     </TextBlock.InputBindings>
@@ -256,10 +258,11 @@
                     </ListView>
                 </StackPanel>
                 <StackPanel VerticalAlignment="Bottom" Margin="10,0,10,10">
-                    <TextBlock Foreground="White" FontWeight="Bold" >Message Desktop</TextBlock>
-                    <TextBlock Foreground="White">Version 1.0</TextBlock>
+                    <TextBlock Foreground="White" FontWeight="Bold" Text="{x:Static res:Localization.AppName}"></TextBlock>
+                    <TextBlock Foreground="White" Text="{x:Static res:Localization.AppVersion}"></TextBlock>
                     <TextBlock Foreground="White">
-                        <Hyperlink NavigateUri="https://github.com/poorTiK/Message" RequestNavigate="Hyperlink_OnRequestNavigate" Foreground="#FF63A35D" >Source code</Hyperlink>
+                        <Hyperlink NavigateUri="https://github.com/poorTiK/Message" RequestNavigate="Hyperlink_OnRequestNavigate" Foreground="#FF63A35D">Source code
+                        </Hyperlink>
                     </TextBlock>
                 </StackPanel>
                 <Button x:Name="ButtonClose" Click="ButtonClose_Click" HorizontalAlignment="Right" VerticalAlignment="Top" Background="{x:Null}" BorderBrush="{x:Null}" Width="30" Height="30" Padding="0">

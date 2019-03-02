@@ -1,4 +1,5 @@
 ﻿using Message.Interfaces;
+using Message.Model;
 using Message.ViewModel;
 using System;
 using System.Windows;
@@ -14,6 +15,8 @@ namespace Message
     {
         public MainWindow()
         {
+            System.Threading.Thread.CurrentThread.CurrentUICulture = GlobalBase.Language;
+
             InitializeComponent();
 
             MinimizeButton.Click += (s, e) => WindowState = WindowState.Minimized;

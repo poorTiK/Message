@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Message"
+        xmlns:res="clr-namespace:Message.Resources"
         xmlns:converter="clr-namespace:Message.AdditionalItems"
         mc:Ignorable="d"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
@@ -22,7 +23,8 @@
 
     <Grid Background="#353636">
         <Grid VerticalAlignment="Top">
-            <TextBlock Foreground="White" Margin="5,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Center">Profile</TextBlock>
+            <TextBlock Foreground="White" Margin="5,0,0,0" HorizontalAlignment="Left" 
+                       VerticalAlignment="Center" Text="{x:Static res:Localization.ViewProfile}"></TextBlock>
             <Button x:Name="ButtonClose" Click="ButtonClose_OnClick" HorizontalAlignment="Right" VerticalAlignment="Top" Background="{x:Null}" Foreground="White" BorderBrush="{x:Null}" Width="30" Height="30" Padding="0">
                 <materialDesign:PackIcon Kind="Close" />
             </Button>
@@ -93,14 +95,14 @@
                     <ColumnDefinition />
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
-                <Button Content="Add" VerticalAlignment="Center" HorizontalAlignment="Center"
+                <Button Content="{x:Static res:Localization.AddContact}" VerticalAlignment="Center" HorizontalAlignment="Center"
                         Grid.Column="0" Width="100"
                         materialDesign:ButtonProgressAssist.Value="-1"
                         materialDesign:ButtonProgressAssist.IsIndicatorVisible="{Binding IsAddingProgress}"
                         materialDesign:ButtonProgressAssist.IsIndeterminate="{Binding IsAddingProgress}"
                         Command="{Binding AddContact}" IsEnabled="{Binding IsNonContact}"></Button>
 
-                <Button Content="Delete" VerticalAlignment="Center" HorizontalAlignment="Center"
+                <Button Content="{x:Static res:Localization.DeleteСontact}" VerticalAlignment="Center" HorizontalAlignment="Center"
                         Grid.Column="1" Width="100" Background="Salmon" BorderBrush="Salmon"
                         materialDesign:ButtonProgressAssist.Value="-1"
                         materialDesign:ButtonProgressAssist.IsIndicatorVisible="{Binding IsDeletingProgress}"

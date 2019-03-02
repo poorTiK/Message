@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Message.Interfaces;
+using Message.Model;
 using Message.UserServiceReference;
 using Message.ViewModel;
 
@@ -24,11 +25,15 @@ namespace Message
     {
         public ContactProfileWindow()
         {
+            System.Threading.Thread.CurrentThread.CurrentUICulture = GlobalBase.Language;
+
             InitializeComponent();
         }
 
         public ContactProfileWindow(User profile)
         {
+            System.Threading.Thread.CurrentThread.CurrentUICulture = GlobalBase.Language;
+
             InitializeComponent();
 
             DataContext = new ContactProfileWindowVM(this, profile);
