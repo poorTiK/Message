@@ -12,7 +12,7 @@ namespace Message.Model
 
         static GlobalBase()
         {
-            Language = CultureInfo.GetCultureInfo("en-US");
+            Language = CultureInfo.CurrentUICulture;
         }
 
         public static string Base64Encode(string plainText)
