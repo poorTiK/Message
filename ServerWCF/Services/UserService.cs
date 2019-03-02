@@ -14,6 +14,8 @@ namespace ServerWCF.Services
     [ServiceBehavior(ConcurrencyMode = ConcurrencyMode.Reentrant)]
     public class UserService : IUserService
     {
+        private static readonly string successResult = "";
+
         private static List<CallbackData> usersOnline = new List<CallbackData>();
 
         private class MessageInfo
@@ -137,36 +139,42 @@ namespace ServerWCF.Services
             }
         }
 
-        public bool AddOrUpdateUser(User user)
+        public string AddOrUpdateUser(User user)
         {
-            using (UserContext db = new UserContext())
+            string validationInfo = Validate(user);
+            if (validationInfo != successResult)
+            {
+                return validationInfo;
+            }
+
+            using (UserContext userContext = new UserContext())
             {
                 try
                 {
-                    User result = db.Users.Where(u => u.Login == user.Login).FirstOrDefault();
+                    User dbUser = userContext.Users.Where(u => u.Login == user.Login).FirstOrDefault();
 
-                    if (result != null)
+                    if (dbUser != null)
                     {
-                        result.Email = user.Email;
-                        result.Bio = user.Bio;
-                        result.Avatar = user.Avatar;
-                        result.FirstName = user.FirstName;
-                        result.Status = user.Status;
-                        result.Phone = user.Phone;
-                        result.Password = user.Password;
+                        dbUser.Email = user.Email;
+                        dbUser.Bio = user.Bio;
+                        dbUser.Avatar = user.Avatar;
+                        dbUser.FirstName = user.FirstName;
+                        dbUser.Status = user.Status;
+                        dbUser.Phone = user.Phone;
+                        dbUser.Password = user.Password;
                     }
                     else
                     {
-                        db.Users.Add(user);
+                        userContext.Users.Add(user);
                     }
 
-                    db.SaveChanges();
+                    userContext.SaveChanges();
 
-                        return true;
+                    return successResult;
                 }
                 catch (Exception ex)
                 {
-                    return false;
+                    return "Exceptions occured during adding user.";
                 }
             }
         }
@@ -467,12 +475,6 @@ namespace ServerWCF.Services
                         return false;
                     }
 
-                    CallbackData callbackData = usersOnline.Where(cd => cd.User.Id == dbMessage.SenderId).FirstOrDefault();
-                    if (callbackData == null)
-                    {
-                        return false;
-                    }
-
                     if (dbMessage is UserMessage)
                     {
                         UserMessage userMessage = dbMessage as UserMessage;
@@ -492,6 +494,12 @@ namespace ServerWCF.Services
                     dbMessage.Type = editedMessage.Type;
                     dbMessage.DateOfSending = editedMessage.DateOfSending;
                     dbMessage.Content = editedMessage.Content;
+
+                    CallbackData callbackData = usersOnline.Where(cd => cd.User.Id == dbMessage.SenderId).FirstOrDefault();
+                    if (callbackData == null)
+                    {
+                        return false;
+                    }
 
                     userContext.SaveChanges();
 
@@ -532,19 +540,21 @@ namespace ServerWCF.Services
             {
                 try
                 {
+                    BaseMessage dbBaseMessage = userContext.Messages.Where(mes => mes.Id == removedMessage.Id).FirstOrDefault();
+                    if (dbBaseMessage == null)
+                    {
+                        return false;
+                    }
+
+                    userContext.Messages.Remove(dbBaseMessage);
+
                     CallbackData callbackData = usersOnline.Where(cd => cd.User.Id == removedMessage.SenderId).FirstOrDefault();
                     if (callbackData == null)
                     {
                         return false;
                     }
 
-                    BaseMessage dbBaseMessage = userContext.Messages.Where(mes => mes.Id == removedMessage.Id).FirstOrDefault();
-                    if (dbBaseMessage != null)
-                    {
-                        userContext.Messages.Remove(dbBaseMessage);
-                        userContext.SaveChanges();
-                        return true;
-                    }
+                    userContext.SaveChanges();
 
                     MessageInfo messageInfo = new MessageInfo();
                     messageInfo.Message = dbBaseMessage;
@@ -553,6 +563,9 @@ namespace ServerWCF.Services
                     Thread t = new Thread(new ParameterizedThreadStart(RemoveMessageCallback));
                     t.IsBackground = true;
                     t.Start(messageInfo);
+
+                    return true;
+
                 } 
                 catch(Exception ex)
                 {
@@ -574,8 +587,14 @@ namespace ServerWCF.Services
             }
         }
 
-        public void SendMessage(BaseMessage message)
+        public string SendMessage(BaseMessage message)
         {
+            string validationInfo = Validate(message);
+            if (validationInfo != successResult)
+            {
+                return validationInfo;
+            }
+
             using (UserContext userContext = new UserContext())
             {
                 try
@@ -586,7 +605,7 @@ namespace ServerWCF.Services
                     CallbackData callbackData = usersOnline.Where(cd => cd.User.Id == dbSender.Id).FirstOrDefault();
                     if (callbackData == null)
                     {
-                        return;
+                        return "Current user is not online.";
                     }
                     
                     if (message is UserMessage)
@@ -615,7 +634,10 @@ namespace ServerWCF.Services
                 }
                 catch (Exception ex)
                 {
+                    return "Exceptions occured during sending message.";
                 }
+
+                return successResult;
             }
         }
 
@@ -631,5 +653,57 @@ namespace ServerWCF.Services
                 }
             }
         }
+
+
+        //validation
+        private bool IsEmailUnique(List<User> users, string email)
+        {
+            return users.Where(u => u.Email == email).FirstOrDefault() == null;
+        }
+
+        private string Validate(User user)
+        {
+            using(UserContext userContext = new UserContext())
+            {
+                if (!IsEmailUnique(userContext.Users.ToList(), user.Email))
+                {
+                    return "Email is not unique.";
+                }
+            }
+            return successResult;
+        }
+
+        private string Validate(BaseMessage baseMessage)
+        {
+            if (baseMessage.Content.Length == 0)
+            {
+                return "Message is empty.";
+            }
+
+            if (baseMessage.SenderId == 0)
+            {
+                return "Sender is not specified.";
+            }
+
+            if(baseMessage is GroupMessage)
+            {
+                GroupMessage groupMessage = baseMessage as GroupMessage;
+                if (groupMessage.ChatGroupId == 0)
+                {
+                    return "Chat group is not specified.";
+                }
+            }
+            else if(baseMessage is UserMessage)
+            {
+                UserMessage userMessage = baseMessage as UserMessage;
+                if(userMessage.ReceiverId == 0)
+                {
+                    return "Receiver is not specified.";
+                }
+            }
+
+            return successResult;
+        }
+
     }
 }

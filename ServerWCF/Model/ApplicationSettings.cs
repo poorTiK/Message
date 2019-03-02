@@ -21,10 +21,10 @@ namespace ServerWCF.Model
         public string Theme { get; set; }
 
         [DataMember]
-        public int UserId { get; set; }
+        public bool AllowNotifications { get; set; }
 
         [DataMember]
-        public bool AllowNotifications { get; set; }
+        public int UserId { get; set; }
 
         [ForeignKey("UserId")]
         [DataMember]

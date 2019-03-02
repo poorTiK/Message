@@ -12,7 +12,7 @@ namespace ServerWCF.Contracts
         List<User> GetAllUsers();
 
         [OperationContract]
-        bool AddOrUpdateUser(User user);
+        string AddOrUpdateUser(User user);
 
         [OperationContract]
         User GetUser(string login, string password);
@@ -51,7 +51,7 @@ namespace ServerWCF.Contracts
         void OnUserLeave(User user);
 
         [OperationContract(IsOneWay = true)]
-        void SendMessage(BaseMessage message);
+        string SendMessage(BaseMessage message);
 
         [OperationContract]
         List<GroupMessage> GetGroupMessages(ChatGroup chatGroup, int limin);
