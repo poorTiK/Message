@@ -28,7 +28,7 @@ namespace Message.Model
 
         public static void ShowNotify(string title, string content)
         {
-            var local = System.Globalization.CultureInfo.GetCultureInfo("en - US");
+            var local = CultureInfo.GetCultureInfo("en - US");
             var notificationManager = new NotificationManager();
 
             notificationManager.Show(new NotificationContent
@@ -46,6 +46,13 @@ namespace Message.Model
         public static void SetLanguage(CultureInfo lang)
         {
             Language = lang;
+        }
+
+        public static bool IsRussianLanguage()
+        {
+            if (Language.Name == "ru-UA" || Language.Name == "ru-RU")
+                return true;
+            return false;
         }
     }
 }
