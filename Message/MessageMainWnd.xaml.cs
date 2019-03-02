@@ -250,11 +250,11 @@ namespace Message
             {
                 if (message.SenderId == GlobalBase.CurrentUser.Id)
                 {
-                    MessageControl.Children.Add(new SendMessage(GlobalBase.Base64Decode(message.Content), message.DateOfSending));
+                    MessageControl.Children.Add(new SendMessage(message));
                 }
                 else
                 {
-                    MessageControl.Children.Add(new ReceiveMessage(GlobalBase.Base64Decode(message.Content), message.DateOfSending));
+                    MessageControl.Children.Add(new ReceiveMessage(message));
                 }
             }
 

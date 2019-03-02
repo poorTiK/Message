@@ -180,5 +180,15 @@ namespace Message.ViewModel
         {
             //throw new NotImplementedException();
         }
+
+        public void OnMessageRemoved(BaseMessage message)
+        {
+            //throw new NotImplementedException();
+        }
+
+        public void OnMessageEdited(BaseMessage message)
+        {
+            //throw new NotImplementedException();
+        }
     }
 }

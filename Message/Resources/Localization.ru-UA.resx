@@ -210,4 +210,10 @@
   <data name="Write" xml:space="preserve">
     <value>Текст сообщения...</value>
   </data>
+  <data name="Copy" xml:space="preserve">
+    <value>Копировать</value>
+  </data>
+  <data name="Forvard" xml:space="preserve">
+    <value>Переслать</value>
+  </data>
 </root>
