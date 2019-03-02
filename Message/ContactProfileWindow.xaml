@@ -23,7 +23,7 @@
 
     <Grid Background="#353636">
         <Grid VerticalAlignment="Top">
-            <TextBlock Foreground="White" Margin="5,0,0,0" HorizontalAlignment="Left" 
+            <TextBlock Foreground="White" Margin="5,0,0,0" HorizontalAlignment="Left"
                        VerticalAlignment="Center" Text="{x:Static res:Localization.ViewProfile}"></TextBlock>
             <Button x:Name="ButtonClose" Click="ButtonClose_OnClick" HorizontalAlignment="Right" VerticalAlignment="Top" Background="{x:Null}" Foreground="White" BorderBrush="{x:Null}" Width="30" Height="30" Padding="0">
                 <materialDesign:PackIcon Kind="Close" />

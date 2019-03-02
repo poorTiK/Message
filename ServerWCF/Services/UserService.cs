@@ -2,7 +2,6 @@
 using ServerWCF.Contracts;
 using ServerWCF.Model;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.ServiceModel;
@@ -27,12 +26,12 @@ namespace ServerWCF.Services
             {
                 get; set;
             }
+
             public IUserCallback UserCallback
             {
                 get; set;
             }
         }
-
 
         public bool AddContact(User owner, User owned)
         {
@@ -53,7 +52,7 @@ namespace ServerWCF.Services
 
                     return true;
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     return false;
                 }
@@ -84,11 +83,11 @@ namespace ServerWCF.Services
                     }
 
                     return true;
-                } catch (Exception ex)
+                }
+                catch (Exception)
                 {
                     return false;
                 }
-
             }
         }
 
@@ -114,16 +113,14 @@ namespace ServerWCF.Services
                             "from Contacts " +
                             "where Contacts.UserOwner_Id = @p0);", userId).ToList();
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     contactsForOwner = new List<User>();
                 }
 
                 return contactsForOwner;
             }
-
         }
-
 
         public List<User> GetAllUsers()
         {
@@ -134,7 +131,7 @@ namespace ServerWCF.Services
                 {
                     allUsers = db.Users.ToList();
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     allUsers = new List<User>();
                 }
@@ -167,9 +164,9 @@ namespace ServerWCF.Services
 
                     db.SaveChanges();
 
-                        return true;
+                    return true;
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     return false;
                 }
@@ -184,7 +181,7 @@ namespace ServerWCF.Services
                 {
                     return db.Users.Where(x => x.Login.Contains(login)).FirstOrDefault();
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     return null;
                 }
@@ -200,7 +197,9 @@ namespace ServerWCF.Services
                     foreach (var user in db.Users)
                     {
                         if (user.Login == login && user.Password == password)
+                        {
                             return user;
+                        }
                     }
                     return null;
                 }
@@ -220,11 +219,13 @@ namespace ServerWCF.Services
                     foreach (var user in db.Users)
                     {
                         if (user.Email == email)
+                        {
                             return user;
+                        }
                     }
                     return null;
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     return null;
                 }
@@ -240,7 +241,7 @@ namespace ServerWCF.Services
                 {
                     searchinfResult = usersContext.Users.Where(u => u.Login.Contains(keyWorkForLogin)).ToList();
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     searchinfResult = new List<User>();
                 }
@@ -248,7 +249,6 @@ namespace ServerWCF.Services
                 return searchinfResult;
             }
         }
-
 
         public ApplicationSettings GetAppSettings(User user)
         {
@@ -283,13 +283,12 @@ namespace ServerWCF.Services
                     context.SaveChanges();
                     return true;
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     return false;
                 }
             }
         }
-
 
         public void OnUserCame(User user)
         {
@@ -361,7 +360,6 @@ namespace ServerWCF.Services
             }
         }
 
-
         public List<UserMessage> GetMessages(User sender, User receiver, int limin)
         {
             using (UserContext context = new UserContext())
@@ -389,7 +387,7 @@ namespace ServerWCF.Services
                         }
                     }
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     messagesToReturn = new List<UserMessage>();
                 }
@@ -415,7 +413,7 @@ namespace ServerWCF.Services
                         }
                     }
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     searchingResult = new List<UserMessage>();
                 }
@@ -426,7 +424,7 @@ namespace ServerWCF.Services
 
         public bool EditMessage(UserMessage editedMessage)
         {
-            using(UserContext userContext = new UserContext())
+            using (UserContext userContext = new UserContext())
             {
                 try
                 {
@@ -448,10 +446,10 @@ namespace ServerWCF.Services
 
                     return false;
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     return false;
-                } 
+                }
             }
         }
 
@@ -485,7 +483,7 @@ namespace ServerWCF.Services
                     t.IsBackground = true;
                     t.Start(messageInfo);
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                 }
             }

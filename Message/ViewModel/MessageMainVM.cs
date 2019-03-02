@@ -1,16 +1,16 @@
 ﻿using Message.Interfaces;
-using Message.UserServiceReference;
 using Message.Model;
+using Message.UserServiceReference;
+using Microsoft.Win32;
 using Prism.Commands;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.ServiceModel;
 using System.Text;
 using System.Windows;
-using System.Diagnostics;
-using Microsoft.Win32;
 
 namespace Message.ViewModel
 {
@@ -93,6 +93,7 @@ namespace Message.ViewModel
         }
 
         private string _filePath;
+
         public string FilePath
         {
             get { return _filePath; }
@@ -100,6 +101,7 @@ namespace Message.ViewModel
         }
 
         private bool _isMenuEnabled;
+
         public bool IsMenuEnabled
         {
             get { return _isMenuEnabled; }
@@ -109,7 +111,7 @@ namespace Message.ViewModel
         public MessageMainVM(IMessaging View)
         {
             _view = View;
-            
+
             //callback for user
             _userServiceCallback = this;
             usersSite = new InstanceContext(_userServiceCallback);
@@ -135,9 +137,13 @@ namespace Message.ViewModel
         private void SelectedContactChanged()
         {
             if (SelectedContact != null)
+            {
                 IsMenuEnabled = true;
+            }
             else
+            {
                 IsMenuEnabled = false;
+            }
 
             if (_view.MessageList != null)
             {
@@ -313,7 +319,7 @@ namespace Message.ViewModel
             var temp = SelectedContact;
 
             ContactsList = userServiceClient.GetAllContacts(GlobalBase.CurrentUser);
-            ContactsList.ForEach(x=>x.UnreadMessageCount = 0);
+            ContactsList.ForEach(x => x.UnreadMessageCount = 0);
 
             if (ContactsList.Any(x => x.Id == temp.Id) && temp != null)
             {
@@ -364,7 +370,7 @@ namespace Message.ViewModel
         public void UserCame(User user)
         {
             Update();
-            Debug.WriteLine("Works(Came) - " + user.FirstName + " - (currentUser - " + GlobalBase.CurrentUser.FirstName +  ")");
+            Debug.WriteLine("Works(Came) - " + user.FirstName + " - (currentUser - " + GlobalBase.CurrentUser.FirstName + ")");
         }
     }
 }

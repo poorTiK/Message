@@ -89,7 +89,7 @@
                                     <MenuItem.Header>
                                         <materialDesign:PackIcon Kind="EllipsisVertical" Width="25" Height="25" Foreground="White" />
                                     </MenuItem.Header>
-                                    <MenuItem Header="{x:Static res:Localization.ViewProfile}" Background="#353636" Foreground="White" Command="{Binding ViewProfile}"/>
+                                    <MenuItem Header="{x:Static res:Localization.ViewProfile}" Background="#353636" Foreground="White" Command="{Binding ViewProfile}" />
                                     <MenuItem Header="{x:Static res:Localization.EditContact}" Background="#353636" Foreground="White" />
                                     <MenuItem Header="{x:Static res:Localization.DeleteСontact}" Background="#353636" Foreground="White" />
                                     <MenuItem Header="{x:Static res:Localization.DeleteConversation}" Background="#353636" Foreground="White" />
@@ -164,7 +164,7 @@
                                             </TextBlock.Text>
                                         </TextBlock>
 
-                                        <TextBlock Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="1" Margin="10,0,0,0" 
+                                        <TextBlock Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="1" Margin="10,0,0,0"
                                                    Foreground="#FF63A35D" Text="{Binding Path=Status}"></TextBlock>
                                     </Grid>
                                 </DataTemplate>

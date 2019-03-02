@@ -19,7 +19,7 @@
 
     <Grid Background="#353636">
         <Grid VerticalAlignment="Top">
-            <TextBlock Foreground="White" Margin="5,0,0,0" HorizontalAlignment="Left" 
+            <TextBlock Foreground="White" Margin="5,0,0,0" HorizontalAlignment="Left"
                        VerticalAlignment="Center" Text="{x:Static res:Localization.Settings}"></TextBlock>
             <Button x:Name="ButtonClose" Click="ButtonClose_OnClick" HorizontalAlignment="Right" VerticalAlignment="Top" Background="{x:Null}" BorderBrush="{x:Null}" Width="30" Height="30" Padding="0">
                 <materialDesign:PackIcon Kind="Close" />
@@ -59,21 +59,21 @@
                         <ListViewItem>
                             <StackPanel Orientation="Horizontal">
                                 <materialDesign:PackIcon Kind="BellRingOutline" Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Center" />
-                                <TextBlock Foreground="White" Margin="15,0,0,0" HorizontalAlignment="Left" 
+                                <TextBlock Foreground="White" Margin="15,0,0,0" HorizontalAlignment="Left"
                                            VerticalAlignment="Center" Text="{x:Static res:Localization.Notifications}"></TextBlock>
                             </StackPanel>
                         </ListViewItem>
                         <ListViewItem>
                             <StackPanel Orientation="Horizontal">
                                 <materialDesign:PackIcon Kind="MessageReply" Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Center" />
-                                <TextBlock Foreground="White" Margin="15,0,0,0" HorizontalAlignment="Left" 
+                                <TextBlock Foreground="White" Margin="15,0,0,0" HorizontalAlignment="Left"
                                            VerticalAlignment="Center" Text="{x:Static res:Localization.ChatSettings}"></TextBlock>
                             </StackPanel>
                         </ListViewItem>
                         <ListViewItem>
                             <StackPanel Orientation="Horizontal">
                                 <materialDesign:PackIcon Kind="Style" Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Center" />
-                                <TextBlock Foreground="White" Margin="15,0,0,0" HorizontalAlignment="Left" 
+                                <TextBlock Foreground="White" Margin="15,0,0,0" HorizontalAlignment="Left"
                                            VerticalAlignment="Center" Text="{x:Static res:Localization.Themes}"></TextBlock>
                             </StackPanel>
                         </ListViewItem>
@@ -85,7 +85,7 @@
                         <ListViewItem>
                             <StackPanel Orientation="Horizontal">
                                 <materialDesign:PackIcon Kind="EmergencyExit" Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Center" />
-                                <TextBlock Foreground="Salmon" Margin="15,0,0,0" HorizontalAlignment="Left" 
+                                <TextBlock Foreground="Salmon" Margin="15,0,0,0" HorizontalAlignment="Left"
                                            VerticalAlignment="Center" Text="{x:Static res:Localization.LogOut}"></TextBlock>
                             </StackPanel>
                         </ListViewItem>

@@ -1,18 +1,14 @@
 ﻿using ServerWCF.Model;
 using ServerWCF.Model.Messages;
-using System;
-using System.Collections.Generic;
 using System.Data.Entity;
-using System.Data.Entity.ModelConfiguration.Conventions;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ServerWCF.Context
 {
-    class UserContext : DbContext
+    internal class UserContext : DbContext
     {
-        public UserContext() : base("DbConnection") { }
+        public UserContext() : base("DbConnection")
+        {
+        }
 
         public DbSet<User> Users { get; set; }
         public DbSet<Contact> Contacts { get; set; }
@@ -31,7 +27,6 @@ namespace ServerWCF.Context
                 .WithMany()
                 .WillCascadeOnDelete(false);
 
-
             modelBuilder.Entity<UserMessage>()
                 .HasRequired(s => s.Sender)
                 .WithMany()
@@ -41,7 +36,6 @@ namespace ServerWCF.Context
                 .HasRequired(s => s.Receiver)
                 .WithMany()
                 .WillCascadeOnDelete(false);
-
         }
     }
 }
