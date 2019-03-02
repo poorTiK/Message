@@ -79,5 +79,11 @@ namespace ServerWCF.Contracts
 
         [OperationContract(IsOneWay = true)]
         void ReceiveMessage(BaseMessage message);
+
+        [OperationContract(IsOneWay = true)]
+        void OnMessageRemoved(BaseMessage message);
+
+        [OperationContract(IsOneWay = true)]
+        void OnMessageEdited(BaseMessage message);
     }
 }

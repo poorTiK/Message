@@ -310,6 +310,19 @@ namespace ServerWCF.Services
             }
         }
 
+        private void userCameCallback(object callbackDataObj)
+        {
+            CallbackData callbackData = callbackDataObj as CallbackData;
+
+            foreach (CallbackData innerCallbackData in usersOnline)
+            {
+                if (innerCallbackData != callbackData)
+                {
+                    innerCallbackData.UserCallback.UserCame(callbackData.User);
+                }
+            }
+        }
+
         public void OnUserLeave(User user)
         {
             using (UserContext userContext = new UserContext())
@@ -329,19 +342,6 @@ namespace ServerWCF.Services
                         t.IsBackground = true;
                         t.Start(innerCallbackData);
                     }
-                }
-            }
-        }
-
-        private void userCameCallback(object callbackDataObj)
-        {
-            CallbackData callbackData = callbackDataObj as CallbackData;
-
-            foreach (CallbackData innerCallbackData in usersOnline)
-            {
-                if (innerCallbackData != callbackData)
-                {
-                    innerCallbackData.UserCallback.UserCame(callbackData.User);
                 }
             }
         }
@@ -462,39 +462,67 @@ namespace ServerWCF.Services
                 try
                 {
                     BaseMessage dbMessage = userContext.Messages.Where(mes => mes.Id == editedMessage.Id).FirstOrDefault();
-
-                    if (dbMessage != null)
+                    if (dbMessage == null)
                     {
-                        if (dbMessage is UserMessage)
-                        {
-                            UserMessage userMessage = dbMessage as UserMessage;
-                            User dbReceiver = userContext.Users.Where(u => u.Id == userMessage.ReceiverId).FirstOrDefault();
-                            userMessage.Receiver = dbReceiver;
-                            userMessage.ReceiverId = dbReceiver.Id;
-                        }
-                        else if (dbMessage is GroupMessage)
-                        {
-                            GroupMessage groupMessage = dbMessage as GroupMessage;
-                            ChatGroup chatGroup = userContext.ChatGroups.Where(g => g.Id == groupMessage.ChatGroupId).FirstOrDefault();
-                            groupMessage.ChatGroup = chatGroup;
-                            groupMessage.ChatGroupId = chatGroup.Id;
-                        }
-                        dbMessage.Sender = editedMessage.Sender;
-                        dbMessage.SenderId = editedMessage.SenderId;
-                        dbMessage.Type = editedMessage.Type;
-                        dbMessage.DateOfSending = editedMessage.DateOfSending;
-                        dbMessage.Content = editedMessage.Content;
-
-                        userContext.SaveChanges();
-                        return true;
+                        return false;
                     }
 
-                    return false;
+                    CallbackData callbackData = usersOnline.Where(cd => cd.User.Id == dbMessage.SenderId).FirstOrDefault();
+                    if (callbackData == null)
+                    {
+                        return false;
+                    }
+
+                    if (dbMessage is UserMessage)
+                    {
+                        UserMessage userMessage = dbMessage as UserMessage;
+                        User dbReceiver = userContext.Users.Where(u => u.Id == userMessage.ReceiverId).FirstOrDefault();
+                        userMessage.Receiver = dbReceiver;
+                        userMessage.ReceiverId = dbReceiver.Id;
+                    }
+                    else if (dbMessage is GroupMessage)
+                    {
+                        GroupMessage groupMessage = dbMessage as GroupMessage;
+                        ChatGroup chatGroup = userContext.ChatGroups.Where(g => g.Id == groupMessage.ChatGroupId).FirstOrDefault();
+                        groupMessage.ChatGroup = chatGroup;
+                        groupMessage.ChatGroupId = chatGroup.Id;
+                    }
+                    dbMessage.Sender = editedMessage.Sender;
+                    dbMessage.SenderId = editedMessage.SenderId;
+                    dbMessage.Type = editedMessage.Type;
+                    dbMessage.DateOfSending = editedMessage.DateOfSending;
+                    dbMessage.Content = editedMessage.Content;
+
+                    userContext.SaveChanges();
+
+                    MessageInfo messageInfo = new MessageInfo();
+                    messageInfo.Message = dbMessage;
+                    messageInfo.CallbackData = callbackData;
+
+                    Thread t = new Thread(new ParameterizedThreadStart(EditMessageCallback));
+                    t.IsBackground = true;
+                    t.Start(messageInfo);
+
+                    return true;
+
                 }
                 catch (Exception ex)
                 {
                     return false;
                 } 
+            }
+        }
+
+        private void EditMessageCallback(object mesDataObj)
+        {
+            MessageInfo messageInfo = mesDataObj as MessageInfo;
+
+            foreach (CallbackData innerCallbackData in usersOnline)
+            {
+                if (innerCallbackData != messageInfo.CallbackData)
+                {
+                    innerCallbackData.UserCallback.OnMessageEdited(messageInfo.Message);
+                }
             }
         }
 
@@ -504,6 +532,12 @@ namespace ServerWCF.Services
             {
                 try
                 {
+                    CallbackData callbackData = usersOnline.Where(cd => cd.User.Id == removedMessage.SenderId).FirstOrDefault();
+                    if (callbackData == null)
+                    {
+                        return false;
+                    }
+
                     BaseMessage dbBaseMessage = userContext.Messages.Where(mes => mes.Id == removedMessage.Id).FirstOrDefault();
                     if (dbBaseMessage != null)
                     {
@@ -511,11 +545,32 @@ namespace ServerWCF.Services
                         userContext.SaveChanges();
                         return true;
                     }
+
+                    MessageInfo messageInfo = new MessageInfo();
+                    messageInfo.Message = dbBaseMessage;
+                    messageInfo.CallbackData = callbackData;
+
+                    Thread t = new Thread(new ParameterizedThreadStart(RemoveMessageCallback));
+                    t.IsBackground = true;
+                    t.Start(messageInfo);
                 } 
                 catch(Exception ex)
                 {
                 }
                 return false;
+            }
+        }
+
+        private void RemoveMessageCallback(object mesDataObj)
+        {
+            MessageInfo messageInfo = mesDataObj as MessageInfo;
+
+            foreach (CallbackData innerCallbackData in usersOnline)
+            {
+                if (innerCallbackData != messageInfo.CallbackData)
+                {
+                    innerCallbackData.UserCallback.OnMessageRemoved(messageInfo.Message);
+                }
             }
         }
 
