@@ -498,6 +498,27 @@ namespace ServerWCF.Services
             }
         }
 
+        public bool RemoveMessage(BaseMessage removedMessage)
+        {
+            using(UserContext userContext = new UserContext())
+            {
+                try
+                {
+                    BaseMessage dbBaseMessage = userContext.Messages.Where(mes => mes.Id == removedMessage.Id).FirstOrDefault();
+                    if (dbBaseMessage != null)
+                    {
+                        userContext.Messages.Remove(dbBaseMessage);
+                        userContext.SaveChanges();
+                        return true;
+                    }
+                } 
+                catch(Exception ex)
+                {
+                }
+                return false;
+            }
+        }
+
         public void SendMessage(BaseMessage message)
         {
             using (UserContext userContext = new UserContext())

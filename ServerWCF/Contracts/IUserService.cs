@@ -64,6 +64,9 @@ namespace ServerWCF.Contracts
 
         [OperationContract]
         bool EditMessage(BaseMessage editedMessage);
+
+        [OperationContract]
+        bool RemoveMessage(BaseMessage removedMessage);
     }
 
     public interface IUserCallback
