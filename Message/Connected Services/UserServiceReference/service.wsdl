@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://tempuri.org/" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="UserService" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://tempuri.org/" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="UserService" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
   <wsp:Policy wsu:Id="WSDualHttpBinding_IUserService_policy">
     <wsp:ExactlyOne>
       <wsp:All>
@@ -724,7 +724,7 @@
       </wsp:All>
     </wsp:ExactlyOne>
   </wsp:Policy>
-  <wsp:Policy wsu:Id="WSDualHttpBinding_IUserService_GetMessages_Input_policy">
+  <wsp:Policy wsu:Id="WSDualHttpBinding_IUserService_GetGroupMessages_Input_policy">
     <wsp:ExactlyOne>
       <wsp:All>
         <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
@@ -747,7 +747,53 @@
       </wsp:All>
     </wsp:ExactlyOne>
   </wsp:Policy>
-  <wsp:Policy wsu:Id="WSDualHttpBinding_IUserService_GetMessages_output_policy">
+  <wsp:Policy wsu:Id="WSDualHttpBinding_IUserService_GetGroupMessages_output_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+          <sp:Header Name="Sequence" Namespace="http://schemas.xmlsoap.org/ws/2005/02/rm" />
+          <sp:Header Name="SequenceAcknowledgement" Namespace="http://schemas.xmlsoap.org/ws/2005/02/rm" />
+          <sp:Header Name="AckRequested" Namespace="http://schemas.xmlsoap.org/ws/2005/02/rm" />
+          <sp:Header Name="ChannelInstance" Namespace="http://schemas.microsoft.com/ws/2005/02/duplex" />
+          <sp:Header Name="To" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="From" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="FaultTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="ReplyTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="MessageID" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="RelatesTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="Action" Namespace="http://www.w3.org/2005/08/addressing" />
+        </sp:SignedParts>
+        <sp:EncryptedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+        </sp:EncryptedParts>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsp:Policy wsu:Id="WSDualHttpBinding_IUserService_GetUserMessages_Input_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+          <sp:Header Name="Sequence" Namespace="http://schemas.xmlsoap.org/ws/2005/02/rm" />
+          <sp:Header Name="SequenceAcknowledgement" Namespace="http://schemas.xmlsoap.org/ws/2005/02/rm" />
+          <sp:Header Name="AckRequested" Namespace="http://schemas.xmlsoap.org/ws/2005/02/rm" />
+          <sp:Header Name="ChannelInstance" Namespace="http://schemas.microsoft.com/ws/2005/02/duplex" />
+          <sp:Header Name="To" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="From" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="FaultTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="ReplyTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="MessageID" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="RelatesTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="Action" Namespace="http://www.w3.org/2005/08/addressing" />
+        </sp:SignedParts>
+        <sp:EncryptedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+        </sp:EncryptedParts>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsp:Policy wsu:Id="WSDualHttpBinding_IUserService_GetUserMessages_output_policy">
     <wsp:ExactlyOne>
       <wsp:All>
         <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
@@ -1020,11 +1066,17 @@
   <wsdl:message name="IUserService_SendMessage_InputMessage">
     <wsdl:part name="parameters" element="tns:SendMessage" />
   </wsdl:message>
-  <wsdl:message name="IUserService_GetMessages_InputMessage">
-    <wsdl:part name="parameters" element="tns:GetMessages" />
+  <wsdl:message name="IUserService_GetGroupMessages_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetGroupMessages" />
   </wsdl:message>
-  <wsdl:message name="IUserService_GetMessages_OutputMessage">
-    <wsdl:part name="parameters" element="tns:GetMessagesResponse" />
+  <wsdl:message name="IUserService_GetGroupMessages_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetGroupMessagesResponse" />
+  </wsdl:message>
+  <wsdl:message name="IUserService_GetUserMessages_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetUserMessages" />
+  </wsdl:message>
+  <wsdl:message name="IUserService_GetUserMessages_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetUserMessagesResponse" />
   </wsdl:message>
   <wsdl:message name="IUserService_FindMessage_InputMessage">
     <wsdl:part name="parameters" element="tns:FindMessage" />
@@ -1105,9 +1157,13 @@
     <wsdl:operation name="SendMessage">
       <wsdl:input wsaw:Action="http://tempuri.org/IUserService/SendMessage" message="tns:IUserService_SendMessage_InputMessage" />
     </wsdl:operation>
-    <wsdl:operation name="GetMessages">
-      <wsdl:input wsaw:Action="http://tempuri.org/IUserService/GetMessages" message="tns:IUserService_GetMessages_InputMessage" />
-      <wsdl:output wsaw:Action="http://tempuri.org/IUserService/GetMessagesResponse" message="tns:IUserService_GetMessages_OutputMessage" />
+    <wsdl:operation name="GetGroupMessages">
+      <wsdl:input wsaw:Action="http://tempuri.org/IUserService/GetGroupMessages" message="tns:IUserService_GetGroupMessages_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IUserService/GetGroupMessagesResponse" message="tns:IUserService_GetGroupMessages_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetUserMessages">
+      <wsdl:input wsaw:Action="http://tempuri.org/IUserService/GetUserMessages" message="tns:IUserService_GetUserMessages_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IUserService/GetUserMessagesResponse" message="tns:IUserService_GetUserMessages_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation name="FindMessage">
       <wsdl:input wsaw:Action="http://tempuri.org/IUserService/FindMessage" message="tns:IUserService_FindMessage_InputMessage" />
@@ -1283,14 +1339,25 @@
         <soap12:body use="literal" />
       </wsdl:input>
     </wsdl:operation>
-    <wsdl:operation name="GetMessages">
-      <soap12:operation soapAction="http://tempuri.org/IUserService/GetMessages" style="document" />
+    <wsdl:operation name="GetGroupMessages">
+      <soap12:operation soapAction="http://tempuri.org/IUserService/GetGroupMessages" style="document" />
       <wsdl:input>
-        <wsp:PolicyReference URI="#WSDualHttpBinding_IUserService_GetMessages_Input_policy" />
+        <wsp:PolicyReference URI="#WSDualHttpBinding_IUserService_GetGroupMessages_Input_policy" />
         <soap12:body use="literal" />
       </wsdl:input>
       <wsdl:output>
-        <wsp:PolicyReference URI="#WSDualHttpBinding_IUserService_GetMessages_output_policy" />
+        <wsp:PolicyReference URI="#WSDualHttpBinding_IUserService_GetGroupMessages_output_policy" />
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetUserMessages">
+      <soap12:operation soapAction="http://tempuri.org/IUserService/GetUserMessages" style="document" />
+      <wsdl:input>
+        <wsp:PolicyReference URI="#WSDualHttpBinding_IUserService_GetUserMessages_Input_policy" />
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <wsp:PolicyReference URI="#WSDualHttpBinding_IUserService_GetUserMessages_output_policy" />
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>

@@ -61,6 +61,13 @@
     </xs:complexContent>
   </xs:complexType>
   <xs:element name="UserMessage" nillable="true" type="tns:UserMessage" />
+  <xs:complexType name="ChatGroup">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Id" type="xs:int" />
+      <xs:element minOccurs="0" name="Participants" nillable="true" type="tns:ArrayOfUser" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ChatGroup" nillable="true" type="tns:ChatGroup" />
   <xs:complexType name="ArrayOfUserMessage">
     <xs:sequence>
       <xs:element minOccurs="0" maxOccurs="unbounded" name="UserMessage" nillable="true" type="tns:UserMessage" />

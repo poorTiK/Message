@@ -18,6 +18,7 @@ namespace ServerWCF.Context
         public DbSet<Contact> Contacts { get; set; }
         public DbSet<BaseMessage> Messages { get; set; }
         public DbSet<ApplicationSettings> ApplicationSettings { get; set; }
+        public DbSet<ChatGroup> ChatGroups { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

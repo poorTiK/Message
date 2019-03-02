@@ -10,6 +10,8 @@ using System.Threading.Tasks;
 namespace ServerWCF.Model.Messages
 {
     [DataContract]
+    [KnownType(typeof(UserMessage))]
+    [KnownType(typeof(GroupMessage))]
     public abstract class BaseMessage
     {
         [Key]

@@ -142,7 +142,7 @@ namespace Message.ViewModel
             if (_view.MessageList != null)
             {
                 _view.MessageList.Clear();
-                var res = userServiceClient.GetMessages(GlobalBase.CurrentUser, SelectedContact, 50);
+                var res = userServiceClient.GetUserMessages(GlobalBase.CurrentUser, SelectedContact, 50);
                 if (res != null)
                 {
                     foreach (var mes in res)
@@ -280,7 +280,7 @@ namespace Message.ViewModel
                 if (SelectedContact != null)
                 {
                     _view.MessageList.Clear();
-                    var res = userServiceClient.GetMessages(GlobalBase.CurrentUser, SelectedContact, 50);
+                    var res = userServiceClient.GetUserMessages(GlobalBase.CurrentUser, SelectedContact, 50);
                     if (res != null)
                     {
                         foreach (var mes in res)
@@ -321,7 +321,7 @@ namespace Message.ViewModel
             }
         }
 
-        public void ReceiveMessage(UserMessage message)
+        public void ReceiveMessage(BaseMessage message)
         {
             if (message.SenderId == GlobalBase.CurrentUser.Id)
             {

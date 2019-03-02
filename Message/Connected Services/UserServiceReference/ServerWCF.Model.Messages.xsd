@@ -10,4 +10,26 @@
     </xs:sequence>
   </xs:complexType>
   <xs:element name="BaseMessage" nillable="true" type="tns:BaseMessage" />
+  <xs:complexType name="GroupMessage">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:BaseMessage">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="ChatGroupId" type="xs:int" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="GroupMessage" nillable="true" type="tns:GroupMessage" />
+  <xs:complexType name="ArrayOfGroupMessage">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="GroupMessage" nillable="true" type="tns:GroupMessage" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfGroupMessage" nillable="true" type="tns:ArrayOfGroupMessage" />
+  <xs:complexType name="ArrayOfBaseMessage">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="BaseMessage" nillable="true" type="tns:BaseMessage" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfBaseMessage" nillable="true" type="tns:ArrayOfBaseMessage" />
 </xs:schema>

@@ -1,4 +1,5 @@
 ﻿using ServerWCF.Model;
+using ServerWCF.Model.Messages;
 using System.Collections.Generic;
 using System.ServiceModel;
 
@@ -54,16 +55,19 @@ namespace ServerWCF.Contracts
 
 
         [OperationContract(IsOneWay = true)]
-        void SendMessage(UserMessage message);
+        void SendMessage(BaseMessage message);
 
         [OperationContract]
-        List<UserMessage> GetMessages(User sender, User receiver, int limin);
+        List<GroupMessage> GetGroupMessages(ChatGroup chatGroup, int limin);
 
         [OperationContract]
-        List<UserMessage> FindMessage(string keyWord);
+        List<UserMessage> GetUserMessages(User sender, User receiver, int limin);
 
         [OperationContract]
-        bool EditMessage(UserMessage editedMessage);
+        List<BaseMessage> FindMessage(string keyWord);
+
+        [OperationContract]
+        bool EditMessage(BaseMessage editedMessage);
     }
  
     public interface IUserCallback
@@ -75,6 +79,6 @@ namespace ServerWCF.Contracts
         void UserCame(User user);
 
         [OperationContract(IsOneWay = true)]
-        void ReceiveMessage(UserMessage message);
+        void ReceiveMessage(BaseMessage message);
     }
 }

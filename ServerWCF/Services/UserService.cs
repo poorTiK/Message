@@ -1,6 +1,7 @@
 ﻿using ServerWCF.Context;
 using ServerWCF.Contracts;
 using ServerWCF.Model;
+using ServerWCF.Model.Messages;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -17,20 +18,14 @@ namespace ServerWCF.Services
 
         private class MessageInfo
         {
-            public UserMessage Message { get; set; }
+            public BaseMessage Message { get; set; }
             public CallbackData CallbackData { get; set; }
         }
 
         private class CallbackData
         {
-            public User User
-            {
-                get; set;
-            }
-            public IUserCallback UserCallback
-            {
-                get; set;
-            }
+            public User User { get; set; }
+            public IUserCallback UserCallback { get; set; }
         }
 
 
@@ -362,30 +357,66 @@ namespace ServerWCF.Services
         }
 
 
-        public List<UserMessage> GetMessages(User sender, User receiver, int limin)
+        public List<GroupMessage> GetGroupMessages(ChatGroup group, int limit)
+        {
+            using (UserContext context = new UserContext())
+            {
+                List<GroupMessage> messagesToReturn = new List<GroupMessage>();
+                try
+                {
+                    foreach (BaseMessage message in context.Messages)
+                    {
+                        if (message is GroupMessage)
+                        {
+                            GroupMessage groupMessage = message as GroupMessage;
+                            if (messagesToReturn.Count == limit)
+                            {
+                                break;
+                            }
+                            if (group.Id == groupMessage.ChatGroupId)
+                            {
+                                messagesToReturn.Add(groupMessage);
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    messagesToReturn = new List<GroupMessage>();
+                }
+
+                return messagesToReturn;
+            }
+        }
+
+        public List<UserMessage> GetUserMessages(User sender, User receiver, int limin)
         {
             using (UserContext context = new UserContext())
             {
                 List<UserMessage> messagesToReturn = new List<UserMessage>();
                 try
                 {
-                    foreach (UserMessage message in context.Messages.Include("Sender").Include("Receiver"))
+                    foreach (BaseMessage message in context.Messages)
                     {
-                        if (messagesToReturn.Count == limin)
+                        if (message is UserMessage)
                         {
-                            break;
-                        }
+                            UserMessage userMessage = message as UserMessage;
+                            if (messagesToReturn.Count == limin)
+                            {
+                                break;
+                            }
 
-                        if (message.Sender.Login == sender.Login &&
-                            message.Receiver.Login == receiver.Login)
-                        {
-                            messagesToReturn.Add(message);
-                        }
+                            if (userMessage.SenderId == sender.Id &&
+                                userMessage.ReceiverId == receiver.Id)
+                            {
+                                messagesToReturn.Add(userMessage);
+                            }
 
-                        if (message.Sender.Login == receiver.Login &&
-                            message.Receiver.Login == sender.Login)
-                        {
-                            messagesToReturn.Add(message);
+                            if (userMessage.SenderId == receiver.Id &&
+                                userMessage.ReceiverId == sender.Id)
+                            {
+                                messagesToReturn.Add(userMessage);
+                            }
                         }
                     }
                 }
@@ -398,15 +429,15 @@ namespace ServerWCF.Services
             }
         }
 
-        public List<UserMessage> FindMessage(string keyWord)
+        public List<BaseMessage> FindMessage(string keyWord)
         {
             using (UserContext userContext = new UserContext())
             {
-                List<UserMessage> searchingResult = new List<UserMessage>();
+                List<BaseMessage> searchingResult = new List<BaseMessage>();
 
                 try
                 {
-                    foreach (UserMessage message in userContext.Messages.Where(mes => mes.Type == "TEXT").ToList())
+                    foreach (BaseMessage message in userContext.Messages.Where(mes => mes.Type == "TEXT").ToList())
                     {
                         string textMessage = System.Text.Encoding.UTF8.GetString(message.Content);
                         if (textMessage.Contains(keyWord))
@@ -417,25 +448,37 @@ namespace ServerWCF.Services
                 }
                 catch (Exception ex)
                 {
-                    searchingResult = new List<UserMessage>();
+                    searchingResult = new List<BaseMessage>();
                 }
 
                 return searchingResult;
             }
         }
 
-        public bool EditMessage(UserMessage editedMessage)
+        public bool EditMessage(BaseMessage editedMessage)
         {
             using(UserContext userContext = new UserContext())
             {
                 try
                 {
-                    UserMessage dbMessage = (UserMessage)userContext.Messages.Where(mes => mes.Id == editedMessage.Id).FirstOrDefault();
+                    BaseMessage dbMessage = userContext.Messages.Where(mes => mes.Id == editedMessage.Id).FirstOrDefault();
 
                     if (dbMessage != null)
                     {
-                        dbMessage.Receiver = editedMessage.Receiver;
-                        dbMessage.UserReceiverId = editedMessage.UserReceiverId;
+                        if (dbMessage is UserMessage)
+                        {
+                            UserMessage userMessage = dbMessage as UserMessage;
+                            User dbReceiver = userContext.Users.Where(u => u.Id == userMessage.ReceiverId).FirstOrDefault();
+                            userMessage.Receiver = dbReceiver;
+                            userMessage.ReceiverId = dbReceiver.Id;
+                        }
+                        else if (dbMessage is GroupMessage)
+                        {
+                            GroupMessage groupMessage = dbMessage as GroupMessage;
+                            ChatGroup chatGroup = userContext.ChatGroups.Where(g => g.Id == groupMessage.ChatGroupId).FirstOrDefault();
+                            groupMessage.ChatGroup = chatGroup;
+                            groupMessage.ChatGroupId = chatGroup.Id;
+                        }
                         dbMessage.Sender = editedMessage.Sender;
                         dbMessage.SenderId = editedMessage.SenderId;
                         dbMessage.Type = editedMessage.Type;
@@ -455,24 +498,33 @@ namespace ServerWCF.Services
             }
         }
 
-        public void SendMessage(UserMessage message)
+        public void SendMessage(BaseMessage message)
         {
             using (UserContext userContext = new UserContext())
             {
                 try
                 {
                     User dbSender = userContext.Users.Where(u => u.Id == message.SenderId).First();
+                    message.Sender = dbSender;
 
                     CallbackData callbackData = usersOnline.Where(cd => cd.User.Id == dbSender.Id).FirstOrDefault();
                     if (callbackData == null)
                     {
                         return;
                     }
-
-                    User dbReceiver = userContext.Users.Where(u => u.Id == message.UserReceiverId).First();
-
-                    message.Sender = dbSender;
-                    message.Receiver = dbReceiver;
+                    
+                    if (message is UserMessage)
+                    {
+                        UserMessage userMessage = message as UserMessage;
+                        User dbReceiver = userContext.Users.Where(u => u.Id == userMessage.ReceiverId).FirstOrDefault();
+                        userMessage.Receiver = dbReceiver;
+                    }
+                    else if (message is GroupMessage)
+                    {
+                        GroupMessage groupMessage = message as GroupMessage;
+                        ChatGroup chatGroup = userContext.ChatGroups.Where(g => g.Id == groupMessage.ChatGroupId).FirstOrDefault();
+                        groupMessage.ChatGroup = chatGroup;
+                    }
 
                     userContext.Messages.Add(message);
                     userContext.SaveChanges();

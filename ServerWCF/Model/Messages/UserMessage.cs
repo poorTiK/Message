@@ -14,9 +14,9 @@ namespace ServerWCF.Model
     public class UserMessage : BaseMessage
     {
         [DataMember]
-        public int UserReceiverId { get; set; }
+        public int ReceiverId { get; set; }
 
-        [ForeignKey("UserReceiverId")]
+        [ForeignKey("ReceiverId")]
         public User Receiver { get; set; }
     }
 }

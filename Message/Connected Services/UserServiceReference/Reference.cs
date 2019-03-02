@@ -473,6 +473,7 @@ namespace Message.UserServiceReference {
     [System.Runtime.Serialization.DataContractAttribute(Name="BaseMessage", Namespace="http://schemas.datacontract.org/2004/07/ServerWCF.Model.Messages")]
     [System.SerializableAttribute()]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(Message.UserServiceReference.UserMessage))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(Message.UserServiceReference.GroupMessage))]
     public partial class BaseMessage : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
         
         [System.NonSerializedAttribute()]
@@ -601,6 +602,90 @@ namespace Message.UserServiceReference {
         }
     }
     
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="GroupMessage", Namespace="http://schemas.datacontract.org/2004/07/ServerWCF.Model.Messages")]
+    [System.SerializableAttribute()]
+    public partial class GroupMessage : Message.UserServiceReference.BaseMessage {
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int ChatGroupIdField;
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int ChatGroupId {
+            get {
+                return this.ChatGroupIdField;
+            }
+            set {
+                if ((this.ChatGroupIdField.Equals(value) != true)) {
+                    this.ChatGroupIdField = value;
+                    this.RaisePropertyChanged("ChatGroupId");
+                }
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="ChatGroup", Namespace="http://schemas.datacontract.org/2004/07/ServerWCF.Model")]
+    [System.SerializableAttribute()]
+    public partial class ChatGroup : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+        
+        [System.NonSerializedAttribute()]
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int IdField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private System.Collections.Generic.List<Message.UserServiceReference.User> ParticipantsField;
+        
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+            get {
+                return this.extensionDataField;
+            }
+            set {
+                this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int Id {
+            get {
+                return this.IdField;
+            }
+            set {
+                if ((this.IdField.Equals(value) != true)) {
+                    this.IdField = value;
+                    this.RaisePropertyChanged("Id");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.Collections.Generic.List<Message.UserServiceReference.User> Participants {
+            get {
+                return this.ParticipantsField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.ParticipantsField, value) != true)) {
+                    this.ParticipantsField = value;
+                    this.RaisePropertyChanged("Participants");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ServiceModel.ServiceContractAttribute(ConfigurationName="UserServiceReference.IUserService", CallbackContract=typeof(Message.UserServiceReference.IUserServiceCallback))]
     public interface IUserService {
@@ -690,28 +775,34 @@ namespace Message.UserServiceReference {
         System.Threading.Tasks.Task OnUserLeaveAsync(Message.UserServiceReference.User user);
         
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IUserService/SendMessage")]
-        void SendMessage(Message.UserServiceReference.UserMessage message);
+        void SendMessage(Message.UserServiceReference.BaseMessage message);
         
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IUserService/SendMessage")]
-        System.Threading.Tasks.Task SendMessageAsync(Message.UserServiceReference.UserMessage message);
+        System.Threading.Tasks.Task SendMessageAsync(Message.UserServiceReference.BaseMessage message);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/GetMessages", ReplyAction="http://tempuri.org/IUserService/GetMessagesResponse")]
-        System.Collections.Generic.List<Message.UserServiceReference.UserMessage> GetMessages(Message.UserServiceReference.User sender, Message.UserServiceReference.User receiver, int limin);
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/GetGroupMessages", ReplyAction="http://tempuri.org/IUserService/GetGroupMessagesResponse")]
+        System.Collections.Generic.List<Message.UserServiceReference.GroupMessage> GetGroupMessages(Message.UserServiceReference.ChatGroup chatGroup, int limin);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/GetMessages", ReplyAction="http://tempuri.org/IUserService/GetMessagesResponse")]
-        System.Threading.Tasks.Task<System.Collections.Generic.List<Message.UserServiceReference.UserMessage>> GetMessagesAsync(Message.UserServiceReference.User sender, Message.UserServiceReference.User receiver, int limin);
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/GetGroupMessages", ReplyAction="http://tempuri.org/IUserService/GetGroupMessagesResponse")]
+        System.Threading.Tasks.Task<System.Collections.Generic.List<Message.UserServiceReference.GroupMessage>> GetGroupMessagesAsync(Message.UserServiceReference.ChatGroup chatGroup, int limin);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/GetUserMessages", ReplyAction="http://tempuri.org/IUserService/GetUserMessagesResponse")]
+        System.Collections.Generic.List<Message.UserServiceReference.UserMessage> GetUserMessages(Message.UserServiceReference.User sender, Message.UserServiceReference.User receiver, int limin);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/GetUserMessages", ReplyAction="http://tempuri.org/IUserService/GetUserMessagesResponse")]
+        System.Threading.Tasks.Task<System.Collections.Generic.List<Message.UserServiceReference.UserMessage>> GetUserMessagesAsync(Message.UserServiceReference.User sender, Message.UserServiceReference.User receiver, int limin);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/FindMessage", ReplyAction="http://tempuri.org/IUserService/FindMessageResponse")]
-        System.Collections.Generic.List<Message.UserServiceReference.UserMessage> FindMessage(string keyWord);
+        System.Collections.Generic.List<Message.UserServiceReference.BaseMessage> FindMessage(string keyWord);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/FindMessage", ReplyAction="http://tempuri.org/IUserService/FindMessageResponse")]
-        System.Threading.Tasks.Task<System.Collections.Generic.List<Message.UserServiceReference.UserMessage>> FindMessageAsync(string keyWord);
+        System.Threading.Tasks.Task<System.Collections.Generic.List<Message.UserServiceReference.BaseMessage>> FindMessageAsync(string keyWord);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/EditMessage", ReplyAction="http://tempuri.org/IUserService/EditMessageResponse")]
-        bool EditMessage(Message.UserServiceReference.UserMessage editedMessage);
+        bool EditMessage(Message.UserServiceReference.BaseMessage editedMessage);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/EditMessage", ReplyAction="http://tempuri.org/IUserService/EditMessageResponse")]
-        System.Threading.Tasks.Task<bool> EditMessageAsync(Message.UserServiceReference.UserMessage editedMessage);
+        System.Threading.Tasks.Task<bool> EditMessageAsync(Message.UserServiceReference.BaseMessage editedMessage);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -724,7 +815,7 @@ namespace Message.UserServiceReference {
         void UserCame(Message.UserServiceReference.User user);
         
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IUserService/ReceiveMessage")]
-        void ReceiveMessage(Message.UserServiceReference.UserMessage message);
+        void ReceiveMessage(Message.UserServiceReference.BaseMessage message);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -867,35 +958,43 @@ namespace Message.UserServiceReference {
             return base.Channel.OnUserLeaveAsync(user);
         }
         
-        public void SendMessage(Message.UserServiceReference.UserMessage message) {
+        public void SendMessage(Message.UserServiceReference.BaseMessage message) {
             base.Channel.SendMessage(message);
         }
         
-        public System.Threading.Tasks.Task SendMessageAsync(Message.UserServiceReference.UserMessage message) {
+        public System.Threading.Tasks.Task SendMessageAsync(Message.UserServiceReference.BaseMessage message) {
             return base.Channel.SendMessageAsync(message);
         }
         
-        public System.Collections.Generic.List<Message.UserServiceReference.UserMessage> GetMessages(Message.UserServiceReference.User sender, Message.UserServiceReference.User receiver, int limin) {
-            return base.Channel.GetMessages(sender, receiver, limin);
+        public System.Collections.Generic.List<Message.UserServiceReference.GroupMessage> GetGroupMessages(Message.UserServiceReference.ChatGroup chatGroup, int limin) {
+            return base.Channel.GetGroupMessages(chatGroup, limin);
         }
         
-        public System.Threading.Tasks.Task<System.Collections.Generic.List<Message.UserServiceReference.UserMessage>> GetMessagesAsync(Message.UserServiceReference.User sender, Message.UserServiceReference.User receiver, int limin) {
-            return base.Channel.GetMessagesAsync(sender, receiver, limin);
+        public System.Threading.Tasks.Task<System.Collections.Generic.List<Message.UserServiceReference.GroupMessage>> GetGroupMessagesAsync(Message.UserServiceReference.ChatGroup chatGroup, int limin) {
+            return base.Channel.GetGroupMessagesAsync(chatGroup, limin);
         }
         
-        public System.Collections.Generic.List<Message.UserServiceReference.UserMessage> FindMessage(string keyWord) {
+        public System.Collections.Generic.List<Message.UserServiceReference.UserMessage> GetUserMessages(Message.UserServiceReference.User sender, Message.UserServiceReference.User receiver, int limin) {
+            return base.Channel.GetUserMessages(sender, receiver, limin);
+        }
+        
+        public System.Threading.Tasks.Task<System.Collections.Generic.List<Message.UserServiceReference.UserMessage>> GetUserMessagesAsync(Message.UserServiceReference.User sender, Message.UserServiceReference.User receiver, int limin) {
+            return base.Channel.GetUserMessagesAsync(sender, receiver, limin);
+        }
+        
+        public System.Collections.Generic.List<Message.UserServiceReference.BaseMessage> FindMessage(string keyWord) {
             return base.Channel.FindMessage(keyWord);
         }
         
-        public System.Threading.Tasks.Task<System.Collections.Generic.List<Message.UserServiceReference.UserMessage>> FindMessageAsync(string keyWord) {
+        public System.Threading.Tasks.Task<System.Collections.Generic.List<Message.UserServiceReference.BaseMessage>> FindMessageAsync(string keyWord) {
             return base.Channel.FindMessageAsync(keyWord);
         }
         
-        public bool EditMessage(Message.UserServiceReference.UserMessage editedMessage) {
+        public bool EditMessage(Message.UserServiceReference.BaseMessage editedMessage) {
             return base.Channel.EditMessage(editedMessage);
         }
         
-        public System.Threading.Tasks.Task<bool> EditMessageAsync(Message.UserServiceReference.UserMessage editedMessage) {
+        public System.Threading.Tasks.Task<bool> EditMessageAsync(Message.UserServiceReference.BaseMessage editedMessage) {
             return base.Channel.EditMessageAsync(editedMessage);
         }
     }
