@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Message.Model;
+using Message.UserServiceReference;
+using Message.ViewModel;
+using System;
 using System.Windows.Controls;
 
 namespace Message
@@ -13,12 +16,14 @@ namespace Message
             InitializeComponent();
         }
 
-        public ReceiveMessage(string text, DateTime date)
+        public ReceiveMessage(BaseMessage message)
         {
             InitializeComponent();
 
-            MessageText.Text = text;
-            SendTime.Text = date.Hour + ":" + date.Minute;
+            MessageText.Text = GlobalBase.Base64Decode(message.Content);
+            SendTime.Text = message.DateOfSending.Hour + ":" + message.DateOfSending.Minute;
+
+            DataContext = new MessageControlVM(message);
         }
     }
 }

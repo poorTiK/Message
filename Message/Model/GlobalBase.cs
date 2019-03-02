@@ -1,4 +1,5 @@
-﻿using Message.UserServiceReference;
+﻿using System;
+using Message.UserServiceReference;
 using Notifications.Wpf;
 using System.Globalization;
 
@@ -9,6 +10,8 @@ namespace Message.Model
         public static CultureInfo Language { get; set; }
 
         public static User CurrentUser { get; set; }
+
+        public static Action UpdateUI;
 
         static GlobalBase()
         {
@@ -28,7 +31,6 @@ namespace Message.Model
 
         public static void ShowNotify(string title, string content)
         {
-            var local = CultureInfo.GetCultureInfo("en - US");
             var notificationManager = new NotificationManager();
 
             notificationManager.Show(new NotificationContent

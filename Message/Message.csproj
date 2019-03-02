@@ -143,6 +143,7 @@
     <Compile Include="ViewModel\ContatsWindowVM.cs" />
     <Compile Include="ViewModel\ForgotPassWindowVM.cs" />
     <Compile Include="ViewModel\MainWindowVM.cs" />
+    <Compile Include="ViewModel\MessageControlVM.cs" />
     <Compile Include="ViewModel\MessageMainVM.cs" />
     <Compile Include="ViewModel\SettingsWindowVM.cs" />
     <Compile Include="ViewModel\UserProfileWindowVM.cs" />

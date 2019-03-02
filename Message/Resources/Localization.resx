@@ -210,4 +210,10 @@
   <data name="Write" xml:space="preserve">
     <value>Write a message...</value>
   </data>
+  <data name="Copy" xml:space="preserve">
+    <value>Copy</value>
+  </data>
+  <data name="Forvard" xml:space="preserve">
+    <value>Forvard</value>
+  </data>
 </root>

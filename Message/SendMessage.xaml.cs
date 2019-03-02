@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Windows.Controls;
+using Message.Model;
+using Message.UserServiceReference;
+using Message.ViewModel;
 
 namespace Message
 {
@@ -13,12 +16,14 @@ namespace Message
             InitializeComponent();
         }
 
-        public SendMessage(string text, DateTime date)
+        public SendMessage(BaseMessage message)
         {
             InitializeComponent();
 
-            MessageText.Text = text;
-            SendTime.Text = date.Hour + ":" + date.Minute;
+            MessageText.Text = GlobalBase.Base64Decode(message.Content);
+            SendTime.Text = message.DateOfSending.Hour + ":" + message.DateOfSending.Minute;
+
+            DataContext = new MessageControlVM(message);
         }
     }
 }

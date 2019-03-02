@@ -122,6 +122,10 @@ namespace Message.ViewModel
         {
             CurrentUser = user;
             GlobalBase.CurrentUser = user;
+            GlobalBase.UpdateUI += () =>
+            {
+                Update();
+            };
 
             //callback for messages
             groupAddress = IPAddress.Parse(HOST);
@@ -155,6 +159,7 @@ namespace Message.ViewModel
                     {
                         _view.MessageList.Add(new UserMessage()
                         {
+                            Id = mes.Id,
                             Content = mes.Content,
                             DateOfSending = mes.DateOfSending,
                             ReceiverId = mes.ReceiverId,
@@ -371,6 +376,16 @@ namespace Message.ViewModel
         {
             Update();
             Debug.WriteLine("Works(Came) - " + user.FirstName + " - (currentUser - " + GlobalBase.CurrentUser.FirstName + ")");
+        }
+
+        public void OnMessageRemoved(BaseMessage message)
+        {
+            //throw new NotImplementedException();
+        }
+
+        public void OnMessageEdited(BaseMessage message)
+        {
+            //throw new NotImplementedException();
         }
     }
 }

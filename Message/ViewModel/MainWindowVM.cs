@@ -410,17 +410,27 @@ namespace Message.ViewModel
 
         public void UserLeave(User user)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         public void UserCame(User user)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         public void ReceiveMessage(BaseMessage message)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
+        }
+
+        public void OnMessageRemoved(BaseMessage message)
+        {
+            //throw new NotImplementedException();
+        }
+
+        public void OnMessageEdited(BaseMessage message)
+        {
+            //throw new NotImplementedException();
         }
     }
 }

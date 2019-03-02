@@ -252,24 +252,52 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
-  <xs:element name="UserLeave">
+  <xs:element name="RemoveMessage">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q28="http://schemas.datacontract.org/2004/07/ServerWCF.Model" minOccurs="0" name="user" nillable="true" type="q28:User" />
+        <xs:element xmlns:q28="http://schemas.datacontract.org/2004/07/ServerWCF.Model.Messages" minOccurs="0" name="removedMessage" nillable="true" type="q28:BaseMessage" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
-  <xs:element name="UserCame">
+  <xs:element name="RemoveMessageResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="RemoveMessageResult" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="UserLeave">
     <xs:complexType>
       <xs:sequence>
         <xs:element xmlns:q29="http://schemas.datacontract.org/2004/07/ServerWCF.Model" minOccurs="0" name="user" nillable="true" type="q29:User" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
+  <xs:element name="UserCame">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q30="http://schemas.datacontract.org/2004/07/ServerWCF.Model" minOccurs="0" name="user" nillable="true" type="q30:User" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
   <xs:element name="ReceiveMessage">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q30="http://schemas.datacontract.org/2004/07/ServerWCF.Model.Messages" minOccurs="0" name="message" nillable="true" type="q30:BaseMessage" />
+        <xs:element xmlns:q31="http://schemas.datacontract.org/2004/07/ServerWCF.Model.Messages" minOccurs="0" name="message" nillable="true" type="q31:BaseMessage" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="OnMessageRemoved">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q32="http://schemas.datacontract.org/2004/07/ServerWCF.Model.Messages" minOccurs="0" name="message" nillable="true" type="q32:BaseMessage" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="OnMessageEdited">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q33="http://schemas.datacontract.org/2004/07/ServerWCF.Model.Messages" minOccurs="0" name="message" nillable="true" type="q33:BaseMessage" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
