@@ -26,7 +26,6 @@ namespace ServerWCF.Contracts
         [OperationContract]
         User GetUserByLogin(string login);
 
-
         [OperationContract]
         bool AddContact(User owner, User owned);
 
@@ -39,20 +38,17 @@ namespace ServerWCF.Contracts
         [OperationContract]
         bool IsExistsInContacts(User owner, User owned);
 
-
         [OperationContract]
         ApplicationSettings GetAppSettings(User user);
 
         [OperationContract]
         bool SaveAppSettings(ApplicationSettings appSettings);
 
-
         [OperationContract(IsOneWay = true)]
         void OnUserCame(User user);
 
         [OperationContract(IsOneWay = true)]
         void OnUserLeave(User user);
-
 
         [OperationContract(IsOneWay = true)]
         void SendMessage(BaseMessage message);
@@ -69,7 +65,7 @@ namespace ServerWCF.Contracts
         [OperationContract]
         bool EditMessage(BaseMessage editedMessage);
     }
- 
+
     public interface IUserCallback
     {
         [OperationContract(IsOneWay = true)]

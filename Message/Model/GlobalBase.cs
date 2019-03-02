@@ -1,11 +1,19 @@
 ﻿using Message.UserServiceReference;
 using Notifications.Wpf;
+using System.Globalization;
 
 namespace Message.Model
 {
     public static class GlobalBase
     {
+        public static CultureInfo Language { get; set; }
+
         public static User CurrentUser { get; set; }
+
+        static GlobalBase()
+        {
+            Language = CultureInfo.CurrentUICulture;
+        }
 
         public static string Base64Encode(string plainText)
         {
@@ -20,6 +28,7 @@ namespace Message.Model
 
         public static void ShowNotify(string title, string content)
         {
+            var local = CultureInfo.GetCultureInfo("en - US");
             var notificationManager = new NotificationManager();
 
             notificationManager.Show(new NotificationContent
@@ -28,6 +37,22 @@ namespace Message.Model
                 Message = content,
                 Type = NotificationType.Information
             });
+        }
+
+        /// <summary>
+        /// Example - CultureInfo.GetCultureInfo("en-US");
+        /// </summary>
+        /// <param name="lang"></param>
+        public static void SetLanguage(CultureInfo lang)
+        {
+            Language = lang;
+        }
+
+        public static bool IsRussianLanguage()
+        {
+            if (Language.Name == "ru-UA" || Language.Name == "ru-RU")
+                return true;
+            return false;
         }
     }
 }

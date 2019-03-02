@@ -1,4 +1,5 @@
 ﻿using Message.Interfaces;
+using Message.Model;
 using Message.ViewModel;
 using System.Windows;
 
@@ -11,6 +12,8 @@ namespace Message
     {
         public UserProfileWindow()
         {
+            System.Threading.Thread.CurrentThread.CurrentUICulture = GlobalBase.Language;
+
             InitializeComponent();
 
             DataContext = new UserProfileWindowVM(this);

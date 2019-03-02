@@ -1,19 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using Message.Interfaces;
+﻿using Message.Interfaces;
+using Message.Model;
 using Message.UserServiceReference;
 using Message.ViewModel;
+using System;
+using System.Windows;
 
 namespace Message
 {
@@ -24,11 +14,15 @@ namespace Message
     {
         public ContactProfileWindow()
         {
+            System.Threading.Thread.CurrentThread.CurrentUICulture = GlobalBase.Language;
+
             InitializeComponent();
         }
 
         public ContactProfileWindow(User profile)
         {
+            System.Threading.Thread.CurrentThread.CurrentUICulture = GlobalBase.Language;
+
             InitializeComponent();
 
             DataContext = new ContactProfileWindowVM(this, profile);

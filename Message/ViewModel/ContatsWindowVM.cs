@@ -16,7 +16,6 @@ namespace Message.ViewModel
         private UserServiceClient UserServiceClient;
         private IUserServiceCallback _userServiceCallback;
 
-
         private IView view;
 
         private List<User> _contacts;
@@ -139,12 +138,12 @@ namespace Message.ViewModel
 
         public void UserLeave(User user)
         {
-            int test = 10;
+            //int test = 10;
         }
 
         public void UserCame(User user)
         {
-            int test = 20;
+            //int test = 20;
         }
 
         public void ReceiveMessage(BaseMessage message)

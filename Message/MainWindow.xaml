@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:res="clr-namespace:Message.Resources"
         xmlns:local="clr-namespace:Message"
         mc:Ignorable="d"
 
@@ -54,7 +55,7 @@
 
                         <StackPanel Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" Margin="3">
                             <TextBox Name="LoginText" Focusable="True" Text="{Binding LoginText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                materialDesign:HintAssist.Hint="Login"
+                                materialDesign:HintAssist.Hint="{x:Static res:Localization.Login}"
                                 Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                 Foreground="White" CaretBrush="{x:Null}" SelectionBrush="#FF919191" Margin="0,0,0,15">
                                 <TextBox.InputBindings>
@@ -63,13 +64,13 @@
                             </TextBox>
                             <PasswordBox Name="PasswordBox"
                                         Foreground="White" CaretBrush="{x:Null}" SelectionBrush="#FF919191"
-                                        materialDesign:HintAssist.Hint="Password" Margin="0,0,0,15"
+                                        materialDesign:HintAssist.Hint="{x:Static res:Localization.Password}" Margin="0,0,0,15"
                                         Style="{StaticResource MaterialDesignFloatingHintPasswordBox}">
                                 <PasswordBox.InputBindings>
                                     <KeyBinding Command="{Binding Path = OnLogin}" Key="Enter" />
                                 </PasswordBox.InputBindings>
                             </PasswordBox>
-                            <Button Content="Sign In" Margin="0,0,0,15"
+                            <Button Content="{x:Static res:Localization.SignIn}" Margin="0,0,0,15"
                                     materialDesign:ButtonProgressAssist.Value="-1"
                                     materialDesign:ButtonProgressAssist.IsIndicatorVisible="{Binding IsLoginProgress}"
                                     materialDesign:ButtonProgressAssist.IsIndeterminate="{Binding IsLoginProgress}"
@@ -78,11 +79,11 @@
 
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                 <Button Command="{Binding OnStartRegister}" Style="{StaticResource MaterialDesignFlatButton}"
-                                        Margin="2,0" FontSize="12" Height="25" Content="Register">
+                                        Margin="2,0" FontSize="12" Height="25" Content="{x:Static res:Localization.Register}">
                                 </Button>
                                 <Button Style="{StaticResource MaterialDesignFlatButton}"
                                         Command="{Binding OnForgotPassword}"
-                                        Margin="2,0" FontSize="12" Height="25">Forgot password?</Button>
+                                        Margin="2,0" FontSize="12" Height="25" Content="{x:Static res:Localization.ForgotPassword}"></Button>
                             </StackPanel>
                         </StackPanel>
                     </Grid>
@@ -100,7 +101,7 @@
                     </Grid.RowDefinitions>
                     <StackPanel Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0" Orientation="Vertical" VerticalAlignment="Center">
                         <TextBox
-                            materialDesign:HintAssist.Hint="First Name"
+                            materialDesign:HintAssist.Hint="{x:Static res:Localization.FirstName}"
                             Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                             Foreground="White" CaretBrush="{x:Null}" SelectionBrush="#FF919191" Margin="0,0,0,20">
                             <TextBox.Text>
@@ -113,7 +114,7 @@
                         </TextBox>
 
                         <TextBox
-                            materialDesign:HintAssist.Hint="Last Name"
+                            materialDesign:HintAssist.Hint="{x:Static res:Localization.LastName}"
                             Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                             Foreground="White" CaretBrush="{x:Null}" SelectionBrush="#FF919191" Margin="0,0,0,20">
                             <TextBox.Text>
@@ -126,7 +127,7 @@
                         </TextBox>
 
                         <TextBox
-                            materialDesign:HintAssist.Hint="Login"
+                            materialDesign:HintAssist.Hint="{x:Static res:Localization.Login}"
                             Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                             Foreground="White" CaretBrush="{x:Null}" SelectionBrush="#FF919191" Margin="0,0,0,20">
                             <TextBox.Text>
@@ -140,17 +141,17 @@
 
                         <PasswordBox Name="RPasswordBox"
                             Foreground="White" CaretBrush="{x:Null}" SelectionBrush="#FF919191"
-                            materialDesign:HintAssist.Hint="Password"
+                            materialDesign:HintAssist.Hint="{x:Static res:Localization.Password}"
                             Style="{StaticResource MaterialDesignFloatingHintPasswordBox}" Margin="0,0,0,20">
                         </PasswordBox>
 
                         <PasswordBox Name="Rep_RPasswordBox"
                             Foreground="White" CaretBrush="{x:Null}" SelectionBrush="#FF919191"
-                            materialDesign:HintAssist.Hint="Repeat Password"
+                            materialDesign:HintAssist.Hint="{x:Static res:Localization.RepeatPassword}"
                             Style="{StaticResource MaterialDesignFloatingHintPasswordBox}" Margin="0,0,0,20" />
 
                         <TextBox
-                            materialDesign:HintAssist.Hint="Email"
+                            materialDesign:HintAssist.Hint="{x:Static res:Localization.Email}"
                             Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                             Foreground="White" CaretBrush="{x:Null}" SelectionBrush="#FF919191">
                             <TextBox.Text>
@@ -164,14 +165,14 @@
                     </StackPanel>
 
                     <Button Grid.Column="0" Grid.Row="1" Margin="0,0,0,15"
-                            Width="84" Content="Register"
+                            Width="120" Content="{x:Static res:Localization.Register}"
                             materialDesign:ButtonProgressAssist.Value="-1"
                             materialDesign:ButtonProgressAssist.IsIndicatorVisible="{Binding IsRegisterProgress}"
                             materialDesign:ButtonProgressAssist.IsIndeterminate="{Binding IsRegisterProgress}"
                             Command="{Binding Register}"
                             ></Button>
                     <Button Grid.Column="1" Grid.Row="1" Margin="0,0,0,15"
-                            Width="84" Content="Back"
+                            Width="120" Content="{x:Static res:Localization.Back}"
                             Command="{Binding BackCommand}">
                     </Button>
                 </Grid>

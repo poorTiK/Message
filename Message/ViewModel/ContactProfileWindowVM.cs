@@ -1,18 +1,14 @@
 ﻿using Message.Interfaces;
-using Message.UserServiceReference;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ServiceModel;
-using System.Text;
-using System.Threading.Tasks;
 using Message.Model;
+using Message.UserServiceReference;
 using Prism.Commands;
+using System;
+using System.ServiceModel;
 
 namespace Message.ViewModel
 {
     [CallbackBehavior(ConcurrencyMode = ConcurrencyMode.Reentrant)]
-    class ContactProfileWindowVM : Prism.Mvvm.BindableBase, IUserServiceCallback
+    internal class ContactProfileWindowVM : Prism.Mvvm.BindableBase, IUserServiceCallback
     {
         private IView _view;
 
@@ -78,7 +74,7 @@ namespace Message.ViewModel
         public string UserEmail
         {
             get { return _userEmail; }
-            set{SetProperty(ref _userEmail, value);}
+            set { SetProperty(ref _userEmail, value); }
         }
 
         private string _userBio;
@@ -86,10 +82,11 @@ namespace Message.ViewModel
         public string UserBio
         {
             get { return _userBio; }
-            set{SetProperty(ref _userBio, value);}
+            set { SetProperty(ref _userBio, value); }
         }
 
         private bool _isContact;
+
         public bool IsContact
         {
             get { return _isContact; }
@@ -97,6 +94,7 @@ namespace Message.ViewModel
         }
 
         private bool _isNonContact;
+
         public bool IsNonContact
         {
             get { return _isNonContact; }
@@ -170,17 +168,17 @@ namespace Message.ViewModel
 
         public void UserCame(User user)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         public void UserLeave(User user)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         public void ReceiveMessage(BaseMessage message)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
     }
 }

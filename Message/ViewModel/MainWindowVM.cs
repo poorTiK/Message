@@ -165,7 +165,6 @@ namespace Message.ViewModel
             view = iView;
             passwordSupplier = ipasswordSupplier;
 
-
             //callback for user
             _userServiceCallback = this;
             usersSite = new InstanceContext(_userServiceCallback);
@@ -177,7 +176,7 @@ namespace Message.ViewModel
             IsSignUpVisible = true;
             IsRegisterVisible = false;
 
-            fillUsers();
+            //fillUsers();
             //TestApplicationSettings();
             //TestMessageT();
         }

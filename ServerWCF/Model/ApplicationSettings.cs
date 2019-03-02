@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
 using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ServerWCF.Model
 {
@@ -26,7 +21,7 @@ namespace ServerWCF.Model
         public string Theme { get; set; }
 
         [DataMember]
-        public int UserId{ get; set; }
+        public int UserId { get; set; }
 
         [DataMember]
         public bool AllowNotifications { get; set; }

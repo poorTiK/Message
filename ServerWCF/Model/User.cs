@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
 using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web.Script.Serialization;
 
 namespace ServerWCF.Model
 {
@@ -53,6 +48,5 @@ namespace ServerWCF.Model
         [DataMember]
         [NotMapped]
         public int UnreadMessageCount { get; set; }
-
     }
 }
