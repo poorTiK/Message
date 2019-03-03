@@ -62,10 +62,10 @@ namespace ServerWCF.Contracts
         [OperationContract(IsOneWay = true)]
         void SendMessage(BaseMessage message);
 
-        [OperationContract]
+        [OperationContract(IsOneWay = true)]
         string EditMessage(BaseMessage editedMessage);
 
-        [OperationContract]
+        [OperationContract(IsOneWay = true)]
         bool RemoveMessage(BaseMessage removedMessage);
     }
 
