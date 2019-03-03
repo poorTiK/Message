@@ -245,24 +245,10 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
-  <xs:element name="EditMessageResponse">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element minOccurs="0" name="EditMessageResult" nillable="true" type="xs:string" />
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
   <xs:element name="RemoveMessage">
     <xs:complexType>
       <xs:sequence>
         <xs:element xmlns:q28="http://schemas.datacontract.org/2004/07/ServerWCF.Model.Messages" minOccurs="0" name="removedMessage" nillable="true" type="q28:BaseMessage" />
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="RemoveMessageResponse">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element minOccurs="0" name="RemoveMessageResult" type="xs:boolean" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>

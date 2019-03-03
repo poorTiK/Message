@@ -798,17 +798,17 @@ namespace Message.UserServiceReference {
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IUserService/SendMessage")]
         System.Threading.Tasks.Task SendMessageAsync(Message.UserServiceReference.BaseMessage message);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/EditMessage", ReplyAction="http://tempuri.org/IUserService/EditMessageResponse")]
-        string EditMessage(Message.UserServiceReference.BaseMessage editedMessage);
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IUserService/EditMessage")]
+        void EditMessage(Message.UserServiceReference.BaseMessage editedMessage);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/EditMessage", ReplyAction="http://tempuri.org/IUserService/EditMessageResponse")]
-        System.Threading.Tasks.Task<string> EditMessageAsync(Message.UserServiceReference.BaseMessage editedMessage);
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IUserService/EditMessage")]
+        System.Threading.Tasks.Task EditMessageAsync(Message.UserServiceReference.BaseMessage editedMessage);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/RemoveMessage", ReplyAction="http://tempuri.org/IUserService/RemoveMessageResponse")]
-        bool RemoveMessage(Message.UserServiceReference.BaseMessage removedMessage);
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IUserService/RemoveMessage")]
+        void RemoveMessage(Message.UserServiceReference.BaseMessage removedMessage);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/RemoveMessage", ReplyAction="http://tempuri.org/IUserService/RemoveMessageResponse")]
-        System.Threading.Tasks.Task<bool> RemoveMessageAsync(Message.UserServiceReference.BaseMessage removedMessage);
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IUserService/RemoveMessage")]
+        System.Threading.Tasks.Task RemoveMessageAsync(Message.UserServiceReference.BaseMessage removedMessage);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -1002,19 +1002,19 @@ namespace Message.UserServiceReference {
             return base.Channel.SendMessageAsync(message);
         }
         
-        public string EditMessage(Message.UserServiceReference.BaseMessage editedMessage) {
-            return base.Channel.EditMessage(editedMessage);
+        public void EditMessage(Message.UserServiceReference.BaseMessage editedMessage) {
+            base.Channel.EditMessage(editedMessage);
         }
         
-        public System.Threading.Tasks.Task<string> EditMessageAsync(Message.UserServiceReference.BaseMessage editedMessage) {
+        public System.Threading.Tasks.Task EditMessageAsync(Message.UserServiceReference.BaseMessage editedMessage) {
             return base.Channel.EditMessageAsync(editedMessage);
         }
         
-        public bool RemoveMessage(Message.UserServiceReference.BaseMessage removedMessage) {
-            return base.Channel.RemoveMessage(removedMessage);
+        public void RemoveMessage(Message.UserServiceReference.BaseMessage removedMessage) {
+            base.Channel.RemoveMessage(removedMessage);
         }
         
-        public System.Threading.Tasks.Task<bool> RemoveMessageAsync(Message.UserServiceReference.BaseMessage removedMessage) {
+        public System.Threading.Tasks.Task RemoveMessageAsync(Message.UserServiceReference.BaseMessage removedMessage) {
             return base.Channel.RemoveMessageAsync(removedMessage);
         }
     }
