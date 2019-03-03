@@ -178,6 +178,15 @@ namespace Message.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Edit.
+        /// </summary>
+        public static string EditMessage {
+            get {
+                return ResourceManager.GetString("EditMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Edit profile.
         /// </summary>
         public static string EditProfile {

@@ -216,4 +216,7 @@
   <data name="Forvard" xml:space="preserve">
     <value>Переслать</value>
   </data>
+  <data name="EditMessage" xml:space="preserve">
+    <value>Изменить</value>
+  </data>
 </root>

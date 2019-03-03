@@ -2,6 +2,7 @@
 using Message.Model;
 using Message.UserServiceReference;
 using Prism.Commands;
+using System;
 using System.ServiceModel;
 using System.Windows;
 
@@ -41,6 +42,19 @@ namespace Message.ViewModel
 
         public DelegateCommand Delete =>
             _onDelete ?? (_onDelete = new DelegateCommand(OnDelete));
+
+        private DelegateCommand _onEdit;
+
+        public DelegateCommand Edit =>
+            _onEdit ?? (_onEdit = new DelegateCommand(OnEdit));
+
+        private void OnEdit()
+        {
+            var wnd = new MessageEditWindow(Message);
+            wnd.ShowDialog();
+
+            GlobalBase.UpdateUI.Invoke();
+        }
 
         private void OnDelete()
         {

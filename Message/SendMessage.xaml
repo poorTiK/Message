@@ -30,7 +30,8 @@
             </Border>
             <Grid.ContextMenu>
                 <ContextMenu Background="#262626">
-                    <MenuItem Header="{x:Static res:Localization.EditContact}" Background="#262626" Foreground="White"></MenuItem>
+                    <MenuItem Header="{x:Static res:Localization.EditMessage}" Background="#262626" 
+                              Foreground="White" Command="{Binding Edit}"></MenuItem>
                     <MenuItem Header="{x:Static res:Localization.Copy}" Background="#262626" 
                               Foreground="White" Command="{Binding Copy}"></MenuItem>
                     <MenuItem Header="{x:Static res:Localization.Forvard}" Background="#262626" Foreground="White"></MenuItem>

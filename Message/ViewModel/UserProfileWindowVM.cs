@@ -144,7 +144,7 @@ namespace Message.ViewModel
         private void ExecuteOnApplyChanges()
         {
             IsSavingProgress = true;
-            bool res;
+            string res;
             Task.Run((() =>
             {
                 if (Validate())
@@ -157,7 +157,7 @@ namespace Message.ViewModel
 
                     res = UserServiceClient.AddOrUpdateUser(GlobalBase.CurrentUser);
 
-                    if (res)
+                    if (res == string.Empty)
                     {
                         Application.Current.Dispatcher.Invoke(new Action((() =>
                         {
