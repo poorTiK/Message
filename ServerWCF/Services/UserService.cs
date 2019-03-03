@@ -465,12 +465,12 @@ namespace ServerWCF.Services
             }
         }
 
-        public string EditMessage(BaseMessage editedMessage)
+        public void EditMessage(BaseMessage editedMessage)
         {
             string validationInfo = Validate(editedMessage);
             if (validationInfo != successResult)
             {
-                return validationInfo;
+                return;
             }
 
             using (UserContext userContext = new UserContext())
@@ -480,7 +480,7 @@ namespace ServerWCF.Services
                     BaseMessage dbMessage = userContext.Messages.Where(mes => mes.Id == editedMessage.Id).FirstOrDefault();
                     if (dbMessage == null)
                     {
-                        return "Message for editing not found.";
+                        return;
                     }
 
                     if (dbMessage is UserMessage)
@@ -506,7 +506,7 @@ namespace ServerWCF.Services
                     CallbackData callbackData = usersOnline.Where(cd => cd.User.Id == dbMessage.SenderId).FirstOrDefault();
                     if (callbackData == null)
                     {
-                        return "Sender is not online.";
+                        return;
                     }
 
                     userContext.SaveChanges();
@@ -518,13 +518,10 @@ namespace ServerWCF.Services
                     Thread t = new Thread(new ParameterizedThreadStart(EditMessageCallback));
                     t.IsBackground = true;
                     t.Start(messageInfo);
-
-                    return successResult;
-
                 }
                 catch (Exception ex)
                 {
-                    return "Exception occured during editing message.";
+                    return;
                 }
             }
         }
@@ -542,7 +539,7 @@ namespace ServerWCF.Services
             }
         }
 
-        public bool RemoveMessage(BaseMessage removedMessage)
+        public void RemoveMessage(BaseMessage removedMessage)
         {
             using (UserContext userContext = new UserContext())
             {
@@ -551,7 +548,7 @@ namespace ServerWCF.Services
                     BaseMessage dbBaseMessage = userContext.Messages.Where(mes => mes.Id == removedMessage.Id).FirstOrDefault();
                     if (dbBaseMessage == null)
                     {
-                        return false;
+                        return;
                     }
 
                     userContext.Messages.Remove(dbBaseMessage);
@@ -559,7 +556,7 @@ namespace ServerWCF.Services
                     CallbackData callbackData = usersOnline.Where(cd => cd.User.Id == removedMessage.SenderId).FirstOrDefault();
                     if (callbackData == null)
                     {
-                        return false;
+                        return;
                     }
 
                     userContext.SaveChanges();
@@ -571,14 +568,10 @@ namespace ServerWCF.Services
                     Thread t = new Thread(new ParameterizedThreadStart(RemoveMessageCallback));
                     t.IsBackground = true;
                     t.Start(messageInfo);
-
-                    return true;
-
                 }
                 catch (Exception ex)
                 {
                 }
-                return false;
             }
         }
 

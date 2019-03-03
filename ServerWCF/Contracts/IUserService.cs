@@ -63,10 +63,10 @@ namespace ServerWCF.Contracts
         void SendMessage(BaseMessage message);
 
         [OperationContract(IsOneWay = true)]
-        string EditMessage(BaseMessage editedMessage);
+        void EditMessage(BaseMessage editedMessage);
 
         [OperationContract(IsOneWay = true)]
-        bool RemoveMessage(BaseMessage removedMessage);
+        void RemoveMessage(BaseMessage removedMessage);
     }
 
     public interface IUserCallback
