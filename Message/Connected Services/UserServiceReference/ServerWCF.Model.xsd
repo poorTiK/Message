@@ -18,7 +18,7 @@
       <xs:element minOccurs="0" name="LastName" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="Login" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="Owners" nillable="true" type="tns:ArrayOfContact" />
-      <xs:element minOccurs="0" name="Password" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Password" nillable="true" type="xs:base64Binary" />
       <xs:element minOccurs="0" name="Phone" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="Status" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="UnreadMessageCount" type="xs:int" />
@@ -43,7 +43,7 @@
     <xs:sequence>
       <xs:element minOccurs="0" name="AllowNotifications" type="xs:boolean" />
       <xs:element minOccurs="0" name="Id" type="xs:int" />
-      <xs:element minOccurs="0" name="Language" type="xs:int" />
+      <xs:element minOccurs="0" name="Language" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="Theme" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="User" nillable="true" type="tns:User" />
       <xs:element minOccurs="0" name="UserId" type="xs:int" />
@@ -51,6 +51,13 @@
     </xs:sequence>
   </xs:complexType>
   <xs:element name="ApplicationSettings" nillable="true" type="tns:ApplicationSettings" />
+  <xs:complexType name="ChatGroup">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Id" type="xs:int" />
+      <xs:element minOccurs="0" name="Participants" nillable="true" type="tns:ArrayOfUser" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ChatGroup" nillable="true" type="tns:ChatGroup" />
   <xs:complexType name="UserMessage">
     <xs:complexContent mixed="false">
       <xs:extension xmlns:q1="http://schemas.datacontract.org/2004/07/ServerWCF.Model.Messages" base="q1:BaseMessage">
@@ -61,13 +68,6 @@
     </xs:complexContent>
   </xs:complexType>
   <xs:element name="UserMessage" nillable="true" type="tns:UserMessage" />
-  <xs:complexType name="ChatGroup">
-    <xs:sequence>
-      <xs:element minOccurs="0" name="Id" type="xs:int" />
-      <xs:element minOccurs="0" name="Participants" nillable="true" type="tns:ArrayOfUser" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="ChatGroup" nillable="true" type="tns:ChatGroup" />
   <xs:complexType name="ArrayOfUserMessage">
     <xs:sequence>
       <xs:element minOccurs="0" maxOccurs="unbounded" name="UserMessage" nillable="true" type="tns:UserMessage" />

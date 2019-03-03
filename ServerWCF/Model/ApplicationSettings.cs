@@ -15,7 +15,7 @@ namespace ServerWCF.Model
         public int WindowSize { get; set; }
 
         [DataMember]
-        public int Language { get; set; }
+        public string Language { get; set; }
 
         [DataMember]
         public string Theme { get; set; }

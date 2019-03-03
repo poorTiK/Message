@@ -99,6 +99,7 @@
     <Compile Include="Contacts.xaml.cs">
       <DependentUpon>Contacts.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Encryption\AESEncryptor.cs" />
     <Compile Include="ForgotPassWindow.xaml.cs">
       <DependentUpon>ForgotPassWindow.xaml</DependentUpon>
     </Compile>

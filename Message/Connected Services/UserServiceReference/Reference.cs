@@ -50,7 +50,7 @@ namespace Message.UserServiceReference {
         private System.Collections.Generic.List<Message.UserServiceReference.Contact> OwnersField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private string PasswordField;
+        private byte[] PasswordField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string PhoneField;
@@ -189,7 +189,7 @@ namespace Message.UserServiceReference {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public string Password {
+        public byte[] Password {
             get {
                 return this.PasswordField;
             }
@@ -343,7 +343,7 @@ namespace Message.UserServiceReference {
         private int IdField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private int LanguageField;
+        private string LanguageField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string ThemeField;
@@ -394,12 +394,12 @@ namespace Message.UserServiceReference {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public int Language {
+        public string Language {
             get {
                 return this.LanguageField;
             }
             set {
-                if ((this.LanguageField.Equals(value) != true)) {
+                if ((object.ReferenceEquals(this.LanguageField, value) != true)) {
                     this.LanguageField = value;
                     this.RaisePropertyChanged("Language");
                 }
@@ -464,6 +464,90 @@ namespace Message.UserServiceReference {
             System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
             if ((propertyChanged != null)) {
                 propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="ChatGroup", Namespace="http://schemas.datacontract.org/2004/07/ServerWCF.Model")]
+    [System.SerializableAttribute()]
+    public partial class ChatGroup : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+        
+        [System.NonSerializedAttribute()]
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int IdField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private System.Collections.Generic.List<Message.UserServiceReference.User> ParticipantsField;
+        
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+            get {
+                return this.extensionDataField;
+            }
+            set {
+                this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int Id {
+            get {
+                return this.IdField;
+            }
+            set {
+                if ((this.IdField.Equals(value) != true)) {
+                    this.IdField = value;
+                    this.RaisePropertyChanged("Id");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.Collections.Generic.List<Message.UserServiceReference.User> Participants {
+            get {
+                return this.ParticipantsField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.ParticipantsField, value) != true)) {
+                    this.ParticipantsField = value;
+                    this.RaisePropertyChanged("Participants");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="GroupMessage", Namespace="http://schemas.datacontract.org/2004/07/ServerWCF.Model.Messages")]
+    [System.SerializableAttribute()]
+    public partial class GroupMessage : Message.UserServiceReference.BaseMessage {
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int ChatGroupIdField;
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int ChatGroupId {
+            get {
+                return this.ChatGroupIdField;
+            }
+            set {
+                if ((this.ChatGroupIdField.Equals(value) != true)) {
+                    this.ChatGroupIdField = value;
+                    this.RaisePropertyChanged("ChatGroupId");
+                }
             }
         }
     }
@@ -602,90 +686,6 @@ namespace Message.UserServiceReference {
         }
     }
     
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="GroupMessage", Namespace="http://schemas.datacontract.org/2004/07/ServerWCF.Model.Messages")]
-    [System.SerializableAttribute()]
-    public partial class GroupMessage : Message.UserServiceReference.BaseMessage {
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private int ChatGroupIdField;
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public int ChatGroupId {
-            get {
-                return this.ChatGroupIdField;
-            }
-            set {
-                if ((this.ChatGroupIdField.Equals(value) != true)) {
-                    this.ChatGroupIdField = value;
-                    this.RaisePropertyChanged("ChatGroupId");
-                }
-            }
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="ChatGroup", Namespace="http://schemas.datacontract.org/2004/07/ServerWCF.Model")]
-    [System.SerializableAttribute()]
-    public partial class ChatGroup : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
-        
-        [System.NonSerializedAttribute()]
-        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private int IdField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private System.Collections.Generic.List<Message.UserServiceReference.User> ParticipantsField;
-        
-        [global::System.ComponentModel.BrowsableAttribute(false)]
-        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
-            get {
-                return this.extensionDataField;
-            }
-            set {
-                this.extensionDataField = value;
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public int Id {
-            get {
-                return this.IdField;
-            }
-            set {
-                if ((this.IdField.Equals(value) != true)) {
-                    this.IdField = value;
-                    this.RaisePropertyChanged("Id");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.Collections.Generic.List<Message.UserServiceReference.User> Participants {
-            get {
-                return this.ParticipantsField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.ParticipantsField, value) != true)) {
-                    this.ParticipantsField = value;
-                    this.RaisePropertyChanged("Participants");
-                }
-            }
-        }
-        
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        
-        protected void RaisePropertyChanged(string propertyName) {
-            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
-            if ((propertyChanged != null)) {
-                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
-            }
-        }
-    }
-    
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ServiceModel.ServiceContractAttribute(ConfigurationName="UserServiceReference.IUserService", CallbackContract=typeof(Message.UserServiceReference.IUserServiceCallback))]
     public interface IUserService {
@@ -697,16 +697,16 @@ namespace Message.UserServiceReference {
         System.Threading.Tasks.Task<System.Collections.Generic.List<Message.UserServiceReference.User>> GetAllUsersAsync();
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/AddOrUpdateUser", ReplyAction="http://tempuri.org/IUserService/AddOrUpdateUserResponse")]
-        bool AddOrUpdateUser(Message.UserServiceReference.User user);
+        string AddOrUpdateUser(Message.UserServiceReference.User user);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/AddOrUpdateUser", ReplyAction="http://tempuri.org/IUserService/AddOrUpdateUserResponse")]
-        System.Threading.Tasks.Task<bool> AddOrUpdateUserAsync(Message.UserServiceReference.User user);
+        System.Threading.Tasks.Task<string> AddOrUpdateUserAsync(Message.UserServiceReference.User user);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/GetUser", ReplyAction="http://tempuri.org/IUserService/GetUserResponse")]
-        Message.UserServiceReference.User GetUser(string login, string password);
+        Message.UserServiceReference.User GetUser(string login, byte[] password);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/GetUser", ReplyAction="http://tempuri.org/IUserService/GetUserResponse")]
-        System.Threading.Tasks.Task<Message.UserServiceReference.User> GetUserAsync(string login, string password);
+        System.Threading.Tasks.Task<Message.UserServiceReference.User> GetUserAsync(string login, byte[] password);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/GetUserByEmail", ReplyAction="http://tempuri.org/IUserService/GetUserByEmailResponse")]
         Message.UserServiceReference.User GetUserByEmail(string email);
@@ -774,12 +774,6 @@ namespace Message.UserServiceReference {
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IUserService/OnUserLeave")]
         System.Threading.Tasks.Task OnUserLeaveAsync(Message.UserServiceReference.User user);
         
-        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IUserService/SendMessage")]
-        void SendMessage(Message.UserServiceReference.BaseMessage message);
-        
-        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IUserService/SendMessage")]
-        System.Threading.Tasks.Task SendMessageAsync(Message.UserServiceReference.BaseMessage message);
-        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/GetGroupMessages", ReplyAction="http://tempuri.org/IUserService/GetGroupMessagesResponse")]
         System.Collections.Generic.List<Message.UserServiceReference.GroupMessage> GetGroupMessages(Message.UserServiceReference.ChatGroup chatGroup, int limin);
         
@@ -798,11 +792,17 @@ namespace Message.UserServiceReference {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/FindMessage", ReplyAction="http://tempuri.org/IUserService/FindMessageResponse")]
         System.Threading.Tasks.Task<System.Collections.Generic.List<Message.UserServiceReference.BaseMessage>> FindMessageAsync(string keyWord);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/EditMessage", ReplyAction="http://tempuri.org/IUserService/EditMessageResponse")]
-        bool EditMessage(Message.UserServiceReference.BaseMessage editedMessage);
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IUserService/SendMessage")]
+        void SendMessage(Message.UserServiceReference.BaseMessage message);
+        
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IUserService/SendMessage")]
+        System.Threading.Tasks.Task SendMessageAsync(Message.UserServiceReference.BaseMessage message);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/EditMessage", ReplyAction="http://tempuri.org/IUserService/EditMessageResponse")]
-        System.Threading.Tasks.Task<bool> EditMessageAsync(Message.UserServiceReference.BaseMessage editedMessage);
+        string EditMessage(Message.UserServiceReference.BaseMessage editedMessage);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/EditMessage", ReplyAction="http://tempuri.org/IUserService/EditMessageResponse")]
+        System.Threading.Tasks.Task<string> EditMessageAsync(Message.UserServiceReference.BaseMessage editedMessage);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/RemoveMessage", ReplyAction="http://tempuri.org/IUserService/RemoveMessageResponse")]
         bool RemoveMessage(Message.UserServiceReference.BaseMessage removedMessage);
@@ -866,19 +866,19 @@ namespace Message.UserServiceReference {
             return base.Channel.GetAllUsersAsync();
         }
         
-        public bool AddOrUpdateUser(Message.UserServiceReference.User user) {
+        public string AddOrUpdateUser(Message.UserServiceReference.User user) {
             return base.Channel.AddOrUpdateUser(user);
         }
         
-        public System.Threading.Tasks.Task<bool> AddOrUpdateUserAsync(Message.UserServiceReference.User user) {
+        public System.Threading.Tasks.Task<string> AddOrUpdateUserAsync(Message.UserServiceReference.User user) {
             return base.Channel.AddOrUpdateUserAsync(user);
         }
         
-        public Message.UserServiceReference.User GetUser(string login, string password) {
+        public Message.UserServiceReference.User GetUser(string login, byte[] password) {
             return base.Channel.GetUser(login, password);
         }
         
-        public System.Threading.Tasks.Task<Message.UserServiceReference.User> GetUserAsync(string login, string password) {
+        public System.Threading.Tasks.Task<Message.UserServiceReference.User> GetUserAsync(string login, byte[] password) {
             return base.Channel.GetUserAsync(login, password);
         }
         
@@ -970,14 +970,6 @@ namespace Message.UserServiceReference {
             return base.Channel.OnUserLeaveAsync(user);
         }
         
-        public void SendMessage(Message.UserServiceReference.BaseMessage message) {
-            base.Channel.SendMessage(message);
-        }
-        
-        public System.Threading.Tasks.Task SendMessageAsync(Message.UserServiceReference.BaseMessage message) {
-            return base.Channel.SendMessageAsync(message);
-        }
-        
         public System.Collections.Generic.List<Message.UserServiceReference.GroupMessage> GetGroupMessages(Message.UserServiceReference.ChatGroup chatGroup, int limin) {
             return base.Channel.GetGroupMessages(chatGroup, limin);
         }
@@ -1002,11 +994,19 @@ namespace Message.UserServiceReference {
             return base.Channel.FindMessageAsync(keyWord);
         }
         
-        public bool EditMessage(Message.UserServiceReference.BaseMessage editedMessage) {
+        public void SendMessage(Message.UserServiceReference.BaseMessage message) {
+            base.Channel.SendMessage(message);
+        }
+        
+        public System.Threading.Tasks.Task SendMessageAsync(Message.UserServiceReference.BaseMessage message) {
+            return base.Channel.SendMessageAsync(message);
+        }
+        
+        public string EditMessage(Message.UserServiceReference.BaseMessage editedMessage) {
             return base.Channel.EditMessage(editedMessage);
         }
         
-        public System.Threading.Tasks.Task<bool> EditMessageAsync(Message.UserServiceReference.BaseMessage editedMessage) {
+        public System.Threading.Tasks.Task<string> EditMessageAsync(Message.UserServiceReference.BaseMessage editedMessage) {
             return base.Channel.EditMessageAsync(editedMessage);
         }
         

@@ -16,7 +16,7 @@ namespace ServerWCF.Model
         public string Login { get; set; }
 
         [DataMember]
-        public string Password { get; set; }
+        public byte[] Password { get; set; }
 
         [DataMember]
         public string FirstName { get; set; }

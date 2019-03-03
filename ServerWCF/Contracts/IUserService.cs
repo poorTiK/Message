@@ -15,7 +15,7 @@ namespace ServerWCF.Contracts
         string AddOrUpdateUser(User user);
 
         [OperationContract]
-        User GetUser(string login, string password);
+        User GetUser(string login, byte[] password);
 
         [OperationContract]
         User GetUserByEmail(string email);
@@ -50,9 +50,6 @@ namespace ServerWCF.Contracts
         [OperationContract(IsOneWay = true)]
         void OnUserLeave(User user);
 
-        [OperationContract(IsOneWay = true)]
-        string SendMessage(BaseMessage message);
-
         [OperationContract]
         List<GroupMessage> GetGroupMessages(ChatGroup chatGroup, int limin);
 
@@ -62,8 +59,11 @@ namespace ServerWCF.Contracts
         [OperationContract]
         List<BaseMessage> FindMessage(string keyWord);
 
+        [OperationContract(IsOneWay = true)]
+        void SendMessage(BaseMessage message);
+
         [OperationContract]
-        bool EditMessage(BaseMessage editedMessage);
+        string EditMessage(BaseMessage editedMessage);
 
         [OperationContract]
         bool RemoveMessage(BaseMessage removedMessage);

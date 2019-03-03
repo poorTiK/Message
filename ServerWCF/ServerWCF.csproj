@@ -147,6 +147,7 @@
   <ItemGroup>
     <Compile Include="Context\UserContext.cs" />
     <Compile Include="Contracts\IUserService.cs" />
+    <Compile Include="Encryption\AESEncryptor.cs" />
     <Compile Include="Model\ApplicationSettings.cs" />
     <Compile Include="Model\Contact.cs" />
     <Compile Include="Model\ChatGroup.cs" />
