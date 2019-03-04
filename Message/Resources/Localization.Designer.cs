@@ -178,7 +178,7 @@ namespace Message.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Edit.
+        ///   Looks up a localized string similar to Edit message.
         /// </summary>
         public static string EditMessage {
             get {
@@ -223,7 +223,7 @@ namespace Message.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Forvard.
+        ///   Looks up a localized string similar to Forward.
         /// </summary>
         public static string Forvard {
             get {
@@ -309,6 +309,15 @@ namespace Message.Resources {
         public static string RepeatPassword {
             get {
                 return ResourceManager.GetString("RepeatPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Выберите контакт.
+        /// </summary>
+        public static string SelectContact {
+            get {
+                return ResourceManager.GetString("SelectContact", resourceCulture);
             }
         }
         

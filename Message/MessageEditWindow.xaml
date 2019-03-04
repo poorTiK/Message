@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Message"
         xmlns:res="clr-namespace:Message.Resources"
-        mc:Ignorable="d"
+        mc:Ignorable="d" ShowInTaskbar="False"
         
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
 

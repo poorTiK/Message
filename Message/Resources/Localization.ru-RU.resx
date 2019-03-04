@@ -219,4 +219,7 @@
   <data name="EditMessage" xml:space="preserve">
     <value>Изменить</value>
   </data>
+  <data name="SelectContact" xml:space="preserve">
+    <value>Выберите контакт</value>
+  </data>
 </root>

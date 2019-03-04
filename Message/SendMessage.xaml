@@ -34,7 +34,8 @@
                               Foreground="White" Command="{Binding Edit}"></MenuItem>
                     <MenuItem Header="{x:Static res:Localization.Copy}" Background="#262626" 
                               Foreground="White" Command="{Binding Copy}"></MenuItem>
-                    <MenuItem Header="{x:Static res:Localization.Forvard}" Background="#262626" Foreground="White"></MenuItem>
+                    <MenuItem Header="{x:Static res:Localization.Forvard}" Background="#262626" 
+                              Foreground="White" Command="{Binding Forward}"></MenuItem>
                     <MenuItem Header="{x:Static res:Localization.DeleteСontact}" Background="#262626" 
                               Foreground="White" Command="{Binding Delete}"></MenuItem>
                 </ContextMenu>

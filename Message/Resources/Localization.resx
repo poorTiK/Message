@@ -214,9 +214,12 @@
     <value>Copy</value>
   </data>
   <data name="Forvard" xml:space="preserve">
-    <value>Forvard</value>
+    <value>Forward</value>
   </data>
   <data name="EditMessage" xml:space="preserve">
-    <value>Edit</value>
+    <value>Edit message</value>
+  </data>
+  <data name="SelectContact" xml:space="preserve">
+    <value>Выберите контакт</value>
   </data>
 </root>

@@ -22,6 +22,7 @@ namespace Message.ViewModel
             {
                 return GlobalBase.Base64Decode(Message.Content);
             }
+            set { }
         }
 
         public MessageControlVM(BaseMessage message)
@@ -47,6 +48,19 @@ namespace Message.ViewModel
 
         public DelegateCommand Edit =>
             _onEdit ?? (_onEdit = new DelegateCommand(OnEdit));
+
+        private DelegateCommand _onForward;
+
+        public DelegateCommand Forward =>
+            _onForward ?? (_onForward = new DelegateCommand(OnForward));
+
+        private void OnForward()
+        {
+            var wnd = new ForwardMessageWindow(Message);
+            wnd.ShowDialog();
+
+            GlobalBase.UpdateUI.Invoke();
+        }
 
         private void OnEdit()
         {
