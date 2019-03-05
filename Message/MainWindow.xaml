@@ -111,6 +111,9 @@
                                     </Binding.ValidationRules>
                                 </Binding>
                             </TextBox.Text>
+                            <TextBox.InputBindings>
+                                <KeyBinding Command="{Binding Path = Register}" Key="Enter" />
+                            </TextBox.InputBindings>
                         </TextBox>
 
                         <TextBox
@@ -124,6 +127,9 @@
                                     </Binding.ValidationRules>
                                 </Binding>
                             </TextBox.Text>
+                            <TextBox.InputBindings>
+                                <KeyBinding Command="{Binding Path = Register}" Key="Enter" />
+                            </TextBox.InputBindings>
                         </TextBox>
 
                         <TextBox
@@ -137,18 +143,28 @@
                                     </Binding.ValidationRules>
                                 </Binding>
                             </TextBox.Text>
+                            <TextBox.InputBindings>
+                                <KeyBinding Command="{Binding Path = Register}" Key="Enter" />
+                            </TextBox.InputBindings>
                         </TextBox>
 
                         <PasswordBox Name="RPasswordBox"
                             Foreground="White" CaretBrush="{x:Null}" SelectionBrush="#FF919191"
                             materialDesign:HintAssist.Hint="{x:Static res:Localization.Password}"
                             Style="{StaticResource MaterialDesignFloatingHintPasswordBox}" Margin="0,0,0,20">
+                            <PasswordBox.InputBindings>
+                                <KeyBinding Command="{Binding Path = Register}" Key="Enter" />
+                            </PasswordBox.InputBindings>
                         </PasswordBox>
 
                         <PasswordBox Name="Rep_RPasswordBox"
                             Foreground="White" CaretBrush="{x:Null}" SelectionBrush="#FF919191"
                             materialDesign:HintAssist.Hint="{x:Static res:Localization.RepeatPassword}"
-                            Style="{StaticResource MaterialDesignFloatingHintPasswordBox}" Margin="0,0,0,20" />
+                            Style="{StaticResource MaterialDesignFloatingHintPasswordBox}" Margin="0,0,0,20" >
+                            <PasswordBox.InputBindings>
+                                <KeyBinding Command="{Binding Path = Register}" Key="Enter" />
+                            </PasswordBox.InputBindings>
+                        </PasswordBox>
 
                         <TextBox
                             materialDesign:HintAssist.Hint="{x:Static res:Localization.Email}"
@@ -161,6 +177,9 @@
                                     </Binding.ValidationRules>
                                 </Binding>
                             </TextBox.Text>
+                            <TextBox.InputBindings>
+                                <KeyBinding Command="{Binding Path = Register}" Key="Enter" />
+                            </TextBox.InputBindings>
                         </TextBox>
                     </StackPanel>
 

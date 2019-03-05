@@ -193,10 +193,10 @@
                             </Grid.ColumnDefinitions>
 
                             <Button Grid.Column="0" Style="{StaticResource MaterialDesignFlatButton}"
-                                    Command="{Binding AddFile}">
+                                    Command="{Binding AddFile}" IsEnabled="{Binding IsMenuEnabled}">
                                 <materialDesign:PackIcon Kind="Paperclip" Foreground="White" />
                             </Button>
-                            <TextBox Grid.Column="1"
+                            <TextBox Grid.Column="1" IsEnabled="{Binding IsMenuEnabled}"
                                 SelectionBrush="#FF919191" TextWrapping="Wrap"
                                      VerticalContentAlignment="Stretch" Name="MessageTextBox"
                                      materialDesign:HintAssist.Hint="{x:Static res:Localization.Write}" VerticalScrollBarVisibility="Auto"
@@ -207,7 +207,7 @@
                                 </TextBox.InputBindings>
                             </TextBox>
                             <Button Grid.Column="2" Style="{StaticResource MaterialDesignFlatButton}" HorizontalAlignment="Right"
-                                Command="{Binding OnSendMessage}">
+                                Command="{Binding OnSendMessage}" IsEnabled="{Binding IsMenuEnabled}">
                                 <materialDesign:PackIcon Kind="MessageTextOutline" Foreground="White" />
                             </Button>
                         </Grid>
