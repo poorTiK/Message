@@ -326,7 +326,7 @@ namespace Message.ViewModel
             ContactsList = userServiceClient.GetAllContacts(GlobalBase.CurrentUser);
             ContactsList.ForEach(x => x.UnreadMessageCount = 0);
 
-            if (ContactsList.Any(x => x.Id == temp.Id) && temp != null)
+            if (ContactsList.Any(x => temp != null && (x.Id == temp.Id)))
             {
                 SelectedContact = temp;
             }
@@ -344,10 +344,23 @@ namespace Message.ViewModel
                 var mes = "New message from  @" + user.Login + "\n" + "\"" + GlobalBase.Base64Decode(message.Content) + "\"";
                 GlobalBase.ShowNotify("New message", mes);
 
+                AddContactIfNotExist(user);
+
                 if (SelectedContact != null && SelectedContact.Login == user.Login)
                 {
                     UpdateDialog(user);
                 }
+            }
+        }
+
+        private void AddContactIfNotExist(User sender)
+        {
+            if (!userServiceClient.GetAllContacts(GlobalBase.CurrentUser).Contains(sender))
+            {
+                userServiceClient.AddContactAsync(GlobalBase.CurrentUser, sender).ContinueWith(task =>
+                {
+                    Update();
+                });
             }
         }
 
