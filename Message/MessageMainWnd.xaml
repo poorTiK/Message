@@ -44,7 +44,7 @@
                     </Button>
                 </StackPanel>
             </Grid>
-            <Grid Margin="0,22,0,0" Background="#4A4A4A">
+            <Grid Margin="0,22,0,0" Background="#4A4A4A" MouseDown="UIElement_OnMouseDown" Name="MainGrid">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="53" />
                     <RowDefinition />
@@ -173,12 +173,12 @@
                     </Grid>
                 </Border>
                 <Grid Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2" Margin="0,0,0,30"
-                      Focusable="True" GotFocus="ScrollV_OnGotFocus">
+                      Focusable="True">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="3*" />
                         <ColumnDefinition Width="38*" />
                     </Grid.ColumnDefinitions>
-                    <ScrollViewer Name="ScrollV" Grid.ColumnSpan="2" VerticalAlignment="Bottom">
+                    <ScrollViewer Name="ScrollV" IsHitTestVisible="True" Grid.ColumnSpan="2" VerticalAlignment="Bottom">
                         <StackPanel Name="MessageControl" Orientation="Vertical">
                         </StackPanel>
                     </ScrollViewer>

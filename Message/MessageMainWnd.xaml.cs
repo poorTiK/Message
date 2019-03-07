@@ -6,7 +6,10 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Interop;
+using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Navigation;
 
@@ -273,9 +276,19 @@ namespace Message
             }
         }
 
-        private void ScrollV_OnGotFocus(object sender, RoutedEventArgs e)
+        private void UIElement_OnMouseDown(object sender, MouseButtonEventArgs e)
         {
-            ButtonClose_Click(null, null);
+            var pt = e.GetPosition((UIElement)sender);
+
+            var hitTestResult = VisualTreeHelper.HitTest(MainGrid, pt);
+
+            if (hitTestResult != null)
+            {
+                if (!((hitTestResult?.VisualHit  as Grid)?.Name == "SideMenu"))
+                {
+                    ButtonClose_Click(null,null);
+                }
+            }
         }
     }
 }
