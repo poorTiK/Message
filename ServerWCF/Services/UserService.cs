@@ -183,7 +183,7 @@ namespace ServerWCF.Services
                     return successResult;
                 }
                 catch (Exception ex)
-                s{
+                {
                     return "Exceptions occured during adding user.";
                 }
             }
