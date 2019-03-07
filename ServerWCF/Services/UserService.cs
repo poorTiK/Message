@@ -19,7 +19,7 @@ namespace ServerWCF.Services
     {
         private static readonly string successResult = "";
 
-        private static readonly string basePicturePath = "BaseAvatar.jpg";
+        private static readonly string basePicturePath = @"../../BaseAvatar.jpg";
 
         private static List<CallbackData> usersOnline = new List<CallbackData>();
 
@@ -720,6 +720,16 @@ namespace ServerWCF.Services
             }
 
             return successResult;
+        }
+
+        private string ValidateAddingContact(User owner, User owned)
+        {
+            using (UserContext userContext = new UserContext())
+            {
+                User userOwner = userContext.Users.Include("Contacts").Where(u => u.Id == owner.Id).FirstOrDefault();
+
+            }
+
         }
     }
 }
