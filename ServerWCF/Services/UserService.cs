@@ -1,4 +1,5 @@
-﻿using ServerWCF.Context;
+﻿using Message.AdditionalItems;
+using ServerWCF.Context;
 using ServerWCF.Contracts;
 using ServerWCF.Model;
 using ServerWCF.Model.Messages;
@@ -17,6 +18,8 @@ namespace ServerWCF.Services
     public class UserService : IUserService
     {
         private static readonly string successResult = "";
+
+        private static readonly string basePicturePath = "BaseAvatar.jpg";
 
         private static List<CallbackData> usersOnline = new List<CallbackData>();
 
@@ -167,6 +170,11 @@ namespace ServerWCF.Services
                     }
                     else
                     {
+                        if (user.Avatar == null)
+                        {
+                            user.Avatar = ImageToArrayConverter.ImageToByteArray(basePicturePath);
+                        }
+
                         userContext.Users.Add(user);
                     }
 
@@ -175,7 +183,7 @@ namespace ServerWCF.Services
                     return successResult;
                 }
                 catch (Exception ex)
-                {
+                s{
                     return "Exceptions occured during adding user.";
                 }
             }
