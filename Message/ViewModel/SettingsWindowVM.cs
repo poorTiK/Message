@@ -25,6 +25,14 @@ namespace Message.ViewModel
             set { SetProperty(ref _currentUserLogin, value); }
         }
 
+        private byte[] _currentUserPhoto;
+
+        public byte[] CurrentUserPhoto
+        {
+            get { return GlobalBase.CurrentUser.Avatar; }
+            set { SetProperty(ref _currentUserPhoto, value); }
+        }
+
         public SettingsWindowVM(IView view)
         {
             this.view = view;

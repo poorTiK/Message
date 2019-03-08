@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Message"
         xmlns:res="clr-namespace:Message.Resources"
+        xmlns:converter="clr-namespace:Message.AdditionalItems"
         mc:Ignorable="d"
 
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
@@ -18,6 +19,7 @@
 
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVisConverter" />
+        <converter:ByteToImageConverter x:Key="imgConverter" />
     </Window.Resources>
 
     <Grid>
@@ -150,7 +152,7 @@
                                             BadgeColorZoneMode="PrimaryDark">
                                             <Ellipse Height="45" Width="45" Grid.Column="0" Grid.Row="0" Grid.RowSpan="2">
                                                 <Ellipse.Fill>
-                                                    <ImageBrush ImageSource="Resources/Test.jpg" />
+                                                    <ImageBrush ImageSource="{Binding Path=Avatar, Converter={StaticResource imgConverter}}" />
                                                 </Ellipse.Fill>
                                             </Ellipse>
                                         </materialDesign:Badged>
@@ -225,7 +227,7 @@
                         <StackPanel Grid.Row="1" HorizontalAlignment="Left" Orientation="Horizontal">
                             <Ellipse Height="45" Width="45" Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" Margin="15,0,0,0">
                                 <Ellipse.Fill>
-                                    <ImageBrush ImageSource="Resources/Test.jpg" />
+                                    <ImageBrush ImageSource="{Binding CurrentUser.Avatar, Converter={StaticResource imgConverter}}" />
                                 </Ellipse.Fill>
                             </Ellipse>
                             <StackPanel Orientation="Vertical" Width="122" VerticalAlignment="Center" Margin="15,7,0,7">

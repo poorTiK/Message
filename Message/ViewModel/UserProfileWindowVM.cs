@@ -2,12 +2,17 @@
 using Message.Interfaces;
 using Message.Model;
 using Message.UserServiceReference;
+using Microsoft.Win32;
 using Prism.Commands;
 using System;
+using System.Drawing;
+using System.IO;
 using System.ServiceModel;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Media.Imaging;
 
 namespace Message.ViewModel
 {
@@ -140,6 +145,25 @@ namespace Message.ViewModel
 
         public DelegateCommand ApplyChanges =>
             _onApplyChanges ?? (_onApplyChanges = new DelegateCommand(ExecuteOnApplyChanges));
+
+        private DelegateCommand _onLoadPhoto;
+
+        public DelegateCommand LoadPhoto =>
+            _onLoadPhoto ?? (_onLoadPhoto = new DelegateCommand(ExecuteOnLoadPhoto));
+
+        private void ExecuteOnLoadPhoto()
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.ShowDialog();
+            var FilePath = openFileDialog.FileName;
+
+            GlobalBase.CurrentUser.Avatar = File.ReadAllBytes(FilePath); ;
+            UserServiceClient.AddOrUpdateUserAsync(GlobalBase.CurrentUser).ContinueWith(task =>
+            {
+                GlobalBase.UpdateUI.Invoke();
+                IsNewChanges = true;
+            });
+        }
 
         private void ExecuteOnApplyChanges()
         {
