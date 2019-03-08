@@ -151,12 +151,6 @@ namespace ServerWCF.Services
 
         public string AddOrUpdateUser(User user)
         {
-            string validationInfo = Validate(user);
-            if (validationInfo != successResult)
-            {
-                return validationInfo;
-            }
-
             using (UserContext userContext = new UserContext())
             {
                 try
@@ -165,6 +159,7 @@ namespace ServerWCF.Services
 
                     if (dbUser != null)
                     {
+
                         dbUser.Email = user.Email;
                         dbUser.Bio = user.Bio;
                         dbUser.Avatar = user.Avatar;
@@ -175,6 +170,12 @@ namespace ServerWCF.Services
                     }
                     else
                     {
+                        string validationInfo = Validate(user);
+                        if (validationInfo != successResult)
+                        {
+                            return validationInfo;
+                        }
+
                         userContext.Users.Add(user);
                     }
 
