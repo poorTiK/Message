@@ -50,6 +50,11 @@ namespace ServerWCF.Services
                     contact.UserOwner = ownerFromDb;
                     contact.UserOwned = ownedFromDb;
 
+                    if (userContext.Contacts.Where(c => ( (c.UserOwner.Id == owner.Id) && (c.UserOwned.Id == owned.Id) ) ).FirstOrDefault() != null )
+                    {
+                        return false;
+                    }
+
                     userContext.Contacts.Add(contact);
                     userContext.SaveChanges();
 
@@ -146,12 +151,6 @@ namespace ServerWCF.Services
 
         public string AddOrUpdateUser(User user)
         {
-            string validationInfo = Validate(user);
-            if (validationInfo != successResult)
-            {
-                return validationInfo;
-            }
-
             using (UserContext userContext = new UserContext())
             {
                 try
@@ -160,6 +159,7 @@ namespace ServerWCF.Services
 
                     if (dbUser != null)
                     {
+
                         dbUser.Email = user.Email;
                         dbUser.Bio = user.Bio;
                         dbUser.Avatar = user.Avatar;
@@ -170,6 +170,12 @@ namespace ServerWCF.Services
                     }
                     else
                     {
+                        string validationInfo = Validate(user);
+                        if (validationInfo != successResult)
+                        {
+                            return validationInfo;
+                        }
+
                         userContext.Users.Add(user);
                     }
 
@@ -723,8 +729,8 @@ namespace ServerWCF.Services
         //    {
         //        User userOwner = userContext.Users.Include("Contacts").Where(u => u.Id == owner.Id).FirstOrDefault();
 
-                
         //    }
+
         //}
     }
 }

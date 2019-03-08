@@ -21,12 +21,25 @@ namespace Message.AdditionalItems
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            BitmapImage img = new BitmapImage();
             if (value != null)
             {
-                img = this.ConvertByteArrayToBitMapImage(value as byte[]);
+                BitmapImage img = new BitmapImage();
+                if (value != null)
+                {
+                    img = this.ConvertByteArrayToBitMapImage(value as byte[]);
+                }
+                return img;
             }
-            return img;
+
+            FileStream fileStream =
+                new FileStream("..\\..\\Resources\\Test.jpg", FileMode.Open, FileAccess.Read);
+
+            var defImg = new BitmapImage();
+            defImg.BeginInit();
+            defImg.StreamSource = fileStream;
+            defImg.EndInit();
+
+            return defImg;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

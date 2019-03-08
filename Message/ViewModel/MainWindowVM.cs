@@ -270,7 +270,7 @@ namespace Message.ViewModel
         {
             IsLoginProgress = true;
             Task.Run(() =>
-            {
+            {             
                 if (ValidateOnLogin())
                 {
                     var user = UserServiceClient.GetUser(LoginText, AESEncryptor.encryptPassword(Password));

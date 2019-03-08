@@ -140,6 +140,7 @@
       <DependentUpon>MessageMainWnd.xaml</DependentUpon>
     </Compile>
     <Compile Include="Model\GlobalBase.cs" />
+    <Compile Include="Model\ImageToByteArrayConverter.cs" />
     <Compile Include="ReceiveMessage.xaml.cs">
       <DependentUpon>ReceiveMessage.xaml</DependentUpon>
     </Compile>

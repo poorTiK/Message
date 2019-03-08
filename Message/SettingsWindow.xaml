@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Message"
         xmlns:res="clr-namespace:Message.Resources"
+        xmlns:converter="clr-namespace:Message.AdditionalItems"
         mc:Ignorable="d"  ShowInTaskbar="False"
 
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
@@ -17,6 +18,11 @@
     <WindowChrome.WindowChrome>
         <WindowChrome CaptionHeight="0" />
     </WindowChrome.WindowChrome>
+
+    <Window.Resources>
+        <converter:ByteToImageConverter x:Key="imgConverter" />
+        <BooleanToVisibilityConverter x:Key="BoolToVisConverter" />
+    </Window.Resources>
 
     <Grid Background="#353636">
         <Grid VerticalAlignment="Top">
@@ -36,7 +42,7 @@
                 <StackPanel Grid.Row="0" Background="#4A4A4A" Height="90" HorizontalAlignment="Left" Orientation="Horizontal" Width="233">
                     <Ellipse Height="45" Width="45" Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" Margin="10,0,0,0">
                         <Ellipse.Fill>
-                            <ImageBrush ImageSource="Resources/Test.jpg" />
+                            <ImageBrush ImageSource="{Binding CurrentUserPhoto, Converter={StaticResource imgConverter}}" />
                         </Ellipse.Fill>
                     </Ellipse>
                     <StackPanel Orientation="Vertical" Width="122" VerticalAlignment="Center" Margin="15,7,0,7">

@@ -21,6 +21,14 @@
     <Window.Resources>
         <converter:ByteToImageConverter x:Key="imgConverter" />
         <BooleanToVisibilityConverter x:Key="BoolToVisConverter" />
+        <Style TargetType="Ellipse">
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Stroke" Value="#FF63A35D"></Setter>
+                    <Setter Property="Cursor" Value="Hand"></Setter>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
     </Window.Resources>
 
     <Grid Background="#353636">
@@ -41,11 +49,14 @@
             </Grid.RowDefinitions>
             <Grid Grid.Row="0">
                 <StackPanel Height="90" HorizontalAlignment="Left" Orientation="Horizontal" Width="250">
-                    <Ellipse Height="45" Width="45" Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" Margin="10,0,0,0">
+                    <Ellipse Height="45" Width="45" Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" Margin="10,0,0,0"
+                             ToolTip="Upload new photo" StrokeThickness="3">
                         <Ellipse.Fill>
-                            <!--<ImageBrush ImageSource="{Binding CurrentUserPhoto, Converter={StaticResource imgConverter}}" />-->
-                            <ImageBrush ImageSource="Resources/Test.jpg" />
+                            <ImageBrush ImageSource="{Binding CurrentUserPhoto, Converter={StaticResource imgConverter}}" />
                         </Ellipse.Fill>
+                        <Ellipse.InputBindings>
+                            <MouseBinding Command="{Binding LoadPhoto}" MouseAction="LeftClick" />
+                        </Ellipse.InputBindings>
                     </Ellipse>
                     <StackPanel Orientation="Vertical" Width="122" VerticalAlignment="Center" Margin="15,7,0,7">
                         <TextBlock Text="{Binding CurrentUserName}" Foreground="White"></TextBlock>
