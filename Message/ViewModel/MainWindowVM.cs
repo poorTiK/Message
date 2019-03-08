@@ -29,7 +29,7 @@ namespace Message.ViewModel
         private DelegateCommand _onLogin;
 
         public DelegateCommand OnLogin =>
-            _onLogin ?? (_onLogin = new DelegateCommand(ExecuteOnLogin, ));
+            _onLogin ?? (_onLogin = new DelegateCommand(ExecuteOnLogin));
 
         private DelegateCommand _onForgotPassword;
 
