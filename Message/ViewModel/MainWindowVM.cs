@@ -83,7 +83,15 @@ namespace Message.ViewModel
         public bool IsRegisterProgress
         {
             get { return _isRegisterProgress; }
-            set { SetProperty(ref _isRegisterProgress, value); }
+            set { SetProperty(ref _isRegisterProgress, value); IsRegisterNotProgress = !_isRegisterProgress; }
+        }
+
+        private bool _isRegisterNotProgress;
+
+        public bool IsRegisterNotProgress
+        {
+            get { return _isRegisterNotProgress; }
+            set { SetProperty(ref _isRegisterNotProgress, value); }
         }
 
         #region Login data

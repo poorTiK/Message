@@ -107,7 +107,8 @@
                         <TextBox
                             materialDesign:HintAssist.Hint="{x:Static res:Localization.FirstName}"
                             Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                            Foreground="White" CaretBrush="{x:Null}" SelectionBrush="#FF919191" Margin="0,0,0,20">
+                            Foreground="White" CaretBrush="{x:Null}" SelectionBrush="#FF919191" Margin="0,0,0,20"
+                            IsEnabled="{Binding IsRegisterNotProgress}">
                             <TextBox.Text>
                                 <Binding Path="Name" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
                                     <Binding.ValidationRules>
@@ -123,7 +124,8 @@
                         <TextBox
                             materialDesign:HintAssist.Hint="{x:Static res:Localization.LastName}"
                             Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                            Foreground="White" CaretBrush="{x:Null}" SelectionBrush="#FF919191" Margin="0,0,0,20">
+                            Foreground="White" CaretBrush="{x:Null}" SelectionBrush="#FF919191" Margin="0,0,0,20"
+                            IsEnabled="{Binding IsRegisterNotProgress}">
                             <TextBox.Text>
                                 <Binding Path="Surname" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
                                     <Binding.ValidationRules>
@@ -139,7 +141,8 @@
                         <TextBox
                             materialDesign:HintAssist.Hint="{x:Static res:Localization.Login}"
                             Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                            Foreground="White" CaretBrush="{x:Null}" SelectionBrush="#FF919191" Margin="0,0,0,20">
+                            Foreground="White" CaretBrush="{x:Null}" SelectionBrush="#FF919191" Margin="0,0,0,20"
+                            IsEnabled="{Binding IsRegisterNotProgress}">
                             <TextBox.Text>
                                 <Binding Path="UserLogin" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
                                     <Binding.ValidationRules>
@@ -155,7 +158,8 @@
                         <PasswordBox Name="RPasswordBox"
                             Foreground="White" CaretBrush="{x:Null}" SelectionBrush="#FF919191"
                             materialDesign:HintAssist.Hint="{x:Static res:Localization.Password}"
-                            Style="{StaticResource MaterialDesignFloatingHintPasswordBox}" Margin="0,0,0,20">
+                            Style="{StaticResource MaterialDesignFloatingHintPasswordBox}" Margin="0,0,0,20"
+                            IsEnabled="{Binding IsRegisterNotProgress}">
                             <PasswordBox.InputBindings>
                                 <KeyBinding Command="{Binding Path = Register}" Key="Enter" />
                             </PasswordBox.InputBindings>
@@ -164,7 +168,8 @@
                         <PasswordBox Name="Rep_RPasswordBox"
                             Foreground="White" CaretBrush="{x:Null}" SelectionBrush="#FF919191"
                             materialDesign:HintAssist.Hint="{x:Static res:Localization.RepeatPassword}"
-                            Style="{StaticResource MaterialDesignFloatingHintPasswordBox}" Margin="0,0,0,20" >
+                            Style="{StaticResource MaterialDesignFloatingHintPasswordBox}" Margin="0,0,0,20"
+                            IsEnabled="{Binding IsRegisterNotProgress}">
                             <PasswordBox.InputBindings>
                                 <KeyBinding Command="{Binding Path = Register}" Key="Enter" />
                             </PasswordBox.InputBindings>
@@ -173,7 +178,8 @@
                         <TextBox
                             materialDesign:HintAssist.Hint="{x:Static res:Localization.Email}"
                             Style="{StaticResource MaterialDesignFloatingHintTextBox}"
-                            Foreground="White" CaretBrush="{x:Null}" SelectionBrush="#FF919191">
+                            Foreground="White" CaretBrush="{x:Null}" SelectionBrush="#FF919191"
+                            IsEnabled="{Binding IsRegisterNotProgress}">
                             <TextBox.Text>
                                 <Binding Path="Email" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
                                     <Binding.ValidationRules>
@@ -193,10 +199,12 @@
                             materialDesign:ButtonProgressAssist.IsIndicatorVisible="{Binding IsRegisterProgress}"
                             materialDesign:ButtonProgressAssist.IsIndeterminate="{Binding IsRegisterProgress}"
                             Command="{Binding Register}"
+                            IsEnabled="{Binding IsRegisterNotProgress}"
                             ></Button>
                     <Button Grid.Column="1" Grid.Row="1" Margin="0,0,0,15"
                             Width="120" Content="{x:Static res:Localization.Back}"
-                            Command="{Binding BackCommand}">
+                            Command="{Binding BackCommand}"
+                            IsEnabled="{Binding IsRegisterNotProgress}">
                     </Button>
                 </Grid>
             </Grid>
