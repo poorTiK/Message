@@ -67,7 +67,15 @@ namespace Message.ViewModel
         public bool IsLoginProgress
         {
             get { return _isLoginProgress; }
-            set { SetProperty(ref _isLoginProgress, value); }
+            set { SetProperty(ref _isLoginProgress, value); IsLoginNotPregress = !_isLoginProgress; }
+        }
+
+        private bool _isLoginNotProgress;
+
+        public bool IsLoginNotPregress
+        {
+            get { return _isLoginNotProgress; }
+            set { SetProperty(ref _isLoginNotProgress, value); }
         }
 
         private bool _isRegisterProgress;
@@ -96,7 +104,9 @@ namespace Message.ViewModel
             {
                 return passwordSupplier.GetPasswordForLogin();
             }
-            set { SetProperty(ref _password, value); }
+            set {
+                SetProperty(ref _password, value);
+            }
         }
 
         #endregion Login data
