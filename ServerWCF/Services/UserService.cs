@@ -50,6 +50,11 @@ namespace ServerWCF.Services
                     contact.UserOwner = ownerFromDb;
                     contact.UserOwned = ownedFromDb;
 
+                    if (userContext.Contacts.Where(c => ( (c.UserOwner.Id == owner.Id) && (c.UserOwned.Id == owned.Id) ) ).FirstOrDefault() != null )
+                    {
+                        return false;
+                    }
+
                     userContext.Contacts.Add(contact);
                     userContext.SaveChanges();
 
