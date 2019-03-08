@@ -8,6 +8,7 @@
         mc:Ignorable="d"
 
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         Name="MessageMainWindow"
         MinWidth="450" MinHeight="600" Height="601" Width="700"
              WindowStartupLocation="CenterScreen" OpacityMask="Black"
@@ -235,25 +236,35 @@
                         </StackPanel>
                     </Grid>
                     <ListView>
-                        <ListViewItem Height="45" Padding="0">
-                            <StackPanel Orientation="Horizontal" Margin="10 0">
-                                <materialDesign:PackIcon Kind="AccountSupervisor" Width="20" Height="20" Foreground="Gray" Margin="5" VerticalAlignment="Center" />
-                                <TextBlock Text="{x:Static res:Localization.Contacts}" FontSize="15" Margin="10" Foreground="White">
-                                    <TextBlock.InputBindings>
-                                        <MouseBinding Command="{Binding ContactsCommand}" MouseAction="LeftClick" />
-                                    </TextBlock.InputBindings>
-                                </TextBlock>
-                            </StackPanel>
+                        <ListViewItem Padding="0" Margin="0">
+                            <Grid Background="Transparent" MinWidth="200">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="MouseLeftButtonDown" >
+                                        <i:InvokeCommandAction Command="{Binding ContactsCommand}" />
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="35"></ColumnDefinition>
+                                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+                                        <materialDesign:PackIcon Kind="AccountSupervisor" Grid.Column="0" Width="20" Height="20" Foreground="Gray" Margin="5" VerticalAlignment="Center" />
+                                <TextBlock Text="{x:Static res:Localization.Contacts}" Grid.Column="1" FontSize="15" Margin="10" Foreground="White"/>
+                            </Grid>
                         </ListViewItem>
                         <ListViewItem Height="45" Padding="0">
-                            <StackPanel Orientation="Horizontal" Margin="10 0">
+                            <Grid Background="Transparent" MinWidth="200">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="MouseLeftButtonDown" >
+                                        <i:InvokeCommandAction Command="{Binding SettingsCommand}" />
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="35"></ColumnDefinition>
+                                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
                                 <materialDesign:PackIcon Kind="GearBox" Width="20" Height="20" Foreground="Gray" Margin="5" VerticalAlignment="Center" />
-                                <TextBlock Text="{x:Static res:Localization.Settings}" FontSize="15" Margin="10" Foreground="White">
-                                    <TextBlock.InputBindings>
-                                        <MouseBinding Command="{Binding SettingsCommand}" MouseAction="LeftClick" />
-                                    </TextBlock.InputBindings>
-                                </TextBlock>
-                            </StackPanel>
+                                <TextBlock Grid.Column="1" Text="{x:Static res:Localization.Settings}" FontSize="15" Margin="10" Foreground="White"/>
+                            </Grid>
                         </ListViewItem>
                     </ListView>
                 </StackPanel>
