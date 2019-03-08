@@ -729,8 +729,8 @@ namespace ServerWCF.Services
         //    {
         //        User userOwner = userContext.Users.Include("Contacts").Where(u => u.Id == owner.Id).FirstOrDefault();
 
-                
         //    }
+
         //}
     }
 }

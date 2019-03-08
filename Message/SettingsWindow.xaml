@@ -5,9 +5,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Message"
         xmlns:res="clr-namespace:Message.Resources"
+        xmlns:converter="clr-namespace:Message.AdditionalItems"
         mc:Ignorable="d"  ShowInTaskbar="False"
 
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
 
         Name="SettingsWnd" WindowStartupLocation="CenterOwner" WindowStyle="None"
         BorderThickness="0" ResizeMode="NoResize"
@@ -16,6 +18,11 @@
     <WindowChrome.WindowChrome>
         <WindowChrome CaptionHeight="0" />
     </WindowChrome.WindowChrome>
+
+    <Window.Resources>
+        <converter:ByteToImageConverter x:Key="imgConverter" />
+        <BooleanToVisibilityConverter x:Key="BoolToVisConverter" />
+    </Window.Resources>
 
     <Grid Background="#353636">
         <Grid VerticalAlignment="Top">
@@ -35,7 +42,7 @@
                 <StackPanel Grid.Row="0" Background="#4A4A4A" Height="90" HorizontalAlignment="Left" Orientation="Horizontal" Width="233">
                     <Ellipse Height="45" Width="45" Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" Margin="10,0,0,0">
                         <Ellipse.Fill>
-                            <ImageBrush ImageSource="Resources/Test.jpg" />
+                            <ImageBrush ImageSource="{Binding CurrentUserPhoto, Converter={StaticResource imgConverter}}" />
                         </Ellipse.Fill>
                     </Ellipse>
                     <StackPanel Orientation="Vertical" Width="122" VerticalAlignment="Center" Margin="15,7,0,7">
@@ -46,48 +53,69 @@
 
                 <Grid Grid.Row="1" Background="#4A4A4A" Margin="0,10,0,0">
                     <ListView>
-                        <ListViewItem>
-                            <StackPanel Orientation="Horizontal">
-                                <materialDesign:PackIcon Kind="InfoOutline" Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Center" />
-                                <TextBlock Foreground="White" Margin="15,0,0,0" Text="{x:Static res:Localization.EditProfile}" HorizontalAlignment="Left" VerticalAlignment="Center">
-                                    <TextBlock.InputBindings>
-                                        <MouseBinding Command="{Binding ProfileSettings}" MouseAction="LeftClick" />
-                                    </TextBlock.InputBindings>
-                                </TextBlock>
-                            </StackPanel>
+                        <ListViewItem Padding="0">
+                            <Grid Background="Transparent" Height="30" MinWidth="220">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="MouseLeftButtonDown" >
+                                        <i:InvokeCommandAction Command="{Binding ProfileSettings}" />
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="20"/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <materialDesign:PackIcon Kind="InfoOutline" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                <TextBlock Grid.Column="1" Foreground="White" Margin="15,0,0,0" Text="{x:Static res:Localization.EditProfile}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                            </Grid>
                         </ListViewItem>
-                        <ListViewItem>
-                            <StackPanel Orientation="Horizontal">
-                                <materialDesign:PackIcon Kind="BellRingOutline" Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Center" />
-                                <TextBlock Foreground="White" Margin="15,0,0,0" HorizontalAlignment="Left"
+                        <ListViewItem Padding="0">
+                            <Grid Background="Transparent" Height="30" MinWidth="220">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="20"/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <materialDesign:PackIcon Kind="BellRingOutline" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                <TextBlock Grid.Column="1" Foreground="White" Margin="15,0,0,0" HorizontalAlignment="Left"
                                            VerticalAlignment="Center" Text="{x:Static res:Localization.Notifications}"></TextBlock>
-                            </StackPanel>
+                            </Grid>
                         </ListViewItem>
-                        <ListViewItem>
-                            <StackPanel Orientation="Horizontal">
-                                <materialDesign:PackIcon Kind="MessageReply" Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Center" />
-                                <TextBlock Foreground="White" Margin="15,0,0,0" HorizontalAlignment="Left"
+                        <ListViewItem Padding="0">
+                            <Grid Background="Transparent" Height="30" MinWidth="220">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="20"/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <materialDesign:PackIcon Kind="MessageReply" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                <TextBlock Grid.Column="1" Foreground="White" Margin="15,0,0,0" HorizontalAlignment="Left"
                                            VerticalAlignment="Center" Text="{x:Static res:Localization.ChatSettings}"></TextBlock>
-                            </StackPanel>
+                            </Grid>
                         </ListViewItem>
-                        <ListViewItem>
-                            <StackPanel Orientation="Horizontal">
-                                <materialDesign:PackIcon Kind="Style" Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Center" />
-                                <TextBlock Foreground="White" Margin="15,0,0,0" HorizontalAlignment="Left"
+                        <ListViewItem Padding="0">
+                            <Grid Background="Transparent" Height="30" MinWidth="220">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="20"/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <materialDesign:PackIcon Kind="Style" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                <TextBlock Grid.Column="1" Foreground="White" Margin="15,0,0,0" HorizontalAlignment="Left"
                                            VerticalAlignment="Center" Text="{x:Static res:Localization.Themes}"></TextBlock>
-                            </StackPanel>
+                            </Grid>
                         </ListViewItem>
                     </ListView>
                 </Grid>
 
                 <Grid Grid.Row="2" Background="#4A4A4A" Margin="0,10,0,0">
                     <ListView>
-                        <ListViewItem>
-                            <StackPanel Orientation="Horizontal">
-                                <materialDesign:PackIcon Kind="EmergencyExit" Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Center" />
-                                <TextBlock Foreground="Salmon" Margin="15,0,0,0" HorizontalAlignment="Left"
+                        <ListViewItem Padding="0">
+                            <Grid Background="Transparent" Height="30" MinWidth="220">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="20"/>
+                                    <ColumnDefinition/>
+                                </Grid.ColumnDefinitions>
+                                <materialDesign:PackIcon Kind="EmergencyExit" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                <TextBlock Grid.Column="1" Foreground="Salmon" Margin="15,0,0,0" HorizontalAlignment="Left"
                                            VerticalAlignment="Center" Text="{x:Static res:Localization.LogOut}"></TextBlock>
-                            </StackPanel>
+                            </Grid>
                         </ListViewItem>
                     </ListView>
                 </Grid>
