@@ -6,11 +6,13 @@ using ServerWCF.Model.Messages;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.ServiceModel;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace ServerWCF.Services
 {
@@ -207,21 +209,19 @@ namespace ServerWCF.Services
 
         public User GetUser(string login, byte[] password)
         {
-            using (UserContext db = new UserContext())
+            try
             {
-                try
+                using (UserContext db = new UserContext())
                 {
-                    foreach (var user in db.Users)
-                    {
-                        if (user.Login == login && user.Password.SequenceEqual(password))
-                            return user;
-                    }
-                    return null;
+                    var user = db.Users.FirstOrDefault(u => u.Login == login);
+                    if (user != null && user.Password.SequenceEqual(password))
+                        return user;
                 }
-                catch (Exception)
-                {
-                    return null;
-                }
+                return null;
+            }
+            catch (Exception)
+            {
+                throw;
             }
         }
 

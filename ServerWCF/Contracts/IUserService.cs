@@ -2,6 +2,7 @@
 using ServerWCF.Model.Messages;
 using System.Collections.Generic;
 using System.ServiceModel;
+using System.Threading.Tasks;
 
 namespace ServerWCF.Contracts
 {

@@ -132,6 +132,7 @@
     </Compile>
     <Compile Include="Interfaces\IMainView.cs" />
     <Compile Include="Interfaces\IMessaging.cs" />
+    <Compile Include="Interfaces\ISerializeUser.cs" />
     <Compile Include="Interfaces\IView.cs" />
     <Compile Include="MessageEditWindow.xaml.cs">
       <DependentUpon>MessageEditWindow.xaml</DependentUpon>
@@ -141,6 +142,7 @@
     </Compile>
     <Compile Include="Model\GlobalBase.cs" />
     <Compile Include="Model\ImageToByteArrayConverter.cs" />
+    <Compile Include="Model\SerializeUserToRegistry.cs" />
     <Compile Include="ReceiveMessage.xaml.cs">
       <DependentUpon>ReceiveMessage.xaml</DependentUpon>
     </Compile>

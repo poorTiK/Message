@@ -8,12 +8,21 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using Message.Encryption;
+using Message.Model;
+using Microsoft.Win32;
 
 namespace Message.ViewModel
 {
     [CallbackBehavior(ConcurrencyMode = ConcurrencyMode.Reentrant)]
     internal class MainWindowVM : Prism.Mvvm.BindableBase, IUserServiceCallback
     {
+        #region PrivateReadOnly
+
+        private readonly ISerializeUser _serializeUser;
+        
+
+        #endregion
+
         private IView view;
         private IPasswordSupplier passwordSupplier;
 
@@ -165,7 +174,7 @@ namespace Message.ViewModel
         {
             view = iView;
             passwordSupplier = ipasswordSupplier;
-
+            _serializeUser = new SerializeUserToRegistry();
             //callback for user
             _userServiceCallback = this;
             usersSite = new InstanceContext(_userServiceCallback);
@@ -266,26 +275,27 @@ namespace Message.ViewModel
             }
         }
 
-        private void ExecuteOnLogin()
+        private async void ExecuteOnLogin()
         {
             IsLoginProgress = true;
-            Task.Run(() =>
-            {             
+            await Task.Factory.StartNew(() =>
+            {
                 if (ValidateOnLogin())
                 {
-                    var user = UserServiceClient.GetUser(LoginText, AESEncryptor.encryptPassword(Password));
+                    var user =  UserServiceClient.GetUser(LoginText, AESEncryptor.encryptPassword(Password));
                     if (user != null)
                     {
-                        Application.Current.Dispatcher.Invoke(new Action((() =>
+                        _serializeUser.SerializeUser(user);
+                        Application.Current.Dispatcher.Invoke(() =>
                         {
                             MessageMainWnd wnd = new MessageMainWnd(user);
                             wnd.Show();
-
                             view.CloseWindow();
-                        })));
+                            IsLoginProgress = false;
+                        });
                     }
                 }
-            }).ContinueWith(task => { IsLoginProgress = false; });
+            });
         }
 
         private void ExecuteOnRegister()
