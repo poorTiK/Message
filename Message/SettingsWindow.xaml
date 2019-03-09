@@ -11,9 +11,9 @@
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
 
-        Name="SettingsWnd" WindowStartupLocation="CenterOwner" WindowStyle="None"
-        BorderThickness="0" ResizeMode="NoResize"
-        Height="450" Width="250">
+        Name="SettingsWnd" BorderBrush="#FF353636" WindowStartupLocation="CenterOwner" WindowStyle="None"
+        BorderThickness="1" ResizeMode="NoResize"
+        Height="450" Width="250" Background="#FF353636">
 
     <WindowChrome.WindowChrome>
         <WindowChrome CaptionHeight="0" />
