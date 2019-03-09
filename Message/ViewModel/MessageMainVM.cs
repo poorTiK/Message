@@ -28,6 +28,14 @@ namespace Message.ViewModel
 
         public User CurrentUser { get; set; }
 
+        private byte[] _currentUserPhoto;
+
+        public byte[] CurrentUserPhoto
+        {
+            get { return GlobalBase.CurrentUser.Avatar; }
+            set { SetProperty(ref _currentUserPhoto, value); }
+        }
+
         private string _currentUserName;
 
         public string CurrentUserName
