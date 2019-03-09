@@ -313,7 +313,7 @@ namespace Message.ViewModel
                         });
                     }
                 }
-            });
+            }).ContinueWith(task => { IsLoginProgress = false; });
         }
 
         private void ExecuteOnRegister()
