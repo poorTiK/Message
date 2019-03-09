@@ -314,6 +314,7 @@ namespace Message.ViewModel
                     }
                 }
             });
+            IsLoginProgress = false;
         }
 
         private void ExecuteOnRegister()
@@ -380,7 +381,7 @@ namespace Message.ViewModel
             }
             else if (RPassword.Length < 8 || string.IsNullOrWhiteSpace(RPassword) || RPassword == string.Empty || !Regex.IsMatch(RPassword, @"^[a-zA-Z0-9]{8,}$"))
             {
-                message = "Password shoud be 8 symbols lengh,\n use numbers and english symbols";
+                message = "Password shoud be 8 symbols lengh, use numbers and english symbols";
             }
             else if (RPassword != Rep_RPassword)
             {
@@ -403,7 +404,6 @@ namespace Message.ViewModel
         private bool ValidateOnLogin()
         {
             string message = string.Empty;
-            var user = UserServiceClient.GetUser(LoginText, AESEncryptor.encryptPassword(Password));
 
             if (string.IsNullOrWhiteSpace(LoginText))
             {
@@ -411,9 +411,9 @@ namespace Message.ViewModel
             }
             else if (Password.Length < 8 || string.IsNullOrWhiteSpace(Password) || Password == string.Empty || !Regex.IsMatch(Password, @"^[a-zA-Z0-9]{8,}$"))
             {
-                message = "Password shoud be 8 symbols lenght,\n use numbers and english symbols";
+                message = "Password shoud be 8 symbols lenght, use numbers and english symbols";
             }
-            else if (user == null)
+            else if (UserServiceClient.GetUser(LoginText, AESEncryptor.encryptPassword(Password)) == null)
             {
                 message = "Wrong login or password";
             }
