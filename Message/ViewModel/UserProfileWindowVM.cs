@@ -151,18 +151,19 @@ namespace Message.ViewModel
         public DelegateCommand LoadPhoto =>
             _onLoadPhoto ?? (_onLoadPhoto = new DelegateCommand(ExecuteOnLoadPhoto));
 
+        //TODO need make this shit working
         private void ExecuteOnLoadPhoto()
         {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.ShowDialog();
-            var FilePath = openFileDialog.FileName;
+            //OpenFileDialog openFileDialog = new OpenFileDialog();
+            //openFileDialog.ShowDialog();
+            //var FilePath = openFileDialog.FileName;
 
-            GlobalBase.CurrentUser.Avatar = File.ReadAllBytes(FilePath); ;
-            UserServiceClient.AddOrUpdateUserAsync(GlobalBase.CurrentUser).ContinueWith(task =>
-            {
-                GlobalBase.UpdateUI.Invoke();
-                IsNewChanges = true;
-            });
+            //GlobalBase.CurrentUser.Avatar = new byte[1];
+            //GlobalBase.CurrentUser.Avatar = File.ReadAllBytes(FilePath);
+            //UserServiceClient.AddOrUpdateUser(GlobalBase.CurrentUser);
+
+            //GlobalBase.UpdateUI.Invoke();
+            //IsNewChanges = true;
         }
 
         private void ExecuteOnApplyChanges()

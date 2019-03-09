@@ -27,8 +27,13 @@ namespace Message.ViewModel
         private IMessaging _view;
 
         public User CurrentUser { get; set; }
+       private byte[] _currentUserPhoto;
 
-
+        public byte[] CurrentUserPhoto
+        {
+            get { return GlobalBase.CurrentUser.Avatar; }
+            set { SetProperty(ref _currentUserPhoto, value); }
+        }
         private string _searchContactStr;
 
         public string SearchContactStr 
@@ -51,7 +56,6 @@ namespace Message.ViewModel
                 SetProperty(ref _searchContactStr, value);
             }
         }
-
         private string _currentUserName;
 
         public string CurrentUserName
