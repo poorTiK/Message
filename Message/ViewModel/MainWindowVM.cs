@@ -403,7 +403,6 @@ namespace Message.ViewModel
         private bool ValidateOnLogin()
         {
             string message = string.Empty;
-            var user = UserServiceClient.GetUser(LoginText, AESEncryptor.encryptPassword(Password));
 
             if (string.IsNullOrWhiteSpace(LoginText))
             {
@@ -413,7 +412,7 @@ namespace Message.ViewModel
             {
                 message = "Password shoud be 8 symbols lenght,\n use numbers and english symbols";
             }
-            else if (user == null)
+            else if (UserServiceClient.GetUser(LoginText, AESEncryptor.encryptPassword(Password)) == null)
             {
                 message = "Wrong login or password";
             }
