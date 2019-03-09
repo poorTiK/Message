@@ -114,7 +114,7 @@
                     <StackPanel Grid.Column="1" Margin="5"
                     Orientation="Horizontal">
                         <materialDesign:PackIcon Kind="Magnify" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" />
-                        <TextBox Margin="0,10,10,10" Width="122" Foreground="White" SelectionBrush="#FF919191" />
+                        <TextBox Margin="0,10,10,10" Width="122" Foreground="White" SelectionBrush="#FF919191" Text="{Binding SearchContactStr, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                     </StackPanel>
                 </Grid>
                 <Border Grid.Column="0" Grid.Row="1">

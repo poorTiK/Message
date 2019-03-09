@@ -4,7 +4,7 @@ using Message.UserServiceReference;
 using Microsoft.Win32;
 using Prism.Commands;
 using System;
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
@@ -27,6 +27,30 @@ namespace Message.ViewModel
         private IMessaging _view;
 
         public User CurrentUser { get; set; }
+
+
+        private string _searchContactStr;
+
+        public string SearchContactStr 
+        {
+            get { return _searchContactStr; }
+            set
+            {
+                if (value == string.Empty)
+                {
+                    ContactsList.Clear();
+                    ContactsList.AddRange(userServiceClient.GetAllContacts(GlobalBase.CurrentUser));
+                }
+                else
+                {
+                    ContactsList.Clear();
+                    ContactsList.AddRange(userServiceClient.GetAllContacts(GlobalBase.CurrentUser).Where(i=>i.FirstName.Contains(value)
+                                                                                                            || i.LastName.Contains(value)
+                                                                                                            || i.Login.Contains(value)));
+                }
+                SetProperty(ref _searchContactStr, value);
+            }
+        }
 
         private string _currentUserName;
 
@@ -52,9 +76,9 @@ namespace Message.ViewModel
             set { SetProperty(ref _isDialogSearchVisible, value); }
         }
 
-        private List<User> _contactsList;
+        private ObservableCollection<User> _contactsList;
 
-        public List<User> ContactsList
+        public ObservableCollection<User> ContactsList
         {
             get { return _contactsList; }
             set { SetProperty(ref _contactsList, value); }
@@ -130,7 +154,7 @@ namespace Message.ViewModel
             //callback for messages
             groupAddress = IPAddress.Parse(HOST);
 
-            ContactsList = userServiceClient.GetAllContacts(GlobalBase.CurrentUser);
+            ContactsList = new ObservableCollection<User>(userServiceClient.GetAllContacts(GlobalBase.CurrentUser));
             SelectedContact = new User();
 
             IsMenuEnabled = false;
@@ -322,9 +346,12 @@ namespace Message.ViewModel
         public void Update()
         {
             var temp = SelectedContact;
-
-            ContactsList = userServiceClient.GetAllContacts(GlobalBase.CurrentUser);
-            ContactsList.ForEach(x => x.UnreadMessageCount = 0);
+            ContactsList.Clear();
+            ContactsList.AddRange(userServiceClient.GetAllContacts(GlobalBase.CurrentUser));
+            foreach (var item in ContactsList)
+            {
+                item.UnreadMessageCount = 0;
+            }
 
             if (ContactsList.Any(x => temp != null && (x.Id == temp.Id)))
             {
@@ -369,8 +396,8 @@ namespace Message.ViewModel
             SelectedContactChanged();
 
             var temp = SelectedContact;
-
-            ContactsList = userServiceClient.GetAllContacts(GlobalBase.CurrentUser);
+            ContactsList.Clear();
+            ContactsList.AddRange(userServiceClient.GetAllContacts(GlobalBase.CurrentUser));
 
             if (temp != null)
             {
