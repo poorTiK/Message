@@ -154,16 +154,16 @@ namespace Message.ViewModel
         //TODO need make this shit working
         private void ExecuteOnLoadPhoto()
         {
-            //OpenFileDialog openFileDialog = new OpenFileDialog();
-            //openFileDialog.ShowDialog();
-            //var FilePath = openFileDialog.FileName;
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.ShowDialog();
+            var FilePath = openFileDialog.FileName;
 
-            //GlobalBase.CurrentUser.Avatar = new byte[1];
-            //GlobalBase.CurrentUser.Avatar = File.ReadAllBytes(FilePath);
-            //UserServiceClient.AddOrUpdateUser(GlobalBase.CurrentUser);
+            GlobalBase.CurrentUser.Avatar = new byte[1];
+            GlobalBase.CurrentUser.Avatar = File.ReadAllBytes(FilePath);
+            UserServiceClient.AddOrUpdateUser(GlobalBase.CurrentUser);
 
-            //GlobalBase.UpdateUI.Invoke();
-            //IsNewChanges = true;
+            GlobalBase.UpdateUI.Invoke();
+            IsNewChanges = true;
         }
 
         private void ExecuteOnApplyChanges()

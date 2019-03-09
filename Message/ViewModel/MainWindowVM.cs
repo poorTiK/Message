@@ -413,10 +413,10 @@ namespace Message.ViewModel
             {
                 message = "Password shoud be 8 symbols lenght, use numbers and english symbols";
             }
-            else if (UserServiceClient.GetUser(LoginText, AESEncryptor.encryptPassword(Password)) == null)
-            {
-                message = "Wrong login or password";
-            }
+            //else if (UserServiceClient.GetUser(LoginText, AESEncryptor.encryptPassword(Password)) == null)
+            //{
+            //    message = "Wrong login or password";
+            //}
 
             if (message != string.Empty)
             {
