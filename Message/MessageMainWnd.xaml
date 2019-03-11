@@ -149,7 +149,7 @@
                                         </Grid.ColumnDefinitions>
 
                                         <materialDesign:Badged Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" Margin="0,3,0,0"
-                                            x:Name="CountingBadge" Badge="{Binding Path=UnreadMessageCount, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                            x:Name="CountingBadge" Badge=""
                                             BadgeColorZoneMode="PrimaryDark">
                                             <Ellipse Height="45" Width="45" Grid.Column="0" Grid.Row="0" Grid.RowSpan="2">
                                                 <Ellipse.Fill>

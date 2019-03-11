@@ -152,17 +152,6 @@ namespace Message
 
         public List<UserMessage> MessageList { get; set; }
 
-        public MessageMainWnd()
-        {
-            System.Threading.Thread.CurrentThread.CurrentUICulture = GlobalBase.Language;
-
-            InitializeComponent();
-
-            DataContext = new MessageMainVM(this);
-
-            init();
-        }
-
         public MessageMainWnd(User user)
         {
             System.Threading.Thread.CurrentThread.CurrentUICulture = GlobalBase.Language;

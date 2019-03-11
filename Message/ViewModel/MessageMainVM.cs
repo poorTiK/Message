@@ -4,7 +4,9 @@ using Message.UserServiceReference;
 using Microsoft.Win32;
 using Prism.Commands;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
@@ -17,9 +19,6 @@ namespace Message.ViewModel
     [CallbackBehavior(ConcurrencyMode = ConcurrencyMode.Reentrant)]
     internal class MessageMainVM : Prism.Mvvm.BindableBase, IUserServiceCallback
     {
-        private const string HOST = "192.168.0.255";
-        private IPAddress groupAddress;
-
         private InstanceContext usersSite;
         private UserServiceClient userServiceClient;
         private IUserServiceCallback _userServiceCallback;
@@ -80,9 +79,9 @@ namespace Message.ViewModel
             set { SetProperty(ref _isDialogSearchVisible, value); }
         }
 
-        private ObservableCollection<User> _contactsList;
+        private List<User> _contactsList;
 
-        public ObservableCollection<User> ContactsList
+        public List<User> ContactsList
         {
             get { return _contactsList; }
             set { SetProperty(ref _contactsList, value); }
@@ -95,8 +94,7 @@ namespace Message.ViewModel
             get { return _selectedContact; }
             set
             {
-                SetProperty(ref _selectedContact, value);
-                SelectedContactChanged();
+                SetProperty(ref _selectedContact, value, () => {SelectedContactChanged();});
             }
         }
 
@@ -136,18 +134,14 @@ namespace Message.ViewModel
             set { SetProperty(ref _isMenuEnabled, value); }
         }
 
-        public MessageMainVM(IMessaging View)
+        public MessageMainVM(IMessaging View, User user)
         {
             _view = View;
 
-            //callback for user
             _userServiceCallback = this;
             usersSite = new InstanceContext(_userServiceCallback);
             userServiceClient = new UserServiceClient(usersSite);
-        }
 
-        public MessageMainVM(IMessaging View, User user) : this(View)
-        {
             CurrentUser = user;
             GlobalBase.CurrentUser = user;
             GlobalBase.UpdateUI += () =>
@@ -155,18 +149,14 @@ namespace Message.ViewModel
                 Update();
             };
 
-            //callback for messages
-            groupAddress = IPAddress.Parse(HOST);
-
-            ContactsList = new ObservableCollection<User>(userServiceClient.GetAllContacts(GlobalBase.CurrentUser));
+            ContactsList = userServiceClient.GetAllContacts(GlobalBase.CurrentUser);
             SelectedContact = new User();
-
             IsMenuEnabled = false;
 
             userServiceClient.OnUserCame(user);
         }
 
-        private void SelectedContactChanged()
+        private void SelectedContactChanged(object sender = null, PropertyChangedEventArgs e = null)
         {
             if (SelectedContact != null)
             {
@@ -278,6 +268,7 @@ namespace Message.ViewModel
                 };
 
                 userServiceClient.SendMessageAsync(message);
+                Debug.WriteLine("Send Message");
                 _view.MessageList.Add(message);
 
                 _view.UpdateMessageList();
@@ -349,76 +340,56 @@ namespace Message.ViewModel
 
         public void Update()
         {
-            var temp = SelectedContact;
-            ContactsList.Clear();
-            ContactsList.AddRange(userServiceClient.GetAllContacts(GlobalBase.CurrentUser));
-            foreach (var item in ContactsList)
-            {
-                item.UnreadMessageCount = 0;
-            }
-
-            if (ContactsList.Any(x => temp != null && (x.Id == temp.Id)))
-            {
-                SelectedContact = temp;
-            }
+            //make all update modular and put here plz
+            UpdateContactList();
         }
 
         public void ReceiveMessage(BaseMessage message)
         {
-            if (message.SenderId == GlobalBase.CurrentUser.Id)
-            {
-                return;
-            }
-            else
-            {
-                var user = userServiceClient.GetAllUsers().FirstOrDefault(x => x.Id == message.SenderId);
-                var mes = "New message from  @" + user.Login + "\n" + "\"" + GlobalBase.Base64Decode(message.Content) + "\"";
-                GlobalBase.ShowNotify("New message", mes);
+            var user = userServiceClient.GetAllUsers().FirstOrDefault(x => x.Id == message.SenderId);
+            var mes = "New message from  @" + user.Login + "\n" + "\"" + GlobalBase.Base64Decode(message.Content) +
+                      "\"";
+            GlobalBase.ShowNotify("New message", mes);
 
-                AddContactIfNotExist(user);
+            Debug.WriteLine("Receave Message from - ", user.Login);
 
-                if (SelectedContact != null && SelectedContact.Login == user.Login)
+            if (!ContactsList.Contains(ContactsList.FirstOrDefault(x => x.Id == user.Id)))
+            {
+                userServiceClient.AddContactAsync(GlobalBase.CurrentUser, user).ContinueWith(task =>
                 {
-                    UpdateDialog(user);
-                }
-            }
-        }
-
-        private void AddContactIfNotExist(User sender)
-        {
-            if (!userServiceClient.GetAllContacts(GlobalBase.CurrentUser).Contains(sender))
-            {
-                userServiceClient.AddContactAsync(GlobalBase.CurrentUser, sender).ContinueWith(task =>
-                {
-                    Update();
+                    UpdateContactList();
                 });
             }
+            else if (SelectedContact.Id == user.Id)
+            {
+                SelectedContactChanged();
+            }
         }
 
-        private void UpdateDialog(User user)
+        void UpdateContactList()
         {
-            SelectedContactChanged();
-
-            var temp = SelectedContact;
-            ContactsList.Clear();
-            ContactsList.AddRange(userServiceClient.GetAllContacts(GlobalBase.CurrentUser));
-
-            if (temp != null)
+            Application.Current.Dispatcher.Invoke(new Action(() =>
             {
-                SelectedContact = temp;
-                SelectedContact.UnreadMessageCount = 1;
-            }
+                var temp = SelectedContact;
+
+                ContactsList = userServiceClient.GetAllContacts(GlobalBase.CurrentUser);
+
+                if (ContactsList.Any(x => temp != null && (x.Id == temp.Id)))
+                {
+                    SelectedContact = temp;
+                }
+            }));
         }
 
         public void UserLeave(User user)
         {
-            Update();
+            UpdateContactList();
             Debug.WriteLine("Works(Leave) - " + user.FirstName + " - (currentUser - " + GlobalBase.CurrentUser.FirstName + ")");
         }
 
         public void UserCame(User user)
         {
-            Update();
+            UpdateContactList();
             Debug.WriteLine("Works(Came) - " + user.FirstName + " - (currentUser - " + GlobalBase.CurrentUser.FirstName + ")");
         }
 
