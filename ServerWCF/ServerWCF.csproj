@@ -153,6 +153,7 @@
     <Compile Include="Context\UserContext.cs" />
     <Compile Include="Contracts\IUserService.cs" />
     <Compile Include="Algorithms\Encryption\AESEncryptor.cs" />
+    <Compile Include="Initializers\UserDBInitializer.cs" />
     <Compile Include="Model\ApplicationSettings.cs" />
     <Compile Include="Model\Contacts\BaseContact.cs" />
     <Compile Include="Model\Contacts\UserToGroupContact.cs" />
