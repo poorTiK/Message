@@ -2,6 +2,7 @@
 using ServerWCF.Model.Contacts;
 using ServerWCF.Model.Messages;
 using System.Data.Entity;
+using ServerWCF.Initializers;
 
 namespace ServerWCF.Context
 {
@@ -9,6 +10,7 @@ namespace ServerWCF.Context
     {
         public UserContext() : base("DbConnection")
         {
+            Database.SetInitializer(new UserDBInitializer());
         }
 
         public DbSet<User> Users { get; set; }
