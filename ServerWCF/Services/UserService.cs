@@ -2,6 +2,7 @@
 using ServerWCF.Context;
 using ServerWCF.Contracts;
 using ServerWCF.Model;
+using ServerWCF.Model.Contacts;
 using ServerWCF.Model.Messages;
 using System;
 using System.Collections;
@@ -20,8 +21,6 @@ namespace ServerWCF.Services
     public class UserService : IUserService
     {
         private static readonly string successResult = "";
-
-        private static readonly string basePicturePath = @"../../resources/BaseAvatar.jpg";
 
         private static List<CallbackData> usersOnline = new List<CallbackData>();
 
@@ -44,15 +43,15 @@ namespace ServerWCF.Services
             {
                 try
                 {
-                    Contact contact = new Contact();
+                    UserToUserContact contact = new UserToUserContact();
 
-                    User ownerFromDb = userContext.Users.Where(dbUser => dbUser.Login == owner.Login).First();
-                    User ownedFromDb = userContext.Users.Where(dbUser => dbUser.Login == owned.Login).First();
+                    User ownerFromDb = userContext.Users.Where(dbUser => dbUser.Login == owner.Login).FirstOrDefault();
+                    User ownedFromDb = userContext.Users.Where(dbUser => dbUser.Login == owned.Login).FirstOrDefault();
 
                     contact.UserOwner = ownerFromDb;
                     contact.UserOwned = ownedFromDb;
 
-                    if (userContext.Contacts.Where(c => ( (c.UserOwner.Id == owner.Id) && (c.UserOwned.Id == owned.Id) ) ).FirstOrDefault() != null )
+                    if (userContext.Contacts.Where(c => ( (c.UserOwner.Id == owner.Id) && ( (c as UserToUserContact).UserOwned.Id == owned.Id) ) ).FirstOrDefault() != null )
                     {
                         return false;
                     }
@@ -75,16 +74,16 @@ namespace ServerWCF.Services
             {
                 try
                 {
-                    List<Contact> contacts = userContext.Contacts.Include("UserOwner")
+                    List<BaseContact> contacts = userContext.Contacts.Include("UserOwner")
                         .Include("UserOwned")
                         .ToList();
 
-                    User ownerFromDb = userContext.Users.Where(u => u.Login == owner.Login).First();
-                    User ownedFromDb = userContext.Users.Where(u => u.Login == owned.Login).First();
+                    User ownerFromDb = userContext.Users.Where(u => u.Login == owner.Login).FirstOrDefault();
+                    User ownedFromDb = userContext.Users.Where(u => u.Login == owned.Login).FirstOrDefault();
 
-                    foreach (Contact contact in contacts)
+                    foreach (BaseContact contact in contacts)
                     {
-                        if (contact.UserOwner.Id == ownerFromDb.Id && contact.UserOwned.Id == ownedFromDb.Id)
+                        if (contact.UserOwner.Id == ownerFromDb.Id && ((UserToUserContact)contact).UserOwned.Id == ownedFromDb.Id)
                         {
                             userContext.Contacts.Remove(contact);
                             userContext.SaveChanges();
@@ -120,8 +119,8 @@ namespace ServerWCF.Services
                     contactsForOwner = db.Users.SqlQuery(" select * " +
                             "from Users " +
                             "where Users.Id in (select UserOwned_Id " +
-                            "from Contacts " +
-                            "where Contacts.UserOwner_Id = @p0);", userId).ToList();
+                            "from BaseContacts " +
+                            "where BaseContacts.UserOwner_Id = @p0);", userId).ToList();
                 }
                 catch (Exception ex)
                 {
@@ -214,14 +213,14 @@ namespace ServerWCF.Services
                 using (UserContext db = new UserContext())
                 {
                     var user = db.Users.FirstOrDefault(u => u.Login == login);
-                    if (user != null && user.Password.SequenceEqual(password))
+                    if (user.Login == login && user.Password.SequenceEqual(password))
                         return user;
                 }
                 return null;
             }
             catch (Exception)
             {
-                throw;
+                return null;
             }
         }
 
@@ -609,7 +608,7 @@ namespace ServerWCF.Services
             {
                 try
                 {
-                    User dbSender = userContext.Users.Where(u => u.Id == message.SenderId).First();
+                    User dbSender = userContext.Users.Where(u => u.Id == message.SenderId).FirstOrDefault();
                     message.Sender = dbSender;
 
                     CallbackData callbackData = usersOnline.Where(cd => cd.User.Id == dbSender.Id).FirstOrDefault();

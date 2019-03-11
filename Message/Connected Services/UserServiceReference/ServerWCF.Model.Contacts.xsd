@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/ServerWCF.Model.Contacts" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/ServerWCF.Model.Contacts" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import namespace="http://schemas.datacontract.org/2004/07/ServerWCF.Model" />
+  <xs:complexType name="ArrayOfBaseContact">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="BaseContact" nillable="true" type="tns:BaseContact" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfBaseContact" nillable="true" type="tns:ArrayOfBaseContact" />
+  <xs:complexType name="BaseContact">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Id" type="xs:int" />
+      <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/ServerWCF.Model" minOccurs="0" name="UserOwner" nillable="true" type="q1:User" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="BaseContact" nillable="true" type="tns:BaseContact" />
+  <xs:complexType name="UserToUserContact">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:BaseContact">
+        <xs:sequence>
+          <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/ServerWCF.Model" minOccurs="0" name="UserOwned" nillable="true" type="q2:User" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="UserToUserContact" nillable="true" type="tns:UserToUserContact" />
+  <xs:complexType name="UserToGroupContact">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:BaseContact">
+        <xs:sequence>
+          <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/ServerWCF.Model" minOccurs="0" name="ChatGroup" nillable="true" type="q3:ChatGroup" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="UserToGroupContact" nillable="true" type="tns:UserToGroupContact" />
+  <xs:complexType name="ArrayOfUserToGroupContact">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="UserToGroupContact" nillable="true" type="tns:UserToGroupContact" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfUserToGroupContact" nillable="true" type="tns:ArrayOfUserToGroupContact" />
+  <xs:complexType name="ArrayOfUserToUserContact">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="UserToUserContact" nillable="true" type="tns:UserToUserContact" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfUserToUserContact" nillable="true" type="tns:ArrayOfUserToUserContact" />
+</xs:schema>

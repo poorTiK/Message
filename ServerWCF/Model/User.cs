@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using ServerWCF.Model.Contacts;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Runtime.Serialization;
@@ -40,10 +41,10 @@ namespace ServerWCF.Model
         public string Status { get; set; }
 
         [DataMember]
-        public List<Contact> Owners { get; set; }
+        public List<BaseContact> Contacts { get; set; }
 
         [DataMember]
-        public List<Contact> Contacts { get; set; }
+        public List<UserToUserContact> Owners { get; set; }
 
         [DataMember]
         [NotMapped]

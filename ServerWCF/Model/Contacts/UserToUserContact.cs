@@ -2,25 +2,11 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Runtime.Serialization;
 
-namespace ServerWCF.Model
+namespace ServerWCF.Model.Contacts
 {
     [DataContract]
-    public class Contact
+    public class UserToUserContact : BaseContact
     {
-        [Key]
-        [DataMember]
-        public int Id
-        {
-            get; set;
-        }
-
-        [InverseProperty("Contacts")]
-        [DataMember]
-        public User UserOwner
-        {
-            get; set;
-        }
-
         [InverseProperty("Owners")]
         [DataMember]
         public User UserOwned

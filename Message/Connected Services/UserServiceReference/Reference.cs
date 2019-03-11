@@ -29,7 +29,7 @@ namespace Message.UserServiceReference {
         private string BioField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private System.Collections.Generic.List<Message.UserServiceReference.Contact> ContactsField;
+        private System.Collections.Generic.List<Message.UserServiceReference.BaseContact> ContactsField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string EmailField;
@@ -47,7 +47,7 @@ namespace Message.UserServiceReference {
         private string LoginField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private System.Collections.Generic.List<Message.UserServiceReference.Contact> OwnersField;
+        private System.Collections.Generic.List<Message.UserServiceReference.UserToUserContact> OwnersField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private byte[] PasswordField;
@@ -98,7 +98,7 @@ namespace Message.UserServiceReference {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.Collections.Generic.List<Message.UserServiceReference.Contact> Contacts {
+        public System.Collections.Generic.List<Message.UserServiceReference.BaseContact> Contacts {
             get {
                 return this.ContactsField;
             }
@@ -176,7 +176,7 @@ namespace Message.UserServiceReference {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.Collections.Generic.List<Message.UserServiceReference.Contact> Owners {
+        public System.Collections.Generic.List<Message.UserServiceReference.UserToUserContact> Owners {
             get {
                 return this.OwnersField;
             }
@@ -252,18 +252,17 @@ namespace Message.UserServiceReference {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="Contact", Namespace="http://schemas.datacontract.org/2004/07/ServerWCF.Model")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="BaseContact", Namespace="http://schemas.datacontract.org/2004/07/ServerWCF.Model.Contacts")]
     [System.SerializableAttribute()]
-    public partial class Contact : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(Message.UserServiceReference.UserToUserContact))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(Message.UserServiceReference.UserToGroupContact))]
+    public partial class BaseContact : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
         
         [System.NonSerializedAttribute()]
         private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private int IdField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private Message.UserServiceReference.User UserOwnedField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private Message.UserServiceReference.User UserOwnerField;
@@ -292,6 +291,38 @@ namespace Message.UserServiceReference {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
+        public Message.UserServiceReference.User UserOwner {
+            get {
+                return this.UserOwnerField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.UserOwnerField, value) != true)) {
+                    this.UserOwnerField = value;
+                    this.RaisePropertyChanged("UserOwner");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="UserToUserContact", Namespace="http://schemas.datacontract.org/2004/07/ServerWCF.Model.Contacts")]
+    [System.SerializableAttribute()]
+    public partial class UserToUserContact : Message.UserServiceReference.BaseContact {
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private Message.UserServiceReference.User UserOwnedField;
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
         public Message.UserServiceReference.User UserOwned {
             get {
                 return this.UserOwnedField;
@@ -303,16 +334,94 @@ namespace Message.UserServiceReference {
                 }
             }
         }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="UserToGroupContact", Namespace="http://schemas.datacontract.org/2004/07/ServerWCF.Model.Contacts")]
+    [System.SerializableAttribute()]
+    public partial class UserToGroupContact : Message.UserServiceReference.BaseContact {
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private Message.UserServiceReference.ChatGroup ChatGroupField;
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public Message.UserServiceReference.User UserOwner {
+        public Message.UserServiceReference.ChatGroup ChatGroup {
             get {
-                return this.UserOwnerField;
+                return this.ChatGroupField;
             }
             set {
-                if ((object.ReferenceEquals(this.UserOwnerField, value) != true)) {
-                    this.UserOwnerField = value;
-                    this.RaisePropertyChanged("UserOwner");
+                if ((object.ReferenceEquals(this.ChatGroupField, value) != true)) {
+                    this.ChatGroupField = value;
+                    this.RaisePropertyChanged("ChatGroup");
+                }
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="ChatGroup", Namespace="http://schemas.datacontract.org/2004/07/ServerWCF.Model")]
+    [System.SerializableAttribute()]
+    public partial class ChatGroup : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+        
+        [System.NonSerializedAttribute()]
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int IdField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string NameField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private System.Collections.Generic.List<Message.UserServiceReference.UserToGroupContact> ParticipantsField;
+        
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+            get {
+                return this.extensionDataField;
+            }
+            set {
+                this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int Id {
+            get {
+                return this.IdField;
+            }
+            set {
+                if ((this.IdField.Equals(value) != true)) {
+                    this.IdField = value;
+                    this.RaisePropertyChanged("Id");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Name {
+            get {
+                return this.NameField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.NameField, value) != true)) {
+                    this.NameField = value;
+                    this.RaisePropertyChanged("Name");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.Collections.Generic.List<Message.UserServiceReference.UserToGroupContact> Participants {
+            get {
+                return this.ParticipantsField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.ParticipantsField, value) != true)) {
+                    this.ParticipantsField = value;
+                    this.RaisePropertyChanged("Participants");
                 }
             }
         }
@@ -454,67 +563,6 @@ namespace Message.UserServiceReference {
                 if ((this.WindowSizeField.Equals(value) != true)) {
                     this.WindowSizeField = value;
                     this.RaisePropertyChanged("WindowSize");
-                }
-            }
-        }
-        
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        
-        protected void RaisePropertyChanged(string propertyName) {
-            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
-            if ((propertyChanged != null)) {
-                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
-            }
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="ChatGroup", Namespace="http://schemas.datacontract.org/2004/07/ServerWCF.Model")]
-    [System.SerializableAttribute()]
-    public partial class ChatGroup : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
-        
-        [System.NonSerializedAttribute()]
-        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private int IdField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private System.Collections.Generic.List<Message.UserServiceReference.User> ParticipantsField;
-        
-        [global::System.ComponentModel.BrowsableAttribute(false)]
-        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
-            get {
-                return this.extensionDataField;
-            }
-            set {
-                this.extensionDataField = value;
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public int Id {
-            get {
-                return this.IdField;
-            }
-            set {
-                if ((this.IdField.Equals(value) != true)) {
-                    this.IdField = value;
-                    this.RaisePropertyChanged("Id");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.Collections.Generic.List<Message.UserServiceReference.User> Participants {
-            get {
-                return this.ParticipantsField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.ParticipantsField, value) != true)) {
-                    this.ParticipantsField = value;
-                    this.RaisePropertyChanged("Participants");
                 }
             }
         }
