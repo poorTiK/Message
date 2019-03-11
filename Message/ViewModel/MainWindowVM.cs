@@ -321,6 +321,7 @@ namespace Message.ViewModel
             IsRegisterProgress = true;
             Task.Run(() =>
             {
+                string message = string.Empty;
                 if (ValidateOnRegister())
                 {
                     var user = new User()
@@ -330,7 +331,7 @@ namespace Message.ViewModel
                         FirstName = Name,
                         LastName = Surname,
                         Email = Email,
-                        Status = "online"
+                        Status = DateTime.Now.ToString()
                     };
 
                     if (UserServiceClient.GetUserByLogin(UserLogin) == null) //if time move validation parts to ValidateOnRegister()
@@ -342,22 +343,25 @@ namespace Message.ViewModel
                                 CustomMessageBox.Show("Registration done");
                                 Clear();
                                 ExecuteOnBackCommand();
+                                return;
                             })));
                         }
                         else
                         {
-                            Application.Current.Dispatcher.Invoke(new Action((() =>
-                            {
-                                CustomMessageBox.Show("Error!!!", "Registration error");
-                            })));
+                            message = "Registration error";
                         }
                     }
                     else
                     {
-                        Application.Current.Dispatcher.Invoke(new Action((() =>
+                        message = "Same user exists";
+                    }
+
+                    if (message != string.Empty)
+                    {
+                        Application.Current.Dispatcher.Invoke(new Action(() =>
                         {
-                            CustomMessageBox.Show("Error!!!", "Same user exists");
-                        })));
+                            CustomMessageBox.Show("Error", message);
+                        }));
                     }
                 }
             }).ContinueWith(task => { IsRegisterProgress = false; });
