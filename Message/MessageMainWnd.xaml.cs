@@ -250,7 +250,7 @@ namespace Message
                 }
             }
 
-            ScrollV.ScrollToEnd();
+            ScrollV.ScrollToBottom();
         }
 
         public void Hide(bool isVisible)

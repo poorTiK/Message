@@ -176,13 +176,13 @@
                     </Grid>
                 </Border>
                 <Grid Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2" Margin="0,0,0,30"
-                      Focusable="True">
+                      Focusable="True" PreviewMouseDown="UIElement_OnMouseDown">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="3*" />
                         <ColumnDefinition Width="38*" />
                     </Grid.ColumnDefinitions>
-                    <ScrollViewer Name="ScrollV" IsHitTestVisible="True" Grid.ColumnSpan="2" VerticalAlignment="Bottom">
-                        <StackPanel Name="MessageControl" Orientation="Vertical">
+                    <ScrollViewer Name="ScrollV" IsHitTestVisible="True" Grid.ColumnSpan="2" VerticalAlignment="Stretch">
+                        <StackPanel Name="MessageControl" Orientation="Vertical" VerticalAlignment="Bottom">
                         </StackPanel>
                     </ScrollViewer>
                 </Grid>
