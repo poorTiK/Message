@@ -14,14 +14,14 @@ namespace Message
     {
         public ContactProfileWindow()
         {
-            System.Threading.Thread.CurrentThread.CurrentUICulture = GlobalBase.Language;
+             
 
             InitializeComponent();
         }
 
         public ContactProfileWindow(User profile)
         {
-            System.Threading.Thread.CurrentThread.CurrentUICulture = GlobalBase.Language;
+             
 
             InitializeComponent();
 

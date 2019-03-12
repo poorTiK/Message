@@ -1,0 +1,45 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:Message"
+
+                    xmlns:v="clr-namespace:System;assembly=mscorlib">
+
+    <v:String x:Key="AddContact">Add Contact</v:String>
+    <v:String x:Key="Apply">Apply</v:String>
+    <v:String x:Key="AppName">App name</v:String>
+    <v:String x:Key="AppVersion">Version 1.0</v:String>
+    <v:String x:Key="Back">Back</v:String>
+    <v:String x:Key="Bio">Bio</v:String>
+    <v:String x:Key="BlockUser">Block</v:String>
+    <v:String x:Key="ChatBackgroundColor">Background color</v:String>
+    <v:String x:Key="ChatSettings">Chat settings</v:String>
+    <v:String x:Key="Contacts">Contacts</v:String>
+    <v:String x:Key="Copy">Copy</v:String>
+    <v:String x:Key="DeleteConversation">Delete conversation</v:String>
+    <v:String x:Key="DeleteСontact">Delete</v:String>
+    <v:String x:Key="EditContact">Edit</v:String>
+    <v:String x:Key="EditMessage">Edit message</v:String>
+    <v:String x:Key="EditProfile">Edit profile</v:String>
+    <v:String x:Key="Email">Email</v:String>
+    <v:String x:Key="FirstName">First Name</v:String>
+    <v:String x:Key="ForgotPassword">Forgot password?</v:String>
+    <v:String x:Key="Forvard">Forward</v:String>
+    <v:String x:Key="LastName">Last Name</v:String>
+    <v:String x:Key="Login">Login</v:String>
+    <v:String x:Key="LogOut">Log out</v:String>
+    <v:String x:Key="MarkAsUread">Mark as uread</v:String>
+    <v:String x:Key="Notifications">Notifications</v:String>
+    <v:String x:Key="Password">Password</v:String>
+    <v:String x:Key="Phone">Phone</v:String>
+    <v:String x:Key="Register">Register</v:String>
+    <v:String x:Key="RepeatPassword">Repeat Password</v:String>
+    <v:String x:Key="SelectContact">Select contact</v:String>
+    <v:String x:Key="SelectLaguage">Select language</v:String>
+    <v:String x:Key="Send">Send</v:String>
+    <v:String x:Key="Settings">Settings</v:String>
+    <v:String x:Key="SignIn">Sign In</v:String>
+    <v:String x:Key="Themes">Themes</v:String>
+    <v:String x:Key="ViewProfile">View Profile</v:String>
+    <v:String x:Key="Write">Write a message...</v:String>
+
+</ResourceDictionary>

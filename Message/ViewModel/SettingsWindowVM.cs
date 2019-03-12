@@ -1,6 +1,7 @@
 ﻿using Message.Interfaces;
 using Message.Model;
 using Prism.Commands;
+using System;
 using System.Windows;
 
 namespace Message.ViewModel
@@ -42,6 +43,22 @@ namespace Message.ViewModel
 
         public DelegateCommand ProfileSettings =>
             _onProfileSettings ?? (_onProfileSettings = new DelegateCommand(ExecuteOnProfileSettings));
+
+        private DelegateCommand _chatSettings;
+
+        public DelegateCommand ChatSettings =>
+            _chatSettings ?? (_chatSettings = new DelegateCommand(ExecuteOnChatSettings));
+
+        private void ExecuteOnChatSettings()
+        {
+            view.Hide(false);
+
+            var profEditWnd = new ChatSettingWindow();
+            profEditWnd.Owner = (Window)view;
+            profEditWnd.ShowDialog();
+
+            view.Hide(true);
+        }
 
         private void ExecuteOnProfileSettings()
         {

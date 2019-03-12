@@ -13,12 +13,17 @@ namespace Message
     {
         public Contacts()
         {
-            System.Threading.Thread.CurrentThread.CurrentUICulture = GlobalBase.Language;
-
             InitializeComponent();
+
+            App.LanguageChanged += AppOnLanguageChanged;
             DataContext = new ContatsWindowVM(this);
 
             Loaded += Contacts_Loaded;
+        }
+
+        private void AppOnLanguageChanged(object sender, EventArgs e)
+        {
+            //CultureInfo currLang = App.Language;
         }
 
         private void Contacts_Loaded(object sender, RoutedEventArgs e)

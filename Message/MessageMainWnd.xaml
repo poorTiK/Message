@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Message"
-        xmlns:res="clr-namespace:Message.Resources"
+        
         xmlns:converter="clr-namespace:Message.AdditionalItems"
         mc:Ignorable="d"
 
@@ -92,11 +92,11 @@
                                     <MenuItem.Header>
                                         <materialDesign:PackIcon Kind="EllipsisVertical" Width="25" Height="25" Foreground="White" />
                                     </MenuItem.Header>
-                                    <MenuItem Header="{x:Static res:Localization.ViewProfile}" Background="#353636" Foreground="White" Command="{Binding ViewProfile}" />
-                                    <MenuItem Header="{x:Static res:Localization.EditContact}" Background="#353636" Foreground="White" />
-                                    <MenuItem Header="{x:Static res:Localization.DeleteСontact}" Background="#353636" Foreground="White" />
-                                    <MenuItem Header="{x:Static res:Localization.DeleteConversation}" Background="#353636" Foreground="White" />
-                                    <MenuItem Header="{x:Static res:Localization.BlockUser}" Background="#353636" Foreground="White" />
+                                    <MenuItem Header="{DynamicResource ViewProfile}" Background="#353636" Foreground="White" Command="{Binding ViewProfile}" />
+                                    <MenuItem Header="{DynamicResource EditContact}" Background="#353636" Foreground="White" />
+                                    <MenuItem Header="{DynamicResource DeleteСontact}" Background="#353636" Foreground="White" />
+                                    <MenuItem Header="{DynamicResource DeleteConversation}" Background="#353636" Foreground="White" />
+                                    <MenuItem Header="{DynamicResource BlockUser}" Background="#353636" Foreground="White" />
                                 </MenuItem>
                             </Menu>
                         </Grid>
@@ -126,14 +126,14 @@
                             <ListBox.ContextMenu>
                                 <ContextMenu Background="#262626">
                                     <MenuItem Background="#262626" Foreground="White"
-                                              Header="{x:Static res:Localization.ViewProfile}"
+                                              Header="{DynamicResource ViewProfile}"
                                               Command="{Binding ViewProfile}"></MenuItem>
                                     <MenuItem Background="#262626" Foreground="White"
-                                              Header="{x:Static res:Localization.MarkAsUread}"></MenuItem>
+                                              Header="{DynamicResource MarkAsUread}"></MenuItem>
                                     <MenuItem Background="#262626" Foreground="White"
-                                              Header="{x:Static res:Localization.DeleteConversation}"></MenuItem>
+                                              Header="{DynamicResource DeleteConversation}"></MenuItem>
                                     <MenuItem Background="#262626" Foreground="Salmon"
-                                              Header="{x:Static res:Localization.BlockUser}"></MenuItem>
+                                              Header="{DynamicResource BlockUser}"></MenuItem>
                                 </ContextMenu>
                             </ListBox.ContextMenu>
                             <ListBox.ItemTemplate>
@@ -202,7 +202,7 @@
                             <TextBox Grid.Column="1" IsEnabled="{Binding IsMenuEnabled}"
                                 SelectionBrush="#FF919191" TextWrapping="Wrap"
                                      VerticalContentAlignment="Stretch" Name="MessageTextBox"
-                                     materialDesign:HintAssist.Hint="{x:Static res:Localization.Write}" VerticalScrollBarVisibility="Auto"
+                                     materialDesign:HintAssist.Hint="{DynamicResource Write}" VerticalScrollBarVisibility="Auto"
                                      Foreground="White" Margin="10,2,0,2" VerticalAlignment="Center"
                                     Text="{Binding MessageText, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
                                 <TextBox.InputBindings>
@@ -250,7 +250,7 @@
                                     <ColumnDefinition Width="Auto"></ColumnDefinition>
                                 </Grid.ColumnDefinitions>
                                         <materialDesign:PackIcon Kind="AccountSupervisor" Grid.Column="0" Width="20" Height="20" Foreground="Gray" Margin="5" VerticalAlignment="Center" />
-                                <TextBlock Text="{x:Static res:Localization.Contacts}" Grid.Column="1" FontSize="15" Margin="10" Foreground="White"/>
+                                <TextBlock Text="{DynamicResource Contacts}" Grid.Column="1" FontSize="15" Margin="10" Foreground="White"/>
                             </Grid>
                         </ListViewItem>
                         <ListViewItem Height="45" Padding="0">
@@ -265,14 +265,14 @@
                                     <ColumnDefinition Width="Auto"></ColumnDefinition>
                                 </Grid.ColumnDefinitions>
                                 <materialDesign:PackIcon Kind="GearBox" Width="20" Height="20" Foreground="Gray" Margin="5" VerticalAlignment="Center" />
-                                <TextBlock Grid.Column="1" Text="{x:Static res:Localization.Settings}" FontSize="15" Margin="10" Foreground="White"/>
+                                <TextBlock Grid.Column="1" Text="{DynamicResource Settings}" FontSize="15" Margin="10" Foreground="White"/>
                             </Grid>
                         </ListViewItem>
                     </ListView>
                 </StackPanel>
                 <StackPanel VerticalAlignment="Bottom" Margin="10,0,10,10">
-                    <TextBlock Foreground="White" FontWeight="Bold" Text="{x:Static res:Localization.AppName}"></TextBlock>
-                    <TextBlock Foreground="White" Text="{x:Static res:Localization.AppVersion}"></TextBlock>
+                    <TextBlock Foreground="White" FontWeight="Bold" Text="{DynamicResource AppName}"></TextBlock>
+                    <TextBlock Foreground="White" Text="{DynamicResource AppVersion}"></TextBlock>
                     <TextBlock Foreground="White">
                         <Hyperlink NavigateUri="https://github.com/poorTiK/Message" RequestNavigate="Hyperlink_OnRequestNavigate" Foreground="#FF63A35D">Source code
                         </Hyperlink>

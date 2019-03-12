@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Message"
-        xmlns:res="clr-namespace:Message.Resources"
+        
         mc:Ignorable="d" ShowInTaskbar="False"
         
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
@@ -31,7 +31,7 @@
 
         <TextBlock Grid.ColumnSpan="2" Grid.Row="0" Foreground="White"
                    Style="{StaticResource MaterialDesignSubheadingTextBlock}" Margin="10,0,0,0"
-                   Text="{x:Static res:Localization.EditMessage}"/>
+                   Text="{DynamicResource EditMessage}"/>
 
         <TextBox Grid.Row="1" Margin="10" Grid.ColumnSpan="2"
             Style="{StaticResource MaterialDesignOutlinedTextFieldTextBox}"
@@ -42,10 +42,10 @@
             Text="{Binding MessageText}"/>
 
         <Button Grid.Row="2" Grid.Column="0" Margin="10,0,5,0" 
-                Content="{x:Static res:Localization.Apply}"
+                Content="{DynamicResource Apply}"
                 Command="{Binding Apply}"/>
         <Button Grid.Row="2" Grid.Column="1" Margin="5,0,10,0"
-                Content="{x:Static res:Localization.Back}"
+                Content="{DynamicResource Back}"
                 Command="{Binding Back}"/>
 
     </Grid>

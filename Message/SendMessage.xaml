@@ -5,7 +5,6 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:Message"
 
-             xmlns:res="clr-namespace:Message.Resources"
              mc:Ignorable="d" d:DesignWidth="800">
     <Grid Margin="0,0,0,15" MinHeight="60">
         <Grid HorizontalAlignment="Right">
@@ -30,13 +29,13 @@
             </Border>
             <Grid.ContextMenu>
                 <ContextMenu Background="#262626">
-                    <MenuItem Header="{x:Static res:Localization.EditMessage}" Background="#262626" 
+                    <MenuItem Header="{DynamicResource EditMessage}" Background="#262626" 
                               Foreground="White" Command="{Binding Edit}"></MenuItem>
-                    <MenuItem Header="{x:Static res:Localization.Copy}" Background="#262626" 
+                    <MenuItem Header="{DynamicResource Copy}" Background="#262626" 
                               Foreground="White" Command="{Binding Copy}"></MenuItem>
-                    <MenuItem Header="{x:Static res:Localization.Forvard}" Background="#262626" 
+                    <MenuItem Header="{DynamicResource Forvard}" Background="#262626" 
                               Foreground="White" Command="{Binding Forward}"></MenuItem>
-                    <MenuItem Header="{x:Static res:Localization.DeleteСontact}" Background="#262626" 
+                    <MenuItem Header="{DynamicResource DeleteСontact}" Background="#262626" 
                               Foreground="White" Command="{Binding Delete}"></MenuItem>
                 </ContextMenu>
             </Grid.ContextMenu>

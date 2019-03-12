@@ -154,7 +154,7 @@ namespace Message
 
         public MessageMainWnd(User user)
         {
-            System.Threading.Thread.CurrentThread.CurrentUICulture = GlobalBase.Language;
+             
 
             InitializeComponent();
 

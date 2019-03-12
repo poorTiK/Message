@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Message"
-        xmlns:res="clr-namespace:Message.Resources"
+        
         xmlns:converter="clr-namespace:Message.AdditionalItems"
         mc:Ignorable="d"  ShowInTaskbar="False"
 
@@ -34,7 +34,7 @@
     <Grid Background="#353636">
         <Grid VerticalAlignment="Top">
             <TextBlock Foreground="White" Margin="10,0,0,0" HorizontalAlignment="Left"
-                       VerticalAlignment="Center" Text="{x:Static res:Localization.ViewProfile}"></TextBlock>
+                       VerticalAlignment="Center" Text="{DynamicResource ViewProfile}"></TextBlock>
             <Button x:Name="ButtonClose" Click="ButtonClose_OnClick" HorizontalAlignment="Right" VerticalAlignment="Top" Background="{x:Null}" Foreground="White" BorderBrush="{x:Null}" Width="30" Height="30" Padding="0">
                 <materialDesign:PackIcon Kind="Close" />
             </Button>
@@ -82,31 +82,31 @@
 
                 <materialDesign:PackIcon VerticalAlignment="Bottom" Grid.Column="0" Grid.Row="0" Kind="RenameBox" Foreground="White" Margin="10,0,0,0" />
                 <TextBox Grid.Column="1" Grid.Row="0" Margin="5,0,10,0" Text="{Binding UserName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                         materialDesign:HintAssist.Hint="{x:Static res:Localization.FirstName}" Foreground="White"></TextBox>
+                         materialDesign:HintAssist.Hint="{DynamicResource FirstName}" Foreground="White"></TextBox>
 
                 <materialDesign:PackIcon VerticalAlignment="Bottom" Grid.Column="0" Grid.Row="1" Kind="RenameBox" Foreground="White" Margin="10,0,0,0" />
                 <TextBox Grid.Column="1" Grid.Row="1" Margin="5,10,10,0" Text="{Binding UserLastName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                         materialDesign:HintAssist.Hint="{x:Static res:Localization.LastName}" Foreground="White"></TextBox>
+                         materialDesign:HintAssist.Hint="{DynamicResource LastName}" Foreground="White"></TextBox>
 
                 <materialDesign:PackIcon VerticalAlignment="Bottom" Grid.Column="0" Grid.Row="2" Kind="Cellphone" Foreground="White" Margin="10,0,0,0" />
                 <TextBox Grid.Column="1" Grid.Row="2" Margin="5,10,10,0" Text="{Binding UserPhone, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                         materialDesign:HintAssist.Hint="{x:Static res:Localization.Phone}" Foreground="White"></TextBox>
+                         materialDesign:HintAssist.Hint="{DynamicResource Phone}" Foreground="White"></TextBox>
 
                 <materialDesign:PackIcon VerticalAlignment="Bottom" Grid.Column="0" Grid.Row="3" Kind="Gmail" Foreground="White" Margin="10,0,0,0" />
                 <TextBox Grid.Column="1" Grid.Row="3" Margin="5,10,10,0" Text="{Binding UserEmail, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                         materialDesign:HintAssist.Hint="{x:Static res:Localization.Email}" Foreground="White"></TextBox>
+                         materialDesign:HintAssist.Hint="{DynamicResource Email}" Foreground="White"></TextBox>
 
                 <materialDesign:PackIcon VerticalAlignment="Bottom" Grid.Column="0" Grid.Row="4" Kind="CardTextOutline" Foreground="White" Margin="10,0,0,0" />
                 <TextBox Grid.Column="1" Grid.Row="4" Margin="5,10,10,0" Text="{Binding UserBio, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Style="{StaticResource MaterialDesignOutlinedTextFieldTextBox}"
                          TextWrapping="Wrap"
                          VerticalScrollBarVisibility="Auto"
-                         materialDesign:HintAssist.Hint="{x:Static res:Localization.Bio}" Foreground="White"></TextBox>
+                         materialDesign:HintAssist.Hint="{DynamicResource Bio}" Foreground="White"></TextBox>
             </Grid>
 
             <!--<Grid Grid.Row="3" Background="#4A4A4A" Margin="5,0,5,0"></Grid>-->
 
             <Grid Grid.Row="4">
-                <Button Content="{x:Static res:Localization.Apply}" VerticalAlignment="Center" HorizontalAlignment="Center"
+                <Button Content="{DynamicResource Apply}" VerticalAlignment="Center" HorizontalAlignment="Center"
                         materialDesign:ButtonProgressAssist.Value="-1"
                         materialDesign:ButtonProgressAssist.IsIndicatorVisible="{Binding IsSavingProgress}"
                         materialDesign:ButtonProgressAssist.IsIndeterminate="{Binding IsSavingProgress}"

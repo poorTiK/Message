@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Message"
-        xmlns:res="clr-namespace:Message.Resources"
+        
         xmlns:converter="clr-namespace:Message.AdditionalItems"
         mc:Ignorable="d"  ShowInTaskbar="False"
 
@@ -27,7 +27,7 @@
     <Grid Background="#353636">
         <Grid VerticalAlignment="Top">
             <TextBlock Foreground="White" Margin="10,0,0,0" HorizontalAlignment="Left"
-                       VerticalAlignment="Center" Text="{x:Static res:Localization.Settings}"></TextBlock>
+                       VerticalAlignment="Center" Text="{DynamicResource Settings}"></TextBlock>
             <Button x:Name="ButtonClose" Click="ButtonClose_OnClick" HorizontalAlignment="Right" VerticalAlignment="Top" Background="{x:Null}" BorderBrush="{x:Null}" Width="30" Height="30" Padding="0">
                 <materialDesign:PackIcon Kind="Close" />
             </Button>
@@ -65,7 +65,7 @@
                                     <ColumnDefinition/>
                                 </Grid.ColumnDefinitions>
                                 <materialDesign:PackIcon Kind="InfoOutline" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" />
-                                <TextBlock Grid.Column="1" Foreground="White" Margin="15,0,0,0" Text="{x:Static res:Localization.EditProfile}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                                <TextBlock Grid.Column="1" Foreground="White" Margin="15,0,0,0" Text="{DynamicResource EditProfile}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
                             </Grid>
                         </ListViewItem>
                         <ListViewItem Padding="0">
@@ -76,18 +76,23 @@
                                 </Grid.ColumnDefinitions>
                                 <materialDesign:PackIcon Kind="BellRingOutline" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" />
                                 <TextBlock Grid.Column="1" Foreground="White" Margin="15,0,0,0" HorizontalAlignment="Left"
-                                           VerticalAlignment="Center" Text="{x:Static res:Localization.Notifications}"></TextBlock>
+                                           VerticalAlignment="Center" Text="{DynamicResource Notifications}"></TextBlock>
                             </Grid>
                         </ListViewItem>
                         <ListViewItem Padding="0">
                             <Grid Background="Transparent" Height="30" MinWidth="220">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="MouseLeftButtonDown" >
+                                        <i:InvokeCommandAction Command="{Binding ChatSettings}" />
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="20"/>
                                     <ColumnDefinition/>
                                 </Grid.ColumnDefinitions>
                                 <materialDesign:PackIcon Kind="MessageReply" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" />
                                 <TextBlock Grid.Column="1" Foreground="White" Margin="15,0,0,0" HorizontalAlignment="Left"
-                                           VerticalAlignment="Center" Text="{x:Static res:Localization.ChatSettings}"></TextBlock>
+                                           VerticalAlignment="Center" Text="{DynamicResource ChatSettings}"></TextBlock>
                             </Grid>
                         </ListViewItem>
                         <ListViewItem Padding="0">
@@ -98,7 +103,7 @@
                                 </Grid.ColumnDefinitions>
                                 <materialDesign:PackIcon Kind="Style" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" />
                                 <TextBlock Grid.Column="1" Foreground="White" Margin="15,0,0,0" HorizontalAlignment="Left"
-                                           VerticalAlignment="Center" Text="{x:Static res:Localization.Themes}"></TextBlock>
+                                           VerticalAlignment="Center" Text="{DynamicResource Themes}"></TextBlock>
                             </Grid>
                         </ListViewItem>
                     </ListView>
@@ -114,7 +119,7 @@
                                 </Grid.ColumnDefinitions>
                                 <materialDesign:PackIcon Kind="EmergencyExit" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" />
                                 <TextBlock Grid.Column="1" Foreground="Salmon" Margin="15,0,0,0" HorizontalAlignment="Left"
-                                           VerticalAlignment="Center" Text="{x:Static res:Localization.LogOut}"></TextBlock>
+                                           VerticalAlignment="Center" Text="{DynamicResource LogOut}"></TextBlock>
                             </Grid>
                         </ListViewItem>
                     </ListView>

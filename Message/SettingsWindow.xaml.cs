@@ -13,8 +13,6 @@ namespace Message
     {
         public SettingsWindow()
         {
-            System.Threading.Thread.CurrentThread.CurrentUICulture = GlobalBase.Language;
-
             InitializeComponent();
 
             DataContext = new SettingsWindowVM(this);

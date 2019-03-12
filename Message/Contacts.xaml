@@ -4,7 +4,6 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Message"
-        xmlns:res="clr-namespace:Message.Resources"
         mc:Ignorable="d" ShowInTaskbar="False"
 
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
@@ -32,7 +31,7 @@
 
         <TextBlock Grid.ColumnSpan="2" Grid.Row="0" Foreground="White"
                    Style="{StaticResource MaterialDesignSubheadingTextBlock}" Margin="10,0,0,0"
-                   Text="{x:Static res:Localization.Contacts}"></TextBlock>
+                   Text="{DynamicResource Contacts}"></TextBlock>
 
         <StackPanel Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Margin="5"
                     Orientation="Horizontal" VerticalAlignment="Center">
@@ -75,8 +74,8 @@
         </ListBox>
 
         <Button Command="{Binding AddContactCommand}" Grid.Column="0" Grid.Row="3"
-                Margin="10,0,10,10" Content="{x:Static res:Localization.AddContact}"></Button>
+                Margin="10,0,10,10" Content="{DynamicResource AddContact}"></Button>
         <Button Command="{Binding CloseCommand}" Grid.Column="1" Grid.Row="3"
-                Margin="10,0,10,10" Content="{x:Static res:Localization.Back}"></Button>
+                Margin="10,0,10,10" Content="{DynamicResource Back}"></Button>
     </Grid>
 </Window>

@@ -1,0 +1,81 @@
+﻿<Window x:Class="Message.ChatSettingWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Message"
+        mc:Ignorable="d"
+
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+
+        Title="ChatSettingWindow" BorderBrush="#FF353636" WindowStartupLocation="CenterOwner" WindowStyle="None"
+        BorderThickness="1" ResizeMode="NoResize"
+        Height="450" Width="250" Background="#FF353636">
+
+    <WindowChrome.WindowChrome>
+        <WindowChrome CaptionHeight="0" />
+    </WindowChrome.WindowChrome>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid VerticalAlignment="Top" Grid.Row="0">
+            <TextBlock Foreground="White" Margin="10,0,0,0" HorizontalAlignment="Left"
+                       VerticalAlignment="Center" Text="{DynamicResource Settings}"></TextBlock>
+            <Button x:Name="ButtonClose" Click="ButtonClose_OnClick" HorizontalAlignment="Right" VerticalAlignment="Top" Background="{x:Null}" BorderBrush="{x:Null}" Width="30" Height="30" Padding="0">
+                <materialDesign:PackIcon Kind="Close" />
+            </Button>
+        </Grid>
+        <Grid VerticalAlignment="Top" Grid.Row="1" Margin="0,10,0,0">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Foreground="White" Margin="10,0,0,0" Text="{DynamicResource Themes}"></TextBlock>
+
+            <Rectangle Grid.Row="1" Grid.Column="0" Fill="White" Height="50" Width="50" Margin="10,5,0,0" HorizontalAlignment="Left"></Rectangle>
+            <Rectangle Grid.Row="1" Grid.Column="1" Fill="White" Height="50" Width="50" Margin="0,5,0,0" HorizontalAlignment="Center" VerticalAlignment="Center"></Rectangle>
+            <Rectangle Grid.Row="1" Grid.Column="2" Fill="White" Height="50" Width="50" Margin="0,5,10,0" HorizontalAlignment="Right"></Rectangle>
+        </Grid>
+        <Grid Grid.Row="2" Margin="0,10,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="2*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            
+            <TextBlock Foreground="White" Grid.ColumnSpan="2" Text="{DynamicResource ChatBackgroundColor}" Margin="10,0,0,0"></TextBlock>
+            <Rectangle Grid.Column="0" Grid.Row="1" Fill="White" Height="50" Width="50" Margin="10,5,0,0" HorizontalAlignment="Left"></Rectangle>
+            <Grid Grid.Column="1" Grid.Row="1" Margin="0,5,0,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+
+            </Grid>
+        </Grid>
+        <Grid Grid.Row="3" Margin="0,10,0,0">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <TextBlock Foreground="White" Text="{DynamicResource SelectLaguage}" Margin="10,0,0,0"></TextBlock>
+            <ComboBox Name="LangComboBox" Grid.Row="1" Margin="10,5,10,0" Foreground="White">
+            </ComboBox>
+        </Grid>
+    </Grid>
+</Window>

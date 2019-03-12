@@ -16,8 +16,6 @@ namespace Message.ValidationRules
                     return new ValidationResult(true, null);
                 }
             }
-            if (GlobalBase.IsRussianLanguage())
-                return new ValidationResult(false, "Поле должно быть заполнено");
 
             return new ValidationResult(false, "Field must be filled");
         }

@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Message"
-        xmlns:res="clr-namespace:Message.Resources"
+        
         mc:Ignorable="d" ShowInTaskbar="False"
 
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
@@ -52,12 +52,12 @@
             </RadioButton>
 
             <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Login}"
-                     materialDesign:HintAssist.Hint="{x:Static res:Localization.Login}" IsEnabled="{Binding IsLogin}"
+                     materialDesign:HintAssist.Hint="{DynamicResource Login}" IsEnabled="{Binding IsLogin}"
                      Foreground="White" CaretBrush="{x:Null}" SelectionBrush="#FF919191"
                      Style="{StaticResource MaterialDesignFloatingHintTextBox}" VerticalAlignment="Bottom" Margin="5,0" />
 
             <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Email}"
-                     materialDesign:HintAssist.Hint="{x:Static res:Localization.Email}" IsEnabled="{Binding IsMail}"
+                     materialDesign:HintAssist.Hint="{DynamicResource Email}" IsEnabled="{Binding IsMail}"
                      Foreground="White" CaretBrush="{x:Null}" SelectionBrush="#FF919191"
                      Style="{StaticResource MaterialDesignFloatingHintTextBox}" VerticalAlignment="Bottom" Margin="5,0" />
         </Grid>
@@ -73,9 +73,9 @@
                     materialDesign:ButtonProgressAssist.Value="-1"
                     materialDesign:ButtonProgressAssist.IsIndicatorVisible="{Binding IsSending}"
                     materialDesign:ButtonProgressAssist.IsIndeterminate="{Binding IsSending}"
-                    Content="{x:Static res:Localization.Send}"
+                    Content="{DynamicResource Send}"
                     ></Button>
-            <Button Grid.Column="1" Margin="5" Command="{Binding Back}" Content="{x:Static res:Localization.Back}"></Button>
+            <Button Grid.Column="1" Margin="5" Command="{Binding Back}" Content="{DynamicResource Back}"></Button>
         </Grid>
     </Grid>
 </Window>

@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Message"
-        xmlns:res="clr-namespace:Message.Resources"
+        
         mc:Ignorable="d" ShowInTaskbar="False" Topmost="True"
 
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
@@ -32,7 +32,7 @@
 
         <TextBlock Grid.ColumnSpan="2" Grid.Row="0" Foreground="White"
                    Style="{StaticResource MaterialDesignSubheadingTextBlock}" Margin="10,0,0,0"
-                   Text="{x:Static res:Localization.Forvard}"/>
+                   Text="{DynamicResource Forvard}"/>
 
         <TextBox Grid.Row="1" Margin="10" Grid.ColumnSpan="2"
                  Style="{StaticResource MaterialDesignOutlinedTextFieldTextBox}"
@@ -44,7 +44,7 @@
 
         <ComboBox Grid.Row="2" Grid.ColumnSpan="2" Name="Combo" ItemsSource="{Binding ContactsList}"
                   SelectedItem="{Binding SelectedContact}" Margin="10,0,10,5" Foreground="White"
-                  materialDesign:HintAssist.Hint="{x:Static res:Localization.SelectContact}">
+                  materialDesign:HintAssist.Hint="{DynamicResource SelectContact}">
             <ComboBox.ItemTemplate>
                 <DataTemplate>
                     <WrapPanel  Orientation="Horizontal">
@@ -63,11 +63,11 @@
         </ComboBox>
 
         <Button Grid.Row="3" Grid.Column="0" Margin="10,0,5,0" 
-                Content="{x:Static res:Localization.Forvard}"
+                Content="{DynamicResource Forvard}"
                 Command="{Binding Forward}"/>
 
         <Button Grid.Row="3" Grid.Column="1" Margin="5,0,10,0"
-                Content="{x:Static res:Localization.Back}"
+                Content="{DynamicResource Back}"
                 Command="{Binding Back}"/>
     </Grid>
 </Window>

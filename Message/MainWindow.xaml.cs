@@ -15,7 +15,7 @@ namespace Message
     {
         public MainWindow()
         {
-            System.Threading.Thread.CurrentThread.CurrentUICulture = GlobalBase.Language;
+             
 
             InitializeComponent();
 

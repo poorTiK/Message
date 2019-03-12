@@ -13,8 +13,6 @@ namespace Message
     {
         public ForgotPassWindow()
         {
-            System.Threading.Thread.CurrentThread.CurrentUICulture = GlobalBase.Language;
-
             InitializeComponent();
 
             DataContext = new ForgotPassWindowVM(this);
