@@ -267,6 +267,9 @@ namespace Message.UserServiceReference {
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private Message.UserServiceReference.User UserOwnerField;
         
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int UserOwnerIdField;
+        
         [global::System.ComponentModel.BrowsableAttribute(false)]
         public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
             get {
@@ -303,6 +306,19 @@ namespace Message.UserServiceReference {
             }
         }
         
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int UserOwnerId {
+            get {
+                return this.UserOwnerIdField;
+            }
+            set {
+                if ((this.UserOwnerIdField.Equals(value) != true)) {
+                    this.UserOwnerIdField = value;
+                    this.RaisePropertyChanged("UserOwnerId");
+                }
+            }
+        }
+        
         public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
         
         protected void RaisePropertyChanged(string propertyName) {
@@ -322,6 +338,9 @@ namespace Message.UserServiceReference {
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private Message.UserServiceReference.User UserOwnedField;
         
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int UserOwnedIdField;
+        
         [System.Runtime.Serialization.DataMemberAttribute()]
         public Message.UserServiceReference.User UserOwned {
             get {
@@ -331,6 +350,19 @@ namespace Message.UserServiceReference {
                 if ((object.ReferenceEquals(this.UserOwnedField, value) != true)) {
                     this.UserOwnedField = value;
                     this.RaisePropertyChanged("UserOwned");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int UserOwnedId {
+            get {
+                return this.UserOwnedIdField;
+            }
+            set {
+                if ((this.UserOwnedIdField.Equals(value) != true)) {
+                    this.UserOwnedIdField = value;
+                    this.RaisePropertyChanged("UserOwnedId");
                 }
             }
         }
@@ -345,6 +377,9 @@ namespace Message.UserServiceReference {
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private Message.UserServiceReference.ChatGroup ChatGroupField;
         
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int ChatGroupIdField;
+        
         [System.Runtime.Serialization.DataMemberAttribute()]
         public Message.UserServiceReference.ChatGroup ChatGroup {
             get {
@@ -354,6 +389,19 @@ namespace Message.UserServiceReference {
                 if ((object.ReferenceEquals(this.ChatGroupField, value) != true)) {
                     this.ChatGroupField = value;
                     this.RaisePropertyChanged("ChatGroup");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int ChatGroupId {
+            get {
+                return this.ChatGroupIdField;
+            }
+            set {
+                if ((this.ChatGroupIdField.Equals(value) != true)) {
+                    this.ChatGroupIdField = value;
+                    this.RaisePropertyChanged("ChatGroupId");
                 }
             }
         }

@@ -11,6 +11,7 @@
     <xs:sequence>
       <xs:element minOccurs="0" name="Id" type="xs:int" />
       <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/ServerWCF.Model" minOccurs="0" name="UserOwner" nillable="true" type="q1:User" />
+      <xs:element minOccurs="0" name="UserOwnerId" type="xs:int" />
     </xs:sequence>
   </xs:complexType>
   <xs:element name="BaseContact" nillable="true" type="tns:BaseContact" />
@@ -19,6 +20,7 @@
       <xs:extension base="tns:BaseContact">
         <xs:sequence>
           <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/ServerWCF.Model" minOccurs="0" name="UserOwned" nillable="true" type="q2:User" />
+          <xs:element minOccurs="0" name="UserOwnedId" type="xs:int" />
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
@@ -29,6 +31,7 @@
       <xs:extension base="tns:BaseContact">
         <xs:sequence>
           <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/ServerWCF.Model" minOccurs="0" name="ChatGroup" nillable="true" type="q3:ChatGroup" />
+          <xs:element minOccurs="0" name="ChatGroupId" type="xs:int" />
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>

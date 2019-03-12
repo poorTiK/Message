@@ -51,7 +51,7 @@ namespace ServerWCF.Services
                     contact.UserOwner = ownerFromDb;
                     contact.UserOwned = ownedFromDb;
 
-                    if (userContext.Contacts.Where(c => ( (c.UserOwner.Id == owner.Id) && ( (c as UserToUserContact).UserOwned.Id == owned.Id) ) ).FirstOrDefault() != null )
+                    if (userContext.Contacts.Where(c => ( (c.UserOwnerId == owner.Id) && ( (c as UserToUserContact).UserOwnedId == owned.Id) ) ).FirstOrDefault() != null )
                     {
                         return false;
                     }
@@ -74,16 +74,14 @@ namespace ServerWCF.Services
             {
                 try
                 {
-                    List<BaseContact> contacts = userContext.Contacts.Include("UserOwner")
-                        .Include("UserOwned")
-                        .ToList();
+                    List<BaseContact> contacts = userContext.Contacts.Include("UserOwner").ToList();
 
                     User ownerFromDb = userContext.Users.Where(u => u.Login == owner.Login).FirstOrDefault();
                     User ownedFromDb = userContext.Users.Where(u => u.Login == owned.Login).FirstOrDefault();
 
                     foreach (BaseContact contact in contacts)
                     {
-                        if (contact.UserOwner.Id == ownerFromDb.Id && ((UserToUserContact)contact).UserOwned.Id == ownedFromDb.Id)
+                        if (contact.UserOwnerId == ownerFromDb.Id && (contact as UserToUserContact).UserOwnedId == ownedFromDb.Id)
                         {
                             userContext.Contacts.Remove(contact);
                             userContext.SaveChanges();
@@ -118,9 +116,9 @@ namespace ServerWCF.Services
 
                     contactsForOwner = db.Users.SqlQuery(" select * " +
                             "from Users " +
-                            "where Users.Id in (select UserOwned_Id " +
+                            "where Users.Id in (select UserOwnedId " +
                             "from BaseContacts " +
-                            "where BaseContacts.UserOwner_Id = @p0);", userId).ToList();
+                            "where BaseContacts.UserOwnerId = @p0);", userId).ToList();
                 }
                 catch (Exception ex)
                 {

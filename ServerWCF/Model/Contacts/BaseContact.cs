@@ -21,6 +21,13 @@ namespace ServerWCF.Model.Contacts
             get; set;
         }
 
+        [DataMember]
+        public int UserOwnerId
+        {
+            get; set;
+        }
+
+        [ForeignKey("UserOwnerId")]
         [InverseProperty("Contacts")]
         [DataMember]
         public User UserOwner
