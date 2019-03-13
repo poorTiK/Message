@@ -25,11 +25,13 @@ namespace Message
 
         public App()
         {
+            InitializeComponent();
+
+            App.LanguageChanged += App_LanguageChanged;
+
             m_Languages.Clear();
             m_Languages.Add(new CultureInfo("en-US"));
             m_Languages.Add(new CultureInfo("ru-RU"));
-
-            App.LanguageChanged += App_LanguageChanged;
         }
 
         public static CultureInfo Language
