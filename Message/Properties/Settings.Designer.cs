@@ -34,5 +34,17 @@ namespace Message.Properties {
                 this["DefaultLanguage"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Resources/theme.xaml")]
+        public string DefaultTheme {
+            get {
+                return ((string)(this["DefaultTheme"]));
+            }
+            set {
+                this["DefaultTheme"] = value;
+            }
+        }
     }
 }

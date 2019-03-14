@@ -64,6 +64,8 @@ namespace Message
 
             Application.Current.Resources.MergedDictionaries.RemoveAt(5);
             Application.Current.Resources.MergedDictionaries.Add(dict);
+
+            SaveTheme();
         }
 
         private void LightTheme_OnMouseDown(object sender, MouseButtonEventArgs e)
@@ -73,6 +75,8 @@ namespace Message
 
             Application.Current.Resources.MergedDictionaries.RemoveAt(5);
             Application.Current.Resources.MergedDictionaries.Add(dict);
+
+            SaveTheme();
         }
 
         private void GreenTheme_OnMouseDown(object sender, MouseButtonEventArgs e)
@@ -82,6 +86,14 @@ namespace Message
 
             Application.Current.Resources.MergedDictionaries.RemoveAt(5);
             Application.Current.Resources.MergedDictionaries.Add(dict);
+
+            SaveTheme();
+        }
+
+        public void SaveTheme()
+        {
+            Properties.Settings.Default.DefaultTheme = Application.Current.Resources.MergedDictionaries.ElementAt(5).Source.OriginalString;
+            Properties.Settings.Default.Save();
         }
     }
 }
