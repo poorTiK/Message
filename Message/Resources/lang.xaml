@@ -4,7 +4,7 @@
 
                     xmlns:v="clr-namespace:System;assembly=mscorlib">
 
-    <v:String x:Key="AddContact">Add Contact</v:String>
+    <v:String x:Key="AddContact">Add</v:String>
     <v:String x:Key="Apply">Apply</v:String>
     <v:String x:Key="AppName">App name</v:String>
     <v:String x:Key="AppVersion">Version 1.0</v:String>

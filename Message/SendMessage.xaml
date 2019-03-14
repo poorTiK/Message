@@ -9,10 +9,7 @@
     <Grid Margin="0,0,0,15" MinHeight="60">
         <Grid HorizontalAlignment="Right">
             <Border Grid.Column="0" CornerRadius="10" BorderBrush="{x:Null}"
-                    BorderThickness="1,1,1,1" HorizontalAlignment="Left">
-                <Border.Background>
-                    <SolidColorBrush Color="#262626"></SolidColorBrush>
-                </Border.Background>
+                    BorderThickness="1,1,1,1" HorizontalAlignment="Left" Background="{DynamicResource MessageBackGround}">
                 <Border.Effect>
                     <DropShadowEffect Opacity="0.2" Direction="310" ShadowDepth="6" BlurRadius="15" />
                 </Border.Effect>
@@ -23,19 +20,19 @@
                         <RowDefinition Height="auto" />
                         <RowDefinition Height="auto" />
                     </Grid.RowDefinitions>
-                    <TextBlock Name="MessageText" FontSize="14" Padding="15,5" TextWrapping="Wrap" Grid.Row="0" Foreground="#FFC7C7C7" HorizontalAlignment="Right"> Hello </TextBlock>
-                    <TextBlock Name="SendTime" Margin="0,0,15,0" Grid.Row="1" FontWeight="Bold" Foreground="#FF63A35D" VerticalAlignment="Bottom" HorizontalAlignment="Right">20:11</TextBlock>
+                    <TextBlock Name="MessageText" FontSize="14" Padding="15,5" TextWrapping="Wrap" Grid.Row="0" Foreground="{DynamicResource MessageForeground}" HorizontalAlignment="Right"> Hello </TextBlock>
+                    <TextBlock Name="SendTime" Margin="0,0,15,0" Grid.Row="1" FontWeight="Bold" Foreground="{DynamicResource MessageTime}" VerticalAlignment="Bottom" HorizontalAlignment="Right">20:11</TextBlock>
                 </Grid>
             </Border>
             <Grid.ContextMenu>
-                <ContextMenu Background="#262626">
-                    <MenuItem Header="{DynamicResource EditMessage}" Background="#262626" 
+                <ContextMenu Background="{DynamicResource MenuItem}">
+                    <MenuItem Header="{DynamicResource EditMessage}" Background="{DynamicResource MenuItem}" 
                               Foreground="White" Command="{Binding Edit}"></MenuItem>
-                    <MenuItem Header="{DynamicResource Copy}" Background="#262626" 
+                    <MenuItem Header="{DynamicResource Copy}" Background="{DynamicResource MenuItem}" 
                               Foreground="White" Command="{Binding Copy}"></MenuItem>
-                    <MenuItem Header="{DynamicResource Forvard}" Background="#262626" 
+                    <MenuItem Header="{DynamicResource Forvard}" Background="{DynamicResource MenuItem}" 
                               Foreground="White" Command="{Binding Forward}"></MenuItem>
-                    <MenuItem Header="{DynamicResource DeleteСontact}" Background="#262626" 
+                    <MenuItem Header="{DynamicResource DeleteСontact}" Background="{DynamicResource MenuItem}" 
                               Foreground="White" Command="{Binding Delete}"></MenuItem>
                 </ContextMenu>
             </Grid.ContextMenu>

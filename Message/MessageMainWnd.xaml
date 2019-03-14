@@ -25,29 +25,29 @@
 
     <Grid>
         <Grid>
-            <Grid VerticalAlignment="Top" Background="#353636" Height="22">
+            <Grid VerticalAlignment="Top" Background="{DynamicResource HeaderBrush}" Height="22">
 
                 <StackPanel  WindowChrome.IsHitTestVisibleInChrome="True" VerticalAlignment="Bottom" Orientation="Horizontal" Margin="0" HorizontalAlignment="Right">
                     <Button Name="MinimizeButton" Background="{x:Null}" BorderBrush="{x:Null}"
-                        Foreground="White" Height="auto" HorizontalAlignment="Center"
+                        Foreground="{DynamicResource Foreground}" Height="auto" HorizontalAlignment="Center"
                         VerticalAlignment="Center">
-                        <materialDesign:PackIcon
+                        <materialDesign:PackIcon Foreground="White"
                         Kind="WindowMinimize" />
                     </Button>
                     <Button Name="MaximizeMinimizeButton" Background="{x:Null}" BorderBrush="{x:Null}"
-                        Foreground="White" Height="auto" HorizontalAlignment="Center"
+                        Foreground="{DynamicResource Foreground}" Height="auto" HorizontalAlignment="Center"
                         VerticalAlignment="Center">
-                        <materialDesign:PackIcon Kind="WindowMaximize" />
+                        <materialDesign:PackIcon Kind="WindowMaximize" Foreground="White"/>
                     </Button>
                     <Button Name="CloseButton" Background="{x:Null}" BorderBrush="{x:Null}"
-                        Foreground="White" Height="auto" HorizontalAlignment="Center"
+                        Foreground="{DynamicResource Foreground}" Height="auto" HorizontalAlignment="Center"
                         VerticalAlignment="Center" Command="{Binding Exit}">
-                        <materialDesign:PackIcon
+                        <materialDesign:PackIcon Foreground="White"
                         Kind="WindowClose" />
                     </Button>
                 </StackPanel>
             </Grid>
-            <Grid Margin="0,22,0,0" Background="#4A4A4A" MouseDown="UIElement_OnMouseDown" Name="MainGrid">
+            <Grid Margin="0,22,0,0" Background="{DynamicResource ChatBackground}" MouseDown="UIElement_OnMouseDown" Name="MainGrid">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="53" />
                     <RowDefinition />
@@ -61,10 +61,10 @@
                     <Border.Effect>
                         <DropShadowEffect BlurRadius="50" ShadowDepth="3" Direction="264" Opacity="0.33" />
                     </Border.Effect>
-                    <Grid Background="#262626">
+                    <Grid Background="{DynamicResource WindowBackGround}">
                         <Grid Margin="0">
                             <StackPanel Orientation="Vertical" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="15,5,0,0">
-                                <TextBlock Foreground="White">
+                                <TextBlock Foreground="{DynamicResource Foreground}">
                                     <TextBlock.Text>
                                         <MultiBinding StringFormat="{}{0} {1}">
                                             <Binding Path="SelectedContact.FirstName" />
@@ -72,67 +72,70 @@
                                         </MultiBinding>
                                     </TextBlock.Text>
                                 </TextBlock>
-                                <TextBlock Foreground="#FF63A35D" Text="{Binding SelectedContact.Status}"></TextBlock>
+                                <TextBlock Foreground="{DynamicResource Status}" Text="{Binding SelectedContact.Status}"></TextBlock>
                             </StackPanel>
 
                             <StackPanel Name="DialogSearch" Visibility="{Binding IsDialogSearchVisible, Converter={StaticResource BoolToVisConverter}}"
                                 Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,122,0">
-                                <materialDesign:PackIcon Kind="Magnify" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" />
-                                <TextBox Margin="0,10,10,10" Width="122" Text="{Binding DialogSearchStr, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Foreground="White" SelectionBrush="#FF919191" />
+                                <materialDesign:PackIcon Kind="Magnify" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="{DynamicResource Foreground}" />
+                                <TextBox Margin="0,10,10,10" Width="122" Text="{Binding DialogSearchStr, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" SelectionBrush="{DynamicResource SelectionBrush}" />
                             </StackPanel>
 
-                            <Menu Background="#262626" HorizontalAlignment="Right" IsEnabled="{Binding IsMenuEnabled}">
-                                <MenuItem Background="{x:Null}" BorderBrush="{x:Null}" Height="53"
+                            <Menu HorizontalAlignment="Right" IsEnabled="{Binding IsMenuEnabled}" Background="{DynamicResource MenuHead}">
+                                <MenuItem Background="{x:Null}" BorderBrush="{x:Null}" Height="53" Foreground="{DynamicResource Foreground}"
                                           Command="{Binding DialogSearchCommand}">
                                     <MenuItem.Header>
-                                        <materialDesign:PackIcon Kind="CommentSearchOutline" Width="25" Height="25" Foreground="White" />
+                                        <materialDesign:PackIcon Kind="CommentSearchOutline" Width="25" Height="25" Foreground="{DynamicResource Foreground}" />
                                     </MenuItem.Header>
                                 </MenuItem>
-                                <MenuItem Background="{x:Null}" BorderBrush="{x:Null}" Height="53">
+                                <MenuItem Background="{x:Null}" BorderBrush="{x:Null}" Height="53" Foreground="{DynamicResource Foreground}">
                                     <MenuItem.Header>
-                                        <materialDesign:PackIcon Kind="EllipsisVertical" Width="25" Height="25" Foreground="White" />
+                                        <materialDesign:PackIcon Kind="EllipsisVertical" Width="25" Height="25" Foreground="{DynamicResource Foreground}" />
                                     </MenuItem.Header>
-                                    <MenuItem Header="{DynamicResource ViewProfile}" Background="#353636" Foreground="White" Command="{Binding ViewProfile}" />
-                                    <MenuItem Header="{DynamicResource EditContact}" Background="#353636" Foreground="White" />
-                                    <MenuItem Header="{DynamicResource DeleteСontact}" Background="#353636" Foreground="White" />
-                                    <MenuItem Header="{DynamicResource DeleteConversation}" Background="#353636" Foreground="White" />
-                                    <MenuItem Header="{DynamicResource BlockUser}" Background="#353636" Foreground="White" />
+                                    <MenuItem Header="{DynamicResource ViewProfile}" Command="{Binding ViewProfile}" Background="{DynamicResource MenuItem}" Foreground="{DynamicResource Foreground}"/>
+                                    <MenuItem Header="{DynamicResource EditContact}" Background="{DynamicResource MenuItem}" Foreground="{DynamicResource Foreground}"/>
+                                    <MenuItem Header="{DynamicResource DeleteСontact}" Background="{DynamicResource MenuItem}" Foreground="{DynamicResource Foreground}"/>
+                                    <MenuItem Header="{DynamicResource DeleteConversation}" Background="{DynamicResource MenuItem}" Foreground="{DynamicResource Foreground}"/>
+                                    <MenuItem Header="{DynamicResource BlockUser}"  Background="{DynamicResource MenuItem}" Foreground="{DynamicResource Foreground}"/>
                                 </MenuItem>
                             </Menu>
                         </Grid>
                     </Grid>
                 </Border>
 
-                <Grid Grid.Column="0" Grid.Row="0" Background="#262626" Margin="0">
+                <Grid Grid.Column="0" Grid.Row="0" Background="{DynamicResource WindowBackGround}" Margin="0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="auto" />
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
-                    <Button x:Name="ButtonOpen" Click="ButtonOpen_Click" Grid.Column="0" Style="{StaticResource MaterialDesignFlatButton}" Foreground="White">
-                        <materialDesign:PackIcon Kind="HamburgerMenu" Foreground="White" />
+                    <Button x:Name="ButtonOpen" Click="ButtonOpen_Click" Grid.Column="0" Style="{StaticResource MaterialDesignFlatButton}" Foreground="{DynamicResource Foreground}">
+                        <materialDesign:PackIcon Kind="HamburgerMenu" Foreground="{DynamicResource Foreground}" />
                     </Button>
                     <StackPanel Grid.Column="1" Margin="5"
                     Orientation="Horizontal">
-                        <materialDesign:PackIcon Kind="Magnify" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" />
-                        <TextBox Margin="0,10,10,10" Width="122" Foreground="White" SelectionBrush="#FF919191" Text="{Binding SearchContactStr, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        <materialDesign:PackIcon Kind="Magnify" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="{DynamicResource Foreground}" />
+                        <TextBox Margin="0,10,10,10" Width="122" Foreground="{DynamicResource Foreground}" SelectionBrush="{DynamicResource SelectionBrush}" Text="{Binding SearchContactStr, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                     </StackPanel>
                 </Grid>
                 <Border Grid.Column="0" Grid.Row="1">
                     <Border.Effect>
                         <DropShadowEffect BlurRadius="40" ShadowDepth="3" Direction="281" Opacity="0.33" />
                     </Border.Effect>
-                    <Grid Background="#262626">
-                        <ListBox Foreground="#DDFFFFFF" Name="List" ItemsSource="{Binding ContactsList, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" SelectedItem="{Binding SelectedContact, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
+                    <Grid Background="{DynamicResource WindowBackGround}">
+                        <ListBox Foreground="{DynamicResource SideMenu}" Name="List" ItemsSource="{Binding ContactsList, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" SelectedItem="{Binding SelectedContact, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
                             <ListBox.ContextMenu>
-                                <ContextMenu Background="#262626">
-                                    <MenuItem Background="#262626" Foreground="White"
+                                <ContextMenu Background="{DynamicResource WindowBackGround}">
+                                    <MenuItem Background="{DynamicResource MenuItem}"
+                                              Foreground="{DynamicResource Foreground}"
                                               Header="{DynamicResource ViewProfile}"
                                               Command="{Binding ViewProfile}"></MenuItem>
-                                    <MenuItem Background="#262626" Foreground="White"
+                                    <MenuItem Background="{DynamicResource MenuItem}"
+                                              Foreground="{DynamicResource Foreground}"
                                               Header="{DynamicResource MarkAsUread}"></MenuItem>
-                                    <MenuItem Background="#262626" Foreground="White"
+                                    <MenuItem Background="{DynamicResource MenuItem}"
+                                              Foreground="{DynamicResource Foreground}"
                                               Header="{DynamicResource DeleteConversation}"></MenuItem>
-                                    <MenuItem Background="#262626" Foreground="Salmon"
+                                    <MenuItem Background="{DynamicResource MenuItem}" Foreground="Salmon"
                                               Header="{DynamicResource BlockUser}"></MenuItem>
                                 </ContextMenu>
                             </ListBox.ContextMenu>
@@ -168,7 +171,7 @@
                                         </TextBlock>
 
                                         <TextBlock Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="1" Margin="10,0,0,0"
-                                                   Foreground="#FF63A35D" Text="{Binding Path=Status}"></TextBlock>
+                                                   Foreground="{DynamicResource Status}" Text="{Binding Path=Status}"></TextBlock>
                                     </Grid>
                                 </DataTemplate>
                             </ListBox.ItemTemplate>
@@ -187,7 +190,7 @@
                     </ScrollViewer>
                 </Grid>
                 <Grid Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2">
-                    <Border Height="35" Background="#262626" VerticalAlignment="Bottom">
+                    <Border Height="35" Background="{DynamicResource WindowBackGround}" VerticalAlignment="Bottom">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" />
@@ -197,13 +200,13 @@
 
                             <Button Grid.Column="0" Style="{StaticResource MaterialDesignFlatButton}"
                                     Command="{Binding AddFile}" IsEnabled="{Binding IsMenuEnabled}">
-                                <materialDesign:PackIcon Kind="Paperclip" Foreground="White" />
+                                <materialDesign:PackIcon Kind="Paperclip" Foreground="{DynamicResource ButtonForeground}" />
                             </Button>
                             <TextBox Grid.Column="1" IsEnabled="{Binding IsMenuEnabled}"
-                                SelectionBrush="#FF919191" TextWrapping="Wrap"
-                                     VerticalContentAlignment="Stretch" Name="MessageTextBox"
+                                SelectionBrush="{DynamicResource SelectionBrush}" TextWrapping="Wrap"
+                                     VerticalContentAlignment="Stretch" Name="MessageTextBox" Foreground="{DynamicResource Foreground}"
                                      materialDesign:HintAssist.Hint="{DynamicResource Write}" VerticalScrollBarVisibility="Auto"
-                                     Foreground="White" Margin="10,2,0,2" VerticalAlignment="Center"
+                                     Margin="10,2,0,2" VerticalAlignment="Center"
                                     Text="{Binding MessageText, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}">
                                 <TextBox.InputBindings>
                                     <KeyBinding Command="{Binding Path = OnSendMessage}" Key="Enter" />
@@ -211,15 +214,15 @@
                             </TextBox>
                             <Button Grid.Column="2" Style="{StaticResource MaterialDesignFlatButton}" HorizontalAlignment="Right"
                                 Command="{Binding OnSendMessage}" IsEnabled="{Binding IsMenuEnabled}">
-                                <materialDesign:PackIcon Kind="MessageTextOutline" Foreground="White" />
+                                <materialDesign:PackIcon Kind="MessageTextOutline" Foreground="{DynamicResource ButtonForeground}" />
                             </Button>
                         </Grid>
                     </Border>
                 </Grid>
             </Grid>
-            <Grid x:Name="SideMenu" Focusable="True" Width="0" HorizontalAlignment="Left" Background="#DDFFFFFF" RenderTransformOrigin="0.5,0.5" Margin="0,22,0,0">
-                <StackPanel Background="#262626">
-                    <Grid Height="140" Background="#195E4D">
+            <Grid x:Name="SideMenu" Focusable="True" Width="0" HorizontalAlignment="Left" Background="{DynamicResource SideSlideMenu}" RenderTransformOrigin="0.5,0.5" Margin="0,22,0,0">
+                <StackPanel Background="{DynamicResource SideSlideMenu}">
+                    <Grid Height="140" Background="{DynamicResource SideMenuTopPanel}">
                         <Grid.RowDefinitions>
                             <RowDefinition />
                             <RowDefinition />
@@ -232,8 +235,8 @@
                                 </Ellipse.Fill>
                             </Ellipse>
                             <StackPanel Orientation="Vertical" Width="122" VerticalAlignment="Center" Margin="15,7,0,7">
-                                <TextBlock Text="{Binding CurrentUserName}" Foreground="White"></TextBlock>
-                                <TextBlock Text="{Binding CurrentUserLogin}" Foreground="White"></TextBlock>
+                                <TextBlock Text="{Binding CurrentUserName}" ></TextBlock>
+                                <TextBlock Text="{Binding CurrentUserLogin}" ></TextBlock>
                             </StackPanel>
                         </StackPanel>
                     </Grid>
@@ -250,7 +253,7 @@
                                     <ColumnDefinition Width="Auto"></ColumnDefinition>
                                 </Grid.ColumnDefinitions>
                                         <materialDesign:PackIcon Kind="AccountSupervisor" Grid.Column="0" Width="20" Height="20" Foreground="Gray" Margin="5" VerticalAlignment="Center" />
-                                <TextBlock Text="{DynamicResource Contacts}" Grid.Column="1" FontSize="15" Margin="10" Foreground="White"/>
+                                <TextBlock Text="{DynamicResource Contacts}" Grid.Column="1" FontSize="15" Margin="10"/>
                             </Grid>
                         </ListViewItem>
                         <ListViewItem Height="45" Padding="0">
@@ -265,15 +268,15 @@
                                     <ColumnDefinition Width="Auto"></ColumnDefinition>
                                 </Grid.ColumnDefinitions>
                                 <materialDesign:PackIcon Kind="GearBox" Width="20" Height="20" Foreground="Gray" Margin="5" VerticalAlignment="Center" />
-                                <TextBlock Grid.Column="1" Text="{DynamicResource Settings}" FontSize="15" Margin="10" Foreground="White"/>
+                                <TextBlock Grid.Column="1" Text="{DynamicResource Settings}" FontSize="15" Margin="10"/>
                             </Grid>
                         </ListViewItem>
                     </ListView>
                 </StackPanel>
                 <StackPanel VerticalAlignment="Bottom" Margin="10,0,10,10">
-                    <TextBlock Foreground="White" FontWeight="Bold" Text="{DynamicResource AppName}"></TextBlock>
-                    <TextBlock Foreground="White" Text="{DynamicResource AppVersion}"></TextBlock>
-                    <TextBlock Foreground="White">
+                    <TextBlock FontWeight="Bold" Text="{DynamicResource AppName}"></TextBlock>
+                    <TextBlock Text="{DynamicResource AppVersion}"></TextBlock>
+                    <TextBlock >
                         <Hyperlink NavigateUri="https://github.com/poorTiK/Message" RequestNavigate="Hyperlink_OnRequestNavigate" Foreground="#FF63A35D">Source code
                         </Hyperlink>
                     </TextBlock>
