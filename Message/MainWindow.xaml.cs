@@ -121,5 +121,10 @@ namespace Message
                 Visibility = Visibility.Hidden;
             }
         }
+
+        private void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            App.Language = Properties.Settings.Default.DefaultLanguage;
+        }
     }
 }

@@ -12,7 +12,8 @@
 
         Name="MainWnd" Height="250" Width="450"
         WindowStartupLocation="CenterScreen" WindowStyle="None"
-        BorderThickness="0" ResizeMode="NoResize">
+        BorderThickness="0" ResizeMode="NoResize"
+        Loaded="MainWindow_OnLoaded">
     <WindowChrome.WindowChrome>
         <WindowChrome CaptionHeight="22" />
     </WindowChrome.WindowChrome>

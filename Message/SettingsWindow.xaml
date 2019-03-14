@@ -95,17 +95,6 @@
                                            VerticalAlignment="Center" Text="{DynamicResource ChatSettings}"></TextBlock>
                             </Grid>
                         </ListViewItem>
-                        <ListViewItem Padding="0">
-                            <Grid Background="Transparent" Height="30" MinWidth="220">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="20"/>
-                                    <ColumnDefinition/>
-                                </Grid.ColumnDefinitions>
-                                <materialDesign:PackIcon Kind="Style" Foreground="{DynamicResource HeaderButton}" HorizontalAlignment="Center" VerticalAlignment="Center" />
-                                <TextBlock Grid.Column="1" Margin="15,0,0,0" HorizontalAlignment="Left"
-                                           VerticalAlignment="Center" Text="{DynamicResource Themes}"></TextBlock>
-                            </Grid>
-                        </ListViewItem>
                     </ListView>
                 </Grid>
 
