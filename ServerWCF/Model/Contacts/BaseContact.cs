@@ -12,7 +12,7 @@ namespace ServerWCF.Model.Contacts
     [DataContract]
     [KnownType(typeof(UserToUserContact))]
     [KnownType(typeof(UserToGroupContact))]
-    public class BaseContact
+    public abstract class BaseContact
     {
         [Key]
         [DataMember]

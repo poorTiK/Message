@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 namespace ServerWCF.Model.UiInfo
 {
     [DataContract]
-    public class UserUiInfo : UiInfo
+    public class ChatGroupUiInfo : UiInfo
     {
         [DataMember]
-        public int UserId { get; set; }
+        public int ChatGroupId { get; set; }
     }
 }
