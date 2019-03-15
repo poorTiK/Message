@@ -41,5 +41,21 @@
     <v:String x:Key="Themes">Темы</v:String>
     <v:String x:Key="ViewProfile">Профиль</v:String>
     <v:String x:Key="Write">Текст сообщения...</v:String>
-
+    <v:String x:Key="Error">Ошибка</v:String>
+    <v:String x:Key="RegisterDone">Регистрация завершена</v:String>
+    <v:String x:Key="ChangesSaved">Изменения сохранены</v:String>
+    <v:String x:Key="EmailSend">Сообщение отправлено на емейл</v:String>
+    <v:String x:Key="RestorePass">Восстановление пароля</v:String>
+    <v:String x:Key="AskForDelMessage">Вы уверены что хотите удалить сообщение?</v:String>
+    <v:String x:Key="CantFindUser">Пользователь не найден :(</v:String>
+    <v:String x:Key="RegError">Ошибка регистрации</v:String>
+    <v:String x:Key="SameUserExits">Такой пользователь уже существует</v:String>
+    <v:String x:Key="EmptyLogin">Логин пустой</v:String>
+    <v:String x:Key="PassValidation">Пароль должен быть длиной 8 символов с использование латинских символов и цифр</v:String>
+    <v:String x:Key="PassMatchValidation">Пароли не совпадают</v:String>
+    <v:String x:Key="EmailValidation">Не валидный Емейл</v:String>
+    <v:String x:Key="LogPassValid">Не верный логин или пароль</v:String>
+    <v:String x:Key="FirstNameValid">Поле "Имя" не может быть пустым</v:String>
+    <v:String x:Key="LastNameValid">Поле "Фамилия" не может быть пустым</v:String>
+    <v:String x:Key="EmailEmpty">Поле "Емейл" не может быть пустым или не валидным</v:String>
 </ResourceDictionary>

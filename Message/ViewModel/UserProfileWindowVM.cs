@@ -217,7 +217,7 @@ namespace Message.ViewModel
                     {
                         Application.Current.Dispatcher.Invoke(new Action((() =>
                         {
-                            CustomMessageBox.Show("Changes saved");
+                            CustomMessageBox.Show(Application.Current.Resources.MergedDictionaries[4]["ChangesSaved"].ToString());
                         })));
                     }
                 }
@@ -229,23 +229,23 @@ namespace Message.ViewModel
             string message = string.Empty;
             if (string.IsNullOrWhiteSpace(UserName))
             {
-                message = "First name can't be empty";
+                message = Application.Current.Resources.MergedDictionaries[4]["FirstNameValid"].ToString();
                 return false;
             }
             else if (string.IsNullOrWhiteSpace(UserLastName))
             {
-                message = "Last name can't be empty";
+                message = Application.Current.Resources.MergedDictionaries[4]["LastNameValid"].ToString();
                 return false;
             }
             else if (string.IsNullOrWhiteSpace(UserEmail) || UserEmail == string.Empty || !Regex.IsMatch(UserEmail, @"\A(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)\Z", RegexOptions.IgnoreCase))
             {
-                message = "Email can't be empty\n and must be valid";
+                message = Application.Current.Resources.MergedDictionaries[4]["EmailEmpty"].ToString();
                 return false;
             }
 
             if (message != string.Empty)
             {
-                Application.Current.Dispatcher.Invoke(new Action((() => { CustomMessageBox.Show("Error", message); })));
+                Application.Current.Dispatcher.Invoke(new Action((() => { CustomMessageBox.Show(Application.Current.Resources.MergedDictionaries[4]["Error"].ToString(), message); })));
                 return false;
             }
 

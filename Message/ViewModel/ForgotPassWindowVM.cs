@@ -110,7 +110,7 @@ namespace Message.ViewModel
 
                 Application.Current.Dispatcher.Invoke(new Action((() =>
                 {
-                    CustomMessageBox.Show("Error", "Can't find user :(");
+                    CustomMessageBox.Show(Application.Current.Resources.MergedDictionaries[4]["Error"].ToString(), Application.Current.Resources.MergedDictionaries[4]["CantFindUser"].ToString());
                     ts.Cancel();
                 })));
             }, ct).ContinueWith((task =>
@@ -119,7 +119,7 @@ namespace Message.ViewModel
                 {
                     Application.Current.Dispatcher.Invoke(new Action((() =>
                     {
-                        CustomMessageBox.Show("Password restore", "The message has been sent to email");
+                        CustomMessageBox.Show(Application.Current.Resources.MergedDictionaries[4]["RestorePass"].ToString(), Application.Current.Resources.MergedDictionaries[4]["EmailSend"].ToString());
                     })));
                 }
                 IsSending = false;
@@ -152,7 +152,7 @@ namespace Message.ViewModel
 
             Application.Current.Dispatcher.Invoke(new Action((() =>
             {
-                CustomMessageBox.Show("Password restore", "The message has been sent to email");
+                CustomMessageBox.Show(Application.Current.Resources.MergedDictionaries[4]["RestorePass"].ToString(), Application.Current.Resources.MergedDictionaries[4]["EmailSend"].ToString());
                 IsSending = false;
             })));
         }
