@@ -3,6 +3,7 @@ using ServerWCF.Contracts;
 using ServerWCF.Model;
 using ServerWCF.Model.Contacts;
 using ServerWCF.Model.Messages;
+using ServerWCF.Model.UiInfo;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -31,6 +32,7 @@ namespace ServerWCF.Services
             public User User { get; set; }
             public IUserCallback UserCallback { get; set; }
         }
+
         public byte[] GetPhotoById(int id)
         {
             using (UserContext db = new UserContext())
@@ -53,6 +55,7 @@ namespace ServerWCF.Services
                 db.SaveChanges();
             }
         }
+
         //contacts
         public bool AddContact(User owner, User owned)
         {
@@ -150,6 +153,13 @@ namespace ServerWCF.Services
 
         }
 
+        public List<UiInfo> GetAllContactsUiInfo(int id)
+        {
+            List<UiInfo> usersUiInfos = new List<UiInfo>(GetAllContacts(id).Select( u => new UserUiInfo(u)));
+
+            return usersUiInfos;
+        }
+
         //users
         public List<User> GetAllUsers()
         {
@@ -166,6 +176,14 @@ namespace ServerWCF.Services
                 }
                 return allUsers;
             }
+        }
+
+        public List<UiInfo> GetAllUsersUiInfo()
+        {
+            List<User> allUsers = GetAllUsers();
+            List<UiInfo> uiInfoToReturn = new List<UiInfo>(allUsers.Select(u => new UserUiInfo(u)).ToList());
+
+            return uiInfoToReturn;
         }
 
         public string AddOrUpdateUser(User user)
@@ -278,6 +296,13 @@ namespace ServerWCF.Services
 
                 return searchinfResult;
             }
+        }
+
+        public List<UiInfo> FindUsersUiUnfoByLogin(string keyWorkForLogin)
+        {
+            List<UiInfo> usersUiInfos = new List<UiInfo>(FindUsersByLogin(keyWorkForLogin).Select(u => new UserUiInfo(u)));
+
+            return usersUiInfos;
         }
 
         //application settings
@@ -738,6 +763,12 @@ namespace ServerWCF.Services
             }
 
             return successResult;
+        }
+
+        private UiInfo convertToUiInfo(User user)
+        {
+
+            return null;
         }
 
         //private string ValidateAddingContact(User owner, User owned)

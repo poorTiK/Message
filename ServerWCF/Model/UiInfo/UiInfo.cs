@@ -23,5 +23,13 @@ namespace ServerWCF.Model.UiInfo
 
         [DataMember]
         public byte[] Avatar { get; set; }
+
+        protected UiInfo(string name, string uniqueName, string status, byte[] avatar)
+        {
+            Name = name;
+            UniqueName = uniqueName;
+            Status = status;
+            Avatar = avatar;
+        }
     }
 }

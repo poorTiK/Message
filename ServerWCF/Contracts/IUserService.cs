@@ -1,6 +1,7 @@
 ﻿using ServerWCF.Model;
 using ServerWCF.Model.Contacts;
 using ServerWCF.Model.Messages;
+using ServerWCF.Model.UiInfo;
 using System.Collections.Generic;
 using System.ServiceModel;
 using System.Threading.Tasks;
@@ -14,19 +15,22 @@ namespace ServerWCF.Contracts
         List<User> GetAllUsers();
 
         [OperationContract]
+        List<UiInfo> GetAllUsersUiInfo();
+
+        [OperationContract]
         string AddOrUpdateUser(User user);
 
         [OperationContract]
         User GetUser(string login, byte[] password);
 
         [OperationContract]
-        User GetUserById(int id);
-
-        [OperationContract]
         User GetUserByEmail(string email);
 
         [OperationContract]
         List<User> FindUsersByLogin(string login);
+
+        [OperationContract]
+        List<UiInfo> FindUsersUiUnfoByLogin(string keyWorkForLogin);
 
         [OperationContract]
         User GetUserByLogin(string login);
@@ -42,10 +46,11 @@ namespace ServerWCF.Contracts
         List<User> GetAllContacts(int id);
 
         [OperationContract]
-        bool IsExistsInContacts(int id_owner, int id_owned);
+        List<UiInfo> GetAllContactsUiInfo(int id);
+
 
         [OperationContract]
-        List<BaseContact> FindContactByKeyWord(string login);
+        bool IsExistsInContacts(int id_owner, int id_owned);
 
 
         [OperationContract]

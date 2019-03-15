@@ -67,8 +67,8 @@
                             </Ellipse.Fill>
                         </Ellipse>
 
-                        <TextBlock Grid.Column="1" Grid.Row="0" Margin="10,0,0,0" Text="{Binding Path=FirstName}"></TextBlock>
-                        <TextBlock Grid.Column="1" Grid.Row="1" Margin="10,0,0,0" Foreground="{DynamicResource Status}" Text="{Binding Path=Login}"></TextBlock>
+                        <TextBlock Grid.Column="1" Grid.Row="0" Margin="10,0,0,0" Text="{Binding Path=Name}"></TextBlock>
+                        <TextBlock Grid.Column="1" Grid.Row="1" Margin="10,0,0,0" Foreground="{DynamicResource Status}" Text="{Binding Path=UniqueName}"></TextBlock>
                     </Grid>
                 </DataTemplate>
             </ListBox.ItemTemplate>

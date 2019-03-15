@@ -19,9 +19,9 @@ namespace Message.ViewModel
 
         private IView view;
 
-        private List<User> _contacts;
+        private List<UiInfo> _contacts;
 
-        public List<User> ContactsList
+        public List<UiInfo> ContactsList
         {
             get { return _contacts; }
             set { SetProperty(ref _contacts, value); }
@@ -54,7 +54,8 @@ namespace Message.ViewModel
 
                 if (!string.IsNullOrEmpty(value))
                 {
-                    ContactsList = UserServiceClient.FindUsersByLogin(ContactsSearch);
+                    //ContactsList = UserServiceClient.FindUsersByLogin(ContactsSearch);
+                    ContactsList = UserServiceClient.FindUsersUiUnfoByLogin(ContactsSearch);
                 }
                 else
                 {
@@ -73,14 +74,19 @@ namespace Message.ViewModel
             usersSite = new InstanceContext(_userServiceCallback);
             using (UserServiceClient = new UserServiceClient(usersSite))
             {
-                ContactsList = UserServiceClient.GetAllContacts(GlobalBase.CurrentUser.Id);
+                //ContactsList = UserServiceClient.GetAllContacts(GlobalBase.CurrentUser.Id);
+                ContactsList = UserServiceClient.GetAllContactsUiInfo(GlobalBase.CurrentUser.Id);
             }
 
             using (var proxy = new PhotoServiceClient())
             {
                 foreach (var item in ContactsList)
                 {
-                    item.Avatar = proxy.GetPhotoById(item.Id);
+                    if (item is UserUiInfo)
+                    {
+                        UserUiInfo userUiInfo = item as UserUiInfo;
+                        item.Avatar = proxy.GetPhotoById(userUiInfo.UserId);
+                    }
                 }
             }
 
@@ -129,13 +135,17 @@ namespace Message.ViewModel
 
         private void UpdateContacts()
         {
-            ContactsList = UserServiceClient.GetAllContacts(GlobalBase.CurrentUser.Id);
-
+            //ContactsList = UserServiceClient.GetAllContacts(GlobalBase.CurrentUser.Id);
+            ContactsList = UserServiceClient.GetAllContactsUiInfo(GlobalBase.CurrentUser.Id);
             using (var proxy = new PhotoServiceClient())
             {
                 foreach (var item in ContactsList)
                 {
-                    item.Avatar = proxy.GetPhotoById(item.Id);
+                    if (item is UserUiInfo)
+                    {
+                        UserUiInfo userUiInfo = item as UserUiInfo;
+                        item.Avatar = proxy.GetPhotoById(userUiInfo.UserId);
+                    }
                 }
             }
 
