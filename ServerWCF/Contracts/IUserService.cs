@@ -1,4 +1,5 @@
 ﻿using ServerWCF.Model;
+using ServerWCF.Model.Contacts;
 using ServerWCF.Model.Messages;
 using System.Collections.Generic;
 using System.ServiceModel;
@@ -19,6 +20,9 @@ namespace ServerWCF.Contracts
         User GetUser(string login, byte[] password);
 
         [OperationContract]
+        User GetUserById(int id);
+
+        [OperationContract]
         User GetUserByEmail(string email);
 
         [OperationContract]
@@ -26,6 +30,7 @@ namespace ServerWCF.Contracts
 
         [OperationContract]
         User GetUserByLogin(string login);
+
 
         [OperationContract]
         bool AddContact(User owner, User owned);
@@ -40,16 +45,22 @@ namespace ServerWCF.Contracts
         bool IsExistsInContacts(int id_owner, int id_owned);
 
         [OperationContract]
+        List<BaseContact> FindContactByKeyWord(string login);
+
+
+        [OperationContract]
         ApplicationSettings GetAppSettings(User user);
 
         [OperationContract]
         bool SaveAppSettings(ApplicationSettings appSettings);
+
 
         [OperationContract(IsOneWay = true)]
         void OnUserCame(User user);
 
         [OperationContract(IsOneWay = true)]
         void OnUserLeave(User user);
+
 
         [OperationContract]
         List<GroupMessage> GetGroupMessages(ChatGroup chatGroup, int limin);

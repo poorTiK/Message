@@ -816,6 +816,12 @@ namespace Message.UserServiceReference {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/GetUser", ReplyAction="http://tempuri.org/IUserService/GetUserResponse")]
         System.Threading.Tasks.Task<Message.UserServiceReference.User> GetUserAsync(string login, byte[] password);
         
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/GetUserById", ReplyAction="http://tempuri.org/IUserService/GetUserByIdResponse")]
+        Message.UserServiceReference.User GetUserById(int id);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/GetUserById", ReplyAction="http://tempuri.org/IUserService/GetUserByIdResponse")]
+        System.Threading.Tasks.Task<Message.UserServiceReference.User> GetUserByIdAsync(int id);
+        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/GetUserByEmail", ReplyAction="http://tempuri.org/IUserService/GetUserByEmailResponse")]
         Message.UserServiceReference.User GetUserByEmail(string email);
         
@@ -857,6 +863,12 @@ namespace Message.UserServiceReference {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/IsExistsInContacts", ReplyAction="http://tempuri.org/IUserService/IsExistsInContactsResponse")]
         System.Threading.Tasks.Task<bool> IsExistsInContactsAsync(int id_owner, int id_owned);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/FindContactByKeyWord", ReplyAction="http://tempuri.org/IUserService/FindContactByKeyWordResponse")]
+        System.Collections.Generic.List<Message.UserServiceReference.BaseContact> FindContactByKeyWord(string login);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/FindContactByKeyWord", ReplyAction="http://tempuri.org/IUserService/FindContactByKeyWordResponse")]
+        System.Threading.Tasks.Task<System.Collections.Generic.List<Message.UserServiceReference.BaseContact>> FindContactByKeyWordAsync(string login);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/GetAppSettings", ReplyAction="http://tempuri.org/IUserService/GetAppSettingsResponse")]
         Message.UserServiceReference.ApplicationSettings GetAppSettings(Message.UserServiceReference.User user);
@@ -1006,6 +1018,14 @@ namespace Message.UserServiceReference {
             return base.Channel.GetUserAsync(login, password);
         }
         
+        public Message.UserServiceReference.User GetUserById(int id) {
+            return base.Channel.GetUserById(id);
+        }
+        
+        public System.Threading.Tasks.Task<Message.UserServiceReference.User> GetUserByIdAsync(int id) {
+            return base.Channel.GetUserByIdAsync(id);
+        }
+        
         public Message.UserServiceReference.User GetUserByEmail(string email) {
             return base.Channel.GetUserByEmail(email);
         }
@@ -1060,6 +1080,14 @@ namespace Message.UserServiceReference {
         
         public System.Threading.Tasks.Task<bool> IsExistsInContactsAsync(int id_owner, int id_owned) {
             return base.Channel.IsExistsInContactsAsync(id_owner, id_owned);
+        }
+        
+        public System.Collections.Generic.List<Message.UserServiceReference.BaseContact> FindContactByKeyWord(string login) {
+            return base.Channel.FindContactByKeyWord(login);
+        }
+        
+        public System.Threading.Tasks.Task<System.Collections.Generic.List<Message.UserServiceReference.BaseContact>> FindContactByKeyWordAsync(string login) {
+            return base.Channel.FindContactByKeyWordAsync(login);
         }
         
         public Message.UserServiceReference.ApplicationSettings GetAppSettings(Message.UserServiceReference.User user) {

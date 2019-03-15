@@ -361,6 +361,9 @@
     <None Include="Connected Services\UserServiceReference\Message.UserServiceReference.ApplicationSettings.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
+    <None Include="Connected Services\UserServiceReference\Message.UserServiceReference.BaseContact1.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
     <None Include="Connected Services\UserServiceReference\Message.UserServiceReference.BaseMessage.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
