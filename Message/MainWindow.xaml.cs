@@ -121,5 +121,16 @@ namespace Message
                 Visibility = Visibility.Hidden;
             }
         }
+
+        private void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            App.Language = Properties.Settings.Default.DefaultLanguage;
+
+            var dict = new ResourceDictionary();
+            dict.Source = new Uri(Properties.Settings.Default.DefaultTheme, UriKind.Relative);
+
+            Application.Current.Resources.MergedDictionaries.RemoveAt(5);
+            Application.Current.Resources.MergedDictionaries.Add(dict);
+        }
     }
 }

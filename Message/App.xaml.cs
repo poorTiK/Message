@@ -87,5 +87,11 @@ namespace Message
             Message.Properties.Settings.Default.DefaultLanguage = Language;
             Message.Properties.Settings.Default.Save();
         }
+
+        private void RestoreTheme(ResourceDictionary dict)
+        {
+            Current.Resources.MergedDictionaries.RemoveAt(5);
+            Current.Resources.MergedDictionaries.Add(dict);
+        }
     }
 }

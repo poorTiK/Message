@@ -12,6 +12,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Microsoft.EntityFrameworkCore.Internal;
 
 namespace Message
 {
@@ -54,6 +55,45 @@ namespace Message
         private void ButtonClose_OnClick(object sender, RoutedEventArgs e)
         {
             Close();
+        }
+
+        private void DarkTheme_OnMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            var dict = new ResourceDictionary();
+            dict.Source = new Uri("Resources/theme.xaml", UriKind.Relative);
+
+            Application.Current.Resources.MergedDictionaries.RemoveAt(5);
+            Application.Current.Resources.MergedDictionaries.Add(dict);
+
+            SaveTheme();
+        }
+
+        private void LightTheme_OnMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            var dict = new ResourceDictionary();
+            dict.Source = new Uri("Resources/theme_Light.xaml", UriKind.Relative);
+
+            Application.Current.Resources.MergedDictionaries.RemoveAt(5);
+            Application.Current.Resources.MergedDictionaries.Add(dict);
+
+            SaveTheme();
+        }
+
+        private void GreenTheme_OnMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            var dict = new ResourceDictionary();
+            dict.Source = new Uri("Resources/theme_Green.xaml", UriKind.Relative);
+
+            Application.Current.Resources.MergedDictionaries.RemoveAt(5);
+            Application.Current.Resources.MergedDictionaries.Add(dict);
+
+            SaveTheme();
+        }
+
+        public void SaveTheme()
+        {
+            Properties.Settings.Default.DefaultTheme = Application.Current.Resources.MergedDictionaries.ElementAt(5).Source.OriginalString;
+            Properties.Settings.Default.Save();
         }
     }
 }

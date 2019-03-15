@@ -18,7 +18,7 @@
         <WindowChrome CaptionHeight="0" />
     </WindowChrome.WindowChrome>
 
-    <Grid Background="#353636">
+    <Grid Background="{DynamicResource PopUpBackground}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -29,14 +29,14 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
 
-        <TextBlock Grid.ColumnSpan="2" Grid.Row="0" Foreground="White"
+        <TextBlock Grid.ColumnSpan="2" Grid.Row="0"
                    Style="{StaticResource MaterialDesignSubheadingTextBlock}" Margin="10,0,0,0"
                    Text="{DynamicResource EditMessage}"/>
 
         <TextBox Grid.Row="1" Margin="10" Grid.ColumnSpan="2"
             Style="{StaticResource MaterialDesignOutlinedTextFieldTextBox}"
-            Foreground="White" Height="85"
-            VerticalAlignment="Top"
+            Foreground="{DynamicResource Foreground}" Height="85"
+            VerticalAlignment="Top" SelectionBrush="{DynamicResource SelectionBrush}"
             TextWrapping="Wrap"
             VerticalScrollBarVisibility="Auto"
             Text="{Binding MessageText}"/>

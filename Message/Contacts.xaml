@@ -11,13 +11,13 @@
         Name="ContactsWnd"
         WindowStartupLocation="CenterOwner" WindowStyle="None"
         BorderThickness="0" ResizeMode="NoResize"
-        Height="450" Width="259">
+        Height="450" Width="259" Background="{DynamicResource PopUpBackground}">
 
     <WindowChrome.WindowChrome>
         <WindowChrome CaptionHeight="0" />
     </WindowChrome.WindowChrome>
 
-    <Grid Background="#353636">
+    <Grid Background="{DynamicResource PopUpBackground}">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
@@ -29,22 +29,23 @@
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
 
-        <TextBlock Grid.ColumnSpan="2" Grid.Row="0" Foreground="White"
+        <TextBlock Grid.ColumnSpan="2" Grid.Row="0" Foreground="{DynamicResource Foreground}"
                    Style="{StaticResource MaterialDesignSubheadingTextBlock}" Margin="10,0,0,0"
                    Text="{DynamicResource Contacts}"></TextBlock>
 
         <StackPanel Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Margin="5"
                     Orientation="Horizontal" VerticalAlignment="Center">
-            <materialDesign:PackIcon Kind="Magnify" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" Margin="5,0,0,0"/>
-            <TextBox Name="SearchBox" Focusable="True" Margin="0,10,10,10" Foreground="White" Width="221"
-                     SelectionBrush="#FF919191" Text="{Binding ContactsSearch, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            <materialDesign:PackIcon Kind="Magnify" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="{DynamicResource HeaderButton}" Margin="5,0,0,0"/>
+            <TextBox Name="SearchBox" Focusable="True" Margin="0,10,10,10" Width="221"
+                     SelectionBrush="{DynamicResource SelectionBrush}" Text="{Binding ContactsSearch, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
         </StackPanel>
 
         <ListBox Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="2" Margin="10"
                  ItemsSource="{Binding ContactsList}" SelectedItem="{Binding SelectedContact}">
             <ListBox.ContextMenu>
-                <ContextMenu Background="#262626">
-                    <MenuItem Background="#262626" Foreground="White"
+                <ContextMenu Background="{DynamicResource WindowBackGround}">
+                    <MenuItem Background="{DynamicResource MenuItem}"
+                              Foreground="{DynamicResource Foreground}"
                               Header="View profile"
                               Command="{Binding OpenProfile}"></MenuItem>
                 </ContextMenu>
@@ -66,8 +67,8 @@
                             </Ellipse.Fill>
                         </Ellipse>
 
-                        <TextBlock Grid.Column="1" Grid.Row="0" Margin="10,0,0,0" Foreground="White" Text="{Binding Path=FirstName}"></TextBlock>
-                        <TextBlock Grid.Column="1" Grid.Row="1" Margin="10,0,0,0" Foreground="#FF63A35D" Text="{Binding Path=Login}"></TextBlock>
+                        <TextBlock Grid.Column="1" Grid.Row="0" Margin="10,0,0,0" Text="{Binding Path=FirstName}"></TextBlock>
+                        <TextBlock Grid.Column="1" Grid.Row="1" Margin="10,0,0,0" Foreground="{DynamicResource Status}" Text="{Binding Path=Login}"></TextBlock>
                     </Grid>
                 </DataTemplate>
             </ListBox.ItemTemplate>

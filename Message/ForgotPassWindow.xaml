@@ -20,7 +20,7 @@
         <BooleanToVisibilityConverter x:Key="BoolToVisConverter" />
     </Window.Resources>
 
-    <Grid Background="#353636" Width="300">
+    <Grid Background="{DynamicResource PopUpBackground}" Width="300">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="30" />
             <ColumnDefinition />
@@ -53,12 +53,12 @@
 
             <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Login}"
                      materialDesign:HintAssist.Hint="{DynamicResource Login}" IsEnabled="{Binding IsLogin}"
-                     Foreground="White" CaretBrush="{x:Null}" SelectionBrush="#FF919191"
+                     Foreground="{DynamicResource Foreground}" CaretBrush="{x:Null}" SelectionBrush="{DynamicResource SelectionBrush}"
                      Style="{StaticResource MaterialDesignFloatingHintTextBox}" VerticalAlignment="Bottom" Margin="5,0" />
 
             <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Email}"
                      materialDesign:HintAssist.Hint="{DynamicResource Email}" IsEnabled="{Binding IsMail}"
-                     Foreground="White" CaretBrush="{x:Null}" SelectionBrush="#FF919191"
+                     Foreground="{DynamicResource Foreground}" CaretBrush="{x:Null}" SelectionBrush="{DynamicResource SelectionBrush}"
                      Style="{StaticResource MaterialDesignFloatingHintTextBox}" VerticalAlignment="Bottom" Margin="5,0" />
         </Grid>
 

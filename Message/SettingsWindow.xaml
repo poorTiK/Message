@@ -14,7 +14,7 @@
 
         Name="SettingsWnd" BorderBrush="#FF353636" WindowStartupLocation="CenterOwner" WindowStyle="None"
         BorderThickness="1" ResizeMode="NoResize"
-        Height="450" Width="250" Background="#FF353636">
+        Height="450" Width="250" Background="{DynamicResource PopUpBackground}">
 
     <WindowChrome.WindowChrome>
         <WindowChrome CaptionHeight="0" />
@@ -26,12 +26,12 @@
         <med:ImageConverter x:Key="imageConverter" />
     </Window.Resources>
 
-    <Grid Background="#353636">
+    <Grid Background="{DynamicResource PopUpBackground}">
         <Grid VerticalAlignment="Top">
-            <TextBlock Foreground="White" Margin="10,0,0,0" HorizontalAlignment="Left"
+            <TextBlock Margin="10,0,0,0" HorizontalAlignment="Left"
                        VerticalAlignment="Center" Text="{DynamicResource Settings}"></TextBlock>
             <Button x:Name="ButtonClose" Click="ButtonClose_OnClick" HorizontalAlignment="Right" VerticalAlignment="Top" Background="{x:Null}" BorderBrush="{x:Null}" Width="30" Height="30" Padding="0">
-                <materialDesign:PackIcon Kind="Close" />
+                <materialDesign:PackIcon Kind="Close" Foreground="{DynamicResource HeaderButton}"/>
             </Button>
         </Grid>
         <ScrollViewer Margin="5,30,0,0">
@@ -41,19 +41,19 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
-                <StackPanel Grid.Row="0" Background="#4A4A4A" Height="90" HorizontalAlignment="Left" Orientation="Horizontal" Width="233">
+                <StackPanel Grid.Row="0" Background="{DynamicResource SectionBackground}" Height="90" HorizontalAlignment="Left" Orientation="Horizontal" Width="233">
                     <Ellipse Height="45" Width="45" Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" Margin="10,0,0,0">
                         <Ellipse.Fill>
                             <ImageBrush ImageSource = "{ Binding Path=Images, Converter={StaticResource imageConverter}}"/>
                         </Ellipse.Fill>
                     </Ellipse>
                     <StackPanel Orientation="Vertical" Width="122" VerticalAlignment="Center" Margin="15,7,0,7">
-                        <TextBlock Text="{Binding CurrentUserName}" Foreground="White"></TextBlock>
-                        <TextBlock Text="{Binding CurrentUserLogin}" Foreground="#FF63A35D"></TextBlock>
+                        <TextBlock Text="{Binding CurrentUserName}"></TextBlock>
+                        <TextBlock Text="{Binding CurrentUserLogin}"></TextBlock>
                     </StackPanel>
                 </StackPanel>
 
-                <Grid Grid.Row="1" Background="#4A4A4A" Margin="0,10,0,0">
+                <Grid Grid.Row="1" Background="{DynamicResource SectionBackground}" Margin="0,10,0,0">
                     <ListView>
                         <ListViewItem Padding="0">
                             <Grid Background="Transparent" Height="30" MinWidth="220">
@@ -66,8 +66,8 @@
                                     <ColumnDefinition Width="20"/>
                                     <ColumnDefinition/>
                                 </Grid.ColumnDefinitions>
-                                <materialDesign:PackIcon Kind="InfoOutline" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" />
-                                <TextBlock Grid.Column="1" Foreground="White" Margin="15,0,0,0" Text="{DynamicResource EditProfile}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                                <materialDesign:PackIcon Kind="InfoOutline" Foreground="{DynamicResource HeaderButton}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                <TextBlock Grid.Column="1" Margin="15,0,0,0" Text="{DynamicResource EditProfile}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
                             </Grid>
                         </ListViewItem>
                         <ListViewItem Padding="0">
@@ -76,8 +76,8 @@
                                     <ColumnDefinition Width="20"/>
                                     <ColumnDefinition/>
                                 </Grid.ColumnDefinitions>
-                                <materialDesign:PackIcon Kind="BellRingOutline" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" />
-                                <TextBlock Grid.Column="1" Foreground="White" Margin="15,0,0,0" HorizontalAlignment="Left"
+                                <materialDesign:PackIcon Kind="BellRingOutline" Foreground="{DynamicResource HeaderButton}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                <TextBlock Grid.Column="1" Margin="15,0,0,0" HorizontalAlignment="Left"
                                            VerticalAlignment="Center" Text="{DynamicResource Notifications}"></TextBlock>
                             </Grid>
                         </ListViewItem>
@@ -92,26 +92,15 @@
                                     <ColumnDefinition Width="20"/>
                                     <ColumnDefinition/>
                                 </Grid.ColumnDefinitions>
-                                <materialDesign:PackIcon Kind="MessageReply" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" />
-                                <TextBlock Grid.Column="1" Foreground="White" Margin="15,0,0,0" HorizontalAlignment="Left"
+                                <materialDesign:PackIcon Kind="MessageReply" Foreground="{DynamicResource HeaderButton}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                <TextBlock Grid.Column="1" Margin="15,0,0,0" HorizontalAlignment="Left"
                                            VerticalAlignment="Center" Text="{DynamicResource ChatSettings}"></TextBlock>
-                            </Grid>
-                        </ListViewItem>
-                        <ListViewItem Padding="0">
-                            <Grid Background="Transparent" Height="30" MinWidth="220">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="20"/>
-                                    <ColumnDefinition/>
-                                </Grid.ColumnDefinitions>
-                                <materialDesign:PackIcon Kind="Style" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" />
-                                <TextBlock Grid.Column="1" Foreground="White" Margin="15,0,0,0" HorizontalAlignment="Left"
-                                           VerticalAlignment="Center" Text="{DynamicResource Themes}"></TextBlock>
                             </Grid>
                         </ListViewItem>
                     </ListView>
                 </Grid>
 
-                <Grid Grid.Row="2" Background="#4A4A4A" Margin="0,10,0,0">
+                <Grid Grid.Row="2" Background="{DynamicResource SectionBackground}" Margin="0,10,0,0">
                     <ListView>
                         <ListViewItem Padding="0">
                             <Grid Background="Transparent" Height="30" MinWidth="220">
@@ -119,7 +108,7 @@
                                     <ColumnDefinition Width="20"/>
                                     <ColumnDefinition/>
                                 </Grid.ColumnDefinitions>
-                                <materialDesign:PackIcon Kind="EmergencyExit" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                <materialDesign:PackIcon Kind="EmergencyExit" Foreground="{DynamicResource HeaderButton}" HorizontalAlignment="Center" VerticalAlignment="Center" />
                                 <TextBlock Grid.Column="1" Foreground="Salmon" Margin="15,0,0,0" HorizontalAlignment="Left"
                                            VerticalAlignment="Center" Text="{DynamicResource LogOut}"></TextBlock>
                             </Grid>

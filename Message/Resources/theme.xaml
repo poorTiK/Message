@@ -1,0 +1,25 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:Message.Resources" x:Name="DarkTheme">
+
+    <SolidColorBrush x:Key="HeaderBrush" Color="#353636"></SolidColorBrush>
+    <SolidColorBrush x:Key="WindowBackGround" Color="#262626"></SolidColorBrush>
+    <SolidColorBrush x:Key="SelectionBrush" Color="#FF919191"></SolidColorBrush>
+    <SolidColorBrush x:Key="Foreground" Color="White"></SolidColorBrush>
+    <SolidColorBrush x:Key="ChatBackground" Color="#4A4A4A"></SolidColorBrush>
+    <SolidColorBrush x:Key="SideMenu" Color="#DDFFFFFF"></SolidColorBrush>
+    <SolidColorBrush x:Key="SideMenuTopPanel" Color="#195E4D"></SolidColorBrush>
+    <SolidColorBrush x:Key="Status" Color="#FF63A35D"></SolidColorBrush>
+    <SolidColorBrush x:Key="ButtonForeground" Color="White"></SolidColorBrush>
+    <SolidColorBrush x:Key="MenuItem" Color="#353636"></SolidColorBrush>
+    <SolidColorBrush x:Key="MenuHead" Color="#262626"></SolidColorBrush>
+    <SolidColorBrush x:Key="PopUpBackground" Color="#FF353636"></SolidColorBrush>
+    <SolidColorBrush x:Key="SideSlideMenu" Color="#737373"></SolidColorBrush>
+    <SolidColorBrush x:Key="ButtonBackground" Color="#FF63A35D"></SolidColorBrush>
+    <SolidColorBrush x:Key="HeaderButton" Color="White"></SolidColorBrush>
+    <SolidColorBrush x:Key="MessageBackGround" Color="#353636"></SolidColorBrush>
+    <SolidColorBrush x:Key="MessageForeground" Color="White"></SolidColorBrush>
+    <SolidColorBrush x:Key="MessageTime" Color="#FF63A35D"></SolidColorBrush>
+    <SolidColorBrush x:Key="SectionBackground" Color="#4A4A4A"></SolidColorBrush>
+
+</ResourceDictionary>

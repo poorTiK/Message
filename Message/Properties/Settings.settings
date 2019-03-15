@@ -5,5 +5,8 @@
     <Setting Name="DefaultLanguage" Type="System.Globalization.CultureInfo" Scope="User">
       <Value Profile="(Default)">en-US</Value>
     </Setting>
+    <Setting Name="DefaultTheme" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Resources/theme.xaml</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
