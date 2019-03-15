@@ -5,6 +5,7 @@ using ServerWCF.Model.Contacts;
 using ServerWCF.Model.Messages;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Data.Entity.Migrations;
 using System.Linq;
 using System.ServiceModel;
@@ -114,21 +115,21 @@ namespace ServerWCF.Services
             }
         }
 
-        public bool IsExistsInContacts(User owner, User owned)
+        public bool IsExistsInContacts(int id_owner, int id_owned)
         {
-            List<User> contactsForOwner = GetAllContacts(owner);
+            List<User> contactsForOwner = GetAllContacts(id_owner);
 
-            return contactsForOwner.Where(u => u.Id == owned.Id).FirstOrDefault() != null;
+            return contactsForOwner.FirstOrDefault(u => u.Id == id_owned) != null;
         }
 
-        public List<User> GetAllContacts(User owner)
+        public List<User> GetAllContacts(int id)
         {
             using (UserContext db = new UserContext())
             {
                 List<User> contactsForOwner = new List<User>();
                 try
                 {
-                    var userId = owner.Id;
+                    var userId = id;
 
                     contactsForOwner = db.Users.SqlQuery(" select * " +
                             "from Users " +
@@ -140,6 +141,9 @@ namespace ServerWCF.Services
                 {
                     contactsForOwner = new List<User>();
                 }
+
+                foreach (var item in contactsForOwner)
+                    item.Avatar = null;
 
                 return contactsForOwner;
             }

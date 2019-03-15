@@ -34,10 +34,10 @@ namespace ServerWCF.Contracts
         bool RemoveContact(User owner, User owned);
 
         [OperationContract]
-        List<User> GetAllContacts(User owner);
+        List<User> GetAllContacts(int id);
 
         [OperationContract]
-        bool IsExistsInContacts(User owner, User owned);
+        bool IsExistsInContacts(int id_owner, int id_owned);
 
         [OperationContract]
         ApplicationSettings GetAppSettings(User user);

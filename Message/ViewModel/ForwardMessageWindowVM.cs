@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Message.Interfaces;
 using System.ServiceModel;
 using Message.Model;
+using Message.PhotoServiceReference;
 using Prism.Commands;
 
 namespace Message.ViewModel
@@ -46,8 +47,15 @@ namespace Message.ViewModel
             usersSite = new InstanceContext(_userServiceCallback);
             userServiceClient = new UserServiceClient(usersSite);
 
-            ContactsList = userServiceClient.GetAllContacts(GlobalBase.CurrentUser);
+            ContactsList = userServiceClient.GetAllContacts(GlobalBase.CurrentUser.Id);
 
+            using (var proxy = new PhotoServiceClient())
+            {
+                foreach (var item in ContactsList)
+                {
+                    item.Avatar = proxy.GetPhotoById(item.Id);
+                }
+            }
             _view = view;
 
             _message = message;

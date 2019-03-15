@@ -116,7 +116,7 @@ namespace Message.ViewModel
             UserEmail = Profile.Email;
             UserBio = Profile.Bio;
 
-            var contact = UserServiceClient.IsExistsInContacts(GlobalBase.CurrentUser, Profile);
+            var contact = UserServiceClient.IsExistsInContacts(GlobalBase.CurrentUser.Id, Profile.Id);
 
             if (contact)
             {

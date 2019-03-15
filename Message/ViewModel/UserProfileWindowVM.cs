@@ -149,11 +149,7 @@ namespace Message.ViewModel
 
             IsNewChanges = false;
 
-            if (GlobalBase.CurrentUser.Avatar.Length > 1)
-            {
-                MemoryStream memstr = new MemoryStream(GlobalBase.CurrentUser.Avatar);
-                Dispatcher.CurrentDispatcher.Invoke(() => { Images = Image.FromStream(memstr); });
-            }
+            SetAvatarForUI();
         }
 
         private DelegateCommand _onApplyChanges;
@@ -172,17 +168,33 @@ namespace Message.ViewModel
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.ShowDialog();
             var FilePath = openFileDialog.FileName;
+            GlobalBase.CurrentUser.Avatar = null;
             UserServiceClient.AddOrUpdateUser(GlobalBase.CurrentUser);
             using (PhotoServiceClient client = new PhotoServiceClient())
             {
                 var photo = File.ReadAllBytes(FilePath);
                 client.SetPhotoById(GlobalBase.CurrentUser.Id, photo);
                 GlobalBase.CurrentUser.Avatar = client.GetPhotoById(GlobalBase.CurrentUser.Id);
+                SetAvatarForUI();
             }
           
 
             GlobalBase.UpdateUI.Invoke();
             IsNewChanges = true;
+        }
+
+        private void SetAvatarForUI()
+        {
+            if (GlobalBase.CurrentUser.Avatar.Length > 0)
+            {
+                MemoryStream memstr = new MemoryStream(GlobalBase.CurrentUser.Avatar);
+                Dispatcher.CurrentDispatcher.Invoke(() => { Images = Image.FromStream(memstr); });
+            }
+            else
+            {
+                Dispatcher.CurrentDispatcher.Invoke(() => { Images = null; });
+
+            }
         }
 
         private void ExecuteOnApplyChanges()

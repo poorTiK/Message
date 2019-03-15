@@ -13,6 +13,7 @@ using System.Net;
 using System.ServiceModel;
 using System.Text;
 using System.Windows;
+using Message.PhotoServiceReference;
 
 namespace Message.ViewModel
 {
@@ -43,14 +44,31 @@ namespace Message.ViewModel
                 if (value == string.Empty)
                 {
                     ContactsList.Clear();
-                    ContactsList.AddRange(userServiceClient.GetAllContacts(GlobalBase.CurrentUser));
+                    ContactsList.AddRange(userServiceClient.GetAllContacts(GlobalBase.CurrentUser.Id));
+                    using (var proxy = new PhotoServiceClient())
+                    {
+                        foreach (var item in ContactsList)
+                        {
+                            item.Avatar = proxy.GetPhotoById(item.Id);
+                        }
+                    }
                 }
                 else
                 {
                     ContactsList.Clear();
-                    ContactsList.AddRange(userServiceClient.GetAllContacts(GlobalBase.CurrentUser).Where(i=>i.FirstName.Contains(value)
-                                                                                                            || i.LastName.Contains(value)
-                                                                                                            || i.Login.Contains(value)));
+                    ContactsList.AddRange(userServiceClient
+                        .GetAllContacts(GlobalBase.CurrentUser.Id)
+                        .Where(i=>i.FirstName.Contains(value)
+                                  || i.LastName.Contains(value)
+                                  || i.Login.Contains(value)));
+
+                    using (var proxy = new PhotoServiceClient())
+                    {
+                        foreach (var item in ContactsList)
+                        {
+                            item.Avatar = proxy.GetPhotoById(item.Id);
+                        }
+                    }
                 }
                 SetProperty(ref _searchContactStr, value);
             }
@@ -372,7 +390,15 @@ namespace Message.ViewModel
             {
                 var temp = SelectedContact;
 
-                ContactsList = userServiceClient.GetAllContacts(GlobalBase.CurrentUser);
+                ContactsList = userServiceClient.GetAllContacts(GlobalBase.CurrentUser.Id);
+
+                using (var proxy = new PhotoServiceClient())
+                {
+                    foreach (var item in ContactsList)
+                    {
+                        item.Avatar = proxy.GetPhotoById(item.Id);
+                    }
+                }
 
                 if (ContactsList.Any(x => temp != null && (x.Id == temp.Id)))
                 {

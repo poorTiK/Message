@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.ServiceModel;
 using System.Windows;
+using Message.PhotoServiceReference;
 
 namespace Message.ViewModel
 {
@@ -70,9 +71,18 @@ namespace Message.ViewModel
 
             _userServiceCallback = this;
             usersSite = new InstanceContext(_userServiceCallback);
-            UserServiceClient = new UserServiceClient(usersSite);
+            using (UserServiceClient = new UserServiceClient(usersSite))
+            {
+                ContactsList = UserServiceClient.GetAllContacts(GlobalBase.CurrentUser.Id);
+            }
 
-            ContactsList = UserServiceClient.GetAllContacts(GlobalBase.CurrentUser);
+            using (var proxy = new PhotoServiceClient())
+            {
+                foreach (var item in ContactsList)
+                {
+                    item.Avatar = proxy.GetPhotoById(item.Id);
+                }
+            }
 
             ManageControls();
         }
@@ -119,7 +129,15 @@ namespace Message.ViewModel
 
         private void UpdateContacts()
         {
-            ContactsList = UserServiceClient.GetAllContacts(GlobalBase.CurrentUser);
+            ContactsList = UserServiceClient.GetAllContacts(GlobalBase.CurrentUser.Id);
+
+            using (var proxy = new PhotoServiceClient())
+            {
+                foreach (var item in ContactsList)
+                {
+                    item.Avatar = proxy.GetPhotoById(item.Id);
+                }
+            }
 
             ManageControls();
         }
