@@ -4,7 +4,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Message"
-        
+        xmlns:med="clr-namespace:System.Windows.Media"
+
         xmlns:converter="clr-namespace:Message.AdditionalItems"
         mc:Ignorable="d"  ShowInTaskbar="False"
 
@@ -19,7 +20,7 @@
     </WindowChrome.WindowChrome>
 
     <Window.Resources>
-        <converter:ByteToImageConverter x:Key="imgConverter" />
+        <med:ImageConverter x:Key="imageConverter" />
         <BooleanToVisibilityConverter x:Key="BoolToVisConverter" />
         <Style TargetType="Ellipse">
             <Style.Triggers>
@@ -52,7 +53,7 @@
                     <Ellipse Height="45" Width="45" Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" Margin="10,0,0,0"
                              ToolTip="Upload new photo" StrokeThickness="3">
                         <Ellipse.Fill>
-                            <ImageBrush ImageSource="{Binding CurrentUserPhoto, Converter={StaticResource imgConverter}}" />
+                            <ImageBrush ImageSource = "{ Binding Path=Images, Converter={StaticResource imageConverter}}"/>
                         </Ellipse.Fill>
                         <Ellipse.InputBindings>
                             <MouseBinding Command="{Binding LoadPhoto}" MouseAction="LeftClick" />

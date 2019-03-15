@@ -1,8 +1,13 @@
 ﻿using Message.Interfaces;
 using Message.Model;
 using Prism.Commands;
-using System;
+using System.Windows.Media.Imaging;
+using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
 using System.Windows;
+using System.Windows.Threading;
+using Message.PhotoServiceReference;
 
 namespace Message.ViewModel
 {
@@ -26,17 +31,28 @@ namespace Message.ViewModel
             set { SetProperty(ref _currentUserLogin, value); }
         }
 
-        private byte[] _currentUserPhoto;
+        private Image _image;
 
-        public byte[] CurrentUserPhoto
+        public Image Images
         {
-            get { return GlobalBase.CurrentUser.Avatar; }
-            set { SetProperty(ref _currentUserPhoto, value); }
+            get { return _image; }
+            set { _image = value; OnPropertyChanged(new System.ComponentModel.PropertyChangedEventArgs("Images")); }
+
         }
 
         public SettingsWindowVM(IView view)
         {
             this.view = view;
+            using (PhotoServiceClient client = new PhotoServiceClient())
+            {
+                GlobalBase.CurrentUser.Avatar = client.GetPhotoById(GlobalBase.CurrentUser.Id);
+            }
+
+            if (GlobalBase.CurrentUser.Avatar.Length > 1)
+            {
+                MemoryStream memstr = new MemoryStream(GlobalBase.CurrentUser.Avatar);
+                Dispatcher.CurrentDispatcher.Invoke(() => { Images = Image.FromStream(memstr); });
+            }
         }
 
         private DelegateCommand _onProfileSettings;

@@ -13,6 +13,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media.Imaging;
+using System.Windows.Threading;
+using Message.PhotoServiceReference;
 
 namespace Message.ViewModel
 {
@@ -24,7 +26,14 @@ namespace Message.ViewModel
         private InstanceContext usersSite;
         private UserServiceClient UserServiceClient;
         private IUserServiceCallback _userServiceCallback;
+        private Image _image;
 
+        public Image Images
+        {
+            get { return _image; }
+            set { _image = value; OnPropertyChanged(new System.ComponentModel.PropertyChangedEventArgs("Images")); }
+
+        }
         private string _currentUserName;
 
         public string CurrentUserName
@@ -139,6 +148,12 @@ namespace Message.ViewModel
             UserBio = GlobalBase.CurrentUser.Bio;
 
             IsNewChanges = false;
+
+            if (GlobalBase.CurrentUser.Avatar.Length > 1)
+            {
+                MemoryStream memstr = new MemoryStream(GlobalBase.CurrentUser.Avatar);
+                Dispatcher.CurrentDispatcher.Invoke(() => { Images = Image.FromStream(memstr); });
+            }
         }
 
         private DelegateCommand _onApplyChanges;
@@ -157,10 +172,14 @@ namespace Message.ViewModel
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.ShowDialog();
             var FilePath = openFileDialog.FileName;
-
-            GlobalBase.CurrentUser.Avatar = new byte[1];
-            GlobalBase.CurrentUser.Avatar = File.ReadAllBytes(FilePath);
             UserServiceClient.AddOrUpdateUser(GlobalBase.CurrentUser);
+            using (PhotoServiceClient client = new PhotoServiceClient())
+            {
+                var photo = File.ReadAllBytes(FilePath);
+                client.SetPhotoById(GlobalBase.CurrentUser.Id, photo);
+                GlobalBase.CurrentUser.Avatar = client.GetPhotoById(GlobalBase.CurrentUser.Id);
+            }
+          
 
             GlobalBase.UpdateUI.Invoke();
             IsNewChanges = true;

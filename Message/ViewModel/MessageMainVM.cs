@@ -26,13 +26,13 @@ namespace Message.ViewModel
         private IMessaging _view;
 
         public User CurrentUser { get; set; }
-       private byte[] _currentUserPhoto;
+       //private byte[] _currentUserPhoto;
 
-        public byte[] CurrentUserPhoto
-        {
-            get { return GlobalBase.CurrentUser.Avatar; }
-            set { SetProperty(ref _currentUserPhoto, value); }
-        }
+       // public byte[] CurrentUserPhoto
+       // {
+       //     get { return GlobalBase.CurrentUser.Avatar; }
+       //     set { SetProperty(ref _currentUserPhoto, value); }
+       // }
         private string _searchContactStr;
 
         public string SearchContactStr 
@@ -149,11 +149,11 @@ namespace Message.ViewModel
                 Update();
             };
 
-            ContactsList = userServiceClient.GetAllContacts(GlobalBase.CurrentUser);
+           // ContactsList = userServiceClient.GetAllContacts(GlobalBase.CurrentUser);
             SelectedContact = new User();
             IsMenuEnabled = false;
 
-            userServiceClient.OnUserCame(user);
+            //userServiceClient.OnUserCame(user);
         }
 
         private void SelectedContactChanged(object sender = null, PropertyChangedEventArgs e = null)

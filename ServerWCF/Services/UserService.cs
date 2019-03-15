@@ -1,19 +1,14 @@
-﻿using Message.AdditionalItems;
-using ServerWCF.Context;
+﻿using ServerWCF.Context;
 using ServerWCF.Contracts;
 using ServerWCF.Model;
 using ServerWCF.Model.Contacts;
 using ServerWCF.Model.Messages;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Data.Entity;
-using System.IO;
+using System.Data.Entity.Migrations;
 using System.Linq;
-using System.Security.Cryptography;
 using System.ServiceModel;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace ServerWCF.Services
 {
@@ -35,7 +30,28 @@ namespace ServerWCF.Services
             public User User { get; set; }
             public IUserCallback UserCallback { get; set; }
         }
+        public byte[] GetPhotoById(int id)
+        {
+            using (UserContext db = new UserContext())
+            {
+                return db.Users
+                    .FirstOrDefault(x => x.Id == id)
+                    ?.Avatar;
+            }
+        }
 
+        public void SetPhotoById(int id, byte[] photoBytes)
+        {
+            using (UserContext db = new UserContext())
+            {
+                var user = db.Users
+                    .FirstOrDefault(x => x.Id == id);
+
+                user.Avatar = photoBytes;
+                db.Users.AddOrUpdate(user);
+                db.SaveChanges();
+            }
+        }
         //contacts
         public bool AddContact(User owner, User owned)
         {
