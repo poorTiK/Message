@@ -1032,10 +1032,10 @@ namespace Message.UserServiceReference {
         System.Threading.Tasks.Task<bool> AddContactAsync(int id_owner, int id_owned);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/RemoveContact", ReplyAction="http://tempuri.org/IUserService/RemoveContactResponse")]
-        bool RemoveContact(Message.UserServiceReference.User owner, Message.UserServiceReference.User owned);
+        bool RemoveContact(int ownerId, int ownedId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/RemoveContact", ReplyAction="http://tempuri.org/IUserService/RemoveContactResponse")]
-        System.Threading.Tasks.Task<bool> RemoveContactAsync(Message.UserServiceReference.User owner, Message.UserServiceReference.User owned);
+        System.Threading.Tasks.Task<bool> RemoveContactAsync(int ownerId, int ownedId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/GetAllContacts", ReplyAction="http://tempuri.org/IUserService/GetAllContactsResponse")]
         System.Collections.Generic.List<Message.UserServiceReference.User> GetAllContacts(int id);
@@ -1056,10 +1056,10 @@ namespace Message.UserServiceReference {
         System.Threading.Tasks.Task<bool> IsExistsInContactsAsync(int id_owner, int id_owned);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/GetAppSettings", ReplyAction="http://tempuri.org/IUserService/GetAppSettingsResponse")]
-        Message.UserServiceReference.ApplicationSettings GetAppSettings(Message.UserServiceReference.User user);
+        Message.UserServiceReference.ApplicationSettings GetAppSettings(int userId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/GetAppSettings", ReplyAction="http://tempuri.org/IUserService/GetAppSettingsResponse")]
-        System.Threading.Tasks.Task<Message.UserServiceReference.ApplicationSettings> GetAppSettingsAsync(Message.UserServiceReference.User user);
+        System.Threading.Tasks.Task<Message.UserServiceReference.ApplicationSettings> GetAppSettingsAsync(int userId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/SaveAppSettings", ReplyAction="http://tempuri.org/IUserService/SaveAppSettingsResponse")]
         bool SaveAppSettings(Message.UserServiceReference.ApplicationSettings appSettings);
@@ -1068,22 +1068,22 @@ namespace Message.UserServiceReference {
         System.Threading.Tasks.Task<bool> SaveAppSettingsAsync(Message.UserServiceReference.ApplicationSettings appSettings);
         
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IUserService/OnUserCame")]
-        void OnUserCame(Message.UserServiceReference.User user);
+        void OnUserCame(int userId);
         
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IUserService/OnUserCame")]
-        System.Threading.Tasks.Task OnUserCameAsync(Message.UserServiceReference.User user);
+        System.Threading.Tasks.Task OnUserCameAsync(int userId);
         
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IUserService/OnUserLeave")]
-        void OnUserLeave(Message.UserServiceReference.User user);
+        void OnUserLeave(int userId);
         
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IUserService/OnUserLeave")]
-        System.Threading.Tasks.Task OnUserLeaveAsync(Message.UserServiceReference.User user);
+        System.Threading.Tasks.Task OnUserLeaveAsync(int userId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/GetGroupMessages", ReplyAction="http://tempuri.org/IUserService/GetGroupMessagesResponse")]
-        System.Collections.Generic.List<Message.UserServiceReference.GroupMessage> GetGroupMessages(Message.UserServiceReference.ChatGroup chatGroup, int limin);
+        System.Collections.Generic.List<Message.UserServiceReference.GroupMessage> GetGroupMessages(int chatGroupId, int limin);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/GetGroupMessages", ReplyAction="http://tempuri.org/IUserService/GetGroupMessagesResponse")]
-        System.Threading.Tasks.Task<System.Collections.Generic.List<Message.UserServiceReference.GroupMessage>> GetGroupMessagesAsync(Message.UserServiceReference.ChatGroup chatGroup, int limin);
+        System.Threading.Tasks.Task<System.Collections.Generic.List<Message.UserServiceReference.GroupMessage>> GetGroupMessagesAsync(int chatGroupId, int limin);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/GetUserMessages", ReplyAction="http://tempuri.org/IUserService/GetUserMessagesResponse")]
         System.Collections.Generic.List<Message.UserServiceReference.UserMessage> GetUserMessages(int sender, int receiver, int limin);
@@ -1259,12 +1259,12 @@ namespace Message.UserServiceReference {
             return base.Channel.AddContactAsync(id_owner, id_owned);
         }
         
-        public bool RemoveContact(Message.UserServiceReference.User owner, Message.UserServiceReference.User owned) {
-            return base.Channel.RemoveContact(owner, owned);
+        public bool RemoveContact(int ownerId, int ownedId) {
+            return base.Channel.RemoveContact(ownerId, ownedId);
         }
         
-        public System.Threading.Tasks.Task<bool> RemoveContactAsync(Message.UserServiceReference.User owner, Message.UserServiceReference.User owned) {
-            return base.Channel.RemoveContactAsync(owner, owned);
+        public System.Threading.Tasks.Task<bool> RemoveContactAsync(int ownerId, int ownedId) {
+            return base.Channel.RemoveContactAsync(ownerId, ownedId);
         }
         
         public System.Collections.Generic.List<Message.UserServiceReference.User> GetAllContacts(int id) {
@@ -1291,12 +1291,12 @@ namespace Message.UserServiceReference {
             return base.Channel.IsExistsInContactsAsync(id_owner, id_owned);
         }
         
-        public Message.UserServiceReference.ApplicationSettings GetAppSettings(Message.UserServiceReference.User user) {
-            return base.Channel.GetAppSettings(user);
+        public Message.UserServiceReference.ApplicationSettings GetAppSettings(int userId) {
+            return base.Channel.GetAppSettings(userId);
         }
         
-        public System.Threading.Tasks.Task<Message.UserServiceReference.ApplicationSettings> GetAppSettingsAsync(Message.UserServiceReference.User user) {
-            return base.Channel.GetAppSettingsAsync(user);
+        public System.Threading.Tasks.Task<Message.UserServiceReference.ApplicationSettings> GetAppSettingsAsync(int userId) {
+            return base.Channel.GetAppSettingsAsync(userId);
         }
         
         public bool SaveAppSettings(Message.UserServiceReference.ApplicationSettings appSettings) {
@@ -1307,28 +1307,28 @@ namespace Message.UserServiceReference {
             return base.Channel.SaveAppSettingsAsync(appSettings);
         }
         
-        public void OnUserCame(Message.UserServiceReference.User user) {
-            base.Channel.OnUserCame(user);
+        public void OnUserCame(int userId) {
+            base.Channel.OnUserCame(userId);
         }
         
-        public System.Threading.Tasks.Task OnUserCameAsync(Message.UserServiceReference.User user) {
-            return base.Channel.OnUserCameAsync(user);
+        public System.Threading.Tasks.Task OnUserCameAsync(int userId) {
+            return base.Channel.OnUserCameAsync(userId);
         }
         
-        public void OnUserLeave(Message.UserServiceReference.User user) {
-            base.Channel.OnUserLeave(user);
+        public void OnUserLeave(int userId) {
+            base.Channel.OnUserLeave(userId);
         }
         
-        public System.Threading.Tasks.Task OnUserLeaveAsync(Message.UserServiceReference.User user) {
-            return base.Channel.OnUserLeaveAsync(user);
+        public System.Threading.Tasks.Task OnUserLeaveAsync(int userId) {
+            return base.Channel.OnUserLeaveAsync(userId);
         }
         
-        public System.Collections.Generic.List<Message.UserServiceReference.GroupMessage> GetGroupMessages(Message.UserServiceReference.ChatGroup chatGroup, int limin) {
-            return base.Channel.GetGroupMessages(chatGroup, limin);
+        public System.Collections.Generic.List<Message.UserServiceReference.GroupMessage> GetGroupMessages(int chatGroupId, int limin) {
+            return base.Channel.GetGroupMessages(chatGroupId, limin);
         }
         
-        public System.Threading.Tasks.Task<System.Collections.Generic.List<Message.UserServiceReference.GroupMessage>> GetGroupMessagesAsync(Message.UserServiceReference.ChatGroup chatGroup, int limin) {
-            return base.Channel.GetGroupMessagesAsync(chatGroup, limin);
+        public System.Threading.Tasks.Task<System.Collections.Generic.List<Message.UserServiceReference.GroupMessage>> GetGroupMessagesAsync(int chatGroupId, int limin) {
+            return base.Channel.GetGroupMessagesAsync(chatGroupId, limin);
         }
         
         public System.Collections.Generic.List<Message.UserServiceReference.UserMessage> GetUserMessages(int sender, int receiver, int limin) {

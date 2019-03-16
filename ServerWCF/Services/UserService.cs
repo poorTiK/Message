@@ -88,7 +88,7 @@ namespace ServerWCF.Services
             }
         }
 
-        public bool RemoveContact(User owner, User owned)
+        public bool RemoveContact(int ownerId, int ownedId)
         {
             using (UserContext userContext = new UserContext())
             {
@@ -96,8 +96,8 @@ namespace ServerWCF.Services
                 {
                     List<BaseContact> contacts = userContext.Contacts.Include("UserOwner").ToList();
 
-                    User ownerFromDb = userContext.Users.Where(u => u.Login == owner.Login).FirstOrDefault();
-                    User ownedFromDb = userContext.Users.Where(u => u.Login == owned.Login).FirstOrDefault();
+                    User ownerFromDb = userContext.Users.Where(u => u.Id == ownerId).FirstOrDefault();
+                    User ownedFromDb = userContext.Users.Where(u => u.Id == ownedId).FirstOrDefault();
 
                     foreach (BaseContact contact in contacts)
                     {
@@ -324,11 +324,11 @@ namespace ServerWCF.Services
         }
 
         //application settings
-        public ApplicationSettings GetAppSettings(User user)
+        public ApplicationSettings GetAppSettings(int userId)
         {
             using (UserContext context = new UserContext())
             {
-                ApplicationSettings appSettings = context.ApplicationSettings.Where(set => set.UserId == user.Id).FirstOrDefault();
+                ApplicationSettings appSettings = context.ApplicationSettings.Where(set => set.UserId == userId).FirstOrDefault();
                 return appSettings;
             }
         }
@@ -365,11 +365,11 @@ namespace ServerWCF.Services
         }
 
         //online callbacks
-        public void OnUserCame(User user)
+        public void OnUserCame(int userId)
         {
             using (UserContext userContext = new UserContext())
             {
-                User dbUser = userContext.Users.Where(u => u.Id == user.Id).FirstOrDefault();
+                User dbUser = userContext.Users.Where(u => u.Id == userId).FirstOrDefault();
                 dbUser.Status = "online";
                 userContext.SaveChanges();
                 if (dbUser != null)
@@ -402,16 +402,16 @@ namespace ServerWCF.Services
             }
         }
 
-        public void OnUserLeave(User user)
+        public void OnUserLeave(int userId)
         {
             using (UserContext userContext = new UserContext())
             {
-                CallbackData callbackData = usersOnline.Where(cd => cd.User.Id == user.Id).FirstOrDefault();
+                CallbackData callbackData = usersOnline.Where(cd => cd.User.Id == userId).FirstOrDefault();
                 if (callbackData != null)
                 {
                     usersOnline.Remove(callbackData);
 
-                    User userToChangeStatus = userContext.Users.Where(u => u.Id == user.Id).FirstOrDefault();
+                    User userToChangeStatus = userContext.Users.Where(u => u.Id == userId).FirstOrDefault();
                     userToChangeStatus.Status = DateTime.Now.ToString();
                     userContext.SaveChanges();
 
@@ -436,7 +436,7 @@ namespace ServerWCF.Services
         }
 
         //messages
-        public List<GroupMessage> GetGroupMessages(ChatGroup group, int limit)
+        public List<GroupMessage> GetGroupMessages(int chatGroupId, int limit)
         {
             using (UserContext context = new UserContext())
             {
@@ -452,7 +452,7 @@ namespace ServerWCF.Services
                             {
                                 break;
                             }
-                            if (group.Id == groupMessage.ChatGroupId)
+                            if (chatGroupId == groupMessage.ChatGroupId)
                             {
                                 messagesToReturn.Add(groupMessage);
                             }
@@ -782,21 +782,5 @@ namespace ServerWCF.Services
 
             return successResult;
         }
-
-        private UiInfo convertToUiInfo(User user)
-        {
-
-            return null;
-        }
-
-        //private string ValidateAddingContact(User owner, User owned)
-        //{
-        //    using (UserContext userContext = new UserContext())
-        //    {
-        //        User userOwner = userContext.Users.Include("Contacts").Where(u => u.Id == owner.Id).FirstOrDefault();
-
-        //    }
-
-        //}
     }
 }

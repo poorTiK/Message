@@ -313,7 +313,7 @@ namespace Message.ViewModel
         private void ExecuteOnExit()
         {
             using (userServiceClient = new UserServiceClient(usersSite))
-                userServiceClient.OnUserLeave(GlobalBase.CurrentUser);
+                userServiceClient.OnUserLeave(GlobalBase.CurrentUser.Id);
             _view.CloseWindow();
         }
 
@@ -368,7 +368,6 @@ namespace Message.ViewModel
             else
             {
                 Dispatcher.CurrentDispatcher.Invoke(() => { Images = null; });
-
             }
         }
 

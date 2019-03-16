@@ -170,7 +170,7 @@ namespace Message.ViewModel
         {
             using (UserServiceClient = new UserServiceClient(usersSite))
             {
-                UserServiceClient.RemoveContactAsync(GlobalBase.CurrentUser, Profile);
+                UserServiceClient.RemoveContactAsync(GlobalBase.CurrentUser.Id, Profile.Id);
             }
 
             ManageControls();

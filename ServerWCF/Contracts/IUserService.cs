@@ -43,7 +43,7 @@ namespace ServerWCF.Contracts
         bool AddContact(int id_owner, int id_owned);
 
         [OperationContract]
-        bool RemoveContact(User owner, User owned);
+        bool RemoveContact(int ownerId, int ownedId);
 
         [OperationContract]
         List<User> GetAllContacts(int id);
@@ -57,21 +57,21 @@ namespace ServerWCF.Contracts
 
 
         [OperationContract]
-        ApplicationSettings GetAppSettings(User user);
+        ApplicationSettings GetAppSettings(int userId);
 
         [OperationContract]
         bool SaveAppSettings(ApplicationSettings appSettings);
 
 
         [OperationContract(IsOneWay = true)]
-        void OnUserCame(User user);
+        void OnUserCame(int userId);
 
         [OperationContract(IsOneWay = true)]
-        void OnUserLeave(User user);
+        void OnUserLeave(int userId);
 
 
         [OperationContract]
-        List<GroupMessage> GetGroupMessages(ChatGroup chatGroup, int limin);
+        List<GroupMessage> GetGroupMessages(int chatGroupId, int limin);
 
         [OperationContract]
         List<UserMessage> GetUserMessages(int sender, int receiver, int limin);
