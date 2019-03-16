@@ -11,7 +11,7 @@ using Message.PhotoServiceReference;
 
 namespace Message.ViewModel
 {
-    internal class SettingsWindowVM : Prism.Mvvm.BindableBase
+    internal class SettingsWindowVM : BaseViewModel
     {
         public IView view;
 
@@ -52,7 +52,7 @@ namespace Message.ViewModel
 
             }
         }
-        public SettingsWindowVM(IView view)
+        public SettingsWindowVM(IView view) : base()
         {
             this.view = view;
             using (PhotoServiceClient client = new PhotoServiceClient())

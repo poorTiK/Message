@@ -17,7 +17,7 @@ using Microsoft.Win32;
 namespace Message.ViewModel
 {
     [CallbackBehavior(ConcurrencyMode = ConcurrencyMode.Reentrant)]
-    internal class MainWindowVM : Prism.Mvvm.BindableBase, IUserServiceCallback
+    internal class MainWindowVM : BaseViewModel
     {
         #region PrivateReadOnly
 
@@ -28,10 +28,6 @@ namespace Message.ViewModel
 
         private IView view;
         private IPasswordSupplier passwordSupplier;
-
-        private InstanceContext usersSite;
-        private UserServiceClient UserServiceClient;
-        private IUserServiceCallback _userServiceCallback;
 
         private DelegateCommand _onStartRegister;
 
@@ -191,77 +187,18 @@ namespace Message.ViewModel
 
         #endregion registration data
 
-        public MainWindowVM(IView iView, IPasswordSupplier ipasswordSupplier)
+        public MainWindowVM(IView iView, IPasswordSupplier ipasswordSupplier) : base()
         {
             view = iView;
             passwordSupplier = ipasswordSupplier;
             _serializeUser = new SerializeUserToRegistry();
-            //callback for user
-            _userServiceCallback = this;
-            usersSite = new InstanceContext(_userServiceCallback);
-            UserServiceClient = new UserServiceClient(usersSite);
 
             IsLoginProgress = false;
             IsRegisterProgress = false;
 
             IsSignUpVisible = true;
             IsRegisterVisible = false;
-            //fillUsers();
-            //TestApplicationSettings();
-            //TestMessageT();
         }
-
-        //private void fillUsers()
-        //{
-        //    User admin = new User()
-        //    {
-        //        Email = "admin@mail.ru",
-        //        Login = "admin",
-        //        Password = "123123",
-        //        FirstName = "Admin",
-        //        LastName = "Purdik",
-        //        Status = "online"
-        //    };
-
-        //    User steveOwned = new User()
-        //    {
-        //        Email = "firstOwned@mail.ru",
-        //        Login = "firstOwned",
-        //        Password = "123123",
-        //        FirstName = "Steve",
-        //        LastName = "Jobs",
-        //        Status = "online"
-        //    };
-
-        //    User billOwned = new User()
-        //    {
-        //        Email = "secondOwned@mail.ru",
-        //        Login = "secondOwned",
-        //        Password = "123123",
-        //        FirstName = "Bill",
-        //        LastName = "Gates",
-        //        Status = "online"
-        //    };
-
-        //    User markOwner = new User()
-        //    {
-        //        Email = "owner@mail.ru",
-        //        Login = "owner",
-        //        Password = "123123",
-        //        FirstName = "Mark",
-        //        LastName = "Zuckerberg",
-        //        Status = "online"
-        //    };
-
-        //    UserServiceClient.AddOrUpdateUserAsync(markOwner);
-        //    UserServiceClient.AddOrUpdateUserAsync(billOwned);
-
-        //    //attaching new contact for Mark
-        //    UserServiceClient.AddContactAsync(markOwner, billOwned);
-
-        //    //just another user in db
-        //    UserServiceClient.AddOrUpdateUserAsync(steveOwned);
-        //}
 
         private void ExecuteOnStartRegister()
         {

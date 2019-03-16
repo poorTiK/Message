@@ -11,12 +11,8 @@ using Prism.Commands;
 
 namespace Message.ViewModel
 {
-    class EditMessageVM : Prism.Mvvm.BindableBase, IUserServiceCallback
+    class EditMessageVM : BaseViewModel
     {
-        private InstanceContext usersSite;
-        private UserServiceClient userServiceClient;
-        private IUserServiceCallback _userServiceCallback;
-
         private IView _view;
 
         private BaseMessage Message { get; set; }
@@ -28,12 +24,8 @@ namespace Message.ViewModel
             set { SetProperty(ref _messageText, value); }
         }
 
-        public EditMessageVM(BaseMessage message, IView View)
+        public EditMessageVM(BaseMessage message, IView View) : base()
         {
-            _userServiceCallback = this;
-            usersSite = new InstanceContext(_userServiceCallback);
-            userServiceClient = new UserServiceClient(usersSite);
-
             _view = View;
 
             Message = message;
@@ -59,34 +51,9 @@ namespace Message.ViewModel
         {
             Message.Content = Encoding.UTF8.GetBytes(MessageText);
 
-            userServiceClient.EditMessage(Message);
+            UserServiceClient.EditMessage(Message);
 
             _view.CloseWindow();
-        }
-
-        public void OnMessageEdited(BaseMessage message)
-        {
-            //throw new NotImplementedException();
-        }
-
-        public void OnMessageRemoved(BaseMessage message)
-        {
-            //throw new NotImplementedException();
-        }
-
-        public void ReceiveMessage(BaseMessage message)
-        {
-            //throw new NotImplementedException();
-        }
-
-        public void UserCame(User user)
-        {
-            //throw new NotImplementedException();
-        }
-
-        public void UserLeave(User user)
-        {
-            //throw new NotImplementedException();
         }
     }
 }

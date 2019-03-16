@@ -8,12 +8,8 @@ using System.Windows;
 
 namespace Message.ViewModel
 {
-    internal class MessageControlVM : Prism.Mvvm.BindableBase, IUserServiceCallback
+    internal class MessageControlVM : BaseViewModel
     {
-        private InstanceContext usersSite;
-        private UserServiceClient userServiceClient;
-        private IUserServiceCallback _userServiceCallback;
-
         private BaseMessage Message { get; set; }
 
         private string MessageText
@@ -25,12 +21,8 @@ namespace Message.ViewModel
             set { }
         }
 
-        public MessageControlVM(BaseMessage message)
+        public MessageControlVM(BaseMessage message) : base()
         {
-            _userServiceCallback = this;
-            usersSite = new InstanceContext(_userServiceCallback);
-            userServiceClient = new UserServiceClient(usersSite);
-
             Message = message;
         }
 
@@ -77,7 +69,7 @@ namespace Message.ViewModel
             switch (canDelete)
             {
                 case MessageBoxResult.Yes:
-                    userServiceClient.RemoveMessage(Message);
+                    UserServiceClient.RemoveMessage(Message);
 
                     GlobalBase.UpdateUI.Invoke();
                     break;
@@ -90,31 +82,6 @@ namespace Message.ViewModel
         private void OnCopy()
         {
             Clipboard.SetText(MessageText);
-        }
-
-        public void UserLeave(User user)
-        {
-            //throw new NotImplementedException();
-        }
-
-        public void UserCame(User user)
-        {
-            //throw new NotImplementedException();
-        }
-
-        public void ReceiveMessage(BaseMessage message)
-        {
-            //throw new NotImplementedException();
-        }
-
-        public void OnMessageRemoved(BaseMessage message)
-        {
-            //throw new System.NotImplementedException();
-        }
-
-        public void OnMessageEdited(BaseMessage message)
-        {
-            //throw new System.NotImplementedException();
         }
     }
 }
