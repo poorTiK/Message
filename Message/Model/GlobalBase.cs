@@ -2,6 +2,7 @@
 using Message.UserServiceReference;
 using Notifications.Wpf;
 using System.Globalization;
+using Message.PhotoServiceReference;
 
 namespace Message.Model
 {
@@ -11,8 +12,11 @@ namespace Message.Model
 
         public static Action UpdateUI;
 
+        public static PhotoServiceClient PhotoServiceClient { get; set; }
+
         static GlobalBase()
         {
+            PhotoServiceClient = new PhotoServiceClient();
         }
 
         public static string Base64Encode(string plainText)

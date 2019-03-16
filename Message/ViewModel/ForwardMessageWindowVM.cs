@@ -42,17 +42,16 @@ namespace Message.ViewModel
 
             ContactsList = UserServiceClient.GetAllContactsUiInfo(GlobalBase.CurrentUser.Id);
 
-            using (var proxy = new PhotoServiceClient())
-            {
+
                 foreach (var item in ContactsList)
                 {
                     if (item is UserUiInfo)
                     {
                         UserUiInfo userUiInfo = item as UserUiInfo;
-                        item.Avatar = proxy.GetPhotoById(userUiInfo.UserId);
+                        item.Avatar = GlobalBase.PhotoServiceClient.GetPhotoById(userUiInfo.UserId);
                     }
                 }
-            }
+
             _view = view;
 
             _message = message;

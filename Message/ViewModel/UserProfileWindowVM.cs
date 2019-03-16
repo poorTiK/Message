@@ -152,10 +152,9 @@ namespace Message.ViewModel
 
         private void ExecuteClose()
         {
-            using (var proxy = new PhotoServiceClient())
-            {
-                GlobalBase.CurrentUser.Avatar = proxy.GetPhotoById(GlobalBase.CurrentUser.Id);
-            }
+
+                GlobalBase.CurrentUser.Avatar = GlobalBase.PhotoServiceClient.GetPhotoById(GlobalBase.CurrentUser.Id);
+
             
             _view.CloseWindow();
         }
@@ -219,19 +218,17 @@ namespace Message.ViewModel
 
                     if (_newAvatar != null)
                     {
-                        using (var proxy = new PhotoServiceClient())
-                        {
-                            proxy.SetPhotoById(GlobalBase.CurrentUser.Id, _newAvatar);
-                            GlobalBase.CurrentUser.Avatar = proxy.GetPhotoById(GlobalBase.CurrentUser.Id);
-                        }
+
+                        GlobalBase.PhotoServiceClient.SetPhotoById(GlobalBase.CurrentUser.Id, _newAvatar);
+                            GlobalBase.CurrentUser.Avatar = GlobalBase.PhotoServiceClient.GetPhotoById(GlobalBase.CurrentUser.Id);
+
                     }
                     else
                     {
-                        using (var proxy = new PhotoServiceClient())
-                        {
-                            proxy.SetPhotoById(GlobalBase.CurrentUser.Id, tempAvatar);
-                            GlobalBase.CurrentUser.Avatar = proxy.GetPhotoById(GlobalBase.CurrentUser.Id);
-                        }
+
+                        GlobalBase.PhotoServiceClient.SetPhotoById(GlobalBase.CurrentUser.Id, tempAvatar);
+                            GlobalBase.CurrentUser.Avatar = GlobalBase.PhotoServiceClient.GetPhotoById(GlobalBase.CurrentUser.Id);
+                    
                     }
 
                     SetAvatarForUI();

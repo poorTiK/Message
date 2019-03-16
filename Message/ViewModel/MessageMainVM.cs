@@ -60,17 +60,16 @@ namespace Message.ViewModel
                 {
                     ContactsList.Clear();
                     ContactsList.AddRange(UserServiceClient.GetAllContactsUiInfo(GlobalBase.CurrentUser.Id));
-                    using (var proxy = new PhotoServiceClient())
-                    {
+
                         foreach (var item in ContactsList)
                         {
                             if (item is UserUiInfo)
                             {
                                 UserUiInfo userUiInfo = item as UserUiInfo;
-                                item.Avatar = proxy.GetPhotoById(userUiInfo.UserId);
+                                item.Avatar = GlobalBase.PhotoServiceClient.GetPhotoById(userUiInfo.UserId);
                             }
                         }
-                    }
+
                 }
                 else
                 {
@@ -86,15 +85,14 @@ namespace Message.ViewModel
                                       UserId = u.Id, Avatar = u.Avatar,
                                       Status = u.Status}) );
 
-                    using (var proxy = new PhotoServiceClient())
-                    {
+
                         foreach (var item in ContactsList)
                         {
                             UserUiInfo userUiInfo = item as UserUiInfo;
-                            item.Avatar = proxy.GetPhotoById(userUiInfo.UserId);
+                            item.Avatar = GlobalBase.PhotoServiceClient.GetPhotoById(userUiInfo.UserId);
                         }
                     }
-                }
+
                 SetProperty(ref _searchContactStr, value);
             }
         }
@@ -442,17 +440,16 @@ namespace Message.ViewModel
 
                 ContactsList = UserServiceClient.GetAllContactsUiInfo(GlobalBase.CurrentUser.Id);
 
-                using (var proxy = new PhotoServiceClient())
-                {
+
                     foreach (var item in ContactsList)
                     {
                         if (SelectedContact is UserUiInfo)
                         {
                             UserUiInfo userUiInfo = SelectedContact as UserUiInfo;
-                            item.Avatar = proxy.GetPhotoById(userUiInfo.UserId);
+                            item.Avatar = GlobalBase.PhotoServiceClient.GetPhotoById(userUiInfo.UserId);
                         }
                     }
-                }
+               
 
                 if (ContactsList.Any(x => temp != null && ((x as UserUiInfo).UserId == temp.UserId)))
                 {
