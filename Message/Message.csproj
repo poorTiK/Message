@@ -241,6 +241,7 @@
     <Compile Include="ValidationRules\Email_ValidationRule.cs" />
     <Compile Include="ValidationRules\Login_ValidationRule.cs" />
     <Compile Include="ValidationRules\NameSurname_ValidationRule.cs" />
+    <Compile Include="ViewModel\BaseViewModel.cs" />
     <Compile Include="ViewModel\ContactProfileWindowVM.cs" />
     <Compile Include="ViewModel\ContatsWindowVM.cs" />
     <Compile Include="ViewModel\EditMessageVM.cs" />

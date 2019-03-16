@@ -14,22 +14,12 @@ using System.Windows;
 namespace Message.ViewModel
 {
     [CallbackBehavior(ConcurrencyMode = ConcurrencyMode.Reentrant)]
-    internal class ForgotPassWindowVM : Prism.Mvvm.BindableBase, IUserServiceCallback
+    internal class ForgotPassWindowVM : BaseViewModel
     {
         private IView view;
-
-        private InstanceContext usersSite;
-        private UserServiceClient userServiceClient;
-        private IUserServiceCallback _userServiceCallback;
-
-        public ForgotPassWindowVM(IView view)
+        public ForgotPassWindowVM(IView view) : base()
         {
             this.view = view;
-
-            //callback for user
-            _userServiceCallback = this;
-            usersSite = new InstanceContext(_userServiceCallback);
-            userServiceClient = new UserServiceClient(usersSite);
 
             IsLogin = true;
             IsMail = false;
@@ -90,11 +80,7 @@ namespace Message.ViewModel
             {
                 if (!string.IsNullOrWhiteSpace(Email))
                 {
-                    User user = null;
-                    using (userServiceClient = new UserServiceClient(usersSite))
-                    {
-                        user = userServiceClient.GetAllUsers().First(x => x.Email == Email);
-                    }
+                    User user = UserServiceClient.GetAllUsers().First(x => x.Email == Email);
 
                     if (user != null)
                     {
@@ -105,11 +91,7 @@ namespace Message.ViewModel
 
                 if (!string.IsNullOrWhiteSpace(Login))
                 {
-                    User user = null;
-                    using (userServiceClient = new UserServiceClient(usersSite))
-                    {
-                        user = userServiceClient.GetUserByLogin(Login);
-                    }
+                    User user = UserServiceClient.GetUserByLogin(Login);
 
                     if (user != null)
                     {
@@ -165,31 +147,6 @@ namespace Message.ViewModel
                 CustomMessageBox.Show(Application.Current.Resources.MergedDictionaries[4]["RestorePass"].ToString(), Application.Current.Resources.MergedDictionaries[4]["EmailSend"].ToString());
                 IsSending = false;
             })));
-        }
-
-        public void UserLeave(User user)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void UserCame(User user)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void ReceiveMessage(BaseMessage message)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void OnMessageRemoved(BaseMessage message)
-        {
-            //throw new NotImplementedException();
-        }
-
-        public void OnMessageEdited(BaseMessage message)
-        {
-            //throw new NotImplementedException();
         }
     }
 }

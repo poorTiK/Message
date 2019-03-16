@@ -33,29 +33,6 @@ namespace ServerWCF.Services
             public IUserCallback UserCallback { get; set; }
         }
 
-        public byte[] GetPhotoById(int id)
-        {
-            using (UserContext db = new UserContext())
-            {
-                return db.Users
-                    .FirstOrDefault(x => x.Id == id)
-                    ?.Avatar;
-            }
-        }
-
-        public void SetPhotoById(int id, byte[] photoBytes)
-        {
-            using (UserContext db = new UserContext())
-            {
-                var user = db.Users
-                    .FirstOrDefault(x => x.Id == id);
-
-                user.Avatar = photoBytes;
-                db.Users.AddOrUpdate(user);
-                db.SaveChanges();
-            }
-        }
-
         //contacts
         public bool AddContact(int id_owner, int id_owned)
         {

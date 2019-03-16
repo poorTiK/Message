@@ -11,12 +11,8 @@ using Message.PhotoServiceReference;
 namespace Message.ViewModel
 {
     [CallbackBehavior(ConcurrencyMode = ConcurrencyMode.Reentrant)]
-    internal class ContatsWindowVM : Prism.Mvvm.BindableBase, IUserServiceCallback
+    internal class ContatsWindowVM : BaseViewModel
     {
-        private InstanceContext usersSite;
-        private UserServiceClient UserServiceClient;
-        private IUserServiceCallback _userServiceCallback;
-
         private IView view;
 
         private List<UiInfo> _contacts;
@@ -54,11 +50,7 @@ namespace Message.ViewModel
 
                 if (!string.IsNullOrEmpty(value))
                 {
-                    //ContactsList = UserServiceClient.FindUsersByLogin(ContactsSearch);
-                    using (UserServiceClient = new UserServiceClient(usersSite))
-                    {
                         ContactsList = UserServiceClient.FindUsersUiUnfoByLogin(ContactsSearch);
-                    }
                 }
                 else
                 {
@@ -69,29 +61,19 @@ namespace Message.ViewModel
             }
         }
 
-        public ContatsWindowVM(IView iview)
+        public ContatsWindowVM(IView iview) : base()
         {
             view = iview;
+            ContactsList = UserServiceClient.GetAllContactsUiInfo(GlobalBase.CurrentUser.Id);
 
-            _userServiceCallback = this;
-            usersSite = new InstanceContext(_userServiceCallback);
-            using (UserServiceClient = new UserServiceClient(usersSite))
-            {
-                //ContactsList = UserServiceClient.GetAllContacts(GlobalBase.CurrentUser.Id);
-                ContactsList = UserServiceClient.GetAllContactsUiInfo(GlobalBase.CurrentUser.Id);
-            }
-
-            using (var proxy = new PhotoServiceClient())
-            {
                 foreach (var item in ContactsList)
                 {
                     if (item is UserUiInfo)
                     {
                         UserUiInfo userUiInfo = item as UserUiInfo;
-                        item.Avatar = proxy.GetPhotoById(userUiInfo.UserId);
+                        item.Avatar = GlobalBase.PhotoServiceClient.GetPhotoById(userUiInfo.UserId);
                     }
                 }
-            }
 
             ManageControls();
         }
@@ -113,20 +95,17 @@ namespace Message.ViewModel
 
         private void ExecuteOnOpenProfile()
         {
-            User user = null;
             if (SelectedContact is UserUiInfo) {
-                using (UserServiceClient = new UserServiceClient(usersSite))
-                {
-                    UserUiInfo userUiInfo = SelectedContact as UserUiInfo;
-                    user = UserServiceClient.GetUserById(userUiInfo.UserId);
-                }
+
+                UserUiInfo userUiInfo = SelectedContact as UserUiInfo;
+                User user = UserServiceClient.GetUserById(userUiInfo.UserId);
+
+                var wnd = new ContactProfileWindow(user);
+                wnd.Owner = (Window)view;
+                wnd.ShowDialog();
+
+                UpdateContacts();
             }
-
-            var wnd = new ContactProfileWindow(user);
-            wnd.Owner = (Window)view;
-            wnd.ShowDialog();
-
-            UpdateContacts();
         }
 
         private void ExecuteOnCloseCommand()
@@ -138,13 +117,9 @@ namespace Message.ViewModel
         {
             if (SelectedContact != null)
             {
-                User user = null;
-                using (UserServiceClient = new UserServiceClient(usersSite))
-                {
-                    UserUiInfo userUiInfo = SelectedContact as UserUiInfo;
-                    user = UserServiceClient.GetUserById(userUiInfo.UserId);
-                    UserServiceClient.AddContact(GlobalBase.CurrentUser.Id, user.Id);
-                }
+                UserUiInfo userUiInfo = SelectedContact as UserUiInfo;
+                User user = UserServiceClient.GetUserById(userUiInfo.UserId);
+                UserServiceClient.AddContact(GlobalBase.CurrentUser.Id, user.Id);
 
                 UpdateContacts();
             }
@@ -154,24 +129,18 @@ namespace Message.ViewModel
 
         private void UpdateContacts()
         {
-            //ContactsList = UserServiceClient.GetAllContacts(GlobalBase.CurrentUser.Id);
+            ContactsList = UserServiceClient.GetAllContactsUiInfo(GlobalBase.CurrentUser.Id);
 
-            using (UserServiceClient = new UserServiceClient(usersSite))
-            {
-                ContactsList = UserServiceClient.GetAllContactsUiInfo(GlobalBase.CurrentUser.Id);
-            }
 
-            using (var proxy = new PhotoServiceClient())
-            {
                 foreach (var item in ContactsList)
                 {
                     if (item is UserUiInfo)
                     {
                         UserUiInfo userUiInfo = item as UserUiInfo;
-                        item.Avatar = proxy.GetPhotoById(userUiInfo.UserId);
+                        item.Avatar = GlobalBase.PhotoServiceClient.GetPhotoById(userUiInfo.UserId);
                     }
                 }
-            }
+
 
             ManageControls();
         }
@@ -186,31 +155,6 @@ namespace Message.ViewModel
             {
                 Caption = "Contacts search";
             }
-        }
-
-        public void UserLeave(User user)
-        {
-            //int test = 10;
-        }
-
-        public void UserCame(User user)
-        {
-            //int test = 20;
-        }
-
-        public void ReceiveMessage(BaseMessage message)
-        {
-            //throw new NotImplementedException();
-        }
-
-        public void OnMessageRemoved(BaseMessage message)
-        {
-            //throw new NotImplementedException();
-        }
-
-        public void OnMessageEdited(BaseMessage message)
-        {
-            //throw new NotImplementedException();
         }
     }
 }

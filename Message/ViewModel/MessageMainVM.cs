@@ -21,11 +21,8 @@ using Message.PhotoServiceReference;
 namespace Message.ViewModel
 {
     [CallbackBehavior(ConcurrencyMode = ConcurrencyMode.Reentrant)]
-    internal class MessageMainVM : Prism.Mvvm.BindableBase, IUserServiceCallback
+    internal class MessageMainVM : BaseViewModel
     {
-        private InstanceContext usersSite;
-        private UserServiceClient userServiceClient;
-        private IUserServiceCallback _userServiceCallback;
 
         private IMessaging _view;
         private Image _image;
@@ -62,24 +59,22 @@ namespace Message.ViewModel
                 if (value == string.Empty)
                 {
                     ContactsList.Clear();
-                    //ContactsList.AddRange(userServiceClient.GetAllContacts(GlobalBase.CurrentUser.Id));
-                    ContactsList.AddRange(userServiceClient.GetAllContactsUiInfo(GlobalBase.CurrentUser.Id));
-                    using (var proxy = new PhotoServiceClient())
-                    {
+                    ContactsList.AddRange(UserServiceClient.GetAllContactsUiInfo(GlobalBase.CurrentUser.Id));
+
                         foreach (var item in ContactsList)
                         {
                             if (item is UserUiInfo)
                             {
                                 UserUiInfo userUiInfo = item as UserUiInfo;
-                                item.Avatar = proxy.GetPhotoById(userUiInfo.UserId);
+                                item.Avatar = GlobalBase.PhotoServiceClient.GetPhotoById(userUiInfo.UserId);
                             }
                         }
-                    }
+
                 }
                 else
                 {
                     ContactsList.Clear();
-                    ContactsList.AddRange(userServiceClient
+                    ContactsList.AddRange(UserServiceClient
                         .GetAllContacts(GlobalBase.CurrentUser.Id)
                         .Where(i => i.FirstName.Contains(value) 
                         || i.LastName.Contains(value) 
@@ -90,15 +85,14 @@ namespace Message.ViewModel
                                       UserId = u.Id, Avatar = u.Avatar,
                                       Status = u.Status}) );
 
-                    using (var proxy = new PhotoServiceClient())
-                    {
+
                         foreach (var item in ContactsList)
                         {
                             UserUiInfo userUiInfo = item as UserUiInfo;
-                            item.Avatar = proxy.GetPhotoById(userUiInfo.UserId);
+                            item.Avatar = GlobalBase.PhotoServiceClient.GetPhotoById(userUiInfo.UserId);
                         }
                     }
-                }
+
                 SetProperty(ref _searchContactStr, value);
             }
         }
@@ -181,13 +175,9 @@ namespace Message.ViewModel
             set { SetProperty(ref _isMenuEnabled, value); }
         }
 
-        public MessageMainVM(IMessaging View, User user)
+        public MessageMainVM(IMessaging View, User user) : base()
         {
             _view = View;
-
-            _userServiceCallback = this;
-            usersSite = new InstanceContext(_userServiceCallback);
-            userServiceClient = new UserServiceClient(usersSite);
 
             CurrentUser = user;
             GlobalBase.CurrentUser = user;
@@ -197,23 +187,21 @@ namespace Message.ViewModel
             };
 
             SetAvatarForUI();
-            using (userServiceClient = new UserServiceClient(usersSite))
+
+            ContactsList = UserServiceClient.GetAllContactsUiInfo(GlobalBase.CurrentUser.Id);
+            foreach (var item in ContactsList)
             {
-                ContactsList = userServiceClient.GetAllContactsUiInfo(GlobalBase.CurrentUser.Id);
-                foreach (var item in ContactsList)
+                if (item.Avatar != null)
                 {
-                    if (item.Avatar != null)
-                    {
-                        MemoryStream memstr = new MemoryStream(item.Avatar);
-                        Dispatcher.CurrentDispatcher.Invoke(() => { item.Images = Image.FromStream(memstr); });
-                        ContactsList = ContactsList.ToList();
-                    }
+                    MemoryStream memstr = new MemoryStream(item.Avatar);
+                    Dispatcher.CurrentDispatcher.Invoke(() => { item.Images = Image.FromStream(memstr); });
+                    ContactsList = ContactsList.ToList();
                 }
             }
             SelectedContact = ContactsList.FirstOrDefault();
-            IsMenuEnabled = false;
+            IsMenuEnabled = true;
 
-            //userServiceClient.OnUserCame(user);
+            UserServiceClient.OnUserCame(user.Id);
         }
 
         private void SelectedContactChanged(object sender = null, PropertyChangedEventArgs e = null)
@@ -233,13 +221,10 @@ namespace Message.ViewModel
              
                 if (SelectedContact is UserUiInfo) {
                     UserUiInfo userUiInfo = SelectedContact as UserUiInfo;
-                    User user = userServiceClient.GetUserById(userUiInfo.UserId);
+                    User user = UserServiceClient.GetUserById(userUiInfo.UserId);
                     List<UserMessage> res = null; /* userServiceClient.GetUserMessages(GlobalBase.CurrentUser.Id, user.Id, 50);*/
 
-                    using (userServiceClient = new UserServiceClient(usersSite))
-                    {
-                        res = userServiceClient.GetUserMessages(GlobalBase.CurrentUser.Id, (SelectedContact as UserUiInfo).UserId, 50);
-                    }
+                    res = UserServiceClient.GetUserMessages(GlobalBase.CurrentUser.Id, (SelectedContact as UserUiInfo).UserId, 50);
 
                     if (res != null)
                     {
@@ -312,8 +297,7 @@ namespace Message.ViewModel
 
         private void ExecuteOnExit()
         {
-            using (userServiceClient = new UserServiceClient(usersSite))
-                userServiceClient.OnUserLeave(GlobalBase.CurrentUser.Id);
+           UserServiceClient.OnUserLeave(GlobalBase.CurrentUser.Id);
             _view.CloseWindow();
         }
 
@@ -321,7 +305,7 @@ namespace Message.ViewModel
         {
             if (SelectedContact is UserUiInfo) {
                 UserUiInfo userUiInfo = SelectedContact as UserUiInfo;
-                User user = userServiceClient.GetUserById(userUiInfo.UserId);
+                User user = UserServiceClient.GetUserById(userUiInfo.UserId);
                 var wnd = new ContactProfileWindow(user);
                 wnd.Owner = (Window)_view;
                 wnd.ShowDialog();
@@ -344,10 +328,9 @@ namespace Message.ViewModel
                     ReceiverId = userUiInfo.UserId,
                     Type = "TEXT",
                 };
-                using (userServiceClient = new UserServiceClient(usersSite))
-                {
-                    userServiceClient.SendMessageAsync(message);
-                }
+
+                    UserServiceClient.SendMessageAsync(message);
+
 
                 Debug.WriteLine("Send Message");
                 _view.MessageList.Add(message);
@@ -406,11 +389,9 @@ namespace Message.ViewModel
                     _view.MessageList.Clear();
                     List<UserMessage> res;
                     UserUiInfo userUiInfo = null;
-                    using (userServiceClient = new UserServiceClient(usersSite))
-                    {
+
                          userUiInfo  = SelectedContact as UserUiInfo;
-                         res = userServiceClient.GetUserMessages(GlobalBase.CurrentUser.Id, userUiInfo.UserId, 50);
-                    }
+                         res = UserServiceClient.GetUserMessages(GlobalBase.CurrentUser.Id, userUiInfo.UserId, 50);
 
                     if (res != null)
                     {
@@ -442,91 +423,86 @@ namespace Message.ViewModel
         public void Update()
         {
             //make all update modular and put here plz
-            //UpdateContactList();
+            UpdateContactList();
             SetAvatarForUI();
         }
 
-        public void ReceiveMessage(BaseMessage message)
+        public void UpdateContactList()
         {
-            User user;
-            using (userServiceClient = new UserServiceClient(usersSite))
+            Application.Current.Dispatcher.Invoke(new Action(() =>
             {
-                user = userServiceClient.GetAllUsers().FirstOrDefault(x => x.Id == message.SenderId);
-
-                var mes = "New message from  @" + user.Login + "\n" + "\"" + GlobalBase.Base64Decode(message.Content) +
-                          "\"";
-                GlobalBase.ShowNotify("New message", mes);
-
-                Debug.WriteLine("Receave Message from - ", user.Login);
-
-                if (!ContactsList.Contains(ContactsList.FirstOrDefault(x => (x as UserUiInfo).UserId == user.Id)))
+                UserUiInfo temp = null;
+                if (SelectedContact is UserUiInfo)
                 {
-                    userServiceClient.AddContactAsync(GlobalBase.CurrentUser.Id, user.Id).ContinueWith(task =>
-                    {
-                        UpdateContactList();
-                    });
+                    temp = SelectedContact as UserUiInfo;
                 }
-                else if ((SelectedContact as UserUiInfo).UserId == user.Id)
-                {
-                    SelectedContactChanged();
-                }
-                else if ((SelectedContact as UserUiInfo).UserId == user.Id)
-                {
-                    SelectedContactChanged();
-                }
-            }
 
-            void UpdateContactList()
-            {
-                Application.Current.Dispatcher.Invoke(new Action(() =>
-                {
-                    UserUiInfo temp = null;
-                    if (SelectedContact is UserUiInfo)
+
+                ContactsList = UserServiceClient.GetAllContactsUiInfo(GlobalBase.CurrentUser.Id);
+
+
+                    foreach (var item in ContactsList)
                     {
-                        temp = SelectedContact as UserUiInfo;
-                    }
-
-
-                    ContactsList = userServiceClient.GetAllContactsUiInfo(GlobalBase.CurrentUser.Id);
-
-                    using (var proxy = new PhotoServiceClient())
-                    {
-                        foreach (var item in ContactsList)
+                        if (SelectedContact is UserUiInfo)
                         {
-                            if (SelectedContact is UserUiInfo)
-                            {
-                                UserUiInfo userUiInfo = SelectedContact as UserUiInfo;
-                                item.Avatar = proxy.GetPhotoById(userUiInfo.UserId);
-                            }
+                            UserUiInfo userUiInfo = SelectedContact as UserUiInfo;
+                            item.Avatar = GlobalBase.PhotoServiceClient.GetPhotoById(userUiInfo.UserId);
                         }
                     }
+               
 
-                    if (ContactsList.Any(x => temp != null && ((x as UserUiInfo).UserId == temp.UserId)))
-                    {
-                        SelectedContact = temp;
-                    }
-                }));
+                if (ContactsList.Any(x => temp != null && ((x as UserUiInfo).UserId == temp.UserId)))
+                {
+                    SelectedContact = temp;
+                }
+            }));
+        }
+
+        public override void ReceiveMessage(BaseMessage message)
+        {
+            User user = UserServiceClient.GetAllUsers().FirstOrDefault(x => x.Id == message.SenderId);
+
+            var mes = "New message from  @" + user.Login + "\n" + "\"" + GlobalBase.Base64Decode(message.Content) +
+                      "\"";
+            GlobalBase.ShowNotify("New message", mes);
+
+            Debug.WriteLine("Receave Message from - ", user.Login);
+
+            if (!ContactsList.Contains(ContactsList.FirstOrDefault(x => (x as UserUiInfo).UserId == user.Id)))
+            {
+                UserServiceClient.AddContactAsync(GlobalBase.CurrentUser.Id, user.Id).ContinueWith(task =>
+                {
+                    UpdateContactList();
+                });
+            }
+            else if ((SelectedContact as UserUiInfo).UserId == user.Id)
+            {
+                SelectedContactChanged();
+            }
+            else if ((SelectedContact as UserUiInfo).UserId == user.Id)
+            {
+                SelectedContactChanged();
             }
         }
 
-        public void UserLeave(User user)
+        public override void UserLeave(User user)
         {
-            //UpdateContactList();
+            UpdateContactList();
             Debug.WriteLine("Works(Leave) - " + user.FirstName + " - (currentUser - " + GlobalBase.CurrentUser.FirstName + ")");
         }
 
-        public void UserCame(User user)
+        public override void UserCame(User user)
         {
-            //UpdateContactList();
+            UpdateContactList();
             Debug.WriteLine("Works(Came) - " + user.FirstName + " - (currentUser - " + GlobalBase.CurrentUser.FirstName + ")");
         }
 
-        public void OnMessageRemoved(BaseMessage message)
+        public override void OnMessageRemoved(BaseMessage message)
         {
             //throw new NotImplementedException();
         }
 
-        public void OnMessageEdited(BaseMessage message)
+        public override void OnMessageEdited(BaseMessage message)
         {
             //throw new NotImplementedException();
         }

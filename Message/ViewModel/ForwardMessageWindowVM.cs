@@ -12,12 +12,8 @@ using Prism.Commands;
 
 namespace Message.ViewModel
 {
-    class ForwardMessageWindowVM : Prism.Mvvm.BindableBase, IUserServiceCallback
+    class ForwardMessageWindowVM : BaseViewModel
     {
-        private InstanceContext usersSite;
-        private UserServiceClient userServiceClient;
-        private IUserServiceCallback _userServiceCallback;
-
         private IView _view;
         private BaseMessage _message;
 
@@ -41,29 +37,21 @@ namespace Message.ViewModel
             get { return GlobalBase.Base64Decode(_message.Content); }
         }
 
-        public ForwardMessageWindowVM(BaseMessage message, IView view)
+        public ForwardMessageWindowVM(BaseMessage message, IView view) : base()
         {
-            _userServiceCallback = this;
-            usersSite = new InstanceContext(_userServiceCallback);
-            userServiceClient = new UserServiceClient(usersSite);
 
-            using(userServiceClient = new UserServiceClient(usersSite))
-            {
-                //ContactsList = userServiceClient.GetAllContacts(GlobalBase.CurrentUser.Id);
-                ContactsList = userServiceClient.GetAllContactsUiInfo(GlobalBase.CurrentUser.Id);
-            }
+            ContactsList = UserServiceClient.GetAllContactsUiInfo(GlobalBase.CurrentUser.Id);
 
-            using (var proxy = new PhotoServiceClient())
-            {
+
                 foreach (var item in ContactsList)
                 {
                     if (item is UserUiInfo)
                     {
                         UserUiInfo userUiInfo = item as UserUiInfo;
-                        item.Avatar = proxy.GetPhotoById(userUiInfo.UserId);
+                        item.Avatar = GlobalBase.PhotoServiceClient.GetPhotoById(userUiInfo.UserId);
                     }
                 }
-            }
+
             _view = view;
 
             _message = message;
@@ -88,8 +76,6 @@ namespace Message.ViewModel
         {
             if (SelectedContact != null && SelectedContact is UserUiInfo)
             {
-                using (userServiceClient = new UserServiceClient(usersSite))
-                {
                     UserUiInfo userUiInfo = SelectedContact as UserUiInfo;
                     var mes = new UserMessage()
                     {
@@ -99,35 +85,9 @@ namespace Message.ViewModel
                         Type = _message.Type,
                         ReceiverId = userUiInfo.UserId
                     };
-                    userServiceClient.SendMessageAsync(mes);
-                }
+                    UserServiceClient.SendMessageAsync(mes);
             }
             _view.CloseWindow();
-        }
-
-        public void OnMessageEdited(BaseMessage message)
-        {
-            //throw new NotImplementedException();
-        }
-
-        public void OnMessageRemoved(BaseMessage message)
-        {
-            //throw new NotImplementedException();
-        }
-
-        public void ReceiveMessage(BaseMessage message)
-        {
-            //throw new NotImplementedException();
-        }
-
-        public void UserCame(User user)
-        {
-            //throw new NotImplementedException();
-        }
-
-        public void UserLeave(User user)
-        {
-            //throw new NotImplementedException();
         }
     }
 }

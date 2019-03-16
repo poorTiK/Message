@@ -13,18 +13,14 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
 using Message.PhotoServiceReference;
-using Microsoft.EntityFrameworkCore;
 
 namespace Message.ViewModel
 {
     [CallbackBehavior(ConcurrencyMode = ConcurrencyMode.Reentrant)]
-    internal class UserProfileWindowVM : Prism.Mvvm.BindableBase, IUserServiceCallback
+    internal class UserProfileWindowVM : BaseViewModel
     {
         private IView _view;
         private byte[] _newAvatar;
-        private InstanceContext usersSite;
-        private UserServiceClient UserServiceClient;
-        private IUserServiceCallback _userServiceCallback;
         private Image _image;
 
         public Image Images
@@ -134,12 +130,9 @@ namespace Message.ViewModel
             set { SetProperty(ref _isSavingProgress, value); }
         }
 
-        public UserProfileWindowVM(IView view)
+        public UserProfileWindowVM(IView view) : base()
         {
             _view = view;
-            _userServiceCallback = this;
-            usersSite = new InstanceContext(_userServiceCallback);
-            UserServiceClient = new UserServiceClient(usersSite);
 
             UserName = GlobalBase.CurrentUser.FirstName;
             UserLastName = GlobalBase.CurrentUser.LastName;
@@ -159,10 +152,9 @@ namespace Message.ViewModel
 
         private void ExecuteClose()
         {
-            using (var proxy = new PhotoServiceClient())
-            {
-                GlobalBase.CurrentUser.Avatar = proxy.GetPhotoById(GlobalBase.CurrentUser.Id);
-            }
+
+                GlobalBase.CurrentUser.Avatar = GlobalBase.PhotoServiceClient.GetPhotoById(GlobalBase.CurrentUser.Id);
+
             
             _view.CloseWindow();
         }
@@ -226,19 +218,17 @@ namespace Message.ViewModel
 
                     if (_newAvatar != null)
                     {
-                        using (var proxy = new PhotoServiceClient())
-                        {
-                            proxy.SetPhotoById(GlobalBase.CurrentUser.Id, _newAvatar);
-                            GlobalBase.CurrentUser.Avatar = proxy.GetPhotoById(GlobalBase.CurrentUser.Id);
-                        }
+
+                        GlobalBase.PhotoServiceClient.SetPhotoById(GlobalBase.CurrentUser.Id, _newAvatar);
+                            GlobalBase.CurrentUser.Avatar = GlobalBase.PhotoServiceClient.GetPhotoById(GlobalBase.CurrentUser.Id);
+
                     }
                     else
                     {
-                        using (var proxy = new PhotoServiceClient())
-                        {
-                            proxy.SetPhotoById(GlobalBase.CurrentUser.Id, tempAvatar);
-                            GlobalBase.CurrentUser.Avatar = proxy.GetPhotoById(GlobalBase.CurrentUser.Id);
-                        }
+
+                        GlobalBase.PhotoServiceClient.SetPhotoById(GlobalBase.CurrentUser.Id, tempAvatar);
+                            GlobalBase.CurrentUser.Avatar = GlobalBase.PhotoServiceClient.GetPhotoById(GlobalBase.CurrentUser.Id);
+                    
                     }
 
                     SetAvatarForUI();
@@ -294,31 +284,6 @@ namespace Message.ViewModel
             {
                 IsNewChanges = true;
             }
-        }
-
-        public void UserLeave(User user)
-        {
-            //throw new NotImplementedException();
-        }
-
-        public void UserCame(User user)
-        {
-            //throw new NotImplementedException();
-        }
-
-        public void ReceiveMessage(BaseMessage message)
-        {
-            //throw new NotImplementedException();
-        }
-
-        public void OnMessageRemoved(BaseMessage message)
-        {
-            //throw new NotImplementedException();
-        }
-
-        public void OnMessageEdited(BaseMessage message)
-        {
-            //throw new NotImplementedException();
         }
     }
 }

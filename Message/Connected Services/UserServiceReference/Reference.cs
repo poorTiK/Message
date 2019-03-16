@@ -959,18 +959,6 @@ namespace Message.UserServiceReference {
     [System.ServiceModel.ServiceContractAttribute(ConfigurationName="UserServiceReference.IUserService", CallbackContract=typeof(Message.UserServiceReference.IUserServiceCallback))]
     public interface IUserService {
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IPhotoService/GetPhotoById", ReplyAction="http://tempuri.org/IPhotoService/GetPhotoByIdResponse")]
-        byte[] GetPhotoById(int id);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IPhotoService/GetPhotoById", ReplyAction="http://tempuri.org/IPhotoService/GetPhotoByIdResponse")]
-        System.Threading.Tasks.Task<byte[]> GetPhotoByIdAsync(int id);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IPhotoService/SetPhotoById", ReplyAction="http://tempuri.org/IPhotoService/SetPhotoByIdResponse")]
-        void SetPhotoById(int id, byte[] photoBytes);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IPhotoService/SetPhotoById", ReplyAction="http://tempuri.org/IPhotoService/SetPhotoByIdResponse")]
-        System.Threading.Tasks.Task SetPhotoByIdAsync(int id, byte[] photoBytes);
-        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/GetAllUsers", ReplyAction="http://tempuri.org/IUserService/GetAllUsersResponse")]
         System.Collections.Generic.List<Message.UserServiceReference.User> GetAllUsers();
         
@@ -1161,22 +1149,6 @@ namespace Message.UserServiceReference {
         
         public UserServiceClient(System.ServiceModel.InstanceContext callbackInstance, System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress) : 
                 base(callbackInstance, binding, remoteAddress) {
-        }
-        
-        public byte[] GetPhotoById(int id) {
-            return base.Channel.GetPhotoById(id);
-        }
-        
-        public System.Threading.Tasks.Task<byte[]> GetPhotoByIdAsync(int id) {
-            return base.Channel.GetPhotoByIdAsync(id);
-        }
-        
-        public void SetPhotoById(int id, byte[] photoBytes) {
-            base.Channel.SetPhotoById(id, photoBytes);
-        }
-        
-        public System.Threading.Tasks.Task SetPhotoByIdAsync(int id, byte[] photoBytes) {
-            return base.Channel.SetPhotoByIdAsync(id, photoBytes);
         }
         
         public System.Collections.Generic.List<Message.UserServiceReference.User> GetAllUsers() {

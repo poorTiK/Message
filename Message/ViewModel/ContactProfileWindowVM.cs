@@ -12,13 +12,9 @@ using Message.PhotoServiceReference;
 namespace Message.ViewModel
 {
     [CallbackBehavior(ConcurrencyMode = ConcurrencyMode.Reentrant)]
-    internal class ContactProfileWindowVM : Prism.Mvvm.BindableBase, IUserServiceCallback
+    internal class ContactProfileWindowVM : BaseViewModel
     {
         private IView _view;
-
-        private InstanceContext usersSite;
-        private UserServiceClient UserServiceClient;
-        private IUserServiceCallback _userServiceCallback;
         private Image _image;
 
         public Image Images
@@ -112,13 +108,10 @@ namespace Message.ViewModel
             set { SetProperty(ref _isNonContact, value); }
         }
 
-        public ContactProfileWindowVM(IView view, User user)
+        public ContactProfileWindowVM(IView view, User user) : base()
         {
             _view = view;
             Profile = user;
-
-            _userServiceCallback = this;
-            usersSite = new InstanceContext(_userServiceCallback);
 
             UserName = Profile.FirstName;
             UserLastName = Profile.LastName;
@@ -127,10 +120,7 @@ namespace Message.ViewModel
             UserBio = Profile.Bio;
             bool contact;
 
-            using (UserServiceClient = new UserServiceClient(usersSite))
-            {
-                 contact = UserServiceClient.IsExistsInContacts(GlobalBase.CurrentUser.Id, Profile.Id);           
-            }
+            contact = UserServiceClient.IsExistsInContacts(GlobalBase.CurrentUser.Id, Profile.Id);           
 
             if (contact)
             {
@@ -158,21 +148,13 @@ namespace Message.ViewModel
 
         private void ExecuteOnAddContact()
         {
-            using (UserServiceClient = new UserServiceClient(usersSite))
-            {
-                UserServiceClient.AddContactAsync(GlobalBase.CurrentUser.Id, Profile.Id);
-            }
-
+            UserServiceClient.AddContactAsync(GlobalBase.CurrentUser.Id, Profile.Id);
             ManageControls();
         }
 
         private void ExecuteOnDeleteContact()
         {
-            using (UserServiceClient = new UserServiceClient(usersSite))
-            {
-                UserServiceClient.RemoveContactAsync(GlobalBase.CurrentUser.Id, Profile.Id);
-            }
-
+            UserServiceClient.RemoveContactAsync(GlobalBase.CurrentUser.Id, Profile.Id);
             ManageControls();
         }
 
@@ -210,31 +192,6 @@ namespace Message.ViewModel
             }
 
            
-        }
-
-        public void UserCame(User user)
-        {
-            //throw new NotImplementedException();
-        }
-
-        public void UserLeave(User user)
-        {
-            //throw new NotImplementedException();
-        }
-
-        public void ReceiveMessage(BaseMessage message)
-        {
-            //throw new NotImplementedException();
-        }
-
-        public void OnMessageRemoved(BaseMessage message)
-        {
-            //throw new NotImplementedException();
-        }
-
-        public void OnMessageEdited(BaseMessage message)
-        {
-            //throw new NotImplementedException();
         }
     }
 }
