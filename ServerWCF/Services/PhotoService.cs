@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Data.Entity.Migrations;
 using System.Linq;
+using System.ServiceModel;
 using ServerWCF.Context;
 using ServerWCF.Contracts;
 
 namespace ServerWCF.Services
 {
+    [ServiceBehavior(ConcurrencyMode = ConcurrencyMode.Reentrant)]
     public class PhotoService : IPhotoService
     {
         public byte[] GetPhotoById(int id)
