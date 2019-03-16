@@ -34,7 +34,7 @@ namespace ServerWCF.Services
         }
 
         //contacts
-        public bool AddContact(int id_owner, int id_owned)
+        public bool AddUserToUserContact(int id_owner, int id_owned)
         {
             using (UserContext userContext = new UserContext())
             {
@@ -65,7 +65,38 @@ namespace ServerWCF.Services
             }
         }
 
-        public bool RemoveContact(int ownerId, int ownedId)
+        public bool AddUserToChatGroupContact(int chatGroupId, int participantId)
+        {
+            using (UserContext userContext = new UserContext())
+            {
+                try
+                {
+                    UserToGroupContact contact = new UserToGroupContact();
+
+                    ChatGroup dbChatGroup = userContext.ChatGroups.FirstOrDefault(chatGroup => chatGroup.Id == chatGroupId);
+                    User ownedFromDb = userContext.Users.FirstOrDefault(dbUser => dbUser.Id == participantId);
+
+                    contact.ChatGroup = dbChatGroup;
+                    contact.UserOwner = ownedFromDb;
+
+                    if (userContext.Contacts.FirstOrDefault(c => ((c.UserOwnerId == participantId) && ((c as UserToGroupContact).ChatGroupId == chatGroupId))) != null)
+                    {
+                        return false;
+                    }
+
+                    userContext.Contacts.Add(contact);
+                    userContext.SaveChanges();
+
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    return false;
+                }
+            }
+        }
+
+        public bool RemoveUserToUserContact(int ownerId, int ownedId)
         {
             using (UserContext userContext = new UserContext())
             {
@@ -95,44 +126,102 @@ namespace ServerWCF.Services
             }
         }
 
+        public bool RemoveUserToChatGroupContact(int chatGroupId, int participantId)
+        {
+            using (UserContext userContext = new UserContext())
+            {
+                try
+                {
+                    List<BaseContact> contacts = userContext.Contacts.Include("UserOwner").ToList();
+
+                    ChatGroup ownerFromDb = userContext.ChatGroups.Where(cg => cg.Id == chatGroupId).FirstOrDefault();
+                    User ownedFromDb = userContext.Users.Where(u => u.Id == participantId).FirstOrDefault();
+
+                    foreach (BaseContact contact in contacts)
+                    {
+                        if (contact.UserOwnerId == ownerFromDb.Id && (contact as UserToGroupContact).ChatGroupId == chatGroupId)
+                        {
+                            userContext.Contacts.Remove(contact);
+                            userContext.SaveChanges();
+                            return true;
+                        }
+                    }
+
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    return false;
+                }
+
+            }
+        }
+
         public bool IsExistsInContacts(int id_owner, int id_owned)
         {
-            List<User> contactsForOwner = GetAllContacts(id_owner);
+            List<User> contactsForOwner = GetAllUsersContacts(id_owner);
 
             return contactsForOwner.FirstOrDefault(u => u.Id == id_owned) != null;
         }
 
-        public List<User> GetAllContacts(int id)
+        public List<User> GetAllUsersContacts(int userId)
         {
             using (UserContext db = new UserContext())
             {
                 List<User> contactsForOwner = new List<User>();
                 try
                 {
-                    var userId = id;
-
                     contactsForOwner = db.Users.SqlQuery(" select * " +
                             "from Users " +
                             "where Users.Id in (select UserOwnedId " +
                             "from BaseContacts " +
                             "where BaseContacts.UserOwnerId = @p0);", userId).ToList();
+
+                    foreach (var item in contactsForOwner)
+                    {
+                        item.Avatar = null;
+                    }
                 }
                 catch (Exception ex)
                 {
                     contactsForOwner = new List<User>();
                 }
-
-                foreach (var item in contactsForOwner)
-                    item.Avatar = null;
-
                 return contactsForOwner;
             }
+        }
 
+        public List<ChatGroup> GetAllChatGroupsContacts(int userId)
+        {
+            using (UserContext db = new UserContext())
+            {
+                List<ChatGroup> contactsForOwner = new List<ChatGroup>();
+                try
+                {
+                    contactsForOwner = db.ChatGroups.SqlQuery("select * " +
+                          " from ChatGroups" +
+                          " where ChatGroups.Id in (select ChatGroupId" +
+                          " from BaseContacts" +
+                          " where BaseContacts.UserOwnerId = p@0);", userId).ToList();
+
+                    foreach (var item in contactsForOwner)
+                    {
+                        item.Avatar = null;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    contactsForOwner = new List<ChatGroup>();
+                }
+                return contactsForOwner;
+            }
         }
 
         public List<UiInfo> GetAllContactsUiInfo(int id)
         {
-            List<UiInfo> usersUiInfos = new List<UiInfo>(GetAllContacts(id).Select( u => new UserUiInfo(u)));
+            List<UiInfo> usersUiInfos = new List<UiInfo>(GetAllUsersContacts(id).Select( u => new UserUiInfo(u)));
+            List<UiInfo> chatGroupsUiInfo = new List<UiInfo>(GetAllChatGroupsContacts(id).Select( cg => new ChatGroupUiInfo(cg) ));
+
+            usersUiInfos.AddRange(chatGroupsUiInfo);
 
             return usersUiInfos;
         }
@@ -254,7 +343,6 @@ namespace ServerWCF.Services
             return null;
         }
 
-
         public User GetUserByEmail(string email)
         {
             using (UserContext db = new UserContext())
@@ -296,7 +384,6 @@ namespace ServerWCF.Services
         public List<UiInfo> FindUsersUiUnfoByLogin(string keyWorkForLogin)
         {
             List<UiInfo> usersUiInfos = new List<UiInfo>(FindUsersByLogin(keyWorkForLogin).Select(u => new UserUiInfo(u)));
-
             return usersUiInfos;
         }
 

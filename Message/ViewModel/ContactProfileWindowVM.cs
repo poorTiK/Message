@@ -148,13 +148,13 @@ namespace Message.ViewModel
 
         private void ExecuteOnAddContact()
         {
-            UserServiceClient.AddContactAsync(GlobalBase.CurrentUser.Id, Profile.Id);
+            UserServiceClient.AddUserToUserContact(GlobalBase.CurrentUser.Id, Profile.Id);
             ManageControls();
         }
 
         private void ExecuteOnDeleteContact()
         {
-            UserServiceClient.RemoveContactAsync(GlobalBase.CurrentUser.Id, Profile.Id);
+            UserServiceClient.RemoveUserToUserContact(GlobalBase.CurrentUser.Id, Profile.Id);
             ManageControls();
         }
 

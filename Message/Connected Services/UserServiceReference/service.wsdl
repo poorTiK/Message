@@ -517,7 +517,7 @@
       </wsp:All>
     </wsp:ExactlyOne>
   </wsp:Policy>
-  <wsp:Policy wsu:Id="WSDualHttpBinding_IUserService_AddContact_Input_policy">
+  <wsp:Policy wsu:Id="WSDualHttpBinding_IUserService_AddUserToUserContact_Input_policy">
     <wsp:ExactlyOne>
       <wsp:All>
         <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
@@ -540,7 +540,7 @@
       </wsp:All>
     </wsp:ExactlyOne>
   </wsp:Policy>
-  <wsp:Policy wsu:Id="WSDualHttpBinding_IUserService_AddContact_output_policy">
+  <wsp:Policy wsu:Id="WSDualHttpBinding_IUserService_AddUserToUserContact_output_policy">
     <wsp:ExactlyOne>
       <wsp:All>
         <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
@@ -563,7 +563,7 @@
       </wsp:All>
     </wsp:ExactlyOne>
   </wsp:Policy>
-  <wsp:Policy wsu:Id="WSDualHttpBinding_IUserService_RemoveContact_Input_policy">
+  <wsp:Policy wsu:Id="WSDualHttpBinding_IUserService_AddUserToChatGroupContact_Input_policy">
     <wsp:ExactlyOne>
       <wsp:All>
         <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
@@ -586,7 +586,7 @@
       </wsp:All>
     </wsp:ExactlyOne>
   </wsp:Policy>
-  <wsp:Policy wsu:Id="WSDualHttpBinding_IUserService_RemoveContact_output_policy">
+  <wsp:Policy wsu:Id="WSDualHttpBinding_IUserService_AddUserToChatGroupContact_output_policy">
     <wsp:ExactlyOne>
       <wsp:All>
         <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
@@ -609,7 +609,7 @@
       </wsp:All>
     </wsp:ExactlyOne>
   </wsp:Policy>
-  <wsp:Policy wsu:Id="WSDualHttpBinding_IUserService_GetAllContacts_Input_policy">
+  <wsp:Policy wsu:Id="WSDualHttpBinding_IUserService_RemoveUserToUserContact_Input_policy">
     <wsp:ExactlyOne>
       <wsp:All>
         <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
@@ -632,7 +632,145 @@
       </wsp:All>
     </wsp:ExactlyOne>
   </wsp:Policy>
-  <wsp:Policy wsu:Id="WSDualHttpBinding_IUserService_GetAllContacts_output_policy">
+  <wsp:Policy wsu:Id="WSDualHttpBinding_IUserService_RemoveUserToUserContact_output_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+          <sp:Header Name="Sequence" Namespace="http://schemas.xmlsoap.org/ws/2005/02/rm" />
+          <sp:Header Name="SequenceAcknowledgement" Namespace="http://schemas.xmlsoap.org/ws/2005/02/rm" />
+          <sp:Header Name="AckRequested" Namespace="http://schemas.xmlsoap.org/ws/2005/02/rm" />
+          <sp:Header Name="ChannelInstance" Namespace="http://schemas.microsoft.com/ws/2005/02/duplex" />
+          <sp:Header Name="To" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="From" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="FaultTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="ReplyTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="MessageID" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="RelatesTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="Action" Namespace="http://www.w3.org/2005/08/addressing" />
+        </sp:SignedParts>
+        <sp:EncryptedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+        </sp:EncryptedParts>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsp:Policy wsu:Id="WSDualHttpBinding_IUserService_RemoveUserToChatGroupContact_Input_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+          <sp:Header Name="Sequence" Namespace="http://schemas.xmlsoap.org/ws/2005/02/rm" />
+          <sp:Header Name="SequenceAcknowledgement" Namespace="http://schemas.xmlsoap.org/ws/2005/02/rm" />
+          <sp:Header Name="AckRequested" Namespace="http://schemas.xmlsoap.org/ws/2005/02/rm" />
+          <sp:Header Name="ChannelInstance" Namespace="http://schemas.microsoft.com/ws/2005/02/duplex" />
+          <sp:Header Name="To" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="From" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="FaultTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="ReplyTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="MessageID" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="RelatesTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="Action" Namespace="http://www.w3.org/2005/08/addressing" />
+        </sp:SignedParts>
+        <sp:EncryptedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+        </sp:EncryptedParts>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsp:Policy wsu:Id="WSDualHttpBinding_IUserService_RemoveUserToChatGroupContact_output_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+          <sp:Header Name="Sequence" Namespace="http://schemas.xmlsoap.org/ws/2005/02/rm" />
+          <sp:Header Name="SequenceAcknowledgement" Namespace="http://schemas.xmlsoap.org/ws/2005/02/rm" />
+          <sp:Header Name="AckRequested" Namespace="http://schemas.xmlsoap.org/ws/2005/02/rm" />
+          <sp:Header Name="ChannelInstance" Namespace="http://schemas.microsoft.com/ws/2005/02/duplex" />
+          <sp:Header Name="To" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="From" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="FaultTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="ReplyTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="MessageID" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="RelatesTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="Action" Namespace="http://www.w3.org/2005/08/addressing" />
+        </sp:SignedParts>
+        <sp:EncryptedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+        </sp:EncryptedParts>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsp:Policy wsu:Id="WSDualHttpBinding_IUserService_GetAllUsersContacts_Input_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+          <sp:Header Name="Sequence" Namespace="http://schemas.xmlsoap.org/ws/2005/02/rm" />
+          <sp:Header Name="SequenceAcknowledgement" Namespace="http://schemas.xmlsoap.org/ws/2005/02/rm" />
+          <sp:Header Name="AckRequested" Namespace="http://schemas.xmlsoap.org/ws/2005/02/rm" />
+          <sp:Header Name="ChannelInstance" Namespace="http://schemas.microsoft.com/ws/2005/02/duplex" />
+          <sp:Header Name="To" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="From" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="FaultTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="ReplyTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="MessageID" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="RelatesTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="Action" Namespace="http://www.w3.org/2005/08/addressing" />
+        </sp:SignedParts>
+        <sp:EncryptedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+        </sp:EncryptedParts>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsp:Policy wsu:Id="WSDualHttpBinding_IUserService_GetAllUsersContacts_output_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+          <sp:Header Name="Sequence" Namespace="http://schemas.xmlsoap.org/ws/2005/02/rm" />
+          <sp:Header Name="SequenceAcknowledgement" Namespace="http://schemas.xmlsoap.org/ws/2005/02/rm" />
+          <sp:Header Name="AckRequested" Namespace="http://schemas.xmlsoap.org/ws/2005/02/rm" />
+          <sp:Header Name="ChannelInstance" Namespace="http://schemas.microsoft.com/ws/2005/02/duplex" />
+          <sp:Header Name="To" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="From" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="FaultTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="ReplyTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="MessageID" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="RelatesTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="Action" Namespace="http://www.w3.org/2005/08/addressing" />
+        </sp:SignedParts>
+        <sp:EncryptedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+        </sp:EncryptedParts>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsp:Policy wsu:Id="WSDualHttpBinding_IUserService_GetAllChatGroupsContacts_Input_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+          <sp:Header Name="Sequence" Namespace="http://schemas.xmlsoap.org/ws/2005/02/rm" />
+          <sp:Header Name="SequenceAcknowledgement" Namespace="http://schemas.xmlsoap.org/ws/2005/02/rm" />
+          <sp:Header Name="AckRequested" Namespace="http://schemas.xmlsoap.org/ws/2005/02/rm" />
+          <sp:Header Name="ChannelInstance" Namespace="http://schemas.microsoft.com/ws/2005/02/duplex" />
+          <sp:Header Name="To" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="From" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="FaultTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="ReplyTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="MessageID" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="RelatesTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="Action" Namespace="http://www.w3.org/2005/08/addressing" />
+        </sp:SignedParts>
+        <sp:EncryptedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+        </sp:EncryptedParts>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsp:Policy wsu:Id="WSDualHttpBinding_IUserService_GetAllChatGroupsContacts_output_policy">
     <wsp:ExactlyOne>
       <wsp:All>
         <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
@@ -1272,23 +1410,41 @@
   <wsdl:message name="IUserService_GetUserById_OutputMessage">
     <wsdl:part name="parameters" element="tns:GetUserByIdResponse" />
   </wsdl:message>
-  <wsdl:message name="IUserService_AddContact_InputMessage">
-    <wsdl:part name="parameters" element="tns:AddContact" />
+  <wsdl:message name="IUserService_AddUserToUserContact_InputMessage">
+    <wsdl:part name="parameters" element="tns:AddUserToUserContact" />
   </wsdl:message>
-  <wsdl:message name="IUserService_AddContact_OutputMessage">
-    <wsdl:part name="parameters" element="tns:AddContactResponse" />
+  <wsdl:message name="IUserService_AddUserToUserContact_OutputMessage">
+    <wsdl:part name="parameters" element="tns:AddUserToUserContactResponse" />
   </wsdl:message>
-  <wsdl:message name="IUserService_RemoveContact_InputMessage">
-    <wsdl:part name="parameters" element="tns:RemoveContact" />
+  <wsdl:message name="IUserService_AddUserToChatGroupContact_InputMessage">
+    <wsdl:part name="parameters" element="tns:AddUserToChatGroupContact" />
   </wsdl:message>
-  <wsdl:message name="IUserService_RemoveContact_OutputMessage">
-    <wsdl:part name="parameters" element="tns:RemoveContactResponse" />
+  <wsdl:message name="IUserService_AddUserToChatGroupContact_OutputMessage">
+    <wsdl:part name="parameters" element="tns:AddUserToChatGroupContactResponse" />
   </wsdl:message>
-  <wsdl:message name="IUserService_GetAllContacts_InputMessage">
-    <wsdl:part name="parameters" element="tns:GetAllContacts" />
+  <wsdl:message name="IUserService_RemoveUserToUserContact_InputMessage">
+    <wsdl:part name="parameters" element="tns:RemoveUserToUserContact" />
   </wsdl:message>
-  <wsdl:message name="IUserService_GetAllContacts_OutputMessage">
-    <wsdl:part name="parameters" element="tns:GetAllContactsResponse" />
+  <wsdl:message name="IUserService_RemoveUserToUserContact_OutputMessage">
+    <wsdl:part name="parameters" element="tns:RemoveUserToUserContactResponse" />
+  </wsdl:message>
+  <wsdl:message name="IUserService_RemoveUserToChatGroupContact_InputMessage">
+    <wsdl:part name="parameters" element="tns:RemoveUserToChatGroupContact" />
+  </wsdl:message>
+  <wsdl:message name="IUserService_RemoveUserToChatGroupContact_OutputMessage">
+    <wsdl:part name="parameters" element="tns:RemoveUserToChatGroupContactResponse" />
+  </wsdl:message>
+  <wsdl:message name="IUserService_GetAllUsersContacts_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetAllUsersContacts" />
+  </wsdl:message>
+  <wsdl:message name="IUserService_GetAllUsersContacts_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetAllUsersContactsResponse" />
+  </wsdl:message>
+  <wsdl:message name="IUserService_GetAllChatGroupsContacts_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetAllChatGroupsContacts" />
+  </wsdl:message>
+  <wsdl:message name="IUserService_GetAllChatGroupsContacts_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetAllChatGroupsContactsResponse" />
   </wsdl:message>
   <wsdl:message name="IUserService_GetAllContactsUiInfo_InputMessage">
     <wsdl:part name="parameters" element="tns:GetAllContactsUiInfo" />
@@ -1399,17 +1555,29 @@
       <wsdl:input wsaw:Action="http://tempuri.org/IUserService/GetUserById" message="tns:IUserService_GetUserById_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IUserService/GetUserByIdResponse" message="tns:IUserService_GetUserById_OutputMessage" />
     </wsdl:operation>
-    <wsdl:operation name="AddContact">
-      <wsdl:input wsaw:Action="http://tempuri.org/IUserService/AddContact" message="tns:IUserService_AddContact_InputMessage" />
-      <wsdl:output wsaw:Action="http://tempuri.org/IUserService/AddContactResponse" message="tns:IUserService_AddContact_OutputMessage" />
+    <wsdl:operation name="AddUserToUserContact">
+      <wsdl:input wsaw:Action="http://tempuri.org/IUserService/AddUserToUserContact" message="tns:IUserService_AddUserToUserContact_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IUserService/AddUserToUserContactResponse" message="tns:IUserService_AddUserToUserContact_OutputMessage" />
     </wsdl:operation>
-    <wsdl:operation name="RemoveContact">
-      <wsdl:input wsaw:Action="http://tempuri.org/IUserService/RemoveContact" message="tns:IUserService_RemoveContact_InputMessage" />
-      <wsdl:output wsaw:Action="http://tempuri.org/IUserService/RemoveContactResponse" message="tns:IUserService_RemoveContact_OutputMessage" />
+    <wsdl:operation name="AddUserToChatGroupContact">
+      <wsdl:input wsaw:Action="http://tempuri.org/IUserService/AddUserToChatGroupContact" message="tns:IUserService_AddUserToChatGroupContact_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IUserService/AddUserToChatGroupContactResponse" message="tns:IUserService_AddUserToChatGroupContact_OutputMessage" />
     </wsdl:operation>
-    <wsdl:operation name="GetAllContacts">
-      <wsdl:input wsaw:Action="http://tempuri.org/IUserService/GetAllContacts" message="tns:IUserService_GetAllContacts_InputMessage" />
-      <wsdl:output wsaw:Action="http://tempuri.org/IUserService/GetAllContactsResponse" message="tns:IUserService_GetAllContacts_OutputMessage" />
+    <wsdl:operation name="RemoveUserToUserContact">
+      <wsdl:input wsaw:Action="http://tempuri.org/IUserService/RemoveUserToUserContact" message="tns:IUserService_RemoveUserToUserContact_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IUserService/RemoveUserToUserContactResponse" message="tns:IUserService_RemoveUserToUserContact_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="RemoveUserToChatGroupContact">
+      <wsdl:input wsaw:Action="http://tempuri.org/IUserService/RemoveUserToChatGroupContact" message="tns:IUserService_RemoveUserToChatGroupContact_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IUserService/RemoveUserToChatGroupContactResponse" message="tns:IUserService_RemoveUserToChatGroupContact_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAllUsersContacts">
+      <wsdl:input wsaw:Action="http://tempuri.org/IUserService/GetAllUsersContacts" message="tns:IUserService_GetAllUsersContacts_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IUserService/GetAllUsersContactsResponse" message="tns:IUserService_GetAllUsersContacts_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAllChatGroupsContacts">
+      <wsdl:input wsaw:Action="http://tempuri.org/IUserService/GetAllChatGroupsContacts" message="tns:IUserService_GetAllChatGroupsContacts_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IUserService/GetAllChatGroupsContactsResponse" message="tns:IUserService_GetAllChatGroupsContacts_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation name="GetAllContactsUiInfo">
       <wsdl:input wsaw:Action="http://tempuri.org/IUserService/GetAllContactsUiInfo" message="tns:IUserService_GetAllContactsUiInfo_InputMessage" />
@@ -1572,36 +1740,69 @@
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="AddContact">
-      <soap12:operation soapAction="http://tempuri.org/IUserService/AddContact" style="document" />
+    <wsdl:operation name="AddUserToUserContact">
+      <soap12:operation soapAction="http://tempuri.org/IUserService/AddUserToUserContact" style="document" />
       <wsdl:input>
-        <wsp:PolicyReference URI="#WSDualHttpBinding_IUserService_AddContact_Input_policy" />
+        <wsp:PolicyReference URI="#WSDualHttpBinding_IUserService_AddUserToUserContact_Input_policy" />
         <soap12:body use="literal" />
       </wsdl:input>
       <wsdl:output>
-        <wsp:PolicyReference URI="#WSDualHttpBinding_IUserService_AddContact_output_policy" />
+        <wsp:PolicyReference URI="#WSDualHttpBinding_IUserService_AddUserToUserContact_output_policy" />
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="RemoveContact">
-      <soap12:operation soapAction="http://tempuri.org/IUserService/RemoveContact" style="document" />
+    <wsdl:operation name="AddUserToChatGroupContact">
+      <soap12:operation soapAction="http://tempuri.org/IUserService/AddUserToChatGroupContact" style="document" />
       <wsdl:input>
-        <wsp:PolicyReference URI="#WSDualHttpBinding_IUserService_RemoveContact_Input_policy" />
+        <wsp:PolicyReference URI="#WSDualHttpBinding_IUserService_AddUserToChatGroupContact_Input_policy" />
         <soap12:body use="literal" />
       </wsdl:input>
       <wsdl:output>
-        <wsp:PolicyReference URI="#WSDualHttpBinding_IUserService_RemoveContact_output_policy" />
+        <wsp:PolicyReference URI="#WSDualHttpBinding_IUserService_AddUserToChatGroupContact_output_policy" />
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="GetAllContacts">
-      <soap12:operation soapAction="http://tempuri.org/IUserService/GetAllContacts" style="document" />
+    <wsdl:operation name="RemoveUserToUserContact">
+      <soap12:operation soapAction="http://tempuri.org/IUserService/RemoveUserToUserContact" style="document" />
       <wsdl:input>
-        <wsp:PolicyReference URI="#WSDualHttpBinding_IUserService_GetAllContacts_Input_policy" />
+        <wsp:PolicyReference URI="#WSDualHttpBinding_IUserService_RemoveUserToUserContact_Input_policy" />
         <soap12:body use="literal" />
       </wsdl:input>
       <wsdl:output>
-        <wsp:PolicyReference URI="#WSDualHttpBinding_IUserService_GetAllContacts_output_policy" />
+        <wsp:PolicyReference URI="#WSDualHttpBinding_IUserService_RemoveUserToUserContact_output_policy" />
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RemoveUserToChatGroupContact">
+      <soap12:operation soapAction="http://tempuri.org/IUserService/RemoveUserToChatGroupContact" style="document" />
+      <wsdl:input>
+        <wsp:PolicyReference URI="#WSDualHttpBinding_IUserService_RemoveUserToChatGroupContact_Input_policy" />
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <wsp:PolicyReference URI="#WSDualHttpBinding_IUserService_RemoveUserToChatGroupContact_output_policy" />
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAllUsersContacts">
+      <soap12:operation soapAction="http://tempuri.org/IUserService/GetAllUsersContacts" style="document" />
+      <wsdl:input>
+        <wsp:PolicyReference URI="#WSDualHttpBinding_IUserService_GetAllUsersContacts_Input_policy" />
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <wsp:PolicyReference URI="#WSDualHttpBinding_IUserService_GetAllUsersContacts_output_policy" />
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAllChatGroupsContacts">
+      <soap12:operation soapAction="http://tempuri.org/IUserService/GetAllChatGroupsContacts" style="document" />
+      <wsdl:input>
+        <wsp:PolicyReference URI="#WSDualHttpBinding_IUserService_GetAllChatGroupsContacts_Input_policy" />
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <wsp:PolicyReference URI="#WSDualHttpBinding_IUserService_GetAllChatGroupsContacts_output_policy" />
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>

@@ -40,13 +40,22 @@ namespace ServerWCF.Contracts
 
 
         [OperationContract]
-        bool AddContact(int id_owner, int id_owned);
+        bool AddUserToUserContact(int id_owner, int id_owned);
 
         [OperationContract]
-        bool RemoveContact(int ownerId, int ownedId);
+        bool AddUserToChatGroupContact(int chatGroupId, int participantId);
 
         [OperationContract]
-        List<User> GetAllContacts(int id);
+        bool RemoveUserToUserContact(int ownerId, int ownedId);
+
+        [OperationContract]
+        bool RemoveUserToChatGroupContact(int chatGroupId, int participantId);
+
+        [OperationContract]
+        List<User> GetAllUsersContacts(int userId);
+
+        [OperationContract]
+        List<ChatGroup> GetAllChatGroupsContacts(int userId);
 
         [OperationContract]
         List<UiInfo> GetAllContactsUiInfo(int id);

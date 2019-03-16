@@ -1013,23 +1013,41 @@ namespace Message.UserServiceReference {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/GetUserById", ReplyAction="http://tempuri.org/IUserService/GetUserByIdResponse")]
         System.Threading.Tasks.Task<Message.UserServiceReference.User> GetUserByIdAsync(int id);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/AddContact", ReplyAction="http://tempuri.org/IUserService/AddContactResponse")]
-        bool AddContact(int id_owner, int id_owned);
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/AddUserToUserContact", ReplyAction="http://tempuri.org/IUserService/AddUserToUserContactResponse")]
+        bool AddUserToUserContact(int id_owner, int id_owned);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/AddContact", ReplyAction="http://tempuri.org/IUserService/AddContactResponse")]
-        System.Threading.Tasks.Task<bool> AddContactAsync(int id_owner, int id_owned);
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/AddUserToUserContact", ReplyAction="http://tempuri.org/IUserService/AddUserToUserContactResponse")]
+        System.Threading.Tasks.Task<bool> AddUserToUserContactAsync(int id_owner, int id_owned);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/RemoveContact", ReplyAction="http://tempuri.org/IUserService/RemoveContactResponse")]
-        bool RemoveContact(int ownerId, int ownedId);
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/AddUserToChatGroupContact", ReplyAction="http://tempuri.org/IUserService/AddUserToChatGroupContactResponse")]
+        bool AddUserToChatGroupContact(int chatGroupId, int participantId);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/RemoveContact", ReplyAction="http://tempuri.org/IUserService/RemoveContactResponse")]
-        System.Threading.Tasks.Task<bool> RemoveContactAsync(int ownerId, int ownedId);
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/AddUserToChatGroupContact", ReplyAction="http://tempuri.org/IUserService/AddUserToChatGroupContactResponse")]
+        System.Threading.Tasks.Task<bool> AddUserToChatGroupContactAsync(int chatGroupId, int participantId);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/GetAllContacts", ReplyAction="http://tempuri.org/IUserService/GetAllContactsResponse")]
-        System.Collections.Generic.List<Message.UserServiceReference.User> GetAllContacts(int id);
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/RemoveUserToUserContact", ReplyAction="http://tempuri.org/IUserService/RemoveUserToUserContactResponse")]
+        bool RemoveUserToUserContact(int ownerId, int ownedId);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/GetAllContacts", ReplyAction="http://tempuri.org/IUserService/GetAllContactsResponse")]
-        System.Threading.Tasks.Task<System.Collections.Generic.List<Message.UserServiceReference.User>> GetAllContactsAsync(int id);
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/RemoveUserToUserContact", ReplyAction="http://tempuri.org/IUserService/RemoveUserToUserContactResponse")]
+        System.Threading.Tasks.Task<bool> RemoveUserToUserContactAsync(int ownerId, int ownedId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/RemoveUserToChatGroupContact", ReplyAction="http://tempuri.org/IUserService/RemoveUserToChatGroupContactResponse")]
+        bool RemoveUserToChatGroupContact(int chatGroupId, int participantId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/RemoveUserToChatGroupContact", ReplyAction="http://tempuri.org/IUserService/RemoveUserToChatGroupContactResponse")]
+        System.Threading.Tasks.Task<bool> RemoveUserToChatGroupContactAsync(int chatGroupId, int participantId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/GetAllUsersContacts", ReplyAction="http://tempuri.org/IUserService/GetAllUsersContactsResponse")]
+        System.Collections.Generic.List<Message.UserServiceReference.User> GetAllUsersContacts(int userId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/GetAllUsersContacts", ReplyAction="http://tempuri.org/IUserService/GetAllUsersContactsResponse")]
+        System.Threading.Tasks.Task<System.Collections.Generic.List<Message.UserServiceReference.User>> GetAllUsersContactsAsync(int userId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/GetAllChatGroupsContacts", ReplyAction="http://tempuri.org/IUserService/GetAllChatGroupsContactsResponse")]
+        System.Collections.Generic.List<Message.UserServiceReference.ChatGroup> GetAllChatGroupsContacts(int userId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/GetAllChatGroupsContacts", ReplyAction="http://tempuri.org/IUserService/GetAllChatGroupsContactsResponse")]
+        System.Threading.Tasks.Task<System.Collections.Generic.List<Message.UserServiceReference.ChatGroup>> GetAllChatGroupsContactsAsync(int userId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/GetAllContactsUiInfo", ReplyAction="http://tempuri.org/IUserService/GetAllContactsUiInfoResponse")]
         System.Collections.Generic.List<Message.UserServiceReference.UiInfo> GetAllContactsUiInfo(int id);
@@ -1223,28 +1241,52 @@ namespace Message.UserServiceReference {
             return base.Channel.GetUserByIdAsync(id);
         }
         
-        public bool AddContact(int id_owner, int id_owned) {
-            return base.Channel.AddContact(id_owner, id_owned);
+        public bool AddUserToUserContact(int id_owner, int id_owned) {
+            return base.Channel.AddUserToUserContact(id_owner, id_owned);
         }
         
-        public System.Threading.Tasks.Task<bool> AddContactAsync(int id_owner, int id_owned) {
-            return base.Channel.AddContactAsync(id_owner, id_owned);
+        public System.Threading.Tasks.Task<bool> AddUserToUserContactAsync(int id_owner, int id_owned) {
+            return base.Channel.AddUserToUserContactAsync(id_owner, id_owned);
         }
         
-        public bool RemoveContact(int ownerId, int ownedId) {
-            return base.Channel.RemoveContact(ownerId, ownedId);
+        public bool AddUserToChatGroupContact(int chatGroupId, int participantId) {
+            return base.Channel.AddUserToChatGroupContact(chatGroupId, participantId);
         }
         
-        public System.Threading.Tasks.Task<bool> RemoveContactAsync(int ownerId, int ownedId) {
-            return base.Channel.RemoveContactAsync(ownerId, ownedId);
+        public System.Threading.Tasks.Task<bool> AddUserToChatGroupContactAsync(int chatGroupId, int participantId) {
+            return base.Channel.AddUserToChatGroupContactAsync(chatGroupId, participantId);
         }
         
-        public System.Collections.Generic.List<Message.UserServiceReference.User> GetAllContacts(int id) {
-            return base.Channel.GetAllContacts(id);
+        public bool RemoveUserToUserContact(int ownerId, int ownedId) {
+            return base.Channel.RemoveUserToUserContact(ownerId, ownedId);
         }
         
-        public System.Threading.Tasks.Task<System.Collections.Generic.List<Message.UserServiceReference.User>> GetAllContactsAsync(int id) {
-            return base.Channel.GetAllContactsAsync(id);
+        public System.Threading.Tasks.Task<bool> RemoveUserToUserContactAsync(int ownerId, int ownedId) {
+            return base.Channel.RemoveUserToUserContactAsync(ownerId, ownedId);
+        }
+        
+        public bool RemoveUserToChatGroupContact(int chatGroupId, int participantId) {
+            return base.Channel.RemoveUserToChatGroupContact(chatGroupId, participantId);
+        }
+        
+        public System.Threading.Tasks.Task<bool> RemoveUserToChatGroupContactAsync(int chatGroupId, int participantId) {
+            return base.Channel.RemoveUserToChatGroupContactAsync(chatGroupId, participantId);
+        }
+        
+        public System.Collections.Generic.List<Message.UserServiceReference.User> GetAllUsersContacts(int userId) {
+            return base.Channel.GetAllUsersContacts(userId);
+        }
+        
+        public System.Threading.Tasks.Task<System.Collections.Generic.List<Message.UserServiceReference.User>> GetAllUsersContactsAsync(int userId) {
+            return base.Channel.GetAllUsersContactsAsync(userId);
+        }
+        
+        public System.Collections.Generic.List<Message.UserServiceReference.ChatGroup> GetAllChatGroupsContacts(int userId) {
+            return base.Channel.GetAllChatGroupsContacts(userId);
+        }
+        
+        public System.Threading.Tasks.Task<System.Collections.Generic.List<Message.UserServiceReference.ChatGroup>> GetAllChatGroupsContactsAsync(int userId) {
+            return base.Channel.GetAllChatGroupsContactsAsync(userId);
         }
         
         public System.Collections.Generic.List<Message.UserServiceReference.UiInfo> GetAllContactsUiInfo(int id) {

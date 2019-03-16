@@ -34,7 +34,6 @@ namespace Message.ViewModel
             {
                 _image = value;
                 OnPropertyChanged(new System.ComponentModel.PropertyChangedEventArgs("Images"));
-
             }
         }
 
@@ -75,7 +74,7 @@ namespace Message.ViewModel
                 {
                     ContactsList.Clear();
                     ContactsList.AddRange(UserServiceClient
-                        .GetAllContacts(GlobalBase.CurrentUser.Id)
+                        .GetAllUsersContacts(GlobalBase.CurrentUser.Id)
                         .Where(i => i.FirstName.Contains(value) 
                         || i.LastName.Contains(value) 
                         || i.Login.Contains(value))
@@ -470,7 +469,7 @@ namespace Message.ViewModel
 
             if (!ContactsList.Contains(ContactsList.FirstOrDefault(x => (x as UserUiInfo).UserId == user.Id)))
             {
-                UserServiceClient.AddContactAsync(GlobalBase.CurrentUser.Id, user.Id).ContinueWith(task =>
+                UserServiceClient.AddUserToUserContactAsync(GlobalBase.CurrentUser.Id, user.Id).ContinueWith(task =>
                 {
                     UpdateContactList();
                 });

@@ -35,6 +35,12 @@
     </xs:sequence>
   </xs:complexType>
   <xs:element name="ChatGroup" nillable="true" type="tns:ChatGroup" />
+  <xs:complexType name="ArrayOfChatGroup">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="ChatGroup" nillable="true" type="tns:ChatGroup" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfChatGroup" nillable="true" type="tns:ArrayOfChatGroup" />
   <xs:complexType name="ApplicationSettings">
     <xs:sequence>
       <xs:element minOccurs="0" name="AllowNotifications" type="xs:boolean" />
