@@ -41,15 +41,22 @@ namespace Message.ViewModel
             get { return _searchContactStr; }
             set
             {
+
+
                 if (value == string.Empty)
                 {
                     ContactsList.Clear();
-                    ContactsList.AddRange(userServiceClient.GetAllContacts(GlobalBase.CurrentUser.Id));
+                    //ContactsList.AddRange(userServiceClient.GetAllContacts(GlobalBase.CurrentUser.Id));
+                    ContactsList.AddRange(userServiceClient.GetAllContactsUiInfo(GlobalBase.CurrentUser.Id));
                     using (var proxy = new PhotoServiceClient())
                     {
                         foreach (var item in ContactsList)
                         {
-                            item.Avatar = proxy.GetPhotoById(item.Id);
+                            if (item is UserUiInfo)
+                            {
+                                UserUiInfo userUiInfo = item as UserUiInfo;
+                                item.Avatar = proxy.GetPhotoById(userUiInfo.UserId);
+                            }
                         }
                     }
                 }
@@ -58,15 +65,21 @@ namespace Message.ViewModel
                     ContactsList.Clear();
                     ContactsList.AddRange(userServiceClient
                         .GetAllContacts(GlobalBase.CurrentUser.Id)
-                        .Where(i=>i.FirstName.Contains(value)
-                                  || i.LastName.Contains(value)
-                                  || i.Login.Contains(value)));
+                        .Where(i => i.FirstName.Contains(value) 
+                        || i.LastName.Contains(value) 
+                        || i.Login.Contains(value))
+                                  .Select(u => new UserUiInfo {
+                                      Name = u.FirstName + " " + u.LastName,
+                                      UniqueName =  u.Login,
+                                      UserId = u.Id, Avatar = u.Avatar,
+                                      Status = u.Status}) );
 
                     using (var proxy = new PhotoServiceClient())
                     {
                         foreach (var item in ContactsList)
                         {
-                            item.Avatar = proxy.GetPhotoById(item.Id);
+                            UserUiInfo userUiInfo = item as UserUiInfo;
+                            item.Avatar = proxy.GetPhotoById(userUiInfo.UserId);
                         }
                     }
                 }
@@ -97,17 +110,17 @@ namespace Message.ViewModel
             set { SetProperty(ref _isDialogSearchVisible, value); }
         }
 
-        private List<User> _contactsList;
+        private List<UiInfo> _contactsList;
 
-        public List<User> ContactsList
+        public List<UiInfo> ContactsList
         {
             get { return _contactsList; }
             set { SetProperty(ref _contactsList, value); }
         }
 
-        private User _selectedContact;
+        private UiInfo _selectedContact;
 
-        public User SelectedContact
+        public UiInfo SelectedContact
         {
             get { return _selectedContact; }
             set
@@ -168,7 +181,7 @@ namespace Message.ViewModel
             };
 
            // ContactsList = userServiceClient.GetAllContacts(GlobalBase.CurrentUser);
-            SelectedContact = new User();
+            SelectedContact = new UiInfo();
             IsMenuEnabled = false;
 
             //userServiceClient.OnUserCame(user);
@@ -188,22 +201,26 @@ namespace Message.ViewModel
             if (_view.MessageList != null)
             {
                 _view.MessageList.Clear();
-                var res = userServiceClient.GetUserMessages(GlobalBase.CurrentUser, SelectedContact, 50);
-                if (res != null)
-                {
-                    foreach (var mes in res)
+                if (SelectedContact is UserUiInfo) {
+                    UserUiInfo userUiInfo = SelectedContact as UserUiInfo;
+                    User user = userServiceClient.GetUserById(userUiInfo.UserId);
+                    var res = userServiceClient.GetUserMessages(GlobalBase.CurrentUser, user, 50);
+                    if (res != null)
                     {
-                        _view.MessageList.Add(new UserMessage()
+                        foreach (var mes in res)
                         {
-                            Id = mes.Id,
-                            Content = mes.Content,
-                            DateOfSending = mes.DateOfSending,
-                            ReceiverId = mes.ReceiverId,
-                            SenderId = mes.SenderId,
-                            Type = mes.Type
-                        });
+                            _view.MessageList.Add(new UserMessage()
+                            {
+                                Id = mes.Id,
+                                Content = mes.Content,
+                                DateOfSending = mes.DateOfSending,
+                                ReceiverId = mes.ReceiverId,
+                                SenderId = mes.SenderId,
+                                Type = mes.Type
+                            });
+                        }
+                        _view.UpdateMessageList();
                     }
-                    _view.UpdateMessageList();
                 }
             }
         }
@@ -265,23 +282,29 @@ namespace Message.ViewModel
 
         private void ExecuteOnViewProfile()
         {
-            var wnd = new ContactProfileWindow(SelectedContact);
-            wnd.Owner = (Window)_view;
-            wnd.ShowDialog();
+            if (SelectedContact is UserUiInfo) {
+                UserUiInfo userUiInfo = SelectedContact as UserUiInfo;
+                User user = userServiceClient.GetUserById(userUiInfo.UserId);
+                var wnd = new ContactProfileWindow(user);
+                wnd.Owner = (Window)_view;
+                wnd.ShowDialog();
 
-            Update();
+                Update();
+            }
         }
 
         private void ExecuteOnSendMessage()
         {
-            if (SelectedContact != null && !string.IsNullOrWhiteSpace(MessageText))
+            if (SelectedContact != null && !string.IsNullOrWhiteSpace(MessageText) && SelectedContact is UserUiInfo)
             {
+                UserUiInfo userUiInfo = SelectedContact as UserUiInfo;
+
                 var message = new UserMessage()
                 {
                     Content = Encoding.UTF8.GetBytes(MessageText),
                     DateOfSending = DateTime.Now,
                     SenderId = GlobalBase.CurrentUser.Id,
-                    ReceiverId = SelectedContact.Id,
+                    ReceiverId = userUiInfo.UserId,
                     Type = "TEXT",
                 };
 
@@ -325,10 +348,12 @@ namespace Message.ViewModel
         {
             if (IsDialogSearchVisible)
             {
-                if (SelectedContact != null)
+                if (SelectedContact != null && SelectedContact is UserUiInfo)
                 {
                     _view.MessageList.Clear();
-                    var res = userServiceClient.GetUserMessages(GlobalBase.CurrentUser, SelectedContact, 50);
+                    UserUiInfo userUiInfo = SelectedContact as UserUiInfo;
+                    User user = userServiceClient.GetUserById(userUiInfo.UserId);
+                    var res = userServiceClient.GetUserMessages(GlobalBase.CurrentUser, user, 50);
                     if (res != null)
                     {
                         foreach (var mes in res)
@@ -364,6 +389,7 @@ namespace Message.ViewModel
 
         public void ReceiveMessage(BaseMessage message)
         {
+            //if ()
             var user = userServiceClient.GetAllUsers().FirstOrDefault(x => x.Id == message.SenderId);
             var mes = "New message from  @" + user.Login + "\n" + "\"" + GlobalBase.Base64Decode(message.Content) +
                       "\"";
@@ -371,14 +397,14 @@ namespace Message.ViewModel
 
             Debug.WriteLine("Receave Message from - ", user.Login);
 
-            if (!ContactsList.Contains(ContactsList.FirstOrDefault(x => x.Id == user.Id)))
+            if (!ContactsList.Contains(ContactsList.FirstOrDefault(x => (x as UserUiInfo).UserId == user.Id)))
             {
                 userServiceClient.AddContactAsync(GlobalBase.CurrentUser, user).ContinueWith(task =>
                 {
                     UpdateContactList();
                 });
             }
-            else if (SelectedContact.Id == user.Id)
+            else if ((SelectedContact as UserUiInfo).UserId == user.Id)
             {
                 SelectedContactChanged();
             }
@@ -388,19 +414,27 @@ namespace Message.ViewModel
         {
             Application.Current.Dispatcher.Invoke(new Action(() =>
             {
-                var temp = SelectedContact;
+                UserUiInfo temp = null;
+                if (SelectedContact is UserUiInfo )
+                {
+                    temp = SelectedContact as UserUiInfo;
+                }
 
-                ContactsList = userServiceClient.GetAllContacts(GlobalBase.CurrentUser.Id);
+
+                ContactsList = userServiceClient.GetAllContactsUiInfo(GlobalBase.CurrentUser.Id);
 
                 using (var proxy = new PhotoServiceClient())
                 {
                     foreach (var item in ContactsList)
                     {
-                        item.Avatar = proxy.GetPhotoById(item.Id);
+                        if (SelectedContact is UserUiInfo) {
+                            UserUiInfo userUiInfo = SelectedContact as UserUiInfo;
+                            item.Avatar = proxy.GetPhotoById(userUiInfo.UserId);
+                        }
                     }
                 }
 
-                if (ContactsList.Any(x => temp != null && (x.Id == temp.Id)))
+                if (ContactsList.Any(x => temp != null && ((x as UserUiInfo).UserId == temp.UserId)))
                 {
                     SelectedContact = temp;
                 }

@@ -12,7 +12,7 @@ namespace ServerWCF.Model.UiInfo
     {
         [DataMember]
         public int UserId { get; set; }
-
+        
         public UserUiInfo(User user) : base( (user.FirstName + " " + user.LastName), user.Login, user.Status, user.Avatar)
         {
             UserId = user.Id;

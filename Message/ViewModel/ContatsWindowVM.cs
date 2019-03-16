@@ -35,9 +35,9 @@ namespace Message.ViewModel
             set { SetProperty(ref _caption, value); }
         }
 
-        private User _selectedContact;
+        private UiInfo _selectedContact;
 
-        public User SelectedContact
+        public UiInfo SelectedContact
         {
             get { return _selectedContact; }
             set { SetProperty(ref _selectedContact, value); }
@@ -55,7 +55,10 @@ namespace Message.ViewModel
                 if (!string.IsNullOrEmpty(value))
                 {
                     //ContactsList = UserServiceClient.FindUsersByLogin(ContactsSearch);
-                    ContactsList = UserServiceClient.FindUsersUiUnfoByLogin(ContactsSearch);
+                    using (UserServiceClient = new UserServiceClient(usersSite))
+                    {
+                        ContactsList = UserServiceClient.FindUsersUiUnfoByLogin(ContactsSearch);
+                    }
                 }
                 else
                 {
@@ -110,7 +113,16 @@ namespace Message.ViewModel
 
         private void ExecuteOnOpenProfile()
         {
-            var wnd = new ContactProfileWindow(SelectedContact);
+            User user = null;
+            if (SelectedContact is UserUiInfo) {
+                using (UserServiceClient = new UserServiceClient(usersSite))
+                {
+                    UserUiInfo userUiInfo = SelectedContact as UserUiInfo;
+                    user = UserServiceClient.GetUserById(userUiInfo.UserId);
+                }
+            }
+
+            var wnd = new ContactProfileWindow(user);
             wnd.Owner = (Window)view;
             wnd.ShowDialog();
 
@@ -126,7 +138,14 @@ namespace Message.ViewModel
         {
             if (SelectedContact != null)
             {
-                UserServiceClient.AddContact(GlobalBase.CurrentUser, SelectedContact);
+                User user = null;
+                using (UserServiceClient = new UserServiceClient(usersSite))
+                {
+                    UserUiInfo userUiInfo = SelectedContact as UserUiInfo;
+                    user = UserServiceClient.GetUserById(userUiInfo.UserId);
+                    UserServiceClient.AddContact(GlobalBase.CurrentUser, user);
+                }
+
                 UpdateContacts();
             }
 
@@ -136,7 +155,12 @@ namespace Message.ViewModel
         private void UpdateContacts()
         {
             //ContactsList = UserServiceClient.GetAllContacts(GlobalBase.CurrentUser.Id);
-            ContactsList = UserServiceClient.GetAllContactsUiInfo(GlobalBase.CurrentUser.Id);
+
+            using (UserServiceClient = new UserServiceClient(usersSite))
+            {
+                ContactsList = UserServiceClient.GetAllContactsUiInfo(GlobalBase.CurrentUser.Id);
+            }
+
             using (var proxy = new PhotoServiceClient())
             {
                 foreach (var item in ContactsList)

@@ -1003,6 +1003,12 @@ namespace Message.UserServiceReference {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/GetUserByLogin", ReplyAction="http://tempuri.org/IUserService/GetUserByLoginResponse")]
         System.Threading.Tasks.Task<Message.UserServiceReference.User> GetUserByLoginAsync(string login);
         
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/GetUserById", ReplyAction="http://tempuri.org/IUserService/GetUserByIdResponse")]
+        Message.UserServiceReference.User GetUserById(int id);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/GetUserById", ReplyAction="http://tempuri.org/IUserService/GetUserByIdResponse")]
+        System.Threading.Tasks.Task<Message.UserServiceReference.User> GetUserByIdAsync(int id);
+        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/AddContact", ReplyAction="http://tempuri.org/IUserService/AddContactResponse")]
         bool AddContact(Message.UserServiceReference.User owner, Message.UserServiceReference.User owned);
         
@@ -1219,6 +1225,14 @@ namespace Message.UserServiceReference {
         
         public System.Threading.Tasks.Task<Message.UserServiceReference.User> GetUserByLoginAsync(string login) {
             return base.Channel.GetUserByLoginAsync(login);
+        }
+        
+        public Message.UserServiceReference.User GetUserById(int id) {
+            return base.Channel.GetUserById(id);
+        }
+        
+        public System.Threading.Tasks.Task<Message.UserServiceReference.User> GetUserByIdAsync(int id) {
+            return base.Channel.GetUserByIdAsync(id);
         }
         
         public bool AddContact(Message.UserServiceReference.User owner, Message.UserServiceReference.User owned) {

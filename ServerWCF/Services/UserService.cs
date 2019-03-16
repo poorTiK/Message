@@ -260,6 +260,24 @@ namespace ServerWCF.Services
             }
         }
 
+        public User GetUserById(int id)
+        {
+            try
+            {
+                using (UserContext db = new UserContext())
+                {
+                    User user = db.Users.FirstOrDefault(u => u.Id == id);
+                    return user;
+                }
+            }
+            catch (Exception)
+            {
+            }
+
+            return null;
+        }
+
+
         public User GetUserByEmail(string email)
         {
             using (UserContext db = new UserContext())

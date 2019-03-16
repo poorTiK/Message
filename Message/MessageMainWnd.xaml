@@ -66,9 +66,8 @@
                             <StackPanel Orientation="Vertical" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="15,5,0,0">
                                 <TextBlock Foreground="{DynamicResource Foreground}">
                                     <TextBlock.Text>
-                                        <MultiBinding StringFormat="{}{0} {1}">
-                                            <Binding Path="SelectedContact.FirstName" />
-                                            <Binding Path="SelectedContact.LastName" />
+                                        <MultiBinding StringFormat="{}{0}">
+                                            <Binding Path="SelectedContact.Name" />
                                         </MultiBinding>
                                     </TextBlock.Text>
                                 </TextBlock>
@@ -163,9 +162,8 @@
 
                                         <TextBlock Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="2" Margin="10,0,0,0">
                                             <TextBlock.Text>
-                                                <MultiBinding StringFormat="{}{0} {1}">
-                                                    <Binding Path="FirstName" />
-                                                    <Binding Path="LastName" />
+                                                <MultiBinding StringFormat="{}{0}">
+                                                    <Binding Path="Name" />
                                                 </MultiBinding>
                                             </TextBlock.Text>
                                         </TextBlock>
