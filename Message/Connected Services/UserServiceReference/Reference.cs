@@ -8,8 +8,6 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-using System.Drawing;
-
 namespace Message.UserServiceReference {
     using System.Runtime.Serialization;
     using System;
@@ -241,20 +239,7 @@ namespace Message.UserServiceReference {
                 }
             }
         }
-
-        private Image _image;
-
-        public Image Images
-        {
-            get { return _image; }
-            set
-            {
-                _image = value;
-                this.RaisePropertyChanged("Images");
-
-            }
-        }
-
+        
         public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
         
         protected void RaisePropertyChanged(string propertyName) {
@@ -530,6 +515,9 @@ namespace Message.UserServiceReference {
         private byte[] AvatarField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private System.Drawing.Image ImagesField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string NameField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
@@ -557,6 +545,19 @@ namespace Message.UserServiceReference {
                 if ((object.ReferenceEquals(this.AvatarField, value) != true)) {
                     this.AvatarField = value;
                     this.RaisePropertyChanged("Avatar");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.Drawing.Image Images {
+            get {
+                return this.ImagesField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.ImagesField, value) != true)) {
+                    this.ImagesField = value;
+                    this.RaisePropertyChanged("Images");
                 }
             }
         }
@@ -1250,8 +1251,8 @@ namespace Message.UserServiceReference {
             return base.Channel.GetUserByIdAsync(id);
         }
         
-        public bool AddContact(Message.UserServiceReference.User owner, Message.UserServiceReference.User owned) {
-            return base.Channel.AddContact(owner, owned);
+        public bool AddContact(int id_owner, int id_owned) {
+            return base.Channel.AddContact(id_owner, id_owned);
         }
         
         public System.Threading.Tasks.Task<bool> AddContactAsync(int id_owner, int id_owned) {

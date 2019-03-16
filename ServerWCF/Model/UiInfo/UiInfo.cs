@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
@@ -23,6 +24,9 @@ namespace ServerWCF.Model.UiInfo
 
         [DataMember]
         public byte[] Avatar { get; set; }
+
+        [DataMember]
+        public Image Images;
 
         protected UiInfo(string name, string uniqueName, string status, byte[] avatar)
         {

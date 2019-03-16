@@ -40,7 +40,6 @@ namespace ServerWCF.Contracts
 
 
         [OperationContract]
-        bool AddContact(User owner, User owned);
         bool AddContact(int id_owner, int id_owned);
 
         [OperationContract]

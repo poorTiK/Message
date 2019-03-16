@@ -199,7 +199,7 @@ namespace Message.ViewModel
             SetAvatarForUI();
             using (userServiceClient = new UserServiceClient(usersSite))
             {
-                ContactsList = userServiceClient.GetAllContacts(GlobalBase.CurrentUser.Id);
+                ContactsList = userServiceClient.GetAllContactsUiInfo(GlobalBase.CurrentUser.Id);
                 foreach (var item in ContactsList)
                 {
                     if (item.Avatar != null)
@@ -230,24 +230,17 @@ namespace Message.ViewModel
             if (_view.MessageList != null)
             {
                 _view.MessageList.Clear();
-
-                List<UserMessage> res = null;
-                
-                if (SelectedContact != null)
-                {
-                    using (userServiceClient = new UserServiceClient(usersSite))
-                    {
-                        res = userServiceClient.GetUserMessages(GlobalBase.CurrentUser.Id, SelectedContact.Id, 50);
-                    }
-                }
-
-                if (res != null)
-                {
-                    foreach (var mes in res)
+             
                 if (SelectedContact is UserUiInfo) {
                     UserUiInfo userUiInfo = SelectedContact as UserUiInfo;
                     User user = userServiceClient.GetUserById(userUiInfo.UserId);
-                    var res = userServiceClient.GetUserMessages(GlobalBase.CurrentUser, user, 50);
+                    List<UserMessage> res = null; /* userServiceClient.GetUserMessages(GlobalBase.CurrentUser.Id, user.Id, 50);*/
+
+                    using (userServiceClient = new UserServiceClient(usersSite))
+                    {
+                        res = userServiceClient.GetUserMessages(GlobalBase.CurrentUser.Id, (SelectedContact as UserUiInfo).UserId, 50);
+                    }
+
                     if (res != null)
                     {
                         foreach (var mes in res)
@@ -413,14 +406,13 @@ namespace Message.ViewModel
                 {
                     _view.MessageList.Clear();
                     List<UserMessage> res;
+                    UserUiInfo userUiInfo = null;
                     using (userServiceClient = new UserServiceClient(usersSite))
                     {
-                         res = userServiceClient.GetUserMessages(GlobalBase.CurrentUser.Id, SelectedContact.Id, 50);
+                         userUiInfo  = SelectedContact as UserUiInfo;
+                         res = userServiceClient.GetUserMessages(GlobalBase.CurrentUser.Id, userUiInfo.UserId, 50);
                     }
 
-                    UserUiInfo userUiInfo = SelectedContact as UserUiInfo;
-                    User user = userServiceClient.GetUserById(userUiInfo.UserId);
-                    var res = userServiceClient.GetUserMessages(GlobalBase.CurrentUser, user, 50);
                     if (res != null)
                     {
                         foreach (var mes in res)
@@ -451,7 +443,7 @@ namespace Message.ViewModel
         public void Update()
         {
             //make all update modular and put here plz
-            UpdateContactList();
+            //UpdateContactList();
             SetAvatarForUI();
         }
 
@@ -461,12 +453,6 @@ namespace Message.ViewModel
             using (userServiceClient = new UserServiceClient(usersSite))
             {
                 user = userServiceClient.GetAllUsers().FirstOrDefault(x => x.Id == message.SenderId);
-            //if ()
-            var user = userServiceClient.GetAllUsers().FirstOrDefault(x => x.Id == message.SenderId);
-            var mes = "New message from  @" + user.Login + "\n" + "\"" + GlobalBase.Base64Decode(message.Content) +
-                      "\"";
-            GlobalBase.ShowNotify("New message", mes);
-
 
                 var mes = "New message from  @" + user.Login + "\n" + "\"" + GlobalBase.Base64Decode(message.Content) +
                           "\"";
@@ -474,67 +460,65 @@ namespace Message.ViewModel
 
                 Debug.WriteLine("Receave Message from - ", user.Login);
 
-                if (!ContactsList.Contains(ContactsList.FirstOrDefault(x => x.Id == user.Id)))
-            if (!ContactsList.Contains(ContactsList.FirstOrDefault(x => (x as UserUiInfo).UserId == user.Id)))
-            {
-                userServiceClient.AddContactAsync(GlobalBase.CurrentUser, user).ContinueWith(task =>
+                if (!ContactsList.Contains(ContactsList.FirstOrDefault(x => (x as UserUiInfo).UserId == user.Id)))
                 {
                     userServiceClient.AddContactAsync(GlobalBase.CurrentUser.Id, user.Id).ContinueWith(task =>
                     {
                         UpdateContactList();
                     });
                 }
-                else if (SelectedContact.Id == user.Id)
+                else if ((SelectedContact as UserUiInfo).UserId == user.Id)
+                {
+                    SelectedContactChanged();
+                }
+                else if ((SelectedContact as UserUiInfo).UserId == user.Id)
                 {
                     SelectedContactChanged();
                 }
             }
-            else if ((SelectedContact as UserUiInfo).UserId == user.Id)
+
+            void UpdateContactList()
             {
-                SelectedContactChanged();
-            }
-        }
-
-        void UpdateContactList()
-        {
-            Application.Current.Dispatcher.Invoke(new Action(() =>
-            {
-                UserUiInfo temp = null;
-                if (SelectedContact is UserUiInfo )
+                Application.Current.Dispatcher.Invoke(new Action(() =>
                 {
-                    temp = SelectedContact as UserUiInfo;
-                }
-
-
-                ContactsList = userServiceClient.GetAllContactsUiInfo(GlobalBase.CurrentUser.Id);
-
-                using (var proxy = new PhotoServiceClient())
-                {
-                    foreach (var item in ContactsList)
+                    UserUiInfo temp = null;
+                    if (SelectedContact is UserUiInfo)
                     {
-                        if (SelectedContact is UserUiInfo) {
-                            UserUiInfo userUiInfo = SelectedContact as UserUiInfo;
-                            item.Avatar = proxy.GetPhotoById(userUiInfo.UserId);
+                        temp = SelectedContact as UserUiInfo;
+                    }
+
+
+                    ContactsList = userServiceClient.GetAllContactsUiInfo(GlobalBase.CurrentUser.Id);
+
+                    using (var proxy = new PhotoServiceClient())
+                    {
+                        foreach (var item in ContactsList)
+                        {
+                            if (SelectedContact is UserUiInfo)
+                            {
+                                UserUiInfo userUiInfo = SelectedContact as UserUiInfo;
+                                item.Avatar = proxy.GetPhotoById(userUiInfo.UserId);
+                            }
                         }
                     }
-                }
 
-                if (ContactsList.Any(x => temp != null && ((x as UserUiInfo).UserId == temp.UserId)))
-                {
-                    SelectedContact = temp;
-                }
-            }));
+                    if (ContactsList.Any(x => temp != null && ((x as UserUiInfo).UserId == temp.UserId)))
+                    {
+                        SelectedContact = temp;
+                    }
+                }));
+            }
         }
 
         public void UserLeave(User user)
         {
-            UpdateContactList();
+            //UpdateContactList();
             Debug.WriteLine("Works(Leave) - " + user.FirstName + " - (currentUser - " + GlobalBase.CurrentUser.FirstName + ")");
         }
 
         public void UserCame(User user)
         {
-            UpdateContactList();
+            //UpdateContactList();
             Debug.WriteLine("Works(Came) - " + user.FirstName + " - (currentUser - " + GlobalBase.CurrentUser.FirstName + ")");
         }
 

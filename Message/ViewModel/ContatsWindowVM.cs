@@ -143,7 +143,7 @@ namespace Message.ViewModel
                 {
                     UserUiInfo userUiInfo = SelectedContact as UserUiInfo;
                     user = UserServiceClient.GetUserById(userUiInfo.UserId);
-                    UserServiceClient.AddContact(GlobalBase.CurrentUser, user);
+                    UserServiceClient.AddContact(GlobalBase.CurrentUser.Id, user.Id);
                 }
 
                 UpdateContacts();
