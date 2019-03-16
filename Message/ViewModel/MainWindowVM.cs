@@ -342,7 +342,7 @@ namespace Message.ViewModel
                         {
                             Application.Current.Dispatcher.Invoke(new Action((() =>
                             {
-                                CustomMessageBox.Show("Registration done");
+                                CustomMessageBox.Show(Application.Current.Resources.MergedDictionaries[4]["RegisterDone"].ToString());
                                 Clear();
                                 ExecuteOnBackCommand();
                                 return;
@@ -350,19 +350,19 @@ namespace Message.ViewModel
                         }
                         else
                         {
-                            message = "Registration error";
+                            message = Application.Current.Resources.MergedDictionaries[4]["RegError"].ToString();
                         }
                     }
                     else
                     {
-                        message = "Same user exists";
+                        message = Application.Current.Resources.MergedDictionaries[4]["SameUserExits"].ToString();
                     }
 
                     if (message != string.Empty)
                     {
                         Application.Current.Dispatcher.Invoke(new Action(() =>
                         {
-                            CustomMessageBox.Show("Error", message);
+                            CustomMessageBox.Show(Application.Current.Resources.MergedDictionaries[4]["Error"].ToString(), message);
                         }));
                     }
                 }
@@ -382,24 +382,24 @@ namespace Message.ViewModel
 
             if (string.IsNullOrWhiteSpace(UserLogin))
             {
-                message = "Login is empty";
+                message = Application.Current.Resources.MergedDictionaries[4]["EmptyLogin"].ToString();
             }
             else if (RPassword.Length < 8 || string.IsNullOrWhiteSpace(RPassword) || RPassword == string.Empty || !Regex.IsMatch(RPassword, @"^[a-zA-Z0-9]{8,}$"))
             {
-                message = "Password shoud be 8 symbols lengh,\n use numbers and english symbols";
+                message = Application.Current.Resources.MergedDictionaries[4]["PassValidation"].ToString();
             }
             else if (RPassword != Rep_RPassword)
             {
-                message = "Password not match";
+                message = Application.Current.Resources.MergedDictionaries[4]["PassMatchValidation"].ToString();
             }
             else if (string.IsNullOrWhiteSpace(Email) || Email == string.Empty || !Regex.IsMatch(Email, @"\A(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)\Z", RegexOptions.IgnoreCase))
             {
-                message = "Wrong Email format";
+                message = Application.Current.Resources.MergedDictionaries[4]["EmailValidation"].ToString();
             }
 
             if (message != string.Empty)
             {
-                Application.Current.Dispatcher.Invoke(new Action((() => { CustomMessageBox.Show("Error", message); })));
+                Application.Current.Dispatcher.Invoke(new Action((() => { CustomMessageBox.Show(Application.Current.Resources.MergedDictionaries[4]["Error"].ToString(), message); })));
                 return false;
             }
 
@@ -412,20 +412,20 @@ namespace Message.ViewModel
 
             if (string.IsNullOrWhiteSpace(LoginText))
             {
-                message = "Login is empty";
+                message = Application.Current.Resources.MergedDictionaries[4]["EmptyLogin"].ToString();
             }
             else if (Password.Length < 8 || string.IsNullOrWhiteSpace(Password) || Password == string.Empty || !Regex.IsMatch(Password, @"^[a-zA-Z0-9]{8,}$"))
             {
-                message = "Password shoud be 8 symbols lenght,\n use numbers and english symbols";
+                message = Application.Current.Resources.MergedDictionaries[4]["PassValidation"].ToString();
             }
             else if (UserServiceClient.GetUser(LoginText, AESEncryptor.encryptPassword(Password)) == null)
             {
-                message = "Wrong login or password";
+                message = Application.Current.Resources.MergedDictionaries[4]["LogPassValid"].ToString();
             }
 
             if (message != string.Empty)
             {
-                Application.Current.Dispatcher.Invoke(new Action((() => { CustomMessageBox.Show("Error", message); })));
+                Application.Current.Dispatcher.Invoke(new Action((() => { CustomMessageBox.Show(Application.Current.Resources.MergedDictionaries[4]["Error"].ToString(), message); })));
                 return false;
             }
 

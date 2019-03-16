@@ -1,6 +1,6 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:local="clr-namespace:Message"
+                    xmlns:local="clr-namespace:Message" x:Name="Language"
 
                     xmlns:v="clr-namespace:System;assembly=mscorlib">
 
@@ -41,5 +41,22 @@
     <v:String x:Key="Themes">Themes</v:String>
     <v:String x:Key="ViewProfile">View Profile</v:String>
     <v:String x:Key="Write">Write a message...</v:String>
+    <v:String x:Key="Error">Error</v:String>
+    <v:String x:Key="RegisterDone">Register done</v:String>
+    <v:String x:Key="ChangesSaved">Changes saved</v:String>
+    <v:String x:Key="EmailSend">Message send to Email</v:String>
+    <v:String x:Key="RestorePass">Password restore</v:String>
+    <v:String x:Key="AskForDelMessage">Are you sure want to delete message?</v:String>
+    <v:String x:Key="CantFindUser"> Can't find such user :(</v:String>
+    <v:String x:Key="RegError">Registration error</v:String>
+    <v:String x:Key="SameUserExits">Same user exist's</v:String>
+    <v:String x:Key="EmptyLogin">Login is empty</v:String>
+    <v:String x:Key="PassValidation">Password shoud be 8 symbols lengh, use numbers and english symbols</v:String>
+    <v:String x:Key="PassMatchValidation">Password not match</v:String>
+    <v:String x:Key="EmailValidation">Wrong Email format</v:String>
+    <v:String x:Key="LogPassValid">Wrong login or password</v:String>
+    <v:String x:Key="FirstNameValid">First name can't be empty</v:String>
+    <v:String x:Key="LastNameValid">Last name can't be empty</v:String>
+    <v:String x:Key="EmailEmpty">Email can't be empty and must be valid</v:String>
 
 </ResourceDictionary>

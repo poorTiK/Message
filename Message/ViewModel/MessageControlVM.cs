@@ -72,7 +72,7 @@ namespace Message.ViewModel
 
         private void OnDelete()
         {
-            var canDelete = CustomMessageBox.Show("", "Are you sure want to delete message?", MessageBoxButton.YesNo);
+            var canDelete = CustomMessageBox.Show("", Application.Current.Resources.MergedDictionaries[4]["AskForDelMessage"].ToString(), MessageBoxButton.YesNo);
 
             switch (canDelete)
             {
