@@ -160,12 +160,12 @@ namespace Message
 
             DataContext = new MessageMainVM(this, user);
 
-            init();
+            Init();
 
             MessageList = new List<UserMessage>();
         }
 
-        private void init()
+        private void Init()
         {
             SourceInitialized += (s, e) =>
             {
