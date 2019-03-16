@@ -53,44 +53,55 @@ namespace Message.ViewModel
             get { return _searchContactStr; }
             set
             {
-
-
                 if (value == string.Empty)
                 {
                     ContactsList.Clear();
                     ContactsList.AddRange(UserServiceClient.GetAllContactsUiInfo(GlobalBase.CurrentUser.Id));
 
-                        foreach (var item in ContactsList)
+                    foreach (var item in ContactsList)
+                    {
+                        if (item is UserUiInfo)
                         {
-                            if (item is UserUiInfo)
-                            {
-                                UserUiInfo userUiInfo = item as UserUiInfo;
-                                item.Avatar = GlobalBase.PhotoServiceClient.GetPhotoById(userUiInfo.UserId);
-                            }
+                            UserUiInfo userUiInfo = item as UserUiInfo;
+                            item.Avatar = GlobalBase.PhotoServiceClient.GetPhotoById(userUiInfo.UserId);
                         }
-
+                        else if (item is ChatGroupUiInfo)
+                        {
+                            //todo: make ability to get picture for group
+                        }
+                    }
                 }
                 else
                 {
                     ContactsList.Clear();
                     ContactsList.AddRange(UserServiceClient
                         .GetAllUsersContacts(GlobalBase.CurrentUser.Id)
-                        .Where(i => i.FirstName.Contains(value) 
-                        || i.LastName.Contains(value) 
+                        .Where(i => i.FirstName.Contains(value)
+                        || i.LastName.Contains(value)
                         || i.Login.Contains(value))
-                                  .Select(u => new UserUiInfo {
+                                  .Select(u => new UserUiInfo
+                                  {
                                       Name = u.FirstName + " " + u.LastName,
-                                      UniqueName =  u.Login,
-                                      UserId = u.Id, Avatar = u.Avatar,
-                                      Status = u.Status}) );
+                                      UniqueName = u.Login,
+                                      UserId = u.Id,
+                                      Avatar = u.Avatar,
+                                      Status = u.Status
+                                  }));
 
 
-                        foreach (var item in ContactsList)
+                    foreach (var item in ContactsList)
+                    {
+                        if (item is UserUiInfo)
                         {
                             UserUiInfo userUiInfo = item as UserUiInfo;
                             item.Avatar = GlobalBase.PhotoServiceClient.GetPhotoById(userUiInfo.UserId);
                         }
+                        else if (item is ChatGroupUiInfo)
+                        {
+                            //todo: make ability to get picture for group
+                        }
                     }
+                }
 
                 SetProperty(ref _searchContactStr, value);
             }
@@ -197,8 +208,8 @@ namespace Message.ViewModel
                     ContactsList = ContactsList.ToList();
                 }
             }
-            //SelectedContact = ContactsList.FirstOrDefault();
             IsMenuEnabled = false;
+            SelectedContact = ContactsList.FirstOrDefault();
 
             UserServiceClient.OnUserCame(user.Id);
         }
@@ -206,42 +217,59 @@ namespace Message.ViewModel
         private void SelectedContactChanged(object sender = null, PropertyChangedEventArgs e = null)
         {
             if (SelectedContact != null)
-            {
-                IsMenuEnabled = true;
-            }
+            { IsMenuEnabled = true; }
             else
-            {
-                IsMenuEnabled = false;
-            }
+            { IsMenuEnabled = false;}
 
             if (_view.MessageList != null)
             {
                 _view.MessageList.Clear();
-             
-                if (SelectedContact is UserUiInfo) {
-                    UserUiInfo userUiInfo = SelectedContact as UserUiInfo;
-                    User user = UserServiceClient.GetUserById(userUiInfo.UserId);
-                    List<UserMessage> res = null; /* userServiceClient.GetUserMessages(GlobalBase.CurrentUser.Id, user.Id, 50);*/
 
-                    res = UserServiceClient.GetUserMessages(GlobalBase.CurrentUser.Id, (SelectedContact as UserUiInfo).UserId, 50);
+                List<BaseMessage> res = new List<BaseMessage>();
+                if (SelectedContact is UserUiInfo)
+                {
+                    res.AddRange(UserServiceClient.GetUserMessages(GlobalBase.CurrentUser.Id, (SelectedContact as UserUiInfo).UserId, 50));
+                }
+                else if (SelectedContact is ChatGroupUiInfo)
+                {
+                    res.AddRange(UserServiceClient.GetGroupMessages((SelectedContact as ChatGroupUiInfo).ChatGroupId, 50));
+                }
 
-                    if (res != null)
+                if (res.Count != 0)
+                {
+                    foreach (BaseMessage mes in res)
                     {
-                        foreach (var mes in res)
+                        if (mes is UserMessage)
                         {
+                            UserMessage userMessage = mes as UserMessage;
                             _view.MessageList.Add(new UserMessage()
                             {
                                 Id = mes.Id,
                                 Content = mes.Content,
                                 DateOfSending = mes.DateOfSending,
-                                ReceiverId = mes.ReceiverId,
+                                ReceiverId = userMessage.ReceiverId,
                                 SenderId = mes.SenderId,
                                 Type = mes.Type
                             });
                         }
-                        _view.UpdateMessageList();
+                        else if (mes is GroupMessage)
+                        {
+                            GroupMessage chatGroupMessage = mes as GroupMessage;
+                            _view.MessageList.Add(new GroupMessage()
+                            {
+                                Id = mes.Id,
+                                Content = mes.Content,
+                                DateOfSending = mes.DateOfSending,
+                                ChatGroupId = chatGroupMessage.ChatGroupId,
+                                SenderId = mes.SenderId,
+                                Type = mes.Type
+                            });
+                        }
+                        
                     }
+                    _view.UpdateMessageList();
                 }
+
             }
         }
 
@@ -302,7 +330,8 @@ namespace Message.ViewModel
 
         private void ExecuteOnViewProfile()
         {
-            if (SelectedContact is UserUiInfo) {
+            if (SelectedContact is UserUiInfo)
+            {
                 UserUiInfo userUiInfo = SelectedContact as UserUiInfo;
                 User user = UserServiceClient.GetUserById(userUiInfo.UserId);
                 var wnd = new ContactProfileWindow(user);
@@ -315,25 +344,40 @@ namespace Message.ViewModel
 
         private void ExecuteOnSendMessage()
         {
-            if (SelectedContact != null && !string.IsNullOrWhiteSpace(MessageText) && SelectedContact is UserUiInfo)
+            if (SelectedContact != null && !string.IsNullOrWhiteSpace(MessageText))
             {
-                UserUiInfo userUiInfo = SelectedContact as UserUiInfo;
-
-                var message = new UserMessage()
+                BaseMessage message = null;
+                if (SelectedContact is UserUiInfo)
                 {
-                    Content = Encoding.UTF8.GetBytes(MessageText),
-                    DateOfSending = DateTime.Now,
-                    SenderId = GlobalBase.CurrentUser.Id,
-                    ReceiverId = userUiInfo.UserId,
-                    Type = "TEXT",
-                };
+                    UserUiInfo userUiInfo = SelectedContact as UserUiInfo;
 
-                    UserServiceClient.SendMessageAsync(message);
+                    message = new UserMessage()
+                    {
+                        Content = Encoding.UTF8.GetBytes(MessageText),
+                        DateOfSending = DateTime.Now,
+                        SenderId = GlobalBase.CurrentUser.Id,
+                        ReceiverId = userUiInfo.UserId,
+                        Type = "TEXT",
+                    };
+                }
+                else if (SelectedContact is ChatGroupUiInfo)
+                {
+                    ChatGroupUiInfo userUiInfo = SelectedContact as ChatGroupUiInfo;
 
+                    message = new GroupMessage()
+                    {
+                        Content = Encoding.UTF8.GetBytes(MessageText),
+                        DateOfSending = DateTime.Now,
+                        SenderId = GlobalBase.CurrentUser.Id,
+                        ChatGroupId = userUiInfo.ChatGroupId,
+                        Type = "TEXT",
+                    };
+                }
+
+                UserServiceClient.SendMessageAsync(message);
 
                 Debug.WriteLine("Send Message");
                 _view.MessageList.Add(message);
-
                 _view.UpdateMessageList();
 
                 MessageText = string.Empty;
@@ -383,27 +427,52 @@ namespace Message.ViewModel
         {
             if (IsDialogSearchVisible)
             {
-                if (SelectedContact != null && SelectedContact is UserUiInfo)
+                if (SelectedContact != null)
                 {
                     _view.MessageList.Clear();
-                    List<UserMessage> res;
-                    UserUiInfo userUiInfo = null;
+                    List<BaseMessage> res = new List<BaseMessage>();
 
-                         userUiInfo  = SelectedContact as UserUiInfo;
-                         res = UserServiceClient.GetUserMessages(GlobalBase.CurrentUser.Id, userUiInfo.UserId, 50);
-
-                    if (res != null)
+                    if (SelectedContact is UserUiInfo)
                     {
-                        foreach (var mes in res)
+                        UserUiInfo userUiInfo = SelectedContact as UserUiInfo;
+                        res.AddRange(UserServiceClient.GetUserMessages(GlobalBase.CurrentUser.Id, userUiInfo.UserId, 50));
+                    }
+                    else if (SelectedContact is ChatGroupUiInfo)
+                    {
+                        ChatGroupUiInfo chatGroupUiInfo = SelectedContact as ChatGroupUiInfo;
+                        res.AddRange(UserServiceClient.GetGroupMessages(chatGroupUiInfo.ChatGroupId, 50));
+                    }
+
+                    if (res.Count != 0)
+                    {
+                        foreach (BaseMessage mes in res)
                         {
-                            var message = new UserMessage()
+                            BaseMessage message = null;
+                            if (mes is UserMessage)
                             {
-                                Content = mes.Content,
-                                DateOfSending = mes.DateOfSending,
-                                ReceiverId = mes.ReceiverId,
-                                SenderId = mes.SenderId,
-                                Type = mes.Type
-                            };
+                                UserMessage userMessage = mes as UserMessage;
+                                message = new UserMessage()
+                                {
+                                    Content = mes.Content,
+                                    DateOfSending = mes.DateOfSending,
+                                    ReceiverId = userMessage.ReceiverId,
+                                    SenderId = mes.SenderId,
+                                    Type = mes.Type
+                                };
+                            }
+                            else if (mes is GroupMessage)
+                            {
+                                GroupMessage groupMessage = mes as GroupMessage;
+                                message = new GroupMessage()
+                                {
+                                    Content = mes.Content,
+                                    DateOfSending = mes.DateOfSending,
+                                    ChatGroupId = groupMessage.ChatGroupId,
+                                    SenderId = mes.SenderId,
+                                    Type = mes.Type
+                                };
+                            }
+
                             if (GlobalBase.Base64Decode(mes.Content).Contains(DialogSearchStr))
                             {
                                 _view.MessageList.Add(message);
@@ -428,12 +497,6 @@ namespace Message.ViewModel
 
         public void UpdateContactList()
         {
-            UserUiInfo temp = null;
-            if (SelectedContact is UserUiInfo)
-            {
-                temp = SelectedContact as UserUiInfo;
-            }
-
             ContactsList = UserServiceClient.GetAllContactsUiInfo(GlobalBase.CurrentUser.Id);
 
             foreach (var item in ContactsList)
@@ -443,39 +506,73 @@ namespace Message.ViewModel
                     UserUiInfo userUiInfo = SelectedContact as UserUiInfo;
                     item.Avatar = GlobalBase.PhotoServiceClient.GetPhotoById(userUiInfo.UserId);
                 }
+                else if (SelectedContact is ChatGroupUiInfo)
+                {
+                    // todo: create ability to get picture for groups
+                }
             }
 
+            UiInfo temp = SelectedContact;
 
-            if (ContactsList.Any(x => temp != null && ((x as UserUiInfo).UserId == temp.UserId)))
+            if(temp is UserUiInfo)
             {
-                SelectedContact = temp;
+                UserUiInfo userUiInfo = temp as UserUiInfo;
+
+                if (ContactsList.Any(x => temp != null && ((x as UserUiInfo).UserId == userUiInfo.UserId)))
+                {
+                    SelectedContact = temp;
+                }
+            } 
+            else if(temp is ChatGroupUiInfo)
+            {
+                ChatGroupUiInfo chatGroupUiInfo = temp as ChatGroupUiInfo;
+
+                if (ContactsList.Any(x => temp != null && ((x as ChatGroupUiInfo).ChatGroupId == chatGroupUiInfo.ChatGroupId)))
+                {
+                    SelectedContact = temp;
+                }
             }
+
+
         }
 
         public override void ReceiveMessage(BaseMessage message)
         {
-            User user = UserServiceClient.GetAllUsers().FirstOrDefault(x => x.Id == message.SenderId);
+            User sender = UserServiceClient.GetAllUsers().FirstOrDefault(x => x.Id == message.SenderId);
 
-            var mes = "New message from  @" + user.Login + "\n" + "\"" + GlobalBase.Base64Decode(message.Content) +
+            var mes = "New message from  @" + sender.Login + "\n" + "\"" + GlobalBase.Base64Decode(message.Content) +
                       "\"";
             GlobalBase.ShowNotify("New message", mes);
 
-            Debug.WriteLine("Receave Message from - ", user.Login);
+            Debug.WriteLine("Receave Message from - ", sender.Login);
 
-            if (!ContactsList.Contains(ContactsList.FirstOrDefault(x => (x as UserUiInfo).UserId == user.Id)))
+            if (message is UserMessage)
             {
-                UserServiceClient.AddUserToUserContactAsync(GlobalBase.CurrentUser.Id, user.Id).ContinueWith(task =>
+                if (ContactsList.Where(c => c is UserUiInfo).FirstOrDefault(x => (x as UserUiInfo).UserId == sender.Id) == null)
                 {
-                    UpdateContactList();
-                });
+                    UserServiceClient.AddUserToUserContactAsync(GlobalBase.CurrentUser.Id, sender.Id).ContinueWith(task =>
+                    {
+                        UpdateContactList();
+                    });
+                }
+                else if ( (SelectedContact is UserUiInfo) && ((SelectedContact as UserUiInfo).UserId == sender.Id) )
+                {
+                    SelectedContactChanged();
+                }
             }
-            else if ((SelectedContact as UserUiInfo).UserId == user.Id)
+            else if (message is GroupMessage)
             {
-                SelectedContactChanged();
-            }
-            else if ((SelectedContact as UserUiInfo).UserId == user.Id)
-            {
-                SelectedContactChanged();
+                if (ContactsList.Where(c => c is ChatGroupUiInfo).FirstOrDefault(x => (x as ChatGroupUiInfo).ChatGroupId == (message as GroupMessage).ChatGroupId) == null)
+                {
+                    UserServiceClient.AddUserToChatGroupContactAsync((message as GroupMessage).ChatGroupId, GlobalBase.CurrentUser.Id).ContinueWith(task =>
+                    {
+                        UpdateContactList();
+                    });
+                }
+                else if ( (SelectedContact is ChatGroupUiInfo) && ((SelectedContact as ChatGroupUiInfo).ChatGroupId == (message as GroupMessage).ChatGroupId) )
+                {
+                    SelectedContactChanged();
+                }
             }
         }
 

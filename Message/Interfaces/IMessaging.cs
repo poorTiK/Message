@@ -5,7 +5,7 @@ namespace Message.Interfaces
 {
     internal interface IMessaging : IView
     {
-        List<UserMessage> MessageList { get; set; }
+        List<BaseMessage> MessageList { get; set; }
 
         void UpdateMessageList();
     }

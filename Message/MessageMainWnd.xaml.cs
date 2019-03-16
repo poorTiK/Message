@@ -150,7 +150,7 @@ namespace Message
 
         #endregion Win32 Magic
 
-        public List<UserMessage> MessageList { get; set; }
+        public List<BaseMessage> MessageList { get; set; }
 
         public MessageMainWnd(User user)
         {
@@ -162,7 +162,7 @@ namespace Message
 
             Init();
 
-            MessageList = new List<UserMessage>();
+            MessageList = new List<BaseMessage>();
         }
 
         private void Init()
