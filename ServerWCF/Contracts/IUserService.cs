@@ -28,7 +28,7 @@ namespace ServerWCF.Contracts
         User GetUserByLogin(string login);
 
         [OperationContract]
-        bool AddContact(User owner, User owned);
+        bool AddContact(int id_owner, int id_owned);
 
         [OperationContract]
         bool RemoveContact(User owner, User owned);
@@ -55,7 +55,7 @@ namespace ServerWCF.Contracts
         List<GroupMessage> GetGroupMessages(ChatGroup chatGroup, int limin);
 
         [OperationContract]
-        List<UserMessage> GetUserMessages(User sender, User receiver, int limin);
+        List<UserMessage> GetUserMessages(int sender, int receiver, int limin);
 
         [OperationContract]
         List<BaseMessage> FindMessage(string keyWord);

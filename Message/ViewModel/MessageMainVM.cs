@@ -8,11 +8,14 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.ServiceModel;
 using System.Text;
 using System.Windows;
+using System.Windows.Threading;
 using Message.PhotoServiceReference;
 
 namespace Message.ViewModel
@@ -25,6 +28,19 @@ namespace Message.ViewModel
         private IUserServiceCallback _userServiceCallback;
 
         private IMessaging _view;
+        private Image _image;
+
+        public Image Images
+        {
+            get { return _image; }
+            set
+            {
+                _image = value;
+                OnPropertyChanged(new System.ComponentModel.PropertyChangedEventArgs("Images"));
+
+            }
+        }
+
 
         public User CurrentUser { get; set; }
        //private byte[] _currentUserPhoto;
@@ -167,8 +183,21 @@ namespace Message.ViewModel
                 Update();
             };
 
-           // ContactsList = userServiceClient.GetAllContacts(GlobalBase.CurrentUser);
-            SelectedContact = new User();
+            SetAvatarForUI();
+            using (userServiceClient = new UserServiceClient(usersSite))
+            {
+                ContactsList = userServiceClient.GetAllContacts(GlobalBase.CurrentUser.Id);
+                foreach (var item in ContactsList)
+                {
+                    if (item.Avatar != null)
+                    {
+                        MemoryStream memstr = new MemoryStream(item.Avatar);
+                        Dispatcher.CurrentDispatcher.Invoke(() => { item.Images = Image.FromStream(memstr); });
+                        ContactsList = ContactsList.ToList();
+                    }
+                }
+            }
+            SelectedContact = ContactsList.FirstOrDefault();
             IsMenuEnabled = false;
 
             //userServiceClient.OnUserCame(user);
@@ -188,7 +217,17 @@ namespace Message.ViewModel
             if (_view.MessageList != null)
             {
                 _view.MessageList.Clear();
-                var res = userServiceClient.GetUserMessages(GlobalBase.CurrentUser, SelectedContact, 50);
+
+                List<UserMessage> res = null;
+                
+                if (SelectedContact != null)
+                {
+                    using (userServiceClient = new UserServiceClient(usersSite))
+                    {
+                        res = userServiceClient.GetUserMessages(GlobalBase.CurrentUser.Id, SelectedContact.Id, 50);
+                    }
+                }
+
                 if (res != null)
                 {
                     foreach (var mes in res)
@@ -259,7 +298,8 @@ namespace Message.ViewModel
 
         private void ExecuteOnExit()
         {
-            userServiceClient.OnUserLeave(GlobalBase.CurrentUser);
+            using (userServiceClient = new UserServiceClient(usersSite))
+                userServiceClient.OnUserLeave(GlobalBase.CurrentUser);
             _view.CloseWindow();
         }
 
@@ -284,14 +324,31 @@ namespace Message.ViewModel
                     ReceiverId = SelectedContact.Id,
                     Type = "TEXT",
                 };
+                using (userServiceClient = new UserServiceClient(usersSite))
+                {
+                    userServiceClient.SendMessageAsync(message);
+                }
 
-                userServiceClient.SendMessageAsync(message);
                 Debug.WriteLine("Send Message");
                 _view.MessageList.Add(message);
 
                 _view.UpdateMessageList();
 
                 MessageText = string.Empty;
+            }
+        }
+
+        private void SetAvatarForUI()
+        {
+            if (GlobalBase.CurrentUser?.Avatar?.Length > 0)
+            {
+                MemoryStream memstr = new MemoryStream(GlobalBase.CurrentUser.Avatar);
+                Dispatcher.CurrentDispatcher.Invoke(() => { Images = Image.FromStream(memstr); });
+            }
+            else
+            {
+                Dispatcher.CurrentDispatcher.Invoke(() => { Images = null; });
+
             }
         }
 
@@ -328,7 +385,12 @@ namespace Message.ViewModel
                 if (SelectedContact != null)
                 {
                     _view.MessageList.Clear();
-                    var res = userServiceClient.GetUserMessages(GlobalBase.CurrentUser, SelectedContact, 50);
+                    List<UserMessage> res;
+                    using (userServiceClient = new UserServiceClient(usersSite))
+                    {
+                         res = userServiceClient.GetUserMessages(GlobalBase.CurrentUser.Id, SelectedContact.Id, 50);
+                    }
+
                     if (res != null)
                     {
                         foreach (var mes in res)
@@ -360,27 +422,34 @@ namespace Message.ViewModel
         {
             //make all update modular and put here plz
             UpdateContactList();
+            SetAvatarForUI();
         }
 
         public void ReceiveMessage(BaseMessage message)
         {
-            var user = userServiceClient.GetAllUsers().FirstOrDefault(x => x.Id == message.SenderId);
-            var mes = "New message from  @" + user.Login + "\n" + "\"" + GlobalBase.Base64Decode(message.Content) +
-                      "\"";
-            GlobalBase.ShowNotify("New message", mes);
-
-            Debug.WriteLine("Receave Message from - ", user.Login);
-
-            if (!ContactsList.Contains(ContactsList.FirstOrDefault(x => x.Id == user.Id)))
+            User user;
+            using (userServiceClient = new UserServiceClient(usersSite))
             {
-                userServiceClient.AddContactAsync(GlobalBase.CurrentUser, user).ContinueWith(task =>
+                user = userServiceClient.GetAllUsers().FirstOrDefault(x => x.Id == message.SenderId);
+
+
+                var mes = "New message from  @" + user.Login + "\n" + "\"" + GlobalBase.Base64Decode(message.Content) +
+                          "\"";
+                GlobalBase.ShowNotify("New message", mes);
+
+                Debug.WriteLine("Receave Message from - ", user.Login);
+
+                if (!ContactsList.Contains(ContactsList.FirstOrDefault(x => x.Id == user.Id)))
                 {
-                    UpdateContactList();
-                });
-            }
-            else if (SelectedContact.Id == user.Id)
-            {
-                SelectedContactChanged();
+                    userServiceClient.AddContactAsync(GlobalBase.CurrentUser.Id, user.Id).ContinueWith(task =>
+                    {
+                        UpdateContactList();
+                    });
+                }
+                else if (SelectedContact.Id == user.Id)
+                {
+                    SelectedContactChanged();
+                }
             }
         }
 
@@ -389,8 +458,10 @@ namespace Message.ViewModel
             Application.Current.Dispatcher.Invoke(new Action(() =>
             {
                 var temp = SelectedContact;
-
-                ContactsList = userServiceClient.GetAllContacts(GlobalBase.CurrentUser.Id);
+                using (userServiceClient = new UserServiceClient(usersSite))
+                {
+                    ContactsList = userServiceClient.GetAllContacts(GlobalBase.CurrentUser.Id);
+                }
 
                 using (var proxy = new PhotoServiceClient())
                 {

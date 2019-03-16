@@ -9,12 +9,11 @@ using System.Drawing;
 using System.IO;
 using System.ServiceModel;
 using System.Text.RegularExpressions;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using Message.PhotoServiceReference;
+using Microsoft.EntityFrameworkCore;
 
 namespace Message.ViewModel
 {
@@ -22,7 +21,7 @@ namespace Message.ViewModel
     internal class UserProfileWindowVM : Prism.Mvvm.BindableBase, IUserServiceCallback
     {
         private IView _view;
-
+        private byte[] _newAvatar;
         private InstanceContext usersSite;
         private UserServiceClient UserServiceClient;
         private IUserServiceCallback _userServiceCallback;
@@ -34,6 +33,7 @@ namespace Message.ViewModel
             set { _image = value; OnPropertyChanged(new System.ComponentModel.PropertyChangedEventArgs("Images")); }
 
         }
+
         private string _currentUserName;
 
         public string CurrentUserName
@@ -152,6 +152,21 @@ namespace Message.ViewModel
             SetAvatarForUI();
         }
 
+        private DelegateCommand _onCloseCommand;
+
+        public DelegateCommand CloseCommand =>
+            _onCloseCommand ?? (_onApplyChanges = new DelegateCommand(ExecuteClose));
+
+        private void ExecuteClose()
+        {
+            using (var proxy = new PhotoServiceClient())
+            {
+                GlobalBase.CurrentUser.Avatar = proxy.GetPhotoById(GlobalBase.CurrentUser.Id);
+            }
+            
+            _view.CloseWindow();
+        }
+
         private DelegateCommand _onApplyChanges;
 
         public DelegateCommand ApplyChanges =>
@@ -168,24 +183,19 @@ namespace Message.ViewModel
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.ShowDialog();
             var FilePath = openFileDialog.FileName;
-            GlobalBase.CurrentUser.Avatar = null;
-            UserServiceClient.AddOrUpdateUser(GlobalBase.CurrentUser);
-            using (PhotoServiceClient client = new PhotoServiceClient())
-            {
-                var photo = File.ReadAllBytes(FilePath);
-                client.SetPhotoById(GlobalBase.CurrentUser.Id, photo);
-                GlobalBase.CurrentUser.Avatar = client.GetPhotoById(GlobalBase.CurrentUser.Id);
-                SetAvatarForUI();
-            }
-          
 
-            GlobalBase.UpdateUI.Invoke();
-            IsNewChanges = true;
+            if (FilePath != string.Empty)
+            {
+                _newAvatar = File.ReadAllBytes(FilePath);
+                MemoryStream memstr = new MemoryStream(_newAvatar);
+                Dispatcher.CurrentDispatcher.Invoke(() => { Images = Image.FromStream(memstr); });
+                IsNewChanges = true;
+            }
         }
 
         private void SetAvatarForUI()
         {
-            if (GlobalBase.CurrentUser.Avatar.Length > 0)
+            if (GlobalBase.CurrentUser?.Avatar?.Length > 0)
             {
                 MemoryStream memstr = new MemoryStream(GlobalBase.CurrentUser.Avatar);
                 Dispatcher.CurrentDispatcher.Invoke(() => { Images = Image.FromStream(memstr); });
@@ -210,8 +220,28 @@ namespace Message.ViewModel
                     GlobalBase.CurrentUser.Phone = UserPhone;
                     GlobalBase.CurrentUser.Email = UserEmail;
                     GlobalBase.CurrentUser.Bio = UserBio;
-
+                    var tempAvatar = GlobalBase.CurrentUser.Avatar;
+                    GlobalBase.CurrentUser.Avatar = null;
                     res = UserServiceClient.AddOrUpdateUser(GlobalBase.CurrentUser);
+
+                    if (_newAvatar != null)
+                    {
+                        using (var proxy = new PhotoServiceClient())
+                        {
+                            proxy.SetPhotoById(GlobalBase.CurrentUser.Id, _newAvatar);
+                            GlobalBase.CurrentUser.Avatar = proxy.GetPhotoById(GlobalBase.CurrentUser.Id);
+                        }
+                    }
+                    else
+                    {
+                        using (var proxy = new PhotoServiceClient())
+                        {
+                            proxy.SetPhotoById(GlobalBase.CurrentUser.Id, tempAvatar);
+                            GlobalBase.CurrentUser.Avatar = proxy.GetPhotoById(GlobalBase.CurrentUser.Id);
+                        }
+                    }
+
+                    SetAvatarForUI();
 
                     if (res == string.Empty)
                     {
@@ -221,7 +251,11 @@ namespace Message.ViewModel
                         })));
                     }
                 }
-            })).ContinueWith((task => { IsSavingProgress = false; }));
+            })).ContinueWith((task =>
+            {
+                IsSavingProgress = false;
+                IsNewChanges = false;
+            }));
         }
 
         private bool Validate()

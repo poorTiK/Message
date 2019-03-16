@@ -39,7 +39,19 @@ namespace Message.ViewModel
             set { _image = value; OnPropertyChanged(new System.ComponentModel.PropertyChangedEventArgs("Images")); }
 
         }
+        private void SetAvatarForUI()
+        {
+            if (GlobalBase.CurrentUser?.Avatar?.Length > 0)
+            {
+                MemoryStream memstr = new MemoryStream(GlobalBase.CurrentUser.Avatar);
+                Dispatcher.CurrentDispatcher.Invoke(() => { Images = Image.FromStream(memstr); });
+            }
+            else
+            {
+                Dispatcher.CurrentDispatcher.Invoke(() => { Images = null; });
 
+            }
+        }
         public SettingsWindowVM(IView view)
         {
             this.view = view;
@@ -48,11 +60,7 @@ namespace Message.ViewModel
                 GlobalBase.CurrentUser.Avatar = client.GetPhotoById(GlobalBase.CurrentUser.Id);
             }
 
-            if (GlobalBase.CurrentUser.Avatar.Length > 1)
-            {
-                MemoryStream memstr = new MemoryStream(GlobalBase.CurrentUser.Avatar);
-                Dispatcher.CurrentDispatcher.Invoke(() => { Images = Image.FromStream(memstr); });
-            }
+            SetAvatarForUI();
         }
 
         private DelegateCommand _onProfileSettings;
@@ -76,6 +84,11 @@ namespace Message.ViewModel
             view.Hide(true);
         }
 
+        private void UpdateUI()
+        {
+            SetAvatarForUI();
+        }
+
         private void ExecuteOnProfileSettings()
         {
             view.Hide(false);
@@ -83,6 +96,8 @@ namespace Message.ViewModel
             var profEditWnd = new UserProfileWindow();
             profEditWnd.Owner = (Window)view;
             profEditWnd.ShowDialog();
+            UpdateUI();
+            GlobalBase.UpdateUI.Invoke();
 
             view.Hide(true);
         }

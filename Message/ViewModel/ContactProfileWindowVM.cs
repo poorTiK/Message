@@ -3,7 +3,11 @@ using Message.Model;
 using Message.UserServiceReference;
 using Prism.Commands;
 using System;
+using System.Drawing;
+using System.IO;
 using System.ServiceModel;
+using System.Windows.Threading;
+using Message.PhotoServiceReference;
 
 namespace Message.ViewModel
 {
@@ -15,7 +19,14 @@ namespace Message.ViewModel
         private InstanceContext usersSite;
         private UserServiceClient UserServiceClient;
         private IUserServiceCallback _userServiceCallback;
+        private Image _image;
 
+        public Image Images
+        {
+            get { return _image; }
+            set { _image = value; OnPropertyChanged(new System.ComponentModel.PropertyChangedEventArgs("Images")); }
+
+        }
         private User Profile;
 
         private string _currentUserName;
@@ -108,15 +119,18 @@ namespace Message.ViewModel
 
             _userServiceCallback = this;
             usersSite = new InstanceContext(_userServiceCallback);
-            UserServiceClient = new UserServiceClient(usersSite);
 
             UserName = Profile.FirstName;
             UserLastName = Profile.LastName;
             UserPhone = Profile.Phone;
             UserEmail = Profile.Email;
             UserBio = Profile.Bio;
+            bool contact;
 
-            var contact = UserServiceClient.IsExistsInContacts(GlobalBase.CurrentUser.Id, Profile.Id);
+            using (UserServiceClient = new UserServiceClient(usersSite))
+            {
+                 contact = UserServiceClient.IsExistsInContacts(GlobalBase.CurrentUser.Id, Profile.Id);           
+            }
 
             if (contact)
             {
@@ -128,6 +142,8 @@ namespace Message.ViewModel
                 IsContact = false;
                 IsNonContact = true;
             }
+
+            SetAvatarForUI();
         }
 
         private DelegateCommand _onAddContact;
@@ -142,13 +158,21 @@ namespace Message.ViewModel
 
         private void ExecuteOnAddContact()
         {
-            UserServiceClient.AddContactAsync(GlobalBase.CurrentUser, Profile);
+            using (UserServiceClient = new UserServiceClient(usersSite))
+            {
+                UserServiceClient.AddContactAsync(GlobalBase.CurrentUser.Id, Profile.Id);
+            }
+
             ManageControls();
         }
 
         private void ExecuteOnDeleteContact()
         {
-            UserServiceClient.RemoveContactAsync(GlobalBase.CurrentUser, Profile);
+            using (UserServiceClient = new UserServiceClient(usersSite))
+            {
+                UserServiceClient.RemoveContactAsync(GlobalBase.CurrentUser, Profile);
+            }
+
             ManageControls();
         }
 
@@ -164,6 +188,28 @@ namespace Message.ViewModel
                 IsContact = !IsContact;
                 IsNonContact = !IsNonContact;
             }
+        }
+
+
+        private void SetAvatarForUI()
+        {
+            using (var proxy = new PhotoServiceClient())
+            {
+                Profile.Avatar = proxy.GetPhotoById(Profile.Id);
+
+            }
+            if (Profile?.Avatar?.Length > 0)
+            {
+                MemoryStream memstr = new MemoryStream(GlobalBase.CurrentUser.Avatar);
+                Dispatcher.CurrentDispatcher.Invoke(() => { Images = Image.FromStream(memstr); });
+            }
+            else
+            {
+                Dispatcher.CurrentDispatcher.Invoke(() => { Images = null; });
+
+            }
+
+           
         }
 
         public void UserCame(User user)

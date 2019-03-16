@@ -8,6 +8,8 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+using System.Drawing;
+
 namespace Message.UserServiceReference {
     using System.Runtime.Serialization;
     using System;
@@ -239,7 +241,20 @@ namespace Message.UserServiceReference {
                 }
             }
         }
-        
+
+        private Image _image;
+
+        public Image Images
+        {
+            get { return _image; }
+            set
+            {
+                _image = value;
+                this.RaisePropertyChanged("Images");
+
+            }
+        }
+
         public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
         
         protected void RaisePropertyChanged(string propertyName) {
@@ -835,10 +850,10 @@ namespace Message.UserServiceReference {
         System.Threading.Tasks.Task<Message.UserServiceReference.User> GetUserByLoginAsync(string login);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/AddContact", ReplyAction="http://tempuri.org/IUserService/AddContactResponse")]
-        bool AddContact(Message.UserServiceReference.User owner, Message.UserServiceReference.User owned);
+        bool AddContact(int id_owner, int id_owned);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/AddContact", ReplyAction="http://tempuri.org/IUserService/AddContactResponse")]
-        System.Threading.Tasks.Task<bool> AddContactAsync(Message.UserServiceReference.User owner, Message.UserServiceReference.User owned);
+        System.Threading.Tasks.Task<bool> AddContactAsync(int id_owner, int id_owned);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/RemoveContact", ReplyAction="http://tempuri.org/IUserService/RemoveContactResponse")]
         bool RemoveContact(Message.UserServiceReference.User owner, Message.UserServiceReference.User owned);
@@ -889,10 +904,10 @@ namespace Message.UserServiceReference {
         System.Threading.Tasks.Task<System.Collections.Generic.List<Message.UserServiceReference.GroupMessage>> GetGroupMessagesAsync(Message.UserServiceReference.ChatGroup chatGroup, int limin);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/GetUserMessages", ReplyAction="http://tempuri.org/IUserService/GetUserMessagesResponse")]
-        System.Collections.Generic.List<Message.UserServiceReference.UserMessage> GetUserMessages(Message.UserServiceReference.User sender, Message.UserServiceReference.User receiver, int limin);
+        System.Collections.Generic.List<Message.UserServiceReference.UserMessage> GetUserMessages(int sender, int receiver, int limin);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/GetUserMessages", ReplyAction="http://tempuri.org/IUserService/GetUserMessagesResponse")]
-        System.Threading.Tasks.Task<System.Collections.Generic.List<Message.UserServiceReference.UserMessage>> GetUserMessagesAsync(Message.UserServiceReference.User sender, Message.UserServiceReference.User receiver, int limin);
+        System.Threading.Tasks.Task<System.Collections.Generic.List<Message.UserServiceReference.UserMessage>> GetUserMessagesAsync(int sender, int receiver, int limin);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/FindMessage", ReplyAction="http://tempuri.org/IUserService/FindMessageResponse")]
         System.Collections.Generic.List<Message.UserServiceReference.BaseMessage> FindMessage(string keyWord);
@@ -1030,12 +1045,12 @@ namespace Message.UserServiceReference {
             return base.Channel.GetUserByLoginAsync(login);
         }
         
-        public bool AddContact(Message.UserServiceReference.User owner, Message.UserServiceReference.User owned) {
-            return base.Channel.AddContact(owner, owned);
+        public bool AddContact(int id_owner, int id_owned) {
+            return base.Channel.AddContact(id_owner, id_owned);
         }
         
-        public System.Threading.Tasks.Task<bool> AddContactAsync(Message.UserServiceReference.User owner, Message.UserServiceReference.User owned) {
-            return base.Channel.AddContactAsync(owner, owned);
+        public System.Threading.Tasks.Task<bool> AddContactAsync(int id_owner, int id_owned) {
+            return base.Channel.AddContactAsync(id_owner, id_owned);
         }
         
         public bool RemoveContact(Message.UserServiceReference.User owner, Message.UserServiceReference.User owned) {
@@ -1102,11 +1117,11 @@ namespace Message.UserServiceReference {
             return base.Channel.GetGroupMessagesAsync(chatGroup, limin);
         }
         
-        public System.Collections.Generic.List<Message.UserServiceReference.UserMessage> GetUserMessages(Message.UserServiceReference.User sender, Message.UserServiceReference.User receiver, int limin) {
+        public System.Collections.Generic.List<Message.UserServiceReference.UserMessage> GetUserMessages(int sender, int receiver, int limin) {
             return base.Channel.GetUserMessages(sender, receiver, limin);
         }
         
-        public System.Threading.Tasks.Task<System.Collections.Generic.List<Message.UserServiceReference.UserMessage>> GetUserMessagesAsync(Message.UserServiceReference.User sender, Message.UserServiceReference.User receiver, int limin) {
+        public System.Threading.Tasks.Task<System.Collections.Generic.List<Message.UserServiceReference.UserMessage>> GetUserMessagesAsync(int sender, int receiver, int limin) {
             return base.Channel.GetUserMessagesAsync(sender, receiver, limin);
         }
         

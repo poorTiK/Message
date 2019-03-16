@@ -3,10 +3,13 @@ using Message.Interfaces;
 using Message.UserServiceReference;
 using Prism.Commands;
 using System;
+using System.Drawing;
+using System.IO;
 using System.ServiceModel;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Threading;
 using Message.Encryption;
 using Message.Model;
 using Microsoft.Win32;
@@ -203,7 +206,6 @@ namespace Message.ViewModel
 
             IsSignUpVisible = true;
             IsRegisterVisible = false;
-
             //fillUsers();
             //TestApplicationSettings();
             //TestMessageT();
@@ -464,5 +466,7 @@ namespace Message.ViewModel
         {
             //throw new NotImplementedException();
         }
+
+        
     }
 }

@@ -4,7 +4,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Message"
-        
+        xmlns:med="clr-namespace:System.Windows.Media"
+
         xmlns:converter="clr-namespace:Message.AdditionalItems"
         mc:Ignorable="d"
 
@@ -19,6 +20,7 @@
     </WindowChrome.WindowChrome>
 
     <Window.Resources>
+        <med:ImageConverter x:Key="imageConverter" />
         <BooleanToVisibilityConverter x:Key="BoolToVisConverter" />
         <converter:ByteToImageConverter x:Key="imgConverter" />
     </Window.Resources>
@@ -156,7 +158,7 @@
                                             BadgeColorZoneMode="PrimaryDark">
                                             <Ellipse Height="45" Width="45" Grid.Column="0" Grid.Row="0" Grid.RowSpan="2">
                                                 <Ellipse.Fill>
-                                                    <ImageBrush ImageSource="{Binding Path=Avatar, Converter={StaticResource imgConverter}}" />
+                                                    <ImageBrush ImageSource="{Binding Path=Images, Converter={StaticResource imageConverter}}" />
                                                 </Ellipse.Fill>
                                             </Ellipse>
                                         </materialDesign:Badged>
@@ -231,7 +233,7 @@
                         <StackPanel Grid.Row="1" HorizontalAlignment="Left" Orientation="Horizontal">
                             <Ellipse Height="45" Width="45" Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" Margin="15,0,0,0">
                                 <Ellipse.Fill>
-                                    <ImageBrush ImageSource="{Binding CurrentUserPhoto, Converter={StaticResource imgConverter}}" />
+                                    <ImageBrush ImageSource = "{ Binding Path=Images, Converter={StaticResource imageConverter}}" />
                                 </Ellipse.Fill>
                             </Ellipse>
                             <StackPanel Orientation="Vertical" Width="122" VerticalAlignment="Center" Margin="15,7,0,7">

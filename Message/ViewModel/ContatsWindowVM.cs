@@ -54,7 +54,10 @@ namespace Message.ViewModel
 
                 if (!string.IsNullOrEmpty(value))
                 {
-                    ContactsList = UserServiceClient.FindUsersByLogin(ContactsSearch);
+                    using (var proxy = new UserServiceClient(usersSite))
+                    {
+                        ContactsList = proxy.FindUsersByLogin(ContactsSearch);
+                    }
                 }
                 else
                 {
@@ -120,8 +123,11 @@ namespace Message.ViewModel
         {
             if (SelectedContact != null)
             {
-                UserServiceClient.AddContact(GlobalBase.CurrentUser, SelectedContact);
-                UpdateContacts();
+                using (var proxy = new UserServiceClient(usersSite))
+                {
+                    proxy.AddContact(GlobalBase.CurrentUser.Id, SelectedContact.Id);
+                    UpdateContacts();
+                }
             }
 
             ManageControls();
@@ -129,8 +135,10 @@ namespace Message.ViewModel
 
         private void UpdateContacts()
         {
-            ContactsList = UserServiceClient.GetAllContacts(GlobalBase.CurrentUser.Id);
-
+            using (var proxy = new UserServiceClient(usersSite))
+            {
+                ContactsList = proxy.GetAllContacts(GlobalBase.CurrentUser.Id);
+            }
             using (var proxy = new PhotoServiceClient())
             {
                 foreach (var item in ContactsList)

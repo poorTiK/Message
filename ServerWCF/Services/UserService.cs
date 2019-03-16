@@ -54,7 +54,7 @@ namespace ServerWCF.Services
             }
         }
         //contacts
-        public bool AddContact(User owner, User owned)
+        public bool AddContact(int id_owner, int id_owned)
         {
             using (UserContext userContext = new UserContext())
             {
@@ -62,13 +62,13 @@ namespace ServerWCF.Services
                 {
                     UserToUserContact contact = new UserToUserContact();
 
-                    User ownerFromDb = userContext.Users.Where(dbUser => dbUser.Login == owner.Login).FirstOrDefault();
-                    User ownedFromDb = userContext.Users.Where(dbUser => dbUser.Login == owned.Login).FirstOrDefault();
+                    User ownerFromDb = userContext.Users.FirstOrDefault(dbUser => dbUser.Id == id_owner);
+                    User ownedFromDb = userContext.Users.FirstOrDefault(dbUser => dbUser.Id == id_owned);
 
                     contact.UserOwner = ownerFromDb;
                     contact.UserOwned = ownedFromDb;
 
-                    if (userContext.Contacts.Where(c => ( (c.UserOwnerId == owner.Id) && ( (c as UserToUserContact).UserOwnedId == owned.Id) ) ).FirstOrDefault() != null )
+                    if (userContext.Contacts.FirstOrDefault(c => ( (c.UserOwnerId == id_owner) && ( (c as UserToUserContact).UserOwnedId == id_owned) )) != null )
                     {
                         return false;
                     }
@@ -425,7 +425,7 @@ namespace ServerWCF.Services
             }
         }
 
-        public List<UserMessage> GetUserMessages(User sender, User receiver, int limin)
+        public List<UserMessage> GetUserMessages(int sender, int receiver, int limin)
         {
             using (UserContext context = new UserContext())
             {
@@ -442,14 +442,14 @@ namespace ServerWCF.Services
                                 break;
                             }
 
-                            if (userMessage.SenderId == sender.Id &&
-                                userMessage.ReceiverId == receiver.Id)
+                            if (userMessage.SenderId == sender &&
+                                userMessage.ReceiverId == receiver)
                             {
                                 messagesToReturn.Add(userMessage);
                             }
 
-                            if (userMessage.SenderId == receiver.Id &&
-                                userMessage.ReceiverId == sender.Id)
+                            if (userMessage.SenderId == receiver &&
+                                userMessage.ReceiverId == sender)
                             {
                                 messagesToReturn.Add(userMessage);
                             }
