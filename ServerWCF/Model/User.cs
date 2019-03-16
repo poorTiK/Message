@@ -9,7 +9,6 @@ namespace ServerWCF.Model
     [DataContract]
     public class User
     {
-        [Key]
         [DataMember]
         public int Id { get; set; }
 

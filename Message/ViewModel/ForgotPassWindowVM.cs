@@ -90,7 +90,12 @@ namespace Message.ViewModel
             {
                 if (!string.IsNullOrWhiteSpace(Email))
                 {
-                    var user = userServiceClient.GetAllUsers().First(x => x.Email == Email);
+                    User user = null;
+                    using (userServiceClient = new UserServiceClient(usersSite))
+                    {
+                        user = userServiceClient.GetAllUsers().First(x => x.Email == Email);
+                    }
+
                     if (user != null)
                     {
                         SendPassWithMail(user);
@@ -100,7 +105,12 @@ namespace Message.ViewModel
 
                 if (!string.IsNullOrWhiteSpace(Login))
                 {
-                    var user = userServiceClient.GetUserByLogin(Login);
+                    User user = null;
+                    using (userServiceClient = new UserServiceClient(usersSite))
+                    {
+                        user = userServiceClient.GetUserByLogin(Login);
+                    }
+
                     if (user != null)
                     {
                         SendPassWithMail(user);

@@ -156,6 +156,7 @@
     <Compile Include="Algorithms\Encryption\AESEncryptor.cs" />
     <Compile Include="Initializers\UserDBInitializer.cs" />
     <Compile Include="Model\ApplicationSettings.cs" />
+    <Compile Include="Model\BaseEntity.cs" />
     <Compile Include="Model\Contacts\BaseContact.cs" />
     <Compile Include="Model\Contacts\UserToGroupContact.cs" />
     <Compile Include="Model\Contacts\UserToUserContact.cs" />
@@ -163,6 +164,9 @@
     <Compile Include="Model\Messages\BaseMessage.cs" />
     <Compile Include="Model\Messages\GroupMessage.cs" />
     <Compile Include="Model\Messages\UserMessage.cs" />
+    <Compile Include="Model\UiInfo\ChatGroupUiInfo.cs" />
+    <Compile Include="Model\UiInfo\UiInfo.cs" />
+    <Compile Include="Model\UiInfo\UserUiInfo.cs" />
     <Compile Include="Model\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\PhotoService.cs" />

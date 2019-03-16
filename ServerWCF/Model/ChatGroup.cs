@@ -14,6 +14,9 @@ namespace ServerWCF.Model
         public string Name { get; set; }
 
         [DataMember]
+        public byte[] Avatar { get; set; }
+
+        [DataMember]
         public List<UserToGroupContact> Participants { get; set; }
     }
 }

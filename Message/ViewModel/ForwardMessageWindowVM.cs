@@ -21,15 +21,15 @@ namespace Message.ViewModel
         private IView _view;
         private BaseMessage _message;
 
-        private List<User> _contactsList;
-        public List<User> ContactsList
+        private List<UiInfo> _contactsList;
+        public List<UiInfo> ContactsList
         {
             get { return _contactsList; }
             set { SetProperty(ref _contactsList, value); }
         }
 
-        private User _selectedContact;
-        public User SelectedContact
+        private UiInfo _selectedContact;
+        public UiInfo SelectedContact
         {
             get { return _selectedContact; }
             set { SetProperty(ref _selectedContact, value); }
@@ -47,13 +47,21 @@ namespace Message.ViewModel
             usersSite = new InstanceContext(_userServiceCallback);
             userServiceClient = new UserServiceClient(usersSite);
 
-            ContactsList = userServiceClient.GetAllContacts(GlobalBase.CurrentUser.Id);
+            using(userServiceClient = new UserServiceClient(usersSite))
+            {
+                //ContactsList = userServiceClient.GetAllContacts(GlobalBase.CurrentUser.Id);
+                ContactsList = userServiceClient.GetAllContactsUiInfo(GlobalBase.CurrentUser.Id);
+            }
 
             using (var proxy = new PhotoServiceClient())
             {
                 foreach (var item in ContactsList)
                 {
-                    item.Avatar = proxy.GetPhotoById(item.Id);
+                    if (item is UserUiInfo)
+                    {
+                        UserUiInfo userUiInfo = item as UserUiInfo;
+                        item.Avatar = proxy.GetPhotoById(userUiInfo.UserId);
+                    }
                 }
             }
             _view = view;
@@ -78,17 +86,21 @@ namespace Message.ViewModel
 
         private void OnForward()
         {
-            if (SelectedContact != null)
+            if (SelectedContact != null && SelectedContact is UserUiInfo)
             {
-                var mes = new UserMessage()
+                using (userServiceClient = new UserServiceClient(usersSite))
                 {
-                    Content = _message.Content,
-                    DateOfSending = _message.DateOfSending,
-                    SenderId = _message.SenderId,
-                    Type = _message.Type,
-                    ReceiverId = SelectedContact.Id
-                };
-                userServiceClient.SendMessageAsync(mes);
+                    UserUiInfo userUiInfo = SelectedContact as UserUiInfo;
+                    var mes = new UserMessage()
+                    {
+                        Content = _message.Content,
+                        DateOfSending = _message.DateOfSending,
+                        SenderId = _message.SenderId,
+                        Type = _message.Type,
+                        ReceiverId = userUiInfo.UserId
+                    };
+                    userServiceClient.SendMessageAsync(mes);
+                }
             }
             _view.CloseWindow();
         }

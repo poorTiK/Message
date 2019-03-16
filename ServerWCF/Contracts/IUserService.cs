@@ -1,5 +1,7 @@
 ﻿using ServerWCF.Model;
+using ServerWCF.Model.Contacts;
 using ServerWCF.Model.Messages;
+using ServerWCF.Model.UiInfo;
 using System.Collections.Generic;
 using System.ServiceModel;
 using System.Threading.Tasks;
@@ -11,6 +13,9 @@ namespace ServerWCF.Contracts
     {
         [OperationContract]
         List<User> GetAllUsers();
+
+        [OperationContract]
+        List<UiInfo> GetAllUsersUiInfo();
 
         [OperationContract]
         string AddOrUpdateUser(User user);
@@ -25,9 +30,17 @@ namespace ServerWCF.Contracts
         List<User> FindUsersByLogin(string login);
 
         [OperationContract]
+        List<UiInfo> FindUsersUiUnfoByLogin(string keyWorkForLogin);
+
+        [OperationContract]
         User GetUserByLogin(string login);
 
         [OperationContract]
+        User GetUserById(int id);
+
+
+        [OperationContract]
+        bool AddContact(User owner, User owned);
         bool AddContact(int id_owner, int id_owned);
 
         [OperationContract]
@@ -37,7 +50,12 @@ namespace ServerWCF.Contracts
         List<User> GetAllContacts(int id);
 
         [OperationContract]
+        List<UiInfo> GetAllContactsUiInfo(int id);
+
+
+        [OperationContract]
         bool IsExistsInContacts(int id_owner, int id_owned);
+
 
         [OperationContract]
         ApplicationSettings GetAppSettings(User user);
@@ -45,11 +63,13 @@ namespace ServerWCF.Contracts
         [OperationContract]
         bool SaveAppSettings(ApplicationSettings appSettings);
 
+
         [OperationContract(IsOneWay = true)]
         void OnUserCame(User user);
 
         [OperationContract(IsOneWay = true)]
         void OnUserLeave(User user);
+
 
         [OperationContract]
         List<GroupMessage> GetGroupMessages(ChatGroup chatGroup, int limin);

@@ -19,9 +19,9 @@ namespace Message.ViewModel
 
         private IView view;
 
-        private List<User> _contacts;
+        private List<UiInfo> _contacts;
 
-        public List<User> ContactsList
+        public List<UiInfo> ContactsList
         {
             get { return _contacts; }
             set { SetProperty(ref _contacts, value); }
@@ -35,9 +35,9 @@ namespace Message.ViewModel
             set { SetProperty(ref _caption, value); }
         }
 
-        private User _selectedContact;
+        private UiInfo _selectedContact;
 
-        public User SelectedContact
+        public UiInfo SelectedContact
         {
             get { return _selectedContact; }
             set { SetProperty(ref _selectedContact, value); }
@@ -54,9 +54,10 @@ namespace Message.ViewModel
 
                 if (!string.IsNullOrEmpty(value))
                 {
-                    using (var proxy = new UserServiceClient(usersSite))
+                    //ContactsList = UserServiceClient.FindUsersByLogin(ContactsSearch);
+                    using (UserServiceClient = new UserServiceClient(usersSite))
                     {
-                        ContactsList = proxy.FindUsersByLogin(ContactsSearch);
+                        ContactsList = UserServiceClient.FindUsersUiUnfoByLogin(ContactsSearch);
                     }
                 }
                 else
@@ -76,14 +77,19 @@ namespace Message.ViewModel
             usersSite = new InstanceContext(_userServiceCallback);
             using (UserServiceClient = new UserServiceClient(usersSite))
             {
-                ContactsList = UserServiceClient.GetAllContacts(GlobalBase.CurrentUser.Id);
+                //ContactsList = UserServiceClient.GetAllContacts(GlobalBase.CurrentUser.Id);
+                ContactsList = UserServiceClient.GetAllContactsUiInfo(GlobalBase.CurrentUser.Id);
             }
 
             using (var proxy = new PhotoServiceClient())
             {
                 foreach (var item in ContactsList)
                 {
-                    item.Avatar = proxy.GetPhotoById(item.Id);
+                    if (item is UserUiInfo)
+                    {
+                        UserUiInfo userUiInfo = item as UserUiInfo;
+                        item.Avatar = proxy.GetPhotoById(userUiInfo.UserId);
+                    }
                 }
             }
 
@@ -107,7 +113,16 @@ namespace Message.ViewModel
 
         private void ExecuteOnOpenProfile()
         {
-            var wnd = new ContactProfileWindow(SelectedContact);
+            User user = null;
+            if (SelectedContact is UserUiInfo) {
+                using (UserServiceClient = new UserServiceClient(usersSite))
+                {
+                    UserUiInfo userUiInfo = SelectedContact as UserUiInfo;
+                    user = UserServiceClient.GetUserById(userUiInfo.UserId);
+                }
+            }
+
+            var wnd = new ContactProfileWindow(user);
             wnd.Owner = (Window)view;
             wnd.ShowDialog();
 
@@ -123,11 +138,15 @@ namespace Message.ViewModel
         {
             if (SelectedContact != null)
             {
-                using (var proxy = new UserServiceClient(usersSite))
+                User user = null;
+                using (UserServiceClient = new UserServiceClient(usersSite))
                 {
-                    proxy.AddContact(GlobalBase.CurrentUser.Id, SelectedContact.Id);
-                    UpdateContacts();
+                    UserUiInfo userUiInfo = SelectedContact as UserUiInfo;
+                    user = UserServiceClient.GetUserById(userUiInfo.UserId);
+                    UserServiceClient.AddContact(GlobalBase.CurrentUser, user);
                 }
+
+                UpdateContacts();
             }
 
             ManageControls();
@@ -135,15 +154,22 @@ namespace Message.ViewModel
 
         private void UpdateContacts()
         {
-            using (var proxy = new UserServiceClient(usersSite))
+            //ContactsList = UserServiceClient.GetAllContacts(GlobalBase.CurrentUser.Id);
+
+            using (UserServiceClient = new UserServiceClient(usersSite))
             {
-                ContactsList = proxy.GetAllContacts(GlobalBase.CurrentUser.Id);
+                ContactsList = UserServiceClient.GetAllContactsUiInfo(GlobalBase.CurrentUser.Id);
             }
+
             using (var proxy = new PhotoServiceClient())
             {
                 foreach (var item in ContactsList)
                 {
-                    item.Avatar = proxy.GetPhotoById(item.Id);
+                    if (item is UserUiInfo)
+                    {
+                        UserUiInfo userUiInfo = item as UserUiInfo;
+                        item.Avatar = proxy.GetPhotoById(userUiInfo.UserId);
+                    }
                 }
             }
 
