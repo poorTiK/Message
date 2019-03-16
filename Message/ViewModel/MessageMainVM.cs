@@ -201,7 +201,7 @@ namespace Message.ViewModel
                 }
             }
             SelectedContact = ContactsList.FirstOrDefault();
-            IsMenuEnabled = false;
+            IsMenuEnabled = true;
 
             UserServiceClient.OnUserCame(user.Id);
         }
@@ -425,8 +425,40 @@ namespace Message.ViewModel
         public void Update()
         {
             //make all update modular and put here plz
-            //UpdateContactList();
+            UpdateContactList();
             SetAvatarForUI();
+        }
+
+        public void UpdateContactList()
+        {
+            Application.Current.Dispatcher.Invoke(new Action(() =>
+            {
+                UserUiInfo temp = null;
+                if (SelectedContact is UserUiInfo)
+                {
+                    temp = SelectedContact as UserUiInfo;
+                }
+
+
+                ContactsList = UserServiceClient.GetAllContactsUiInfo(GlobalBase.CurrentUser.Id);
+
+                using (var proxy = new PhotoServiceClient())
+                {
+                    foreach (var item in ContactsList)
+                    {
+                        if (SelectedContact is UserUiInfo)
+                        {
+                            UserUiInfo userUiInfo = SelectedContact as UserUiInfo;
+                            item.Avatar = proxy.GetPhotoById(userUiInfo.UserId);
+                        }
+                    }
+                }
+
+                if (ContactsList.Any(x => temp != null && ((x as UserUiInfo).UserId == temp.UserId)))
+                {
+                    SelectedContact = temp;
+                }
+            }));
         }
 
         public override void ReceiveMessage(BaseMessage message)
@@ -454,49 +486,17 @@ namespace Message.ViewModel
             {
                 SelectedContactChanged();
             }
-
-            void UpdateContactList()
-            {
-                Application.Current.Dispatcher.Invoke(new Action(() =>
-                {
-                    UserUiInfo temp = null;
-                    if (SelectedContact is UserUiInfo)
-                    {
-                        temp = SelectedContact as UserUiInfo;
-                    }
-
-
-                    ContactsList = UserServiceClient.GetAllContactsUiInfo(GlobalBase.CurrentUser.Id);
-
-                    using (var proxy = new PhotoServiceClient())
-                    {
-                        foreach (var item in ContactsList)
-                        {
-                            if (SelectedContact is UserUiInfo)
-                            {
-                                UserUiInfo userUiInfo = SelectedContact as UserUiInfo;
-                                item.Avatar = proxy.GetPhotoById(userUiInfo.UserId);
-                            }
-                        }
-                    }
-
-                    if (ContactsList.Any(x => temp != null && ((x as UserUiInfo).UserId == temp.UserId)))
-                    {
-                        SelectedContact = temp;
-                    }
-                }));
-            }
         }
 
         public override void UserLeave(User user)
         {
-            //UpdateContactList();
+            UpdateContactList();
             Debug.WriteLine("Works(Leave) - " + user.FirstName + " - (currentUser - " + GlobalBase.CurrentUser.FirstName + ")");
         }
 
         public override void UserCame(User user)
         {
-            //UpdateContactList();
+            UpdateContactList();
             Debug.WriteLine("Works(Came) - " + user.FirstName + " - (currentUser - " + GlobalBase.CurrentUser.FirstName + ")");
         }
 
