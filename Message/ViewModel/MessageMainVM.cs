@@ -197,8 +197,8 @@ namespace Message.ViewModel
                     ContactsList = ContactsList.ToList();
                 }
             }
-            SelectedContact = ContactsList.FirstOrDefault();
-            IsMenuEnabled = true;
+            //SelectedContact = ContactsList.FirstOrDefault();
+            IsMenuEnabled = false;
 
             UserServiceClient.OnUserCame(user.Id);
         }
@@ -428,33 +428,28 @@ namespace Message.ViewModel
 
         public void UpdateContactList()
         {
-            Application.Current.Dispatcher.Invoke(new Action(() =>
+            UserUiInfo temp = null;
+            if (SelectedContact is UserUiInfo)
             {
-                UserUiInfo temp = null;
+                temp = SelectedContact as UserUiInfo;
+            }
+
+            ContactsList = UserServiceClient.GetAllContactsUiInfo(GlobalBase.CurrentUser.Id);
+
+            foreach (var item in ContactsList)
+            {
                 if (SelectedContact is UserUiInfo)
                 {
-                    temp = SelectedContact as UserUiInfo;
+                    UserUiInfo userUiInfo = SelectedContact as UserUiInfo;
+                    item.Avatar = GlobalBase.PhotoServiceClient.GetPhotoById(userUiInfo.UserId);
                 }
+            }
 
 
-                ContactsList = UserServiceClient.GetAllContactsUiInfo(GlobalBase.CurrentUser.Id);
-
-
-                    foreach (var item in ContactsList)
-                    {
-                        if (SelectedContact is UserUiInfo)
-                        {
-                            UserUiInfo userUiInfo = SelectedContact as UserUiInfo;
-                            item.Avatar = GlobalBase.PhotoServiceClient.GetPhotoById(userUiInfo.UserId);
-                        }
-                    }
-               
-
-                if (ContactsList.Any(x => temp != null && ((x as UserUiInfo).UserId == temp.UserId)))
-                {
-                    SelectedContact = temp;
-                }
-            }));
+            if (ContactsList.Any(x => temp != null && ((x as UserUiInfo).UserId == temp.UserId)))
+            {
+                SelectedContact = temp;
+            }
         }
 
         public override void ReceiveMessage(BaseMessage message)
