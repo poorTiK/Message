@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace ServerWCF.Contracts
 {
     [ServiceContract(CallbackContract = typeof(IUserCallback))]
-    public interface IUserService : IPhotoService
+    public interface IUserService
     {
         [OperationContract]
         List<User> GetAllUsers();

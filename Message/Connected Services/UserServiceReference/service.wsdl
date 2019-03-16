@@ -103,98 +103,6 @@
       </wsp:All>
     </wsp:ExactlyOne>
   </wsp:Policy>
-  <wsp:Policy wsu:Id="WSDualHttpBinding_IUserService_GetPhotoById_Input_policy">
-    <wsp:ExactlyOne>
-      <wsp:All>
-        <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
-          <sp:Body />
-          <sp:Header Name="Sequence" Namespace="http://schemas.xmlsoap.org/ws/2005/02/rm" />
-          <sp:Header Name="SequenceAcknowledgement" Namespace="http://schemas.xmlsoap.org/ws/2005/02/rm" />
-          <sp:Header Name="AckRequested" Namespace="http://schemas.xmlsoap.org/ws/2005/02/rm" />
-          <sp:Header Name="ChannelInstance" Namespace="http://schemas.microsoft.com/ws/2005/02/duplex" />
-          <sp:Header Name="To" Namespace="http://www.w3.org/2005/08/addressing" />
-          <sp:Header Name="From" Namespace="http://www.w3.org/2005/08/addressing" />
-          <sp:Header Name="FaultTo" Namespace="http://www.w3.org/2005/08/addressing" />
-          <sp:Header Name="ReplyTo" Namespace="http://www.w3.org/2005/08/addressing" />
-          <sp:Header Name="MessageID" Namespace="http://www.w3.org/2005/08/addressing" />
-          <sp:Header Name="RelatesTo" Namespace="http://www.w3.org/2005/08/addressing" />
-          <sp:Header Name="Action" Namespace="http://www.w3.org/2005/08/addressing" />
-        </sp:SignedParts>
-        <sp:EncryptedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
-          <sp:Body />
-        </sp:EncryptedParts>
-      </wsp:All>
-    </wsp:ExactlyOne>
-  </wsp:Policy>
-  <wsp:Policy wsu:Id="WSDualHttpBinding_IUserService_GetPhotoById_output_policy">
-    <wsp:ExactlyOne>
-      <wsp:All>
-        <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
-          <sp:Body />
-          <sp:Header Name="Sequence" Namespace="http://schemas.xmlsoap.org/ws/2005/02/rm" />
-          <sp:Header Name="SequenceAcknowledgement" Namespace="http://schemas.xmlsoap.org/ws/2005/02/rm" />
-          <sp:Header Name="AckRequested" Namespace="http://schemas.xmlsoap.org/ws/2005/02/rm" />
-          <sp:Header Name="ChannelInstance" Namespace="http://schemas.microsoft.com/ws/2005/02/duplex" />
-          <sp:Header Name="To" Namespace="http://www.w3.org/2005/08/addressing" />
-          <sp:Header Name="From" Namespace="http://www.w3.org/2005/08/addressing" />
-          <sp:Header Name="FaultTo" Namespace="http://www.w3.org/2005/08/addressing" />
-          <sp:Header Name="ReplyTo" Namespace="http://www.w3.org/2005/08/addressing" />
-          <sp:Header Name="MessageID" Namespace="http://www.w3.org/2005/08/addressing" />
-          <sp:Header Name="RelatesTo" Namespace="http://www.w3.org/2005/08/addressing" />
-          <sp:Header Name="Action" Namespace="http://www.w3.org/2005/08/addressing" />
-        </sp:SignedParts>
-        <sp:EncryptedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
-          <sp:Body />
-        </sp:EncryptedParts>
-      </wsp:All>
-    </wsp:ExactlyOne>
-  </wsp:Policy>
-  <wsp:Policy wsu:Id="WSDualHttpBinding_IUserService_SetPhotoById_Input_policy">
-    <wsp:ExactlyOne>
-      <wsp:All>
-        <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
-          <sp:Body />
-          <sp:Header Name="Sequence" Namespace="http://schemas.xmlsoap.org/ws/2005/02/rm" />
-          <sp:Header Name="SequenceAcknowledgement" Namespace="http://schemas.xmlsoap.org/ws/2005/02/rm" />
-          <sp:Header Name="AckRequested" Namespace="http://schemas.xmlsoap.org/ws/2005/02/rm" />
-          <sp:Header Name="ChannelInstance" Namespace="http://schemas.microsoft.com/ws/2005/02/duplex" />
-          <sp:Header Name="To" Namespace="http://www.w3.org/2005/08/addressing" />
-          <sp:Header Name="From" Namespace="http://www.w3.org/2005/08/addressing" />
-          <sp:Header Name="FaultTo" Namespace="http://www.w3.org/2005/08/addressing" />
-          <sp:Header Name="ReplyTo" Namespace="http://www.w3.org/2005/08/addressing" />
-          <sp:Header Name="MessageID" Namespace="http://www.w3.org/2005/08/addressing" />
-          <sp:Header Name="RelatesTo" Namespace="http://www.w3.org/2005/08/addressing" />
-          <sp:Header Name="Action" Namespace="http://www.w3.org/2005/08/addressing" />
-        </sp:SignedParts>
-        <sp:EncryptedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
-          <sp:Body />
-        </sp:EncryptedParts>
-      </wsp:All>
-    </wsp:ExactlyOne>
-  </wsp:Policy>
-  <wsp:Policy wsu:Id="WSDualHttpBinding_IUserService_SetPhotoById_output_policy">
-    <wsp:ExactlyOne>
-      <wsp:All>
-        <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
-          <sp:Body />
-          <sp:Header Name="Sequence" Namespace="http://schemas.xmlsoap.org/ws/2005/02/rm" />
-          <sp:Header Name="SequenceAcknowledgement" Namespace="http://schemas.xmlsoap.org/ws/2005/02/rm" />
-          <sp:Header Name="AckRequested" Namespace="http://schemas.xmlsoap.org/ws/2005/02/rm" />
-          <sp:Header Name="ChannelInstance" Namespace="http://schemas.microsoft.com/ws/2005/02/duplex" />
-          <sp:Header Name="To" Namespace="http://www.w3.org/2005/08/addressing" />
-          <sp:Header Name="From" Namespace="http://www.w3.org/2005/08/addressing" />
-          <sp:Header Name="FaultTo" Namespace="http://www.w3.org/2005/08/addressing" />
-          <sp:Header Name="ReplyTo" Namespace="http://www.w3.org/2005/08/addressing" />
-          <sp:Header Name="MessageID" Namespace="http://www.w3.org/2005/08/addressing" />
-          <sp:Header Name="RelatesTo" Namespace="http://www.w3.org/2005/08/addressing" />
-          <sp:Header Name="Action" Namespace="http://www.w3.org/2005/08/addressing" />
-        </sp:SignedParts>
-        <sp:EncryptedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
-          <sp:Body />
-        </sp:EncryptedParts>
-      </wsp:All>
-    </wsp:ExactlyOne>
-  </wsp:Policy>
   <wsp:Policy wsu:Id="WSDualHttpBinding_IUserService_GetAllUsers_Input_policy">
     <wsp:ExactlyOne>
       <wsp:All>
@@ -1310,18 +1218,6 @@
       <xsd:import namespace="http://schemas.datacontract.org/2004/07/ServerWCF.Model.Messages" />
     </xsd:schema>
   </wsdl:types>
-  <wsdl:message name="IUserService_GetPhotoById_InputMessage">
-    <wsdl:part name="parameters" element="tns:GetPhotoById" />
-  </wsdl:message>
-  <wsdl:message name="IUserService_GetPhotoById_OutputMessage">
-    <wsdl:part name="parameters" element="tns:GetPhotoByIdResponse" />
-  </wsdl:message>
-  <wsdl:message name="IUserService_SetPhotoById_InputMessage">
-    <wsdl:part name="parameters" element="tns:SetPhotoById" />
-  </wsdl:message>
-  <wsdl:message name="IUserService_SetPhotoById_OutputMessage">
-    <wsdl:part name="parameters" element="tns:SetPhotoByIdResponse" />
-  </wsdl:message>
   <wsdl:message name="IUserService_GetAllUsers_InputMessage">
     <wsdl:part name="parameters" element="tns:GetAllUsers" />
   </wsdl:message>
@@ -1467,14 +1363,6 @@
     <wsdl:part name="parameters" element="tns:OnMessageEdited" />
   </wsdl:message>
   <wsdl:portType name="IUserService">
-    <wsdl:operation name="GetPhotoById">
-      <wsdl:input wsaw:Action="http://tempuri.org/IPhotoService/GetPhotoById" message="tns:IUserService_GetPhotoById_InputMessage" />
-      <wsdl:output wsaw:Action="http://tempuri.org/IPhotoService/GetPhotoByIdResponse" message="tns:IUserService_GetPhotoById_OutputMessage" />
-    </wsdl:operation>
-    <wsdl:operation name="SetPhotoById">
-      <wsdl:input wsaw:Action="http://tempuri.org/IPhotoService/SetPhotoById" message="tns:IUserService_SetPhotoById_InputMessage" />
-      <wsdl:output wsaw:Action="http://tempuri.org/IPhotoService/SetPhotoByIdResponse" message="tns:IUserService_SetPhotoById_OutputMessage" />
-    </wsdl:operation>
     <wsdl:operation name="GetAllUsers">
       <wsdl:input wsaw:Action="http://tempuri.org/IUserService/GetAllUsers" message="tns:IUserService_GetAllUsers_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IUserService/GetAllUsersResponse" message="tns:IUserService_GetAllUsers_OutputMessage" />
@@ -1585,28 +1473,6 @@
   <wsdl:binding name="WSDualHttpBinding_IUserService" type="tns:IUserService">
     <wsp:PolicyReference URI="#WSDualHttpBinding_IUserService_policy" />
     <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
-    <wsdl:operation name="GetPhotoById">
-      <soap12:operation soapAction="http://tempuri.org/IPhotoService/GetPhotoById" style="document" />
-      <wsdl:input>
-        <wsp:PolicyReference URI="#WSDualHttpBinding_IUserService_GetPhotoById_Input_policy" />
-        <soap12:body use="literal" />
-      </wsdl:input>
-      <wsdl:output>
-        <wsp:PolicyReference URI="#WSDualHttpBinding_IUserService_GetPhotoById_output_policy" />
-        <soap12:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="SetPhotoById">
-      <soap12:operation soapAction="http://tempuri.org/IPhotoService/SetPhotoById" style="document" />
-      <wsdl:input>
-        <wsp:PolicyReference URI="#WSDualHttpBinding_IUserService_SetPhotoById_Input_policy" />
-        <soap12:body use="literal" />
-      </wsdl:input>
-      <wsdl:output>
-        <wsp:PolicyReference URI="#WSDualHttpBinding_IUserService_SetPhotoById_output_policy" />
-        <soap12:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
     <wsdl:operation name="GetAllUsers">
       <soap12:operation soapAction="http://tempuri.org/IUserService/GetAllUsers" style="document" />
       <wsdl:input>
