@@ -849,6 +849,9 @@ namespace Message.UserServiceReference {
         private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string AdditionalInfoField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
         private byte[] ContentField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
@@ -870,6 +873,19 @@ namespace Message.UserServiceReference {
             }
             set {
                 this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string AdditionalInfo {
+            get {
+                return this.AdditionalInfoField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.AdditionalInfoField, value) != true)) {
+                    this.AdditionalInfoField = value;
+                    this.RaisePropertyChanged("AdditionalInfo");
+                }
             }
         }
         

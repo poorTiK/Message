@@ -168,8 +168,7 @@ namespace Message.ViewModel
 
         public DelegateCommand LoadPhoto =>
             _onLoadPhoto ?? (_onLoadPhoto = new DelegateCommand(ExecuteOnLoadPhoto));
-
-        //TODO need make this shit working
+        
         private void ExecuteOnLoadPhoto()
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();

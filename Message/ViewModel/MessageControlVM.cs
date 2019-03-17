@@ -4,7 +4,13 @@ using Message.UserServiceReference;
 using Prism.Commands;
 using System;
 using System.ServiceModel;
+using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Forms;
+using Message.PhotoServiceReference;
+using Application = System.Windows.Application;
+using Clipboard = System.Windows.Clipboard;
+using System.IO;
 
 namespace Message.ViewModel
 {
@@ -60,6 +66,32 @@ namespace Message.ViewModel
 
         public DelegateCommand Forward =>
             _onForward ?? (_onForward = new DelegateCommand(OnForward));
+
+        private DelegateCommand _downloadData;
+
+        public DelegateCommand DownloadData =>
+            _downloadData ?? (_downloadData = new DelegateCommand(OnDownloadData));
+
+        private void OnDownloadData()
+        {
+            var file = GlobalBase.PhotoServiceClient.GetFileByMessageId(Message.Id);
+
+            var fileDialog = new FolderBrowserDialog();
+            var res = fileDialog.ShowDialog();
+            if (res == DialogResult.OK)
+            {
+                var savePath = fileDialog.SelectedPath;
+                if (!string.IsNullOrEmpty(savePath))
+                {
+                    using (Stream fileStr = File.OpenWrite(savePath + "\\" + Message.AdditionalInfo))
+                    {
+                        fileStr.Write(file, 0, file.Length);
+
+                        //File.Open(savePath + Message.AdditionalInfo, FileMode.Open);
+                    }
+                }
+            }
+        }
 
         private void OnForward()
         {

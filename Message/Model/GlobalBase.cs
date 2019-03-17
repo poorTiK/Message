@@ -4,6 +4,7 @@ using Notifications.Wpf;
 using System.Globalization;
 using Message.PhotoServiceReference;
 using System.IO;
+using System.Linq;
 
 namespace Message.Model
 {
@@ -54,5 +55,13 @@ namespace Message.Model
             buff = br.ReadBytes((int)numBytes);
             return buff;
         }
+
+        public static string GetShortName(string fullPath)
+        {
+            string[] pathArr = fullPath.Split('\\');
+            string fileName = pathArr.Last().ToString();
+
+            return fileName;
+        } 
     }
 }

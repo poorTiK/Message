@@ -386,6 +386,7 @@ namespace Message.ViewModel
                             messagesWithFile.Add(new UserMessage()
                             {
                                 Content = GlobalBase.FileToByte(file),
+                                AdditionalInfo = GlobalBase.GetShortName(file),
                                 DateOfSending = DateTime.Now,
                                 SenderId = GlobalBase.CurrentUser.Id,
                                 ReceiverId = userUiInfo.UserId,
@@ -417,6 +418,7 @@ namespace Message.ViewModel
                             messagesWithFile.Add(new GroupMessage()
                             {
                                 Content = GlobalBase.FileToByte(file),
+                                AdditionalInfo = GlobalBase.GetShortName(file),
                                 DateOfSending = DateTime.Now,
                                 SenderId = GlobalBase.CurrentUser.Id,
                                 ChatGroupId = userUiInfo.ChatGroupId,
@@ -435,7 +437,11 @@ namespace Message.ViewModel
                 {
                     foreach (var fileMessage in messagesWithFile)
                     {
-                        UserServiceClient.SendMessageAsync(fileMessage);
+                        UserServiceClient.SendMessage(fileMessage);
+                        var mes = UserServiceClient.GetUserMessages(GlobalBase.CurrentUser.Id,
+                            (SelectedContact as UserUiInfo).UserId, 1);
+                        GlobalBase.PhotoServiceClient.SetFileToMessage(mes.Last().Id, fileMessage.Content);
+                        fileMessage.Id = mes.Last().Id;
                         fileMessage.Content = null;
                         _view.MessageList.Add(fileMessage);
                     }
@@ -534,6 +540,7 @@ namespace Message.ViewModel
                                 UserMessage userMessage = mes as UserMessage;
                                 message = new UserMessage()
                                 {
+                                    Id = mes.Id,
                                     Content = mes.Content,
                                     DateOfSending = mes.DateOfSending,
                                     ReceiverId = userMessage.ReceiverId,
@@ -546,6 +553,7 @@ namespace Message.ViewModel
                                 GroupMessage groupMessage = mes as GroupMessage;
                                 message = new GroupMessage()
                                 {
+                                    Id = mes.Id,
                                     Content = mes.Content,
                                     DateOfSending = mes.DateOfSending,
                                     ChatGroupId = groupMessage.ChatGroupId,

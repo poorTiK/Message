@@ -27,6 +27,9 @@ namespace ServerWCF.Model.Messages
         public byte[] Content { get; set; }
 
         [DataMember]
+        public string AdditionalInfo { get; set; }
+
+        [DataMember]
         public DateTime DateOfSending { get; set; }
     }
 }
