@@ -271,6 +271,23 @@
                                 <TextBlock Grid.Column="1" Text="{DynamicResource Settings}" FontSize="15" Margin="10"/>
                             </Grid>
                         </ListViewItem>
+                        
+                        <ListViewItem Height="45" Padding="0">
+                            <Grid Background="Transparent" MinWidth="200">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="MouseLeftButtonDown" >
+                                        <i:InvokeCommandAction Command="{Binding CreateChatGroup}" />
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="35"></ColumnDefinition>
+                                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+                                <materialDesign:PackIcon Kind="MessageGroup" Width="20" Height="20" Foreground="Gray" Margin="5" VerticalAlignment="Center" />
+                                <TextBlock Grid.Column="1" Text="{DynamicResource CreateGroup}" FontSize="15" Margin="10"/>
+                            </Grid>
+                        </ListViewItem>
+                        
                     </ListView>
                 </StackPanel>
                 <StackPanel VerticalAlignment="Bottom" Margin="10,0,10,10">

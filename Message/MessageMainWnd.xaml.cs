@@ -154,8 +154,6 @@ namespace Message
 
         public MessageMainWnd(User user)
         {
-             
-
             InitializeComponent();
 
             DataContext = new MessageMainVM(this, user);

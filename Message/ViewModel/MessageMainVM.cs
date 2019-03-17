@@ -315,6 +315,11 @@ namespace Message.ViewModel
         public DelegateCommand AddFile =>
             _addFile ?? (_addFile = new DelegateCommand(ExecuteOnAddFile));
 
+        private DelegateCommand _createChatGroup;
+
+        public DelegateCommand CreateChatGroup =>
+            _createChatGroup ?? (_createChatGroup = new DelegateCommand(ExecuteOnCreateChatGroup));
+
         private void ExecuteOnAddFile()
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
@@ -421,6 +426,11 @@ namespace Message.ViewModel
             _view.SetOpacity(1);
 
             Update();
+        }
+
+        private void ExecuteOnCreateChatGroup()
+        {
+            
         }
 
         private void OnDialogSearch()

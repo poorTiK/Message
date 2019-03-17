@@ -58,4 +58,5 @@
     <v:String x:Key="FirstNameValid">Поле "Имя" не может быть пустым</v:String>
     <v:String x:Key="LastNameValid">Поле "Фамилия" не может быть пустым</v:String>
     <v:String x:Key="EmailEmpty">Поле "Емейл" не может быть пустым или не валидным</v:String>
+    <v:String x:Key="CreateGroup">Создать групповой чат</v:String>
 </ResourceDictionary>
