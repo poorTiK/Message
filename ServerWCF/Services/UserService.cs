@@ -201,7 +201,7 @@ namespace ServerWCF.Services
                           " from ChatGroups" +
                           " where ChatGroups.Id in (select ChatGroupId" +
                           " from BaseContacts" +
-                          " where BaseContacts.UserOwnerId = p@0);", userId).ToList();
+                          " where BaseContacts.UserOwnerId = @p0);", userId).ToList();
 
                     foreach (var item in contactsForOwner)
                     {
@@ -224,6 +224,57 @@ namespace ServerWCF.Services
             usersUiInfos.AddRange(chatGroupsUiInfo);
 
             return usersUiInfos;
+        }
+
+
+        //chatGroups
+        public string AddOrUpdateChatGroup(ChatGroup chatGroupToAdd)
+        {
+            using (UserContext userContext = new UserContext())
+            {
+                try
+                {
+                    ChatGroup dbChatGroup = userContext.ChatGroups.FirstOrDefault(cg => cg.Name == chatGroupToAdd.Name);
+
+                    if (dbChatGroup != null)
+                    {
+                        dbChatGroup.Avatar = chatGroupToAdd.Avatar;
+                        dbChatGroup.Participants = chatGroupToAdd.Participants;
+                    }
+                    else
+                    {
+                        string validationInfo = Validate(chatGroupToAdd);
+                        if (validationInfo != successResult)
+                        {
+                            return validationInfo;
+                        }
+
+                        userContext.ChatGroups.Add(chatGroupToAdd);
+                        userContext.SaveChanges();
+                    }
+
+                    return successResult;
+                }
+                catch (Exception ex)
+                {
+                    return "Exceptions were occured during adding new chat group.";
+                }
+            }
+        }
+
+        public ChatGroup GetChatGroup(string chatGroupName)
+        {
+            using (UserContext db = new UserContext())
+            {
+                try
+                {
+                    return db.ChatGroups.FirstOrDefault(cg => cg.Name.Contains(chatGroupName));
+                }
+                catch (Exception ex)
+                {
+                    return null;
+                }
+            }
         }
 
         //users
@@ -812,6 +863,16 @@ namespace ServerWCF.Services
                     return "Email is not unique.";
                 }
             }
+            return successResult;
+        }
+
+        private string Validate(ChatGroup chatGroupToAdd)
+        {
+            if (chatGroupToAdd.Name.Length == 0)
+            {
+                return "Message is empty.";
+            }
+
             return successResult;
         }
 

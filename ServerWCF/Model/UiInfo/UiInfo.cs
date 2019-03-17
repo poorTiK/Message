@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Drawing;
 using System.Linq;
 using System.Runtime.Serialization;
@@ -27,6 +28,12 @@ namespace ServerWCF.Model.UiInfo
 
         [DataMember]
         public Image Images;
+
+        [DataMember]
+        public bool IsSelected
+        {
+            get;set;
+        }
 
         protected UiInfo(string name, string uniqueName, string status, byte[] avatar)
         {

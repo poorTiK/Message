@@ -518,6 +518,9 @@ namespace Message.UserServiceReference {
         private System.Drawing.Image ImagesField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private bool IsSelectedField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string NameField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
@@ -558,6 +561,19 @@ namespace Message.UserServiceReference {
                 if ((object.ReferenceEquals(this.ImagesField, value) != true)) {
                     this.ImagesField = value;
                     this.RaisePropertyChanged("Images");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public bool IsSelected {
+            get {
+                return this.IsSelectedField;
+            }
+            set {
+                if ((this.IsSelectedField.Equals(value) != true)) {
+                    this.IsSelectedField = value;
+                    this.RaisePropertyChanged("IsSelected");
                 }
             }
         }
@@ -1013,6 +1029,18 @@ namespace Message.UserServiceReference {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/GetUserById", ReplyAction="http://tempuri.org/IUserService/GetUserByIdResponse")]
         System.Threading.Tasks.Task<Message.UserServiceReference.User> GetUserByIdAsync(int id);
         
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/AddOrUpdateChatGroup", ReplyAction="http://tempuri.org/IUserService/AddOrUpdateChatGroupResponse")]
+        string AddOrUpdateChatGroup(Message.UserServiceReference.ChatGroup chatGroupToAdd);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/AddOrUpdateChatGroup", ReplyAction="http://tempuri.org/IUserService/AddOrUpdateChatGroupResponse")]
+        System.Threading.Tasks.Task<string> AddOrUpdateChatGroupAsync(Message.UserServiceReference.ChatGroup chatGroupToAdd);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/GetChatGroup", ReplyAction="http://tempuri.org/IUserService/GetChatGroupResponse")]
+        Message.UserServiceReference.ChatGroup GetChatGroup(string chatGroupName);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/GetChatGroup", ReplyAction="http://tempuri.org/IUserService/GetChatGroupResponse")]
+        System.Threading.Tasks.Task<Message.UserServiceReference.ChatGroup> GetChatGroupAsync(string chatGroupName);
+        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/AddUserToUserContact", ReplyAction="http://tempuri.org/IUserService/AddUserToUserContactResponse")]
         bool AddUserToUserContact(int id_owner, int id_owned);
         
@@ -1239,6 +1267,22 @@ namespace Message.UserServiceReference {
         
         public System.Threading.Tasks.Task<Message.UserServiceReference.User> GetUserByIdAsync(int id) {
             return base.Channel.GetUserByIdAsync(id);
+        }
+        
+        public string AddOrUpdateChatGroup(Message.UserServiceReference.ChatGroup chatGroupToAdd) {
+            return base.Channel.AddOrUpdateChatGroup(chatGroupToAdd);
+        }
+        
+        public System.Threading.Tasks.Task<string> AddOrUpdateChatGroupAsync(Message.UserServiceReference.ChatGroup chatGroupToAdd) {
+            return base.Channel.AddOrUpdateChatGroupAsync(chatGroupToAdd);
+        }
+        
+        public Message.UserServiceReference.ChatGroup GetChatGroup(string chatGroupName) {
+            return base.Channel.GetChatGroup(chatGroupName);
+        }
+        
+        public System.Threading.Tasks.Task<Message.UserServiceReference.ChatGroup> GetChatGroupAsync(string chatGroupName) {
+            return base.Channel.GetChatGroupAsync(chatGroupName);
         }
         
         public bool AddUserToUserContact(int id_owner, int id_owned) {

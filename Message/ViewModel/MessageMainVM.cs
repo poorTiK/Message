@@ -430,7 +430,15 @@ namespace Message.ViewModel
 
         private void ExecuteOnCreateChatGroup()
         {
-            
+            _view.SetOpacity(0.5);
+
+            var wnd = new CreateChatGroupWnd();
+            wnd.Owner = (Window)_view;
+            wnd.ShowDialog();
+
+            _view.SetOpacity(1);
+
+            Update();
         }
 
         private void OnDialogSearch()
