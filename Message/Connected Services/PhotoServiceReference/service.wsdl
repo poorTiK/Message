@@ -18,6 +18,18 @@
   <wsdl:message name="IPhotoService_SetPhotoById_OutputMessage">
     <wsdl:part name="parameters" element="tns:SetPhotoByIdResponse" />
   </wsdl:message>
+  <wsdl:message name="IPhotoService_GetFileByMessageId_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetFileByMessageId" />
+  </wsdl:message>
+  <wsdl:message name="IPhotoService_GetFileByMessageId_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetFileByMessageIdResponse" />
+  </wsdl:message>
+  <wsdl:message name="IPhotoService_SetFileToMessage_InputMessage">
+    <wsdl:part name="parameters" element="tns:SetFileToMessage" />
+  </wsdl:message>
+  <wsdl:message name="IPhotoService_SetFileToMessage_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SetFileToMessageResponse" />
+  </wsdl:message>
   <wsdl:portType name="IPhotoService">
     <wsdl:operation name="GetPhotoById">
       <wsdl:input wsaw:Action="http://tempuri.org/IPhotoService/GetPhotoById" message="tns:IPhotoService_GetPhotoById_InputMessage" />
@@ -26,6 +38,14 @@
     <wsdl:operation name="SetPhotoById">
       <wsdl:input wsaw:Action="http://tempuri.org/IPhotoService/SetPhotoById" message="tns:IPhotoService_SetPhotoById_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IPhotoService/SetPhotoByIdResponse" message="tns:IPhotoService_SetPhotoById_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetFileByMessageId">
+      <wsdl:input wsaw:Action="http://tempuri.org/IPhotoService/GetFileByMessageId" message="tns:IPhotoService_GetFileByMessageId_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IPhotoService/GetFileByMessageIdResponse" message="tns:IPhotoService_GetFileByMessageId_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SetFileToMessage">
+      <wsdl:input wsaw:Action="http://tempuri.org/IPhotoService/SetFileToMessage" message="tns:IPhotoService_SetFileToMessage_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IPhotoService/SetFileToMessageResponse" message="tns:IPhotoService_SetFileToMessage_OutputMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="BasicHttpBinding_IPhotoService" type="tns:IPhotoService">
@@ -41,6 +61,24 @@
     </wsdl:operation>
     <wsdl:operation name="SetPhotoById">
       <soap:operation soapAction="http://tempuri.org/IPhotoService/SetPhotoById" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetFileByMessageId">
+      <soap:operation soapAction="http://tempuri.org/IPhotoService/GetFileByMessageId" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetFileToMessage">
+      <soap:operation soapAction="http://tempuri.org/IPhotoService/SetFileToMessage" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>

@@ -4,6 +4,7 @@ using System.Linq;
 using System.ServiceModel;
 using ServerWCF.Context;
 using ServerWCF.Contracts;
+using ServerWCF.Model.Messages;
 
 namespace ServerWCF.Services
 {
@@ -30,6 +31,26 @@ namespace ServerWCF.Services
                 user.Avatar = photoBytes;
                 db.Users.AddOrUpdate(user);
                 db.SaveChanges();
+            }
+        }
+
+        public byte[] GetFileByMessageId(int messageId)
+        {
+            using (UserContext userContext = new UserContext())
+            {
+                return userContext.Messages.FirstOrDefault(m => m.Id == messageId) ?. Content;
+            }
+        }
+
+        public void SetFileToMessage(int messageId, byte[] file)
+        {
+            using (UserContext userContext = new UserContext())
+            {
+                BaseMessage baseMessage = userContext.Messages.FirstOrDefault(m => m.Id == messageId);
+
+                baseMessage.Content = file;
+                userContext.Messages.AddOrUpdate(baseMessage);
+                userContext.SaveChanges();
             }
         }
     }

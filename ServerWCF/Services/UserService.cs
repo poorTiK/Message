@@ -14,7 +14,7 @@ using System.Threading;
 
 namespace ServerWCF.Services
 {
-    [ServiceBehavior(ConcurrencyMode = ConcurrencyMode.Reentrant)]
+    [ServiceBehavior(ConcurrencyMode = ConcurrencyMode.Reentrant, InstanceContextMode = InstanceContextMode.Single)]
     public class UserService : IUserService
     {
         private static readonly string successResult = "";

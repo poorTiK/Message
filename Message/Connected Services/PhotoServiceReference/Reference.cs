@@ -26,6 +26,18 @@ namespace Message.PhotoServiceReference {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IPhotoService/SetPhotoById", ReplyAction="http://tempuri.org/IPhotoService/SetPhotoByIdResponse")]
         System.Threading.Tasks.Task SetPhotoByIdAsync(int id, byte[] photoBytes);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IPhotoService/GetFileByMessageId", ReplyAction="http://tempuri.org/IPhotoService/GetFileByMessageIdResponse")]
+        byte[] GetFileByMessageId(int messageId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IPhotoService/GetFileByMessageId", ReplyAction="http://tempuri.org/IPhotoService/GetFileByMessageIdResponse")]
+        System.Threading.Tasks.Task<byte[]> GetFileByMessageIdAsync(int messageId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IPhotoService/SetFileToMessage", ReplyAction="http://tempuri.org/IPhotoService/SetFileToMessageResponse")]
+        void SetFileToMessage(int messageId, byte[] file);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IPhotoService/SetFileToMessage", ReplyAction="http://tempuri.org/IPhotoService/SetFileToMessageResponse")]
+        System.Threading.Tasks.Task SetFileToMessageAsync(int messageId, byte[] file);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -69,6 +81,22 @@ namespace Message.PhotoServiceReference {
         
         public System.Threading.Tasks.Task SetPhotoByIdAsync(int id, byte[] photoBytes) {
             return base.Channel.SetPhotoByIdAsync(id, photoBytes);
+        }
+        
+        public byte[] GetFileByMessageId(int messageId) {
+            return base.Channel.GetFileByMessageId(messageId);
+        }
+        
+        public System.Threading.Tasks.Task<byte[]> GetFileByMessageIdAsync(int messageId) {
+            return base.Channel.GetFileByMessageIdAsync(messageId);
+        }
+        
+        public void SetFileToMessage(int messageId, byte[] file) {
+            base.Channel.SetFileToMessage(messageId, file);
+        }
+        
+        public System.Threading.Tasks.Task SetFileToMessageAsync(int messageId, byte[] file) {
+            return base.Channel.SetFileToMessageAsync(messageId, file);
         }
     }
 }

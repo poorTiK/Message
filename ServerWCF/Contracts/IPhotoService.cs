@@ -10,5 +10,11 @@ namespace ServerWCF.Contracts
 
         [OperationContract]
         void SetPhotoById(int id, byte[] photoBytes);
+
+        [OperationContract]
+        byte[] GetFileByMessageId(int messageId);
+
+        [OperationContract]
+        void SetFileToMessage(int messageId, byte[] file);
     }
 }
