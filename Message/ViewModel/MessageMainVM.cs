@@ -360,14 +360,14 @@ namespace Message.ViewModel
 
         private void ExecuteOnSendMessage()
         {
-            if (SelectedContact != null && (!string.IsNullOrWhiteSpace(MessageText) || FilesPath.Count() > 0))
+            if (SelectedContact != null && (!string.IsNullOrWhiteSpace(MessageText) || FilesPath != null))
             {
                 BaseMessage message = null;
                 List<BaseMessage> messagesWithFile = null;
                 if (SelectedContact is UserUiInfo)
                 {
                     UserUiInfo userUiInfo = SelectedContact as UserUiInfo;
-                    if (FilesPath.Count() == 0)
+                    if (FilesPath == null)
                     {
                         message = new UserMessage()
                         {
@@ -398,7 +398,7 @@ namespace Message.ViewModel
                 else if (SelectedContact is ChatGroupUiInfo)
                 {
                     ChatGroupUiInfo userUiInfo = SelectedContact as ChatGroupUiInfo;
-                    if (FilesPath.Count() == 0)
+                    if (FilesPath == null)
                     {
                         message = new GroupMessage()
                         {
@@ -426,7 +426,7 @@ namespace Message.ViewModel
                     }
                 }
 
-                if (FilesPath.Count() == 0)
+                if (FilesPath == null)
                 {
                     UserServiceClient.SendMessageAsync(message);
                     _view.MessageList.Add(message);
