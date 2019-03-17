@@ -3,6 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:med="clr-namespace:System.Windows.Media"
+        xmlns:converter="clr-namespace:Message.AdditionalItems"
         xmlns:local="clr-namespace:Message"
         mc:Ignorable="d" ShowInTaskbar="False"
 
@@ -16,6 +18,12 @@
     <WindowChrome.WindowChrome>
         <WindowChrome CaptionHeight="0" />
     </WindowChrome.WindowChrome>
+
+    <Window.Resources>
+        <med:ImageConverter x:Key="imageConverter" />
+        <BooleanToVisibilityConverter x:Key="BoolToVisConverter" />
+        <converter:ByteToImageConverter x:Key="imgConverter" />
+    </Window.Resources>
 
     <Grid Background="{DynamicResource PopUpBackground}">
         <Grid.RowDefinitions>
@@ -63,7 +71,7 @@
                         </Grid.ColumnDefinitions>
                         <Ellipse Height="45" Width="45" Grid.Column="0" Grid.Row="0" Grid.RowSpan="2">
                             <Ellipse.Fill>
-                                <ImageBrush ImageSource="Resources/DefaultPicture.jpg" />
+                                <ImageBrush ImageSource="{ Binding Path=Avatar, Converter={StaticResource imageConverter}}" />
                             </Ellipse.Fill>
                         </Ellipse>
 

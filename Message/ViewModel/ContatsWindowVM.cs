@@ -18,22 +18,6 @@ namespace Message.ViewModel
     {
         private IView view;
 
-        private Image _image;
-
-        public Image Image
-        {
-            get
-            {
-                return _image;
-            }
-            set
-            {
-                _image = value;
-                
-                OnPropertyChanged(new System.ComponentModel.PropertyChangedEventArgs("Image"));
-            }
-        }
-
         private List<UiInfo> _contacts;
 
         public List<UiInfo> ContactsList
@@ -83,9 +67,9 @@ namespace Message.ViewModel
         public ContatsWindowVM(IView iview) : base()
         {
             view = iview;
-            ContactsList = UserServiceClient.GetAllContactsUiInfo(GlobalBase.CurrentUser.Id);
+            List<UiInfo> tempUiInfos = UserServiceClient.GetAllContactsUiInfo(GlobalBase.CurrentUser.Id);
 
-            foreach (var item in ContactsList)
+            foreach (var item in tempUiInfos)
             {
                 if (item is UserUiInfo)
                 {
@@ -97,6 +81,8 @@ namespace Message.ViewModel
 
                 }
             }
+
+            ContactsList = tempUiInfos;
 
             ManageControls();
 
@@ -181,22 +167,22 @@ namespace Message.ViewModel
             }
         }
 
-        private void SetAvatarForUI(User Profile)
-        {
-            using (var proxy = new PhotoServiceClient())
-            {
-                Profile.Avatar = proxy.GetPhotoById(Profile.Id);
-            }
+        //private void SetAvatarForUI(User Profile)
+        //{
+        //    using (var proxy = new PhotoServiceClient())
+        //    {
+        //        Profile.Avatar = proxy.GetPhotoById(Profile.Id);
+        //    }
 
-            if (Profile?.Avatar?.Length > 0)
-            {
-                MemoryStream memstr = new MemoryStream(GlobalBase.CurrentUser.Avatar);
-                Dispatcher.CurrentDispatcher.Invoke(() => { Image = Image.FromStream(memstr); });
-            }
-            else
-            {
-                Dispatcher.CurrentDispatcher.Invoke(() => { Image = Image.FromFile(@"Resources\DefaultPicture.jpg"); });
-            }
-        }
+        //    if (Profile?.Avatar?.Length > 0)
+        //    {
+        //        MemoryStream memstr = new MemoryStream(GlobalBase.CurrentUser.Avatar);
+        //        Dispatcher.CurrentDispatcher.Invoke(() => { Image = Image.FromStream(memstr); });
+        //    }
+        //    else
+        //    {
+        //        Dispatcher.CurrentDispatcher.Invoke(() => { Image = Image.FromFile(@"Resources\DefaultPicture.jpg"); });
+        //    }
+        //}
     }
 }

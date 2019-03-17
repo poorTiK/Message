@@ -48,8 +48,7 @@ namespace Message.ViewModel
             }
             else
             {
-                Dispatcher.CurrentDispatcher.Invoke(() => { Images = null; });
-
+                Dispatcher.CurrentDispatcher.Invoke(() => { Images = Image.FromFile(@"../../Resources/DefaultPicture.jpg"); });
             }
         }
         public SettingsWindowVM(IView view) : base()
@@ -101,5 +100,6 @@ namespace Message.ViewModel
 
             view.Hide(true);
         }
+
     }
 }

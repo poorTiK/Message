@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Drawing;
 using System.Runtime.Serialization;
 
 namespace ServerWCF.Model
@@ -38,6 +39,10 @@ namespace ServerWCF.Model
 
         [DataMember]
         public string Status { get; set; }
+
+        [DataMember]
+        [NotMapped]
+        public Image Images { get; set; }
 
         [DataMember]
         public List<BaseContact> Contacts { get; set; }
