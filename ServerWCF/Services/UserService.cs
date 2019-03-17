@@ -562,6 +562,10 @@ namespace ServerWCF.Services
                         if (message is GroupMessage)
                         {
                             GroupMessage groupMessage = message as GroupMessage;
+                            if (groupMessage.Type == "DATA")
+                            {
+                                groupMessage.Content = null;
+                            }
                             if (messagesToReturn.Count == limit)
                             {
                                 break;
@@ -594,6 +598,12 @@ namespace ServerWCF.Services
                         if (message is UserMessage)
                         {
                             UserMessage userMessage = message as UserMessage;
+
+                            if (userMessage.Type == "DATA")
+                            {
+                                userMessage.Content = null;
+                            }
+
                             if (messagesToReturn.Count == limin)
                             {
                                 break;

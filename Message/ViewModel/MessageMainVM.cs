@@ -436,6 +436,7 @@ namespace Message.ViewModel
                     foreach (var fileMessage in messagesWithFile)
                     {
                         UserServiceClient.SendMessageAsync(fileMessage);
+                        fileMessage.Content = null;
                         _view.MessageList.Add(fileMessage);
                     }
 
