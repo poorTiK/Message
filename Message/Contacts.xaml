@@ -63,7 +63,7 @@
                         </Grid.ColumnDefinitions>
                         <Ellipse Height="45" Width="45" Grid.Column="0" Grid.Row="0" Grid.RowSpan="2">
                             <Ellipse.Fill>
-                                <ImageBrush ImageSource="Resources/Test.jpg" />
+                                <ImageBrush ImageSource="Resources/DefaultPicture.jpg" />
                             </Ellipse.Fill>
                         </Ellipse>
 

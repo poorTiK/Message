@@ -226,7 +226,6 @@ namespace ServerWCF.Services
             return usersUiInfos;
         }
 
-
         //chatGroups
         public string AddOrUpdateChatGroup(ChatGroup chatGroupToAdd)
         {

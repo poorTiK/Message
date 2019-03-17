@@ -392,13 +392,12 @@ namespace Message.ViewModel
                                 Type = "DATA",
                             });
                         }
-                    }
-                    
+                    }   
                 }
                 else if (SelectedContact is ChatGroupUiInfo)
                 {
                     ChatGroupUiInfo userUiInfo = SelectedContact as ChatGroupUiInfo;
-                    if (FilesPath.Count() == 0)
+                    if (FilesPath != null && FilesPath.Count() == 0)
                     {
                         message = new GroupMessage()
                         {

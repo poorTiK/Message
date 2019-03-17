@@ -7,6 +7,9 @@ using System.Collections.Generic;
 using System.ServiceModel;
 using System.Windows;
 using Message.PhotoServiceReference;
+using System.Drawing;
+using System.IO;
+using System.Windows.Threading;
 
 namespace Message.ViewModel
 {
@@ -14,6 +17,22 @@ namespace Message.ViewModel
     internal class ContatsWindowVM : BaseViewModel
     {
         private IView view;
+
+        private Image _image;
+
+        public Image Image
+        {
+            get
+            {
+                return _image;
+            }
+            set
+            {
+                _image = value;
+                
+                OnPropertyChanged(new System.ComponentModel.PropertyChangedEventArgs("Image"));
+            }
+        }
 
         private List<UiInfo> _contacts;
 
@@ -66,16 +85,21 @@ namespace Message.ViewModel
             view = iview;
             ContactsList = UserServiceClient.GetAllContactsUiInfo(GlobalBase.CurrentUser.Id);
 
-                foreach (var item in ContactsList)
+            foreach (var item in ContactsList)
+            {
+                if (item is UserUiInfo)
                 {
-                    if (item is UserUiInfo)
-                    {
-                        UserUiInfo userUiInfo = item as UserUiInfo;
-                        item.Avatar = GlobalBase.PhotoServiceClient.GetPhotoById(userUiInfo.UserId);
-                    }
+                    UserUiInfo userUiInfo = item as UserUiInfo;
+                    item.Avatar = GlobalBase.PhotoServiceClient.GetPhotoById(userUiInfo.UserId);
                 }
+                else if (item is ChatGroupUiInfo)
+                {
+
+                }
+            }
 
             ManageControls();
+
         }
 
         private DelegateCommand _onAddContact;
@@ -154,6 +178,24 @@ namespace Message.ViewModel
             else
             {
                 Caption = "Contacts search";
+            }
+        }
+
+        private void SetAvatarForUI(User Profile)
+        {
+            using (var proxy = new PhotoServiceClient())
+            {
+                Profile.Avatar = proxy.GetPhotoById(Profile.Id);
+            }
+
+            if (Profile?.Avatar?.Length > 0)
+            {
+                MemoryStream memstr = new MemoryStream(GlobalBase.CurrentUser.Avatar);
+                Dispatcher.CurrentDispatcher.Invoke(() => { Image = Image.FromStream(memstr); });
+            }
+            else
+            {
+                Dispatcher.CurrentDispatcher.Invoke(() => { Image = Image.FromFile(@"Resources\DefaultPicture.jpg"); });
             }
         }
     }

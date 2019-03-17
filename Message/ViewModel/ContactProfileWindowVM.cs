@@ -17,11 +17,17 @@ namespace Message.ViewModel
         private IView _view;
         private Image _image;
 
-        public Image Images
+        public Image Image
         {
-            get { return _image; }
-            set { _image = value; OnPropertyChanged(new System.ComponentModel.PropertyChangedEventArgs("Images")); }
-
+            get
+            {
+                return _image;
+            }
+            set
+            {
+                _image = value;
+                OnPropertyChanged(new System.ComponentModel.PropertyChangedEventArgs("Image"));
+            }
         }
         private User Profile;
 
@@ -178,20 +184,17 @@ namespace Message.ViewModel
             using (var proxy = new PhotoServiceClient())
             {
                 Profile.Avatar = proxy.GetPhotoById(Profile.Id);
-
             }
+
             if (Profile?.Avatar?.Length > 0)
             {
                 MemoryStream memstr = new MemoryStream(GlobalBase.CurrentUser.Avatar);
-                Dispatcher.CurrentDispatcher.Invoke(() => { Images = Image.FromStream(memstr); });
+                Dispatcher.CurrentDispatcher.Invoke(() => { Image = Image.FromStream(memstr); });
             }
             else
             {
-                Dispatcher.CurrentDispatcher.Invoke(() => { Images = null; });
-
-            }
-
-           
+                Dispatcher.CurrentDispatcher.Invoke(() => { Image = Image.FromFile(@"Resources\DefaultPicture.jpg"); });
+            }       
         }
     }
 }
