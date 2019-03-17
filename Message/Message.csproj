@@ -247,6 +247,7 @@
     <Compile Include="ViewModel\BaseViewModel.cs" />
     <Compile Include="ViewModel\ContactProfileWindowVM.cs" />
     <Compile Include="ViewModel\ContatsWindowVM.cs" />
+    <Compile Include="ViewModel\CreateChatGroupWndVM.cs" />
     <Compile Include="ViewModel\EditMessageVM.cs" />
     <Compile Include="ViewModel\ForgotPassWindowVM.cs" />
     <Compile Include="ViewModel\ForwardMessageWindowVM.cs" />

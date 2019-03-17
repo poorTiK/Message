@@ -59,4 +59,5 @@
     <v:String x:Key="LastNameValid">Last name can't be empty</v:String>
     <v:String x:Key="EmailEmpty">Email can't be empty and must be valid</v:String>
     <v:String x:Key="CreateGroup">Create chat group</v:String>
+    <v:String x:Key="Create">Create</v:String>
 </ResourceDictionary>
