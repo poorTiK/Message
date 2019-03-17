@@ -228,11 +228,24 @@ namespace Message.ViewModel
             if (SelectedContact != null)
             { IsMenuEnabled = true; }
             else
-            { IsMenuEnabled = false;}
+            { IsMenuEnabled = false; }
 
             if (_view.MessageList != null)
             {
                 _view.MessageList.Clear();
+
+                foreach (var item in ContactsList)
+                {
+                    if (item is UserUiInfo)
+                    {
+                        UserUiInfo userUiInfo = item as UserUiInfo;
+                        item.Avatar = GlobalBase.PhotoServiceClient.GetPhotoById(userUiInfo.UserId);
+                    }
+                    else if (item is ChatGroupUiInfo)
+                    {
+
+                    }
+                }
 
                 List<BaseMessage> res = new List<BaseMessage>();
                 if (SelectedContact is UserUiInfo)
@@ -278,6 +291,7 @@ namespace Message.ViewModel
                     }
                 }
                 _view.UpdateMessageList();
+                SetAvatarForUI();
             }
         }
 
@@ -461,7 +475,7 @@ namespace Message.ViewModel
             }
             else
             {
-                Dispatcher.CurrentDispatcher.Invoke(() => { Images = null; });
+                Dispatcher.CurrentDispatcher.Invoke(() => { Images = Image.FromFile(@"../../Resources/DefaultPicture.jpg"); });
             }
         }
 
@@ -678,5 +692,6 @@ namespace Message.ViewModel
         {
             //throw new NotImplementedException();
         }
+
     }
 }
