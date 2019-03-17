@@ -1,8 +1,9 @@
-﻿using Message.Model;
+﻿using System;
+using System.Windows;
+using System.Windows.Controls;
+using Message.Model;
 using Message.UserServiceReference;
 using Message.ViewModel;
-using System;
-using System.Windows.Controls;
 
 namespace Message
 {
@@ -20,8 +21,9 @@ namespace Message
         {
             InitializeComponent();
 
-            MessageText.Text = GlobalBase.Base64Decode(message.Content);
+            MessageText.Text = message.Type == "TEXT" ? GlobalBase.Base64Decode(message.Content) : "File";
             SendTime.Text = message.DateOfSending.Hour + ":" + message.DateOfSending.Minute;
+            ButtonDwnld.Visibility = message.Type == "DATA" ? Visibility.Visible : Visibility.Collapsed;
 
             DataContext = new MessageControlVM(message);
         }

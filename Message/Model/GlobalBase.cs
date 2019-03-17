@@ -3,6 +3,7 @@ using Message.UserServiceReference;
 using Notifications.Wpf;
 using System.Globalization;
 using Message.PhotoServiceReference;
+using System.IO;
 
 namespace Message.Model
 {
@@ -40,6 +41,18 @@ namespace Message.Model
                 Message = content,
                 Type = NotificationType.Information
             });
+        }
+
+        public static byte[] FileToByte(string path)
+        {
+            byte[] buff = null;
+            FileStream fs = new FileStream(path,
+                FileMode.Open,
+                FileAccess.Read);
+            BinaryReader br = new BinaryReader(fs);
+            long numBytes = new FileInfo(path).Length;
+            buff = br.ReadBytes((int)numBytes);
+            return buff;
         }
     }
 }

@@ -3,16 +3,12 @@ using Message.Interfaces;
 using Message.UserServiceReference;
 using Prism.Commands;
 using System;
-using System.Drawing;
-using System.IO;
 using System.ServiceModel;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Threading;
 using Message.Encryption;
 using Message.Model;
-using Microsoft.Win32;
 
 namespace Message.ViewModel
 {
@@ -378,32 +374,5 @@ namespace Message.ViewModel
             RPassword = string.Empty;
             Rep_RPassword = string.Empty;
         }
-
-        public void UserLeave(User user)
-        {
-            //throw new NotImplementedException();
-        }
-
-        public void UserCame(User user)
-        {
-            //throw new NotImplementedException();
-        }
-
-        public void ReceiveMessage(BaseMessage message)
-        {
-            //throw new NotImplementedException();
-        }
-
-        public void OnMessageRemoved(BaseMessage message)
-        {
-            //throw new NotImplementedException();
-        }
-
-        public void OnMessageEdited(BaseMessage message)
-        {
-            //throw new NotImplementedException();
-        }
-
-        
     }
 }

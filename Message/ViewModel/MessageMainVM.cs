@@ -37,15 +37,8 @@ namespace Message.ViewModel
             }
         }
 
-
         public User CurrentUser { get; set; }
-       //private byte[] _currentUserPhoto;
-
-       // public byte[] CurrentUserPhoto
-       // {
-       //     get { return GlobalBase.CurrentUser.Avatar; }
-       //     set { SetProperty(ref _currentUserPhoto, value); }
-       // }
+       
         private string _searchContactStr;
 
         public string SearchContactStr 
@@ -169,12 +162,12 @@ namespace Message.ViewModel
             set { SetProperty(ref _messageText, value); }
         }
 
-        private string _filePath;
+        private string[] _filesPath;
 
-        public string FilePath
+        public string[] FilesPath
         {
-            get { return _filePath; }
-            set { SetProperty(ref _filePath, value); }
+            get { return _filesPath; }
+            set { SetProperty(ref _filesPath, value); }
         }
 
         private bool _isMenuEnabled;
@@ -183,6 +176,20 @@ namespace Message.ViewModel
         {
             get { return _isMenuEnabled; }
             set { SetProperty(ref _isMenuEnabled, value); }
+        }
+
+        private int? _fileAmount;
+        public int? FileAmount
+        {
+            get {
+                if (_fileAmount == 0)
+                {
+                    return null;
+                }
+
+                return _fileAmount;
+            }
+            set { SetProperty(ref _fileAmount, value); }
         }
 
         public MessageMainVM(IMessaging View, User user) : base()
@@ -209,7 +216,9 @@ namespace Message.ViewModel
                 }
             }
             IsMenuEnabled = false;
-            SelectedContact = ContactsList.FirstOrDefault();
+            //SelectedContact = ContactsList.FirstOrDefault();
+
+            FileAmount = 0;
 
             UserServiceClient.OnUserCame(user.Id);
         }
@@ -267,9 +276,8 @@ namespace Message.ViewModel
                         }
                         
                     }
-                    _view.UpdateMessageList();
                 }
-
+                _view.UpdateMessageList();
             }
         }
 
@@ -323,8 +331,11 @@ namespace Message.ViewModel
         private void ExecuteOnAddFile()
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Multiselect = true;
             openFileDialog.ShowDialog();
-            FilePath = openFileDialog.FileName;
+            FilesPath = openFileDialog.FileNames;
+
+            FileAmount = FilesPath.Count();
         }
 
         private void ExecuteOnExit()
@@ -349,40 +360,91 @@ namespace Message.ViewModel
 
         private void ExecuteOnSendMessage()
         {
-            if (SelectedContact != null && !string.IsNullOrWhiteSpace(MessageText))
+            if (SelectedContact != null && (!string.IsNullOrWhiteSpace(MessageText) || FilesPath.Count() > 0))
             {
                 BaseMessage message = null;
+                List<BaseMessage> messagesWithFile = null;
                 if (SelectedContact is UserUiInfo)
                 {
                     UserUiInfo userUiInfo = SelectedContact as UserUiInfo;
-
-                    message = new UserMessage()
+                    if (FilesPath.Count() == 0)
                     {
-                        Content = Encoding.UTF8.GetBytes(MessageText),
-                        DateOfSending = DateTime.Now,
-                        SenderId = GlobalBase.CurrentUser.Id,
-                        ReceiverId = userUiInfo.UserId,
-                        Type = "TEXT",
-                    };
+                        message = new UserMessage()
+                        {
+                            Content = Encoding.UTF8.GetBytes(MessageText),
+                            DateOfSending = DateTime.Now,
+                            SenderId = GlobalBase.CurrentUser.Id,
+                            ReceiverId = userUiInfo.UserId,
+                            Type = "TEXT",
+                        };
+                    }
+                    else
+                    {
+                        messagesWithFile = new List<BaseMessage>();
+                        foreach (var file in FilesPath)
+                        {
+                            messagesWithFile.Add(new UserMessage()
+                            {
+                                Content = GlobalBase.FileToByte(file),
+                                DateOfSending = DateTime.Now,
+                                SenderId = GlobalBase.CurrentUser.Id,
+                                ReceiverId = userUiInfo.UserId,
+                                Type = "DATA",
+                            });
+                        }
+                    }
+                    
                 }
                 else if (SelectedContact is ChatGroupUiInfo)
                 {
                     ChatGroupUiInfo userUiInfo = SelectedContact as ChatGroupUiInfo;
-
-                    message = new GroupMessage()
+                    if (FilesPath.Count() == 0)
                     {
-                        Content = Encoding.UTF8.GetBytes(MessageText),
-                        DateOfSending = DateTime.Now,
-                        SenderId = GlobalBase.CurrentUser.Id,
-                        ChatGroupId = userUiInfo.ChatGroupId,
-                        Type = "TEXT",
-                    };
+                        message = new GroupMessage()
+                        {
+                            Content = Encoding.UTF8.GetBytes(MessageText),
+                            DateOfSending = DateTime.Now,
+                            SenderId = GlobalBase.CurrentUser.Id,
+                            ChatGroupId = userUiInfo.ChatGroupId,
+                            Type = "TEXT",
+                        };
+                    }
+                    else
+                    {
+                        messagesWithFile = new List<BaseMessage>();
+                        foreach (var file in FilesPath)
+                        {
+                            messagesWithFile.Add(new GroupMessage()
+                            {
+                                Content = GlobalBase.FileToByte(file),
+                                DateOfSending = DateTime.Now,
+                                SenderId = GlobalBase.CurrentUser.Id,
+                                ChatGroupId = userUiInfo.ChatGroupId,
+                                Type = "DATA",
+                            });
+                        }
+                    }
                 }
 
-                UserServiceClient.SendMessageAsync(message);
+                if (FilesPath.Count() == 0)
+                {
+                    UserServiceClient.SendMessageAsync(message);
+                    _view.MessageList.Add(message);
+                }
+                else
+                {
+                    foreach (var fileMessage in messagesWithFile)
+                    {
+                        UserServiceClient.SendMessageAsync(fileMessage);
+                        _view.MessageList.Add(fileMessage);
+                    }
+
+                    FilesPath = null;
+                    FileAmount = 0;
+                }
 
                 Debug.WriteLine("Send Message");
-                _view.MessageList.Add(message);
+                
                 _view.UpdateMessageList();
 
                 MessageText = string.Empty;

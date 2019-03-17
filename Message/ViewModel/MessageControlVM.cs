@@ -16,9 +16,24 @@ namespace Message.ViewModel
         {
             get
             {
-                return GlobalBase.Base64Decode(Message.Content);
+                return GetContent();
+                //return GlobalBase.Base64Decode(Message.Content);
             }
             set { }
+        }
+
+        private string GetContent()
+        {
+            switch (Message.Type)
+            {
+                case "TEXT":
+                    return GlobalBase.Base64Decode(Message.Content);
+                case "DATA":
+                    //
+                    break;
+            }
+
+            return string.Empty;
         }
 
         public MessageControlVM(BaseMessage message) : base()

@@ -4,6 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+
              xmlns:local="clr-namespace:Message"
              mc:Ignorable="d" d:DesignWidth="800">
     <Grid Margin="0,0,0,15" MinHeight="60">
@@ -15,13 +17,24 @@
                 </Border.Effect>
                 <Grid MinWidth="50" MaxWidth="350"
                       HorizontalAlignment="Left" Margin="10,5">
-
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto" />
                         <RowDefinition Height="auto" />
                     </Grid.RowDefinitions>
-                    <TextBlock Name="MessageText" HorizontalAlignment="Left" Padding="15,5" TextWrapping="Wrap" Grid.Row="0" Foreground="{DynamicResource MessageForeground}" FontSize="14"> Hello </TextBlock>
-                    <TextBlock Name="SendTime" Margin="0,0,15,0" Grid.Row="1" FontWeight="Bold" Foreground="{DynamicResource MessageTime}" VerticalAlignment="Bottom" HorizontalAlignment="Right">20:11</TextBlock>
+                    <Button Name="ButtonDwnld" Grid.Column="0" Grid.RowSpan="2" Foreground="{DynamicResource ButtonForeground}" Background="{DynamicResource ButtonBackground}"
+                            Style="{StaticResource MaterialDesignFloatingActionMiniLightButton}" BorderThickness="0" BorderBrush="{x:Null}"
+                            ToolTip="MaterialDesignFloatingActionMiniLightButton" Command="{Binding DownloadData}">
+                        <materialDesign:PackIcon
+                            Kind="Download"
+                            Height="24"
+                            Width="24" />
+                    </Button>
+                    <TextBlock Name="MessageText" Grid.Column="1" HorizontalAlignment="Left" Padding="15,5" TextWrapping="Wrap" Grid.Row="0" Foreground="{DynamicResource MessageForeground}" FontSize="14"> Hello </TextBlock>
+                    <TextBlock Name="SendTime" Grid.Column="1" Margin="0,0,15,0" Grid.Row="1" FontWeight="Bold" Foreground="{DynamicResource MessageTime}" VerticalAlignment="Bottom" HorizontalAlignment="Right">20:11</TextBlock>
                 </Grid>
             </Border>
             <Grid.ContextMenu>

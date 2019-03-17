@@ -198,10 +198,13 @@
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
 
-                            <Button Grid.Column="0" Style="{StaticResource MaterialDesignFlatButton}"
-                                    Command="{Binding AddFile}" IsEnabled="{Binding IsMenuEnabled}">
-                                <materialDesign:PackIcon Kind="Paperclip" Foreground="{DynamicResource ButtonForeground}" />
-                            </Button>
+                            <materialDesign:Badged Grid.Column="0" Badge="{Binding FileAmount}">
+                                <Button Style="{StaticResource MaterialDesignFlatButton}"
+                                        Command="{Binding AddFile}" IsEnabled="{Binding IsMenuEnabled}">
+                                    <materialDesign:PackIcon Kind="Paperclip" Foreground="{DynamicResource ButtonForeground}" />
+                                </Button>
+                            </materialDesign:Badged>
+                            
                             <TextBox Grid.Column="1" IsEnabled="{Binding IsMenuEnabled}"
                                 SelectionBrush="{DynamicResource SelectionBrush}" TextWrapping="Wrap"
                                      VerticalContentAlignment="Stretch" Name="MessageTextBox" Foreground="{DynamicResource Foreground}"
