@@ -312,8 +312,15 @@ namespace Message.ViewModel
         private bool ValidateOnRegister()
         {
             string message = string.Empty;
-
-            if (string.IsNullOrWhiteSpace(UserLogin))
+            if (string.IsNullOrWhiteSpace(Name))
+            {
+                message = Application.Current.Resources.MergedDictionaries[4]["FirstNameValid"].ToString();
+            }
+            else if (string.IsNullOrWhiteSpace(Surname))
+            {
+                message = Application.Current.Resources.MergedDictionaries[4]["LastNameValid"].ToString();
+            }
+            else if (string.IsNullOrWhiteSpace(UserLogin))
             {
                 message = Application.Current.Resources.MergedDictionaries[4]["EmptyLogin"].ToString();
             }
