@@ -9,8 +9,8 @@
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
 
         Title="CreateChatGroupWnd" 
-        Height="170.667" Width="351.667" WindowStyle="None"
-        ShowInTaskbar="False" Topmost="True"
+        Height="250" Width="350" WindowStyle="None" ResizeMode="NoResize"
+        ShowInTaskbar="False" WindowStartupLocation="CenterScreen"
         >
 
     <WindowChrome.WindowChrome>
@@ -18,65 +18,84 @@
     </WindowChrome.WindowChrome>
 
     <Grid Background="{DynamicResource PopUpBackground}">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
+        <Grid  VerticalAlignment="Top">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="191*"/>
+                <ColumnDefinition Width="153*"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.ColumnSpan="2" Grid.Row="0" VerticalAlignment="Center" Foreground="{DynamicResource Foreground}"
+                       Style="{StaticResource MaterialDesignSubheadingTextBlock}" Margin="10,5,0,5"
+                       Text="{DynamicResource CreateGroup}"/>
+            <Button x:Name="ButtonClose" Click="ButtonClose_OnClick" HorizontalAlignment="Right" VerticalAlignment="Top" Background="{x:Null}" Foreground="{DynamicResource ButtonForeground}" BorderBrush="{x:Null}" Width="30" Height="30" Padding="0" Grid.Column="1">
+                <materialDesign:PackIcon Kind="Close" Foreground="{DynamicResource HeaderButton}"/>
+            </Button>
+        </Grid>
+        <Grid Margin="0,30,0,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
 
-        <TextBlock Grid.ColumnSpan="2" Grid.Row="0"
-                   Style="{StaticResource MaterialDesignSubheadingTextBlock}" Margin="10,0,0,0"
-                   Text="{DynamicResource CreateGroup}"/>
+            <TextBox materialDesign:HintAssist.Hint="{DynamicResource GroupName}" Text="{Binding Name}"
+                     Foreground="{DynamicResource Foreground}" SelectionBrush="{DynamicResource SelectionBrush}" Margin="10,0,10,5">
 
-        <ItemsControl Grid.Row="1" ItemsSource="{Binding ContactList}" Margin="10,5,10,0">
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <Border
+            </TextBox>
+
+            <ScrollViewer Grid.Row="2">
+                <ItemsControl ItemsSource="{Binding ContactList}" Margin="10,5,10,0">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border
                         x:Name="Border"
                         Padding="8">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition
                                     SharedSizeGroup="Checkerz" />
-                                <ColumnDefinition />
-                            </Grid.ColumnDefinitions>
-                            <CheckBox
+                                        <ColumnDefinition />
+                                    </Grid.ColumnDefinitions>
+                                    <CheckBox
                                 VerticalAlignment="Center"
                                 IsChecked="{Binding IsSelected}" />
-                            <StackPanel
+                                    <StackPanel
                                 Margin="8 0 0 0"
                                 Grid.Column="1">
-                                <TextBlock
+                                        <TextBlock
                                     FontWeight="Bold">
-                                    <TextBlock.Text>
-                                        <MultiBinding StringFormat="{}{0}">
-                                            <Binding Path="Name" />
-                                        </MultiBinding>
-                                    </TextBlock.Text>
-                                </TextBlock>
-                                <TextBlock
+                                            <TextBlock.Text>
+                                                <MultiBinding StringFormat="{}{0}">
+                                                    <Binding Path="Name" />
+                                                </MultiBinding>
+                                            </TextBlock.Text>
+                                        </TextBlock>
+                                        <TextBlock
                                     Text="{Binding Path=UniqueName}" />
-                            </StackPanel>
-                        </Grid>
-                    </Border>
-                    <DataTemplate.Triggers>
-                        <DataTrigger
+                                    </StackPanel>
+                                </Grid>
+                            </Border>
+                            <DataTemplate.Triggers>
+                                <DataTrigger
                             Binding="{Binding IsSelected}"
                             Value="True">
-                            <Setter
+                                    <Setter
                                 TargetName="Border"
                                 Property="Background"
                                 Value="{DynamicResource MaterialDesignSelection}" />
-                        </DataTrigger>
-                    </DataTemplate.Triggers>
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
+                                </DataTrigger>
+                            </DataTemplate.Triggers>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+            
 
-        <Button Width="150" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,5,0,0"
+            <Button Width="150" Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,5,0,5"
                 Foreground="{DynamicResource ButtonForeground}" 
                 Background="{DynamicResource ButtonBackground}" 
                 Content="{DynamicResource Create}"
                 Command="{Binding Path=CreateGroup}"/>
+        </Grid>
     </Grid>
 </Window>

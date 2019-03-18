@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -29,6 +30,14 @@ namespace Message.ViewModel
             }
         }
 
+        private string _name;
+        
+        public string Name
+        {
+            get { return _name; }
+            set { SetProperty(ref _name, value); }
+        }
+
         private DelegateCommand _createGroup;
 
         public DelegateCommand CreateGroup =>
@@ -51,8 +60,8 @@ namespace Message.ViewModel
             List<UserUiInfo> selectedContacts = ContactList.Where(c => c.IsSelected).Select(ui => ui as UserUiInfo).ToList();
 
             ChatGroup chatGroup = new ChatGroup();
-            // todo: add controle to view to add chat group name
-            chatGroup.Name = "Group";
+            //TODO add validate
+            chatGroup.Name = Name;
 
             UserServiceClient.AddOrUpdateChatGroup(chatGroup);
             chatGroup = UserServiceClient.GetChatGroup(chatGroup.Name);
@@ -63,6 +72,8 @@ namespace Message.ViewModel
             }
 
             UserServiceClient.AddUserToChatGroupContact(chatGroup.Id, GlobalBase.CurrentUser.Id);
+
+            _view.CloseWindow();
         }
     }
 }

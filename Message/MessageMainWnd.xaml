@@ -274,7 +274,7 @@
                                 <TextBlock Grid.Column="1" Text="{DynamicResource Settings}" FontSize="15" Margin="10"/>
                             </Grid>
                         </ListViewItem>
-                        
+
                         <ListViewItem Height="45" Padding="0">
                             <Grid Background="Transparent" MinWidth="200">
                                 <i:Interaction.Triggers>

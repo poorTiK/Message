@@ -60,4 +60,5 @@
     <v:String x:Key="EmailEmpty">Email can't be empty and must be valid</v:String>
     <v:String x:Key="CreateGroup">Create group chat</v:String>
     <v:String x:Key="Create">Create</v:String>
+    <v:String x:Key="GroupName">Group name</v:String>
 </ResourceDictionary>

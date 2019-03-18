@@ -43,5 +43,10 @@ namespace Message
         {
             throw new NotImplementedException();
         }
+
+        private void ButtonClose_OnClick(object sender, RoutedEventArgs e)
+        {
+            CloseWindow();
+        }
     }
 }
