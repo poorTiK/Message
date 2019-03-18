@@ -82,7 +82,7 @@
             </ListBox.ItemTemplate>
         </ListBox>
 
-        <Button Command="{Binding AddContactCommand}" Grid.Column="0" Grid.Row="3"
+        <Button Command="{Binding AddContactCommand}" Grid.Column="0" Grid.Row="3" IsEnabled="{Binding IsAddEnabled}"
                 Margin="10,0,10,10" Content="{DynamicResource AddContact}"></Button>
         <Button Command="{Binding CloseCommand}" Grid.Column="1" Grid.Row="3"
                 Margin="10,0,10,10" Content="{DynamicResource Back}"></Button>
