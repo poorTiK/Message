@@ -290,6 +290,7 @@ namespace ServerWCF.Services
                 {
                     allUsers = new List<User>();
                 }
+
                 return allUsers;
             }
         }
@@ -349,7 +350,11 @@ namespace ServerWCF.Services
             {
                 try
                 {
-                    return db.Users.Where(x => x.Login.Contains(login)).FirstOrDefault();
+                   User user =  db.Users.Where(x => x.Login.Contains(login)).FirstOrDefault();
+                    if (user != null) {
+                        user.Avatar = null;
+                    }
+                    return user;
                 }
                 catch (Exception ex)
                 {
@@ -366,7 +371,10 @@ namespace ServerWCF.Services
                 {
                     var user = db.Users.FirstOrDefault(u => u.Login == login);
                     if (user.Login == login && user.Password.SequenceEqual(password))
+                    {
+                        user.Avatar = null;
                         return user;
+                    }
                 }
                 return null;
             }
@@ -383,6 +391,7 @@ namespace ServerWCF.Services
                 using (UserContext db = new UserContext())
                 {
                     User user = db.Users.FirstOrDefault(u => u.Id == id);
+                    user.Avatar = null;
                     return user;
                 }
             }
@@ -402,7 +411,11 @@ namespace ServerWCF.Services
                     foreach (var user in db.Users)
                     {
                         if (user.Email == email)
+                        {
+                            user.Avatar = null;
                             return user;
+                        }
+
                     }
                     return null;
                 }
@@ -434,6 +447,10 @@ namespace ServerWCF.Services
         public List<UiInfo> FindUsersUiUnfoByLogin(string keyWorkForLogin)
         {
             List<UiInfo> usersUiInfos = new List<UiInfo>(FindUsersByLogin(keyWorkForLogin).Select(u => new UserUiInfo(u)));
+            foreach (var item in usersUiInfos)
+            {
+                item.Avatar = null;
+            }
             return usersUiInfos;
         }
 

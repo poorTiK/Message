@@ -53,7 +53,26 @@ namespace Message.ViewModel
 
                 if (!string.IsNullOrEmpty(value))
                 {
-                        ContactsList = UserServiceClient.FindUsersUiUnfoByLogin(ContactsSearch);
+                    List<UiInfo> tempUiInfo = UserServiceClient.FindUsersUiUnfoByLogin(ContactsSearch);
+
+                    foreach (UiInfo uiInfo in tempUiInfo)
+                    {
+                        UserUiInfo userUiInfo = uiInfo as UserUiInfo;
+                        uiInfo.Avatar = GlobalBase.PhotoServiceClient.GetPhotoById(userUiInfo.UserId);
+
+                        if (uiInfo?.Avatar != null && uiInfo?.Avatar?.Length != 0)
+                        {
+                            MemoryStream memstr = new MemoryStream(uiInfo.Avatar);
+                            Dispatcher.CurrentDispatcher.Invoke(() => { uiInfo.Images = Image.FromStream(memstr); });
+                        }
+                        else
+                        {
+                            Dispatcher.CurrentDispatcher.Invoke(() => {
+                                uiInfo.Images = Image.FromFile("../../Resources/DefaultPicture.jpg");
+                            });
+                        }
+                    }
+                    ContactsList = tempUiInfo;
                 }
                 else
                 {
@@ -75,17 +94,23 @@ namespace Message.ViewModel
                 {
                     UserUiInfo userUiInfo = item as UserUiInfo;
                     item.Avatar = GlobalBase.PhotoServiceClient.GetPhotoById(userUiInfo.UserId);
-                }
-                else if (item is ChatGroupUiInfo)
-                {
 
+                    if (item?.Avatar != null && item?.Avatar?.Length != 0)
+                    {
+                        MemoryStream memstr = new MemoryStream(item.Avatar);
+                        Dispatcher.CurrentDispatcher.Invoke(() => { item.Images = Image.FromStream(memstr); });
+                    }
+                    else
+                    {
+                        Dispatcher.CurrentDispatcher.Invoke(() => {
+                            item.Images = Image.FromFile("../../Resources/DefaultPicture.jpg");
+                        });
+                    }
                 }
             }
-
             ContactsList = tempUiInfos;
 
             ManageControls();
-
         }
 
         private DelegateCommand _onAddContact;
@@ -139,19 +164,28 @@ namespace Message.ViewModel
 
         private void UpdateContacts()
         {
-            ContactsList = UserServiceClient.GetAllContactsUiInfo(GlobalBase.CurrentUser.Id);
+            List<UiInfo> uiInfos = UserServiceClient.GetAllContactsUiInfo(GlobalBase.CurrentUser.Id);
 
-
-                foreach (var item in ContactsList)
+            foreach (var item in uiInfos)
+            {
+                if (item is UserUiInfo)
                 {
-                    if (item is UserUiInfo)
+                    UserUiInfo userUiInfo = item as UserUiInfo;
+                    item.Avatar = GlobalBase.PhotoServiceClient.GetPhotoById(userUiInfo.UserId);
+
+                    if (item?.Avatar?.Length > 0)
                     {
-                        UserUiInfo userUiInfo = item as UserUiInfo;
-                        item.Avatar = GlobalBase.PhotoServiceClient.GetPhotoById(userUiInfo.UserId);
+                        MemoryStream memstr = new MemoryStream(item.Avatar);
+                        Dispatcher.CurrentDispatcher.Invoke(() => { item.Images = Image.FromStream(memstr); });
+                    }
+                    else
+                    {
+                        Dispatcher.CurrentDispatcher.Invoke(() => { item.Images = Image.FromFile(@"../../Resources/DefaultPicture.jpg"); });
                     }
                 }
+            }
 
-
+            ContactsList = uiInfos;
             ManageControls();
         }
 

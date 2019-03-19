@@ -41,6 +41,11 @@ namespace Message.ViewModel
         }
         private void SetAvatarForUI()
         {
+            using (PhotoServiceClient client = new PhotoServiceClient())
+            {
+                GlobalBase.CurrentUser.Avatar = client.GetPhotoById(GlobalBase.CurrentUser.Id);
+            }
+
             if (GlobalBase.CurrentUser?.Avatar?.Length > 0)
             {
                 MemoryStream memstr = new MemoryStream(GlobalBase.CurrentUser.Avatar);
@@ -54,11 +59,6 @@ namespace Message.ViewModel
         public SettingsWindowVM(IView view) : base()
         {
             this.view = view;
-            using (PhotoServiceClient client = new PhotoServiceClient())
-            {
-                GlobalBase.CurrentUser.Avatar = client.GetPhotoById(GlobalBase.CurrentUser.Id);
-            }
-
             SetAvatarForUI();
         }
 

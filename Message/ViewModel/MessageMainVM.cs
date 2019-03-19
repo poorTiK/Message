@@ -204,20 +204,9 @@ namespace Message.ViewModel
             };
 
             SetAvatarForUI();
+            Update();
 
-            ContactsList = UserServiceClient.GetAllContactsUiInfo(GlobalBase.CurrentUser.Id);
-            foreach (var item in ContactsList)
-            {
-                if (item.Avatar != null)
-                {
-                    MemoryStream memstr = new MemoryStream(item.Avatar);
-                    Dispatcher.CurrentDispatcher.Invoke(() => { item.Images = Image.FromStream(memstr); });
-                    ContactsList = ContactsList.ToList();
-                }
-            }
             IsMenuEnabled = false;
-            //SelectedContact = ContactsList.FirstOrDefault();
-
             FileAmount = 0;
 
             UserServiceClient.OnUserCame(user.Id);
@@ -474,6 +463,11 @@ namespace Message.ViewModel
 
         private void SetAvatarForUI()
         {
+            using (PhotoServiceClient client = new PhotoServiceClient())
+            {
+                GlobalBase.CurrentUser.Avatar = client.GetPhotoById(GlobalBase.CurrentUser.Id);
+            }
+
             if (GlobalBase.CurrentUser?.Avatar?.Length > 0)
             {
                 MemoryStream memstr = new MemoryStream(GlobalBase.CurrentUser.Avatar);
@@ -598,26 +592,40 @@ namespace Message.ViewModel
             SetAvatarForUI();
         }
 
-        public void UpdateContactList()
+        private void UpdateContactList()
         {
-            ContactsList = UserServiceClient.GetAllContactsUiInfo(GlobalBase.CurrentUser.Id);
+            List<UiInfo> tempUiInfos = UserServiceClient.GetAllContactsUiInfo(GlobalBase.CurrentUser.Id);
 
-            foreach (var item in ContactsList)
+            foreach (var item in tempUiInfos)
             {
-                if (SelectedContact is UserUiInfo)
+                if (item is UserUiInfo)
                 {
-                    UserUiInfo userUiInfo = SelectedContact as UserUiInfo;
+                    UserUiInfo userUiInfo = item as UserUiInfo;
                     item.Avatar = GlobalBase.PhotoServiceClient.GetPhotoById(userUiInfo.UserId);
+
+                    if (item.Avatar != null && item.Avatar.Length != 0)
+                    {
+                        MemoryStream memstr = new MemoryStream(item.Avatar);
+                        Dispatcher.CurrentDispatcher.Invoke(() => { item.Images = Image.FromStream(memstr); });
+                    }
+                    else
+                    {
+                        Dispatcher.CurrentDispatcher.Invoke(() => {
+                            item.Images = Image.FromFile(@"../../Resources/DefaultPicture.jpg");
+                        });
+                    }
                 }
-                else if (SelectedContact is ChatGroupUiInfo)
+                else if (item is ChatGroupUiInfo)
                 {
                     // todo: create ability to get picture for groups
                 }
             }
 
+            ContactsList = tempUiInfos;
+
             UiInfo temp = SelectedContact;
 
-            if(temp is UserUiInfo)
+            if (temp is UserUiInfo)
             {
                 UserUiInfo userUiInfo = temp as UserUiInfo;
 

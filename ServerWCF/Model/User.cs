@@ -41,10 +41,6 @@ namespace ServerWCF.Model
         public string Status { get; set; }
 
         [DataMember]
-        [NotMapped]
-        public Image Images { get; set; }
-
-        [DataMember]
         public List<BaseContact> Contacts { get; set; }
 
         [DataMember]
