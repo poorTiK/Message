@@ -46,10 +46,12 @@ namespace Message.ViewModel
             get { return _searchContactStr; }
             set
             {
-                if (value == string.Empty)
+                if (string.IsNullOrWhiteSpace(value))
                 {
                     ContactsList.Clear();
-                    ContactsList.AddRange(UserServiceClient.GetAllContactsUiInfo(GlobalBase.CurrentUser.Id));
+                    List<UiInfo> temp = new List<UiInfo>();
+                    temp.AddRange(UserServiceClient.GetAllContactsUiInfo(GlobalBase.CurrentUser.Id));
+                    ContactsList = temp;
 
                     foreach (var item in ContactsList)
                     {
@@ -67,19 +69,23 @@ namespace Message.ViewModel
                 else
                 {
                     ContactsList.Clear();
-                    ContactsList.AddRange(UserServiceClient
+                    List<UiInfo> temp = new List<UiInfo>();
+                    temp.AddRange(UserServiceClient
                         .GetAllUsersContacts(GlobalBase.CurrentUser.Id)
                         .Where(i => i.FirstName.Contains(value)
-                        || i.LastName.Contains(value)
-                        || i.Login.Contains(value))
-                                  .Select(u => new UserUiInfo
-                                  {
-                                      Name = u.FirstName + " " + u.LastName,
-                                      UniqueName = u.Login,
-                                      UserId = u.Id,
-                                      Avatar = u.Avatar,
-                                      Status = u.Status
-                                  }));
+                                    || i.LastName.Contains(value)
+                                    || i.Login.Contains(value))
+                        .Select(u => new UserUiInfo
+                        {
+                            Name = u.FirstName + " " + u.LastName,
+                            UniqueName = u.Login,
+                            UserId = u.Id,
+                            Avatar = u.Avatar,
+                            Status = u.Status
+                        }));
+
+
+                    ContactsList = temp;
 
 
                     foreach (var item in ContactsList)

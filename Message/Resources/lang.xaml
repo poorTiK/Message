@@ -22,7 +22,7 @@
     <v:String x:Key="EditProfile">Edit profile</v:String>
     <v:String x:Key="Email">Email</v:String>
     <v:String x:Key="FirstName">First Name</v:String>
-    <v:String x:Key="ForgotPassword">Forgot password?</v:String>
+    <v:String x:Key="ForgotPassword">Password recovery</v:String>
     <v:String x:Key="Forvard">Forward</v:String>
     <v:String x:Key="LastName">Last Name</v:String>
     <v:String x:Key="Login">Login</v:String>
@@ -60,4 +60,10 @@
     <v:String x:Key="EmailEmpty">Email can't be empty and must be valid</v:String>
     <v:String x:Key="CreateGroup">Create group chat</v:String>
     <v:String x:Key="Create">Create</v:String>
+    <v:String x:Key="GroupName">Group name</v:String>
+
+    <v:String x:Key="Yes">Yes</v:String>
+    <v:String x:Key="No">No</v:String>
+    <v:String x:Key="Ok">Ok</v:String>
+    <v:String x:Key="Cancel">Cancel</v:String>
 </ResourceDictionary>

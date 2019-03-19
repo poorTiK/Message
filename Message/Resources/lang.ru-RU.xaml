@@ -22,7 +22,7 @@
     <v:String x:Key="EditProfile">Редактировать профиль</v:String>
     <v:String x:Key="Email">Электронная почта</v:String>
     <v:String x:Key="FirstName">Имя</v:String>
-    <v:String x:Key="ForgotPassword">Восстановление пароля?</v:String>
+    <v:String x:Key="ForgotPassword">Восстановление пароля</v:String>
     <v:String x:Key="Forvard">Переслать</v:String>
     <v:String x:Key="LastName">Фамилия</v:String>
     <v:String x:Key="Login">Логин</v:String>
@@ -58,6 +58,12 @@
     <v:String x:Key="FirstNameValid">Поле "Имя" не может быть пустым</v:String>
     <v:String x:Key="LastNameValid">Поле "Фамилия" не может быть пустым</v:String>
     <v:String x:Key="EmailEmpty">Поле "Емейл" не может быть пустым или не валидным</v:String>
-    <v:String x:Key="CreateGroup">Создать групповой чат</v:String>
+    <v:String x:Key="CreateGroup">Новая группа</v:String>
     <v:String x:Key="Create">Создать</v:String>
+    <v:String x:Key="GroupName">Название группы</v:String>
+
+    <v:String x:Key="Yes">Да</v:String>
+    <v:String x:Key="No">Нет</v:String>
+    <v:String x:Key="Ok">ОК</v:String>
+    <v:String x:Key="Cancel">Отмена</v:String>
 </ResourceDictionary>

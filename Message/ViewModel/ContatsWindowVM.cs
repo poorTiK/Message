@@ -9,6 +9,7 @@ using System.Windows;
 using Message.PhotoServiceReference;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Windows.Threading;
 
 namespace Message.ViewModel
@@ -19,7 +20,7 @@ namespace Message.ViewModel
         private IView view;
 
         private List<UiInfo> _contacts;
-
+        
         public List<UiInfo> ContactsList
         {
             get { return _contacts; }
@@ -39,7 +40,21 @@ namespace Message.ViewModel
         public UiInfo SelectedContact
         {
             get { return _selectedContact; }
-            set { SetProperty(ref _selectedContact, value); }
+            set
+            {
+                SetProperty(ref _selectedContact, value, () =>
+                {
+                    if (value != null)
+                    {
+                        if (!UserServiceClient.GetAllContactsUiInfo(GlobalBase.CurrentUser.Id).Any(x => x.UniqueName == value.UniqueName))
+                        {
+                            IsAddEnabled = true;
+                            return;
+                        }
+                    }
+                    IsAddEnabled = false;
+                });
+            }
         }
 
         private string _contactsSearch;
@@ -83,6 +98,13 @@ namespace Message.ViewModel
             }
         }
 
+        private bool _isAddEnabled;
+        public bool IsAddEnabled
+        {
+            get { return _isAddEnabled; }
+            set { SetProperty(ref _isAddEnabled, value); }
+        }
+
         public ContatsWindowVM(IView iview) : base()
         {
             view = iview;
@@ -109,7 +131,7 @@ namespace Message.ViewModel
                 }
             }
             ContactsList = tempUiInfos;
-
+            IsAddEnabled = false;
             ManageControls();
         }
 
