@@ -574,7 +574,7 @@ namespace ServerWCF.Services
                 List<GroupMessage> messagesToReturn = new List<GroupMessage>();
                 try
                 {
-                    foreach (BaseMessage message in context.Messages)
+                    foreach (BaseMessage message in context.Messages.AsEnumerable().Reverse())
                     {
                         if (message is GroupMessage)
                         {
@@ -599,6 +599,7 @@ namespace ServerWCF.Services
                     messagesToReturn = new List<GroupMessage>();
                 }
 
+                messagesToReturn.Reverse();
                 return messagesToReturn;
             }
         }
