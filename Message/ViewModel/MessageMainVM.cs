@@ -361,13 +361,13 @@ namespace Message.ViewModel
         {
             if (SelectedContact is UserUiInfo)
             {
-                UserUiInfo userUiInfo = SelectedContact as UserUiInfo;
-                User user = UserServiceClient.GetUserById(userUiInfo.UserId);
+                var userUiInfo = SelectedContact as UserUiInfo;
+                var user = UserServiceClient.GetUserById(userUiInfo.UserId);
                 var wnd = new ContactProfileWindow(user);
                 wnd.Owner = (Window)_view;
                 wnd.ShowDialog();
 
-                Update();
+                UpdateContactList();
             }
         }
 
@@ -604,13 +604,13 @@ namespace Message.ViewModel
 
         private void UpdateContactList()
         {
+            UiInfo temp = SelectedContact;
+
             List<UiInfo> tempUiInfos = UserServiceClient.GetAllContactsUiInfo(GlobalBase.CurrentUser.Id);
 
             SetPhotosForUiInfo(tempUiInfos);
 
             ContactsList = tempUiInfos;
-
-            UiInfo temp = SelectedContact;
 
             if (temp is UserUiInfo)
             {
