@@ -172,6 +172,7 @@ namespace Message
             };
 
             ScrollV.ScrollToEnd();
+            //ScrollV.ScrollChanged += delegate(object sender, ScrollChangedEventArgs args) {  args};
 
             MinimizeButton.Click += (s, e) => WindowState = WindowState.Minimized;
             MaximizeMinimizeButton.Click += (s, e) => WindowState = WindowState == WindowState.Maximized ? WindowState.Normal : WindowState.Maximized;

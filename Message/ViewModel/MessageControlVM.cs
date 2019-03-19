@@ -75,7 +75,7 @@ namespace Message.ViewModel
         private void OnDownloadData()
         {
             var file = GlobalBase.PhotoServiceClient.GetFileByMessageId(Message.Id);
-
+            //TODO change to SaveFileDialog
             var fileDialog = new FolderBrowserDialog();
             var res = fileDialog.ShowDialog();
             if (res == DialogResult.OK)

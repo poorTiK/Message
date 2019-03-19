@@ -610,7 +610,7 @@ namespace ServerWCF.Services
                 List<UserMessage> messagesToReturn = new List<UserMessage>();
                 try
                 {
-                    foreach (BaseMessage message in context.Messages)
+                    foreach (BaseMessage message in context.Messages.AsEnumerable().Reverse())
                     {
                         if (message is UserMessage)
                         {
@@ -644,7 +644,7 @@ namespace ServerWCF.Services
                 {
                     messagesToReturn = new List<UserMessage>();
                 }
-
+                messagesToReturn.Reverse();
                 return messagesToReturn;
             }
         }
