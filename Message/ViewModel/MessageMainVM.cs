@@ -657,9 +657,12 @@ namespace Message.ViewModel
         {
             User sender = UserServiceClient.GetAllUsers().FirstOrDefault(x => x.Id == message.SenderId);
 
-            var mes = "New message from  @" + sender.Login + "\n" + "\"" + GlobalBase.Base64Decode(message.Content) +
-                      "\"";
-            GlobalBase.ShowNotify("New message", mes);
+            if (sender.Id != (SelectedContact as UserUiInfo).UserId)
+            {
+                var mes = "New message from  @" + sender.Login + "\n" + "\"" + GlobalBase.Base64Decode(message.Content) +
+                          "\"";
+                GlobalBase.ShowNotify("New message", mes);
+            }
 
             Debug.WriteLine("Receave Message from - ", sender.Login);
 

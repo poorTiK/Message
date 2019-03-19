@@ -1,7 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/ServerWCF.Model" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/ServerWCF.Model" xmlns:xs="http://www.w3.org/2001/XMLSchema">
   <xs:import namespace="http://schemas.datacontract.org/2004/07/ServerWCF.Model.Contacts" />
-  <xs:import namespace="http://schemas.datacontract.org/2004/07/System.Drawing" />
   <xs:import namespace="http://schemas.datacontract.org/2004/07/ServerWCF.Model.Messages" />
   <xs:complexType name="ArrayOfUser">
     <xs:sequence>
@@ -17,10 +16,9 @@
       <xs:element minOccurs="0" name="Email" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="FirstName" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="Id" type="xs:int" />
-      <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/System.Drawing" minOccurs="0" name="Images" nillable="true" type="q2:Image" />
       <xs:element minOccurs="0" name="LastName" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="Login" nillable="true" type="xs:string" />
-      <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/ServerWCF.Model.Contacts" minOccurs="0" name="Owners" nillable="true" type="q3:ArrayOfUserToUserContact" />
+      <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/ServerWCF.Model.Contacts" minOccurs="0" name="Owners" nillable="true" type="q2:ArrayOfUserToUserContact" />
       <xs:element minOccurs="0" name="Password" nillable="true" type="xs:base64Binary" />
       <xs:element minOccurs="0" name="Phone" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="Status" nillable="true" type="xs:string" />
@@ -33,7 +31,7 @@
       <xs:element minOccurs="0" name="Avatar" nillable="true" type="xs:base64Binary" />
       <xs:element minOccurs="0" name="Id" type="xs:int" />
       <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string" />
-      <xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/ServerWCF.Model.Contacts" minOccurs="0" name="Participants" nillable="true" type="q4:ArrayOfUserToGroupContact" />
+      <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/ServerWCF.Model.Contacts" minOccurs="0" name="Participants" nillable="true" type="q3:ArrayOfUserToGroupContact" />
     </xs:sequence>
   </xs:complexType>
   <xs:element name="ChatGroup" nillable="true" type="tns:ChatGroup" />
@@ -57,7 +55,7 @@
   <xs:element name="ApplicationSettings" nillable="true" type="tns:ApplicationSettings" />
   <xs:complexType name="UserMessage">
     <xs:complexContent mixed="false">
-      <xs:extension xmlns:q5="http://schemas.datacontract.org/2004/07/ServerWCF.Model.Messages" base="q5:BaseMessage">
+      <xs:extension xmlns:q4="http://schemas.datacontract.org/2004/07/ServerWCF.Model.Messages" base="q4:BaseMessage">
         <xs:sequence>
           <xs:element minOccurs="0" name="ReceiverId" type="xs:int" />
         </xs:sequence>
