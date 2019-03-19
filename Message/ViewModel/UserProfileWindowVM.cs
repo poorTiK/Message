@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
 using Message.PhotoServiceReference;
+using Message.FileService;
 
 namespace Message.ViewModel
 {
@@ -50,7 +51,7 @@ namespace Message.ViewModel
 
         public byte[] CurrentUserPhoto
         {
-            get { return GlobalBase.CurrentUser.Avatar; }
+            get { return GlobalBase.FileServiceClient.getChatFileById(GlobalBase.CurrentUser.ImageId).Source; }
             set { SetProperty(ref _currentUserPhoto, value); }
         }
 
@@ -153,9 +154,7 @@ namespace Message.ViewModel
         private void ExecuteClose()
         {
 
-                GlobalBase.CurrentUser.Avatar = GlobalBase.PhotoServiceClient.GetPhotoById(GlobalBase.CurrentUser.Id);
-
-            
+            GlobalBase.CurrentUser.ImageId = GlobalBase.FileServiceClient.getChatFileById(GlobalBase.CurrentUser.ImageId).Id;   
             _view.CloseWindow();
         }
 
@@ -186,9 +185,10 @@ namespace Message.ViewModel
 
         private void SetAvatarForUI()
         {
-            if (GlobalBase.CurrentUser?.Avatar?.Length > 0)
+            ChatFile chatFile = GlobalBase.FileServiceClient.getChatFileById(GlobalBase.CurrentUser.ImageId);
+            if (chatFile?.Source?.Length > 0)
             {
-                MemoryStream memstr = new MemoryStream(GlobalBase.CurrentUser.Avatar);
+                MemoryStream memstr = new MemoryStream(chatFile.Source);
                 Dispatcher.CurrentDispatcher.Invoke(() => { Images = Image.FromStream(memstr); });
             }
             else
@@ -210,22 +210,20 @@ namespace Message.ViewModel
                     GlobalBase.CurrentUser.Phone = UserPhone;
                     GlobalBase.CurrentUser.Email = UserEmail;
                     GlobalBase.CurrentUser.Bio = UserBio;
-                    var tempAvatar = GlobalBase.CurrentUser.Avatar;
-                    GlobalBase.CurrentUser.Avatar = null;
+                    ChatFile chatFile = GlobalBase.FileServiceClient.getChatFileById(GlobalBase.CurrentUser.ImageId);
+                    var tempAvatar = chatFile.Source;
                     res = UserServiceClient.AddOrUpdateUser(GlobalBase.CurrentUser);
 
                     if (_newAvatar != null)
                     {
-
                         GlobalBase.PhotoServiceClient.SetPhotoById(GlobalBase.CurrentUser.Id, _newAvatar);
-                            GlobalBase.CurrentUser.Avatar = GlobalBase.PhotoServiceClient.GetPhotoById(GlobalBase.CurrentUser.Id);
+                        GlobalBase.CurrentUser.ImageId = chatFile.Id;
 
                     }
                     else
                     {
-
                         GlobalBase.PhotoServiceClient.SetPhotoById(GlobalBase.CurrentUser.Id, tempAvatar);
-                            GlobalBase.CurrentUser.Avatar = GlobalBase.PhotoServiceClient.GetPhotoById(GlobalBase.CurrentUser.Id);
+                        GlobalBase.CurrentUser.ImageId = chatFile.Id;
                     
                     }
 

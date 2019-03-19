@@ -18,12 +18,11 @@
   <xs:element name="GroupMessage" nillable="true" type="tns:GroupMessage" />
   <xs:complexType name="BaseMessage">
     <xs:sequence>
-      <xs:element minOccurs="0" name="AdditionalInfo" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="Content" nillable="true" type="xs:base64Binary" />
       <xs:element minOccurs="0" name="DateOfSending" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="FileId" type="xs:int" />
       <xs:element minOccurs="0" name="Id" type="xs:int" />
       <xs:element minOccurs="0" name="SenderId" type="xs:int" />
-      <xs:element minOccurs="0" name="Type" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Text" nillable="true" type="xs:base64Binary" />
     </xs:sequence>
   </xs:complexType>
   <xs:element name="BaseMessage" nillable="true" type="tns:BaseMessage" />

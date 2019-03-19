@@ -21,13 +21,13 @@ namespace ServerWCF.Model.Messages
         public User Sender { get; set; }
 
         [DataMember]
-        public string Type { get; set; }
+        public int FileId { get; set; }
+
+        [ForeignKey("FileId")]
+        public ChatFile File { get; set; }
 
         [DataMember]
-        public byte[] Content { get; set; }
-
-        [DataMember]
-        public string AdditionalInfo { get; set; }
+        public byte[] Text { get; set; }
 
         [DataMember]
         public DateTime DateOfSending { get; set; }

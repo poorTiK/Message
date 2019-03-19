@@ -29,7 +29,7 @@ namespace Message.ViewModel
             _view = View;
 
             Message = message;
-            MessageText = GlobalBase.Base64Decode(message.Content);
+            MessageText = GlobalBase.Base64Decode(message.Text);
         }
 
         private DelegateCommand _onApply;
@@ -49,7 +49,7 @@ namespace Message.ViewModel
 
         private void OnApply()
         {
-            Message.Content = Encoding.UTF8.GetBytes(MessageText);
+            Message.Text = Encoding.UTF8.GetBytes(MessageText);
 
             UserServiceClient.EditMessage(Message);
 

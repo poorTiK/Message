@@ -11,27 +11,27 @@
   <xs:element name="ArrayOfUser" nillable="true" type="tns:ArrayOfUser" />
   <xs:complexType name="User">
     <xs:sequence>
-      <xs:element minOccurs="0" name="Avatar" nillable="true" type="xs:base64Binary" />
       <xs:element minOccurs="0" name="Bio" nillable="true" type="xs:string" />
       <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/ServerWCF.Model.Contacts" minOccurs="0" name="Contacts" nillable="true" type="q1:ArrayOfBaseContact" />
       <xs:element minOccurs="0" name="Email" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="FirstName" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="Id" type="xs:int" />
-      <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/System.Drawing" minOccurs="0" name="Images" nillable="true" type="q2:Image" />
+      <xs:element minOccurs="0" name="ImageId" type="xs:int" />
       <xs:element minOccurs="0" name="LastName" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="Login" nillable="true" type="xs:string" />
-      <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/ServerWCF.Model.Contacts" minOccurs="0" name="Owners" nillable="true" type="q3:ArrayOfUserToUserContact" />
+      <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/ServerWCF.Model.Contacts" minOccurs="0" name="Owners" nillable="true" type="q2:ArrayOfUserToUserContact" />
       <xs:element minOccurs="0" name="Password" nillable="true" type="xs:base64Binary" />
       <xs:element minOccurs="0" name="Phone" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="Status" nillable="true" type="xs:string" />
+      <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/System.Drawing" minOccurs="0" name="UiImage" nillable="true" type="q3:Image" />
       <xs:element minOccurs="0" name="UnreadMessageCount" type="xs:int" />
     </xs:sequence>
   </xs:complexType>
   <xs:element name="User" nillable="true" type="tns:User" />
   <xs:complexType name="ChatGroup">
     <xs:sequence>
-      <xs:element minOccurs="0" name="Avatar" nillable="true" type="xs:base64Binary" />
       <xs:element minOccurs="0" name="Id" type="xs:int" />
+      <xs:element minOccurs="0" name="ImageId" type="xs:int" />
       <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string" />
       <xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/ServerWCF.Model.Contacts" minOccurs="0" name="Participants" nillable="true" type="q4:ArrayOfUserToGroupContact" />
     </xs:sequence>

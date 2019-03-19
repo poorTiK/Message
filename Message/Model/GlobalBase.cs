@@ -5,6 +5,10 @@ using System.Globalization;
 using Message.PhotoServiceReference;
 using System.IO;
 using System.Linq;
+using Message.FileService;
+using System.Collections.Generic;
+using System.Windows.Threading;
+using System.Drawing;
 
 namespace Message.Model
 {
@@ -16,9 +20,12 @@ namespace Message.Model
 
         public static PhotoServiceClient PhotoServiceClient { get; set; }
 
+        public static FileServiceClient FileServiceClient { get; set; } 
+
         static GlobalBase()
         {
             PhotoServiceClient = new PhotoServiceClient();
+            FileServiceClient = new FileServiceClient();
         }
 
         public static string Base64Encode(string plainText)
@@ -63,5 +70,33 @@ namespace Message.Model
 
             return fileName;
         } 
+
+        public static void loadPictures(UserServiceClient userServiceClient, List<UiInfo> uiInfos)
+        {
+            foreach (var item in uiInfos)
+            {
+                if (item is UserUiInfo)
+                {
+                    UserUiInfo userUiInfo = item as UserUiInfo;
+                    User user = userServiceClient.GetUserById(userUiInfo.UserId);
+                    ChatFile chatFile = GlobalBase.FileServiceClient.getChatFileById(user.Id);
+
+                    if (chatFile?.Source?.Length > 0)
+                    {
+                        MemoryStream memstr = new MemoryStream(chatFile.Source);
+                        Dispatcher.CurrentDispatcher.Invoke(() => { item.UiImage = Image.FromStream(memstr); });
+                    }
+                    else
+                    {
+                        Dispatcher.CurrentDispatcher.Invoke(() => { item.UiImage = Image.FromFile(@"../../Resources/DefaultPicture.jpg"); });
+                    }
+                }
+            }
+        }
+
+        public static void loadPictureForUser(User user)
+        {
+
+        }
     }
 }

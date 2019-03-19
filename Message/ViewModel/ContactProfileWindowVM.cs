@@ -8,6 +8,7 @@ using System.IO;
 using System.ServiceModel;
 using System.Windows.Threading;
 using Message.PhotoServiceReference;
+using Message.FileService;
 
 namespace Message.ViewModel
 {
@@ -51,7 +52,7 @@ namespace Message.ViewModel
 
         public byte[] CurrentUserPhoto
         {
-            get { return Profile.Avatar; }
+            get { return GlobalBase.FileServiceClient.getChatFileById(Profile.ImageId).Source; }
             set { SetProperty(ref _currentUserPhoto, value); }
         }
 
@@ -181,20 +182,20 @@ namespace Message.ViewModel
 
         private void SetAvatarForUI()
         {
-            using (var proxy = new PhotoServiceClient())
+            if (Profile.ImageId != 0)
             {
-                Profile.Avatar = proxy.GetPhotoById(Profile.Id);
-            }
+                ChatFile chatFile = GlobalBase.FileServiceClient.getChatFileById(Profile.ImageId);
 
-            if (Profile?.Avatar?.Length > 0)
-            {
-                MemoryStream memstr = new MemoryStream(GlobalBase.CurrentUser.Avatar);
-                Dispatcher.CurrentDispatcher.Invoke(() => { Image = Image.FromStream(memstr); });
+                if (chatFile?.Source?.Length > 0)
+                {
+                    MemoryStream memstr = new MemoryStream(chatFile.Source);
+                    Dispatcher.CurrentDispatcher.Invoke(() => { Image = Image.FromStream(memstr); });
+                }
+                else
+                {
+                    Dispatcher.CurrentDispatcher.Invoke(() => { Image = Image.FromFile(@"../../Resources/DefaultPicture.jpg"); });
+                }
             }
-            else
-            {
-                Dispatcher.CurrentDispatcher.Invoke(() => { Image = Image.FromFile(@"../../Resources/DefaultPicture.jpg"); });
-            }       
         }
     }
 }

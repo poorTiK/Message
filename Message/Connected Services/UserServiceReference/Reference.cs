@@ -23,9 +23,6 @@ namespace Message.UserServiceReference {
         private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private byte[] AvatarField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string BioField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
@@ -41,7 +38,7 @@ namespace Message.UserServiceReference {
         private int IdField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private System.Drawing.Image ImagesField;
+        private int ImageIdField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string LastNameField;
@@ -62,6 +59,9 @@ namespace Message.UserServiceReference {
         private string StatusField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private System.Drawing.Image UiImageField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
         private int UnreadMessageCountField;
         
         [global::System.ComponentModel.BrowsableAttribute(false)]
@@ -71,19 +71,6 @@ namespace Message.UserServiceReference {
             }
             set {
                 this.extensionDataField = value;
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public byte[] Avatar {
-            get {
-                return this.AvatarField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.AvatarField, value) != true)) {
-                    this.AvatarField = value;
-                    this.RaisePropertyChanged("Avatar");
-                }
             }
         }
         
@@ -153,14 +140,14 @@ namespace Message.UserServiceReference {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.Drawing.Image Images {
+        public int ImageId {
             get {
-                return this.ImagesField;
+                return this.ImageIdField;
             }
             set {
-                if ((object.ReferenceEquals(this.ImagesField, value) != true)) {
-                    this.ImagesField = value;
-                    this.RaisePropertyChanged("Images");
+                if ((this.ImageIdField.Equals(value) != true)) {
+                    this.ImageIdField = value;
+                    this.RaisePropertyChanged("ImageId");
                 }
             }
         }
@@ -239,6 +226,19 @@ namespace Message.UserServiceReference {
                 if ((object.ReferenceEquals(this.StatusField, value) != true)) {
                     this.StatusField = value;
                     this.RaisePropertyChanged("Status");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.Drawing.Image UiImage {
+            get {
+                return this.UiImageField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.UiImageField, value) != true)) {
+                    this.UiImageField = value;
+                    this.RaisePropertyChanged("UiImage");
                 }
             }
         }
@@ -433,10 +433,10 @@ namespace Message.UserServiceReference {
         private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private byte[] AvatarField;
+        private int IdField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private int IdField;
+        private int ImageIdField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string NameField;
@@ -455,19 +455,6 @@ namespace Message.UserServiceReference {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public byte[] Avatar {
-            get {
-                return this.AvatarField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.AvatarField, value) != true)) {
-                    this.AvatarField = value;
-                    this.RaisePropertyChanged("Avatar");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
         public int Id {
             get {
                 return this.IdField;
@@ -476,6 +463,19 @@ namespace Message.UserServiceReference {
                 if ((this.IdField.Equals(value) != true)) {
                     this.IdField = value;
                     this.RaisePropertyChanged("Id");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int ImageId {
+            get {
+                return this.ImageIdField;
+            }
+            set {
+                if ((this.ImageIdField.Equals(value) != true)) {
+                    this.ImageIdField = value;
+                    this.RaisePropertyChanged("ImageId");
                 }
             }
         }
@@ -528,10 +528,7 @@ namespace Message.UserServiceReference {
         private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private byte[] AvatarField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private System.Drawing.Image ImagesField;
+        private int ImageIdField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private bool IsSelectedField;
@@ -541,6 +538,9 @@ namespace Message.UserServiceReference {
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string StatusField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private System.Drawing.Image UiImageField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string UniqueNameField;
@@ -556,27 +556,14 @@ namespace Message.UserServiceReference {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public byte[] Avatar {
+        public int ImageId {
             get {
-                return this.AvatarField;
+                return this.ImageIdField;
             }
             set {
-                if ((object.ReferenceEquals(this.AvatarField, value) != true)) {
-                    this.AvatarField = value;
-                    this.RaisePropertyChanged("Avatar");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.Drawing.Image Images {
-            get {
-                return this.ImagesField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.ImagesField, value) != true)) {
-                    this.ImagesField = value;
-                    this.RaisePropertyChanged("Images");
+                if ((this.ImageIdField.Equals(value) != true)) {
+                    this.ImageIdField = value;
+                    this.RaisePropertyChanged("ImageId");
                 }
             }
         }
@@ -616,6 +603,19 @@ namespace Message.UserServiceReference {
                 if ((object.ReferenceEquals(this.StatusField, value) != true)) {
                     this.StatusField = value;
                     this.RaisePropertyChanged("Status");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.Drawing.Image UiImage {
+            get {
+                return this.UiImageField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.UiImageField, value) != true)) {
+                    this.UiImageField = value;
+                    this.RaisePropertyChanged("UiImage");
                 }
             }
         }
@@ -865,13 +865,10 @@ namespace Message.UserServiceReference {
         private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private string AdditionalInfoField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private byte[] ContentField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
         private System.DateTime DateOfSendingField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int FileIdField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private int IdField;
@@ -880,7 +877,7 @@ namespace Message.UserServiceReference {
         private int SenderIdField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private string TypeField;
+        private byte[] TextField;
         
         [global::System.ComponentModel.BrowsableAttribute(false)]
         public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
@@ -893,32 +890,6 @@ namespace Message.UserServiceReference {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public string AdditionalInfo {
-            get {
-                return this.AdditionalInfoField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.AdditionalInfoField, value) != true)) {
-                    this.AdditionalInfoField = value;
-                    this.RaisePropertyChanged("AdditionalInfo");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public byte[] Content {
-            get {
-                return this.ContentField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.ContentField, value) != true)) {
-                    this.ContentField = value;
-                    this.RaisePropertyChanged("Content");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
         public System.DateTime DateOfSending {
             get {
                 return this.DateOfSendingField;
@@ -927,6 +898,19 @@ namespace Message.UserServiceReference {
                 if ((this.DateOfSendingField.Equals(value) != true)) {
                     this.DateOfSendingField = value;
                     this.RaisePropertyChanged("DateOfSending");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int FileId {
+            get {
+                return this.FileIdField;
+            }
+            set {
+                if ((this.FileIdField.Equals(value) != true)) {
+                    this.FileIdField = value;
+                    this.RaisePropertyChanged("FileId");
                 }
             }
         }
@@ -958,14 +942,14 @@ namespace Message.UserServiceReference {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public string Type {
+        public byte[] Text {
             get {
-                return this.TypeField;
+                return this.TextField;
             }
             set {
-                if ((object.ReferenceEquals(this.TypeField, value) != true)) {
-                    this.TypeField = value;
-                    this.RaisePropertyChanged("Type");
+                if ((object.ReferenceEquals(this.TextField, value) != true)) {
+                    this.TextField = value;
+                    this.RaisePropertyChanged("Text");
                 }
             }
         }

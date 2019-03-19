@@ -24,23 +24,24 @@ namespace ServerWCF.Model.UiInfo
         public string Status { get; set; }
 
         [DataMember]
-        public byte[] Avatar { get; set; }
+        public int ImageId { get; set; }
+
+        [ForeignKey("ImageId")]
+        public ChatFile Image { get; set; }
 
         [DataMember]
-        public Image Images;
+        [NotMapped]
+        public Image UiImage { get; set; }
 
         [DataMember]
-        public bool IsSelected
-        {
-            get;set;
-        }
+        public bool IsSelected{ get; set; }
 
-        protected UiInfo(string name, string uniqueName, string status, byte[] avatar)
+        protected UiInfo(string name, string uniqueName, string status, int imageId)
         {
             Name = name;
             UniqueName = uniqueName;
             Status = status;
-            Avatar = avatar;
+            ImageId = imageId;
         }
     }
 }

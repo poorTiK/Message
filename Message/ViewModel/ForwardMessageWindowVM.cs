@@ -34,7 +34,7 @@ namespace Message.ViewModel
         private string _messageText;
         public string MessageText
         {
-            get { return GlobalBase.Base64Decode(_message.Content); }
+            get { return GlobalBase.Base64Decode(_message.Text); }
         }
 
         public ForwardMessageWindowVM(BaseMessage message, IView view) : base()
@@ -42,14 +42,14 @@ namespace Message.ViewModel
 
             ContactsList = UserServiceClient.GetAllContactsUiInfo(GlobalBase.CurrentUser.Id);
 
-
                 foreach (var item in ContactsList)
                 {
                     if (item is UserUiInfo)
                     {
                         UserUiInfo userUiInfo = item as UserUiInfo;
-                        item.Avatar = GlobalBase.PhotoServiceClient.GetPhotoById(userUiInfo.UserId);
-                    }
+                        User user = UserServiceClient.GetUserById(userUiInfo.UserId);
+                        ChatFile chatFile = GlobalBase.FileServiceClient.getChatFileById(user.Id);
+                }
                 }
 
             _view = view;
@@ -79,10 +79,9 @@ namespace Message.ViewModel
                     UserUiInfo userUiInfo = SelectedContact as UserUiInfo;
                     var mes = new UserMessage()
                     {
-                        Content = _message.Content,
+                        Text = _message.Text,
                         DateOfSending = _message.DateOfSending,
                         SenderId = _message.SenderId,
-                        Type = _message.Type,
                         ReceiverId = userUiInfo.UserId
                     };
                     UserServiceClient.SendMessageAsync(mes);
