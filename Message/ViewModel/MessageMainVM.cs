@@ -51,6 +51,9 @@ namespace Message.ViewModel
                     ContactsList.Clear();
                     List<UiInfo> temp = new List<UiInfo>();
                     temp.AddRange(UserServiceClient.GetAllContactsUiInfo(GlobalBase.CurrentUser.Id));
+
+                    SetPhotosForUiInfo(temp);
+
                     ContactsList = temp;
 
                     foreach (var item in ContactsList)
@@ -84,6 +87,7 @@ namespace Message.ViewModel
                             Status = u.Status
                         }));
 
+                    SetPhotosForUiInfo(temp);
 
                     ContactsList = temp;
 
@@ -602,30 +606,7 @@ namespace Message.ViewModel
         {
             List<UiInfo> tempUiInfos = UserServiceClient.GetAllContactsUiInfo(GlobalBase.CurrentUser.Id);
 
-            foreach (var item in tempUiInfos)
-            {
-                if (item is UserUiInfo)
-                {
-                    UserUiInfo userUiInfo = item as UserUiInfo;
-                    item.Avatar = GlobalBase.PhotoServiceClient.GetPhotoById(userUiInfo.UserId);
-
-                    if (item.Avatar != null && item.Avatar.Length != 0)
-                    {
-                        MemoryStream memstr = new MemoryStream(item.Avatar);
-                        Dispatcher.CurrentDispatcher.Invoke(() => { item.Images = Image.FromStream(memstr); });
-                    }
-                    else
-                    {
-                        Dispatcher.CurrentDispatcher.Invoke(() => {
-                            item.Images = Image.FromFile(@"../../Resources/DefaultPicture.jpg");
-                        });
-                    }
-                }
-                else if (item is ChatGroupUiInfo)
-                {
-                    // todo: create ability to get picture for groups
-                }
-            }
+            SetPhotosForUiInfo(tempUiInfos);
 
             ContactsList = tempUiInfos;
 
@@ -718,5 +699,32 @@ namespace Message.ViewModel
             //throw new NotImplementedException();
         }
 
+        private void SetPhotosForUiInfo(List<UiInfo> infoList)
+        {
+            foreach (var item in infoList)
+            {
+                if (item is UserUiInfo)
+                {
+                    UserUiInfo userUiInfo = item as UserUiInfo;
+                    item.Avatar = GlobalBase.PhotoServiceClient.GetPhotoById(userUiInfo.UserId);
+
+                    if (item.Avatar != null && item.Avatar.Length != 0)
+                    {
+                        MemoryStream memstr = new MemoryStream(item.Avatar);
+                        Dispatcher.CurrentDispatcher.Invoke(() => { item.Images = Image.FromStream(memstr); });
+                    }
+                    else
+                    {
+                        Dispatcher.CurrentDispatcher.Invoke(() => {
+                            item.Images = Image.FromFile(@"../../Resources/DefaultPicture.jpg");
+                        });
+                    }
+                }
+                else if (item is ChatGroupUiInfo)
+                {
+                    // todo: create ability to get picture for groups
+                }
+            }
+        }
     }
 }
