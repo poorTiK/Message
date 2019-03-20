@@ -39,21 +39,11 @@ namespace Message.ViewModel
 
         public ForwardMessageWindowVM(BaseMessage message, IView view) : base()
         {
-
-            ContactsList = UserServiceClient.GetAllContactsUiInfo(GlobalBase.CurrentUser.Id);
-
-                foreach (var item in ContactsList)
-                {
-                    if (item is UserUiInfo)
-                    {
-                        UserUiInfo userUiInfo = item as UserUiInfo;
-                        User user = UserServiceClient.GetUserById(userUiInfo.UserId);
-                        ChatFile chatFile = GlobalBase.FileServiceClient.getChatFileById(user.Id);
-                }
-                }
+            List<UiInfo> uiInfos = UserServiceClient.GetAllContactsUiInfo(GlobalBase.CurrentUser.Id);
+            GlobalBase.loadPictures(UserServiceClient, uiInfos);
+            ContactsList = uiInfos;
 
             _view = view;
-
             _message = message;
         }
 

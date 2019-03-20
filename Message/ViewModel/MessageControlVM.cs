@@ -11,6 +11,7 @@ using Message.PhotoServiceReference;
 using Application = System.Windows.Application;
 using Clipboard = System.Windows.Clipboard;
 using System.IO;
+using Message.FileService;
 
 namespace Message.ViewModel
 {
@@ -30,16 +31,7 @@ namespace Message.ViewModel
 
         private string GetContent()
         {
-            switch (Message.Type)
-            {
-                case "TEXT":
-                    return GlobalBase.Base64Decode(Message.Content);
-                case "DATA":
-                    //
-                    break;
-            }
-
-            return string.Empty;
+            return GlobalBase.Base64Decode(Message.Text);
         }
 
         public MessageControlVM(BaseMessage message) : base()
@@ -83,7 +75,8 @@ namespace Message.ViewModel
                 var savePath = fileDialog.SelectedPath;
                 if (!string.IsNullOrEmpty(savePath))
                 {
-                    using (Stream fileStr = File.OpenWrite(savePath + "\\" + Message.AdditionalInfo))
+                    ChatFile chatFile = GlobalBase.FileServiceClient.getChatFileById(Message.FileId);
+                    using (Stream fileStr = File.OpenWrite(savePath + "\\" + chatFile.Name))
                     {
                         fileStr.Write(file, 0, file.Length);
 

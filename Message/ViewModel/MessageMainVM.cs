@@ -53,18 +53,7 @@ namespace Message.ViewModel
                     temp.AddRange(UserServiceClient.GetAllContactsUiInfo(GlobalBase.CurrentUser.Id));
                     ContactsList = temp;
 
-                    foreach (var item in ContactsList)
-                    {
-                        if (item is UserUiInfo)
-                        {
-                            UserUiInfo userUiInfo = item as UserUiInfo;
-                            item.Avatar = GlobalBase.PhotoServiceClient.GetPhotoById(userUiInfo.UserId);
-                        }
-                        else if (item is ChatGroupUiInfo)
-                        {
-                            //todo: make ability to get picture for group
-                        }
-                    }
+                    GlobalBase.loadPictures(UserServiceClient, ContactsList);
                 }
                 else
                 {
@@ -80,26 +69,13 @@ namespace Message.ViewModel
                             Name = u.FirstName + " " + u.LastName,
                             UniqueName = u.Login,
                             UserId = u.Id,
-                            Avatar = u.Avatar,
                             Status = u.Status
                         }));
 
 
                     ContactsList = temp;
 
-
-                    foreach (var item in ContactsList)
-                    {
-                        if (item is UserUiInfo)
-                        {
-                            UserUiInfo userUiInfo = item as UserUiInfo;
-                            item.Avatar = GlobalBase.PhotoServiceClient.GetPhotoById(userUiInfo.UserId);
-                        }
-                        else if (item is ChatGroupUiInfo)
-                        {
-                            //todo: make ability to get picture for group
-                        }
-                    }
+                    GlobalBase.loadPictures(UserServiceClient, ContactsList);
                 }
 
                 SetProperty(ref _searchContactStr, value);
@@ -229,18 +205,7 @@ namespace Message.ViewModel
             {
                 _view.MessageList.Clear();
 
-                foreach (var item in ContactsList)
-                {
-                    if (item is UserUiInfo)
-                    {
-                        UserUiInfo userUiInfo = item as UserUiInfo;
-                        item.Avatar = GlobalBase.PhotoServiceClient.GetPhotoById(userUiInfo.UserId);
-                    }
-                    else if (item is ChatGroupUiInfo)
-                    {
-
-                    }
-                }
+                GlobalBase.loadPictures(UserServiceClient, ContactsList);
 
                 List<BaseMessage> res = new List<BaseMessage>();
                 if (SelectedContact is UserUiInfo)
@@ -262,11 +227,10 @@ namespace Message.ViewModel
                             _view.MessageList.Add(new UserMessage()
                             {
                                 Id = mes.Id,
-                                Content = mes.Content,
+                                Text = mes.Text,
                                 DateOfSending = mes.DateOfSending,
                                 ReceiverId = userMessage.ReceiverId,
                                 SenderId = mes.SenderId,
-                                Type = mes.Type
                             });
                         }
                         else if (mes is GroupMessage)
@@ -275,11 +239,10 @@ namespace Message.ViewModel
                             _view.MessageList.Add(new GroupMessage()
                             {
                                 Id = mes.Id,
-                                Content = mes.Content,
+                                Text = mes.Text,
                                 DateOfSending = mes.DateOfSending,
                                 ChatGroupId = chatGroupMessage.ChatGroupId,
                                 SenderId = mes.SenderId,
-                                Type = mes.Type
                             });
                         }
                         
@@ -380,11 +343,10 @@ namespace Message.ViewModel
                     {
                         message = new UserMessage()
                         {
-                            Content = Encoding.UTF8.GetBytes(MessageText),
+                            Text = Encoding.UTF8.GetBytes(MessageText),
                             DateOfSending = DateTime.Now,
                             SenderId = GlobalBase.CurrentUser.Id,
                             ReceiverId = userUiInfo.UserId,
-                            Type = "TEXT",
                         };
                     }
                     else
@@ -394,12 +356,10 @@ namespace Message.ViewModel
                         {
                             messagesWithFile.Add(new UserMessage()
                             {
-                                Content = GlobalBase.FileToByte(file),
-                                AdditionalInfo = GlobalBase.GetShortName(file),
+                                Text = GlobalBase.FileToByte(file),
                                 DateOfSending = DateTime.Now,
                                 SenderId = GlobalBase.CurrentUser.Id,
                                 ReceiverId = userUiInfo.UserId,
-                                Type = "DATA",
                             });
                         }
                     }
@@ -412,11 +372,10 @@ namespace Message.ViewModel
                     {
                         message = new GroupMessage()
                         {
-                            Content = Encoding.UTF8.GetBytes(MessageText),
+                            Text = Encoding.UTF8.GetBytes(MessageText),
                             DateOfSending = DateTime.Now,
                             SenderId = GlobalBase.CurrentUser.Id,
                             ChatGroupId = userUiInfo.ChatGroupId,
-                            Type = "TEXT",
                         };
                     }
                     else
@@ -426,12 +385,10 @@ namespace Message.ViewModel
                         {
                             messagesWithFile.Add(new GroupMessage()
                             {
-                                Content = GlobalBase.FileToByte(file),
-                                AdditionalInfo = GlobalBase.GetShortName(file),
+                                Text = GlobalBase.FileToByte(file),
                                 DateOfSending = DateTime.Now,
                                 SenderId = GlobalBase.CurrentUser.Id,
                                 ChatGroupId = userUiInfo.ChatGroupId,
-                                Type = "DATA",
                             });
                         }
                     }
@@ -449,9 +406,9 @@ namespace Message.ViewModel
                         UserServiceClient.SendMessage(fileMessage);
                         var mes = UserServiceClient.GetUserMessages(GlobalBase.CurrentUser.Id,
                             (SelectedContact as UserUiInfo).UserId, 1);
-                        GlobalBase.PhotoServiceClient.SetFileToMessage(mes.Last().Id, fileMessage.Content);
+                        GlobalBase.PhotoServiceClient.SetFileToMessage(mes.Last().Id, fileMessage.Text);
                         fileMessage.Id = mes.Last().Id;
-                        fileMessage.Content = null;
+                        fileMessage.Text = null;
                         _view.MessageList.Add(fileMessage);
                     }
 
@@ -469,20 +426,8 @@ namespace Message.ViewModel
 
         private void SetAvatarForUI()
         {
-            using (PhotoServiceClient client = new PhotoServiceClient())
-            {
-                GlobalBase.CurrentUser.Avatar = client.GetPhotoById(GlobalBase.CurrentUser.Id);
-            }
 
-            if (GlobalBase.CurrentUser?.Avatar?.Length > 0)
-            {
-                MemoryStream memstr = new MemoryStream(GlobalBase.CurrentUser.Avatar);
-                Dispatcher.CurrentDispatcher.Invoke(() => { Images = Image.FromStream(memstr); });
-            }
-            else
-            {
-                Dispatcher.CurrentDispatcher.Invoke(() => { Images = Image.FromFile(@"../../Resources/DefaultPicture.jpg"); });
-            }
+            GlobalBase.loadPictureForUser(GlobalBase.CurrentUser, Images);
         }
 
         private void ExecuteOnSettingsCommand()
@@ -555,11 +500,10 @@ namespace Message.ViewModel
                                 message = new UserMessage()
                                 {
                                     Id = mes.Id,
-                                    Content = mes.Content,
+                                    Text = mes.Text,
                                     DateOfSending = mes.DateOfSending,
                                     ReceiverId = userMessage.ReceiverId,
                                     SenderId = mes.SenderId,
-                                    Type = mes.Type
                                 };
                             }
                             else if (mes is GroupMessage)
@@ -568,15 +512,14 @@ namespace Message.ViewModel
                                 message = new GroupMessage()
                                 {
                                     Id = mes.Id,
-                                    Content = mes.Content,
+                                    Text = mes.Text,
                                     DateOfSending = mes.DateOfSending,
                                     ChatGroupId = groupMessage.ChatGroupId,
                                     SenderId = mes.SenderId,
-                                    Type = mes.Type
                                 };
                             }
 
-                            if (GlobalBase.Base64Decode(mes.Content).Contains(DialogSearchStr))
+                            if (GlobalBase.Base64Decode(mes.Text).Contains(DialogSearchStr))
                             {
                                 _view.MessageList.Add(message);
                             }
@@ -601,32 +544,7 @@ namespace Message.ViewModel
         private void UpdateContactList()
         {
             List<UiInfo> tempUiInfos = UserServiceClient.GetAllContactsUiInfo(GlobalBase.CurrentUser.Id);
-
-            foreach (var item in tempUiInfos)
-            {
-                if (item is UserUiInfo)
-                {
-                    UserUiInfo userUiInfo = item as UserUiInfo;
-                    item.Avatar = GlobalBase.PhotoServiceClient.GetPhotoById(userUiInfo.UserId);
-
-                    if (item.Avatar != null && item.Avatar.Length != 0)
-                    {
-                        MemoryStream memstr = new MemoryStream(item.Avatar);
-                        Dispatcher.CurrentDispatcher.Invoke(() => { item.Images = Image.FromStream(memstr); });
-                    }
-                    else
-                    {
-                        Dispatcher.CurrentDispatcher.Invoke(() => {
-                            item.Images = Image.FromFile(@"../../Resources/DefaultPicture.jpg");
-                        });
-                    }
-                }
-                else if (item is ChatGroupUiInfo)
-                {
-                    // todo: create ability to get picture for groups
-                }
-            }
-
+            GlobalBase.loadPictures(UserServiceClient, tempUiInfos);
             ContactsList = tempUiInfos;
 
             UiInfo temp = SelectedContact;
@@ -657,7 +575,7 @@ namespace Message.ViewModel
         {
             User sender = UserServiceClient.GetAllUsers().FirstOrDefault(x => x.Id == message.SenderId);
 
-            var mes = "New message from  @" + sender.Login + "\n" + "\"" + GlobalBase.Base64Decode(message.Content) +
+            var mes = "New message from  @" + sender.Login + "\n" + "\"" + GlobalBase.Base64Decode(message.Text) +
                       "\"";
             GlobalBase.ShowNotify("New message", mes);
 

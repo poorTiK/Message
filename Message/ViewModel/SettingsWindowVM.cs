@@ -39,23 +39,7 @@ namespace Message.ViewModel
             set { _image = value; OnPropertyChanged(new System.ComponentModel.PropertyChangedEventArgs("Images")); }
 
         }
-        private void SetAvatarForUI()
-        {
-            using (PhotoServiceClient client = new PhotoServiceClient())
-            {
-                GlobalBase.CurrentUser.Avatar = client.GetPhotoById(GlobalBase.CurrentUser.Id);
-            }
 
-            if (GlobalBase.CurrentUser?.Avatar?.Length > 0)
-            {
-                MemoryStream memstr = new MemoryStream(GlobalBase.CurrentUser.Avatar);
-                Dispatcher.CurrentDispatcher.Invoke(() => { Images = Image.FromStream(memstr); });
-            }
-            else
-            {
-                Dispatcher.CurrentDispatcher.Invoke(() => { Images = Image.FromFile(@"../../Resources/DefaultPicture.jpg"); });
-            }
-        }
         public SettingsWindowVM(IView view) : base()
         {
             this.view = view;
@@ -99,6 +83,11 @@ namespace Message.ViewModel
             GlobalBase.UpdateUI.Invoke();
 
             view.Hide(true);
+        }
+
+        private void SetAvatarForUI()
+        {
+            GlobalBase.loadPictureForUser(GlobalBase.CurrentUser, Images);
         }
 
     }

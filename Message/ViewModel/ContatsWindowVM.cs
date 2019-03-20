@@ -190,26 +190,7 @@ namespace Message.ViewModel
         private void UpdateContacts()
         {
             List<UiInfo> uiInfos = UserServiceClient.GetAllContactsUiInfo(GlobalBase.CurrentUser.Id);
-
-            foreach (var item in uiInfos)
-            {
-                if (item is UserUiInfo)
-                {
-                    UserUiInfo userUiInfo = item as UserUiInfo;
-                    User user = UserServiceClient.GetUserById(userUiInfo.UserId);
-                    ChatFile chatFile = GlobalBase.FileServiceClient.getChatFileById(user.Id);
-
-                    if (chatFile?.Source?.Length > 0)
-                    {
-                        MemoryStream memstr = new MemoryStream(chatFile.Source);
-                        Dispatcher.CurrentDispatcher.Invoke(() => { item.UiImage = Image.FromStream(memstr); });
-                    }
-                    else
-                    {
-                        Dispatcher.CurrentDispatcher.Invoke(() => { item.UiImage = Image.FromFile(@"../../Resources/DefaultPicture.jpg"); });
-                    }
-                }
-            }
+            GlobalBase.loadPictures(UserServiceClient,uiInfos);
 
             ContactsList = uiInfos;
             ManageControls();
