@@ -75,7 +75,7 @@ namespace Message.ViewModel
                     {
                         UserUiInfo userUiInfo = uiInfo as UserUiInfo;
                         User user = UserServiceClient.GetUserById(userUiInfo.UserId);
-                        ChatFile chatFile = GlobalBase.FileServiceClient.getChatFileById(user.Id);
+                        FileService.ChatFile chatFile = GlobalBase.FileServiceClient.getChatFileById(user.Id);
 
                         if (chatFile?.Source != null && chatFile?.Source?.Length != 0)
                         {
@@ -118,7 +118,7 @@ namespace Message.ViewModel
                 {
                     UserUiInfo userUiInfo = item as UserUiInfo;
                     User user = UserServiceClient.GetUserById(userUiInfo.UserId);
-                    ChatFile chatFile = GlobalBase.FileServiceClient.getChatFileById(user.Id);
+                    FileService.ChatFile chatFile = GlobalBase.FileServiceClient.getChatFileById(user.Id);
 
                     if (chatFile?.Source != null && chatFile?.Source?.Length != 0)
                     {

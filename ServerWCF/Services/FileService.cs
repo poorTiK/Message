@@ -17,7 +17,7 @@ namespace ServerWCF.Services
         {
             using (UserContext userContext = new UserContext())
             {
-                return userContext.Files.FirstOrDefault(f => f.Id == id);
+                return userContext.ChatFiles.FirstOrDefault(f => f.Id == id);
             }
         }
 
@@ -25,7 +25,7 @@ namespace ServerWCF.Services
         {
             using (UserContext userContext = new UserContext())
             {
-                return userContext.Files.FirstOrDefault(f => f.Name == name);
+                return userContext.ChatFiles.FirstOrDefault(f => f.Name == name);
             }
         }
 
@@ -33,7 +33,7 @@ namespace ServerWCF.Services
         {
             using (UserContext userContext = new UserContext())
             {
-                int id = userContext.Files.Add(chatFile).Id;
+                int id = userContext.ChatFiles.Add(chatFile).Id;
                 userContext.SaveChanges();
 
                 return id;

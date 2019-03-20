@@ -75,7 +75,7 @@ namespace Message.ViewModel
                 var savePath = fileDialog.SelectedPath;
                 if (!string.IsNullOrEmpty(savePath))
                 {
-                    ChatFile chatFile = GlobalBase.FileServiceClient.getChatFileById(Message.FileId);
+                    FileService.ChatFile chatFile = GlobalBase.FileServiceClient.getChatFileById(Message.ChatFileId);
                     using (Stream fileStr = File.OpenWrite(savePath + "\\" + chatFile.Name))
                     {
                         fileStr.Write(file, 0, file.Length);

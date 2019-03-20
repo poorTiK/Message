@@ -355,10 +355,10 @@ namespace ServerWCF.Services
                 using (UserContext db = new UserContext())
                 {
                     var user = db.Users.FirstOrDefault(u => u.Login == login);
+                    return user;
                 }
-                return null;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 return null;
             }

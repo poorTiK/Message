@@ -14,17 +14,20 @@ namespace ServerWCF.Model.Messages
         [DataMember]
         public int Id { get; set; }
 
+        
         [DataMember]
         public int SenderId { get; set; }
 
         [ForeignKey("SenderId")]
+        [DataMember]
         public User Sender { get; set; }
 
+        [ForeignKey("ChatFile")]
         [DataMember]
-        public int FileId { get; set; }
+        public int ChatFileId { get; set; }
 
-        [ForeignKey("FileId")]
-        public ChatFile File { get; set; }
+        [DataMember]
+        public ChatFile ChatFile { get; set; }
 
         [DataMember]
         public byte[] Text { get; set; }

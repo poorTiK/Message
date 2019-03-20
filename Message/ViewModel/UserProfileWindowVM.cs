@@ -185,7 +185,7 @@ namespace Message.ViewModel
 
         private void SetAvatarForUI()
         {
-            ChatFile chatFile = GlobalBase.FileServiceClient.getChatFileById(GlobalBase.CurrentUser.ImageId);
+            FileService.ChatFile chatFile = GlobalBase.FileServiceClient.getChatFileById(GlobalBase.CurrentUser.ImageId);
             if (chatFile?.Source?.Length > 0)
             {
                 MemoryStream memstr = new MemoryStream(chatFile.Source);
@@ -210,7 +210,7 @@ namespace Message.ViewModel
                     GlobalBase.CurrentUser.Phone = UserPhone;
                     GlobalBase.CurrentUser.Email = UserEmail;
                     GlobalBase.CurrentUser.Bio = UserBio;
-                    ChatFile chatFile = GlobalBase.FileServiceClient.getChatFileById(GlobalBase.CurrentUser.ImageId);
+                    FileService.ChatFile chatFile = GlobalBase.FileServiceClient.getChatFileById(GlobalBase.CurrentUser.ImageId);
                     var tempAvatar = chatFile.Source;
                     res = UserServiceClient.AddOrUpdateUser(GlobalBase.CurrentUser);
 
