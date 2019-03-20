@@ -5,6 +5,10 @@ using System.Globalization;
 using Message.PhotoServiceReference;
 using System.IO;
 using System.Linq;
+using Message.FileService;
+using System.Collections.Generic;
+using System.Windows.Threading;
+using System.Drawing;
 
 namespace Message.Model
 {
@@ -16,9 +20,12 @@ namespace Message.Model
 
         public static PhotoServiceClient PhotoServiceClient { get; set; }
 
+        public static FileServiceClient FileServiceClient { get; set; } 
+
         static GlobalBase()
         {
             PhotoServiceClient = new PhotoServiceClient();
+            FileServiceClient = new FileServiceClient();
         }
 
         public static string Base64Encode(string plainText)
@@ -63,5 +70,47 @@ namespace Message.Model
 
             return fileName;
         } 
+
+        public static void loadPictures(UserServiceClient userServiceClient, List<UiInfo> uiInfos)
+        {
+            foreach (var item in uiInfos)
+            {
+                loadPicture(userServiceClient, item);
+            }
+        }
+
+        public static void loadPicture(UserServiceClient userServiceClient, UiInfo uiInfos)
+        {
+            if (uiInfos is UserUiInfo)
+            {
+                UserUiInfo userUiInfo = uiInfos as UserUiInfo;
+                User user = userServiceClient.GetUserById(userUiInfo.UserId);
+                ChatFile chatFile = FileServiceClient.getChatFileById(user.Id);
+
+                if (chatFile?.Source?.Length > 0)
+                {
+                    MemoryStream memstr = new MemoryStream(chatFile.Source);
+                    Dispatcher.CurrentDispatcher.Invoke(() => { uiInfos.UiImage = Image.FromStream(memstr); });
+                }
+                else
+                {
+                    Dispatcher.CurrentDispatcher.Invoke(() => { uiInfos.UiImage = Image.FromFile(@"../../Resources/DefaultPicture.jpg"); });
+                }
+            }
+        }
+
+        public static void loadPictureForUser(User user, Image Images)
+        {
+            ChatFile chatFile = FileServiceClient.getChatFileById(user.Id);
+            if (chatFile != null && chatFile?.Source?.Length > 0)
+            {
+                MemoryStream memstr = new MemoryStream(chatFile.Source);
+                Dispatcher.CurrentDispatcher.Invoke(() => { Images = Image.FromStream(memstr); });
+            }
+            else
+            {
+                Dispatcher.CurrentDispatcher.Invoke(() => { Images = Image.FromFile(@"../../Resources/DefaultPicture.jpg"); });
+            }
+        }
     }
 }

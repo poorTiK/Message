@@ -176,11 +176,6 @@ namespace ServerWCF.Services
                             "where Users.Id in (select UserOwnedId " +
                             "from BaseContacts " +
                             "where BaseContacts.UserOwnerId = @p0);", userId).ToList();
-
-                    foreach (var item in contactsForOwner)
-                    {
-                        item.Avatar = null;
-                    }
                 }
                 catch (Exception ex)
                 {
@@ -202,11 +197,6 @@ namespace ServerWCF.Services
                           " where ChatGroups.Id in (select ChatGroupId" +
                           " from BaseContacts" +
                           " where BaseContacts.UserOwnerId = @p0);", userId).ToList();
-
-                    foreach (var item in contactsForOwner)
-                    {
-                        item.Avatar = null;
-                    }
                 }
                 catch (Exception ex)
                 {
@@ -237,7 +227,6 @@ namespace ServerWCF.Services
 
                     if (dbChatGroup != null)
                     {
-                        dbChatGroup.Avatar = chatGroupToAdd.Avatar;
                         dbChatGroup.Participants = chatGroupToAdd.Participants;
                     }
                     else
@@ -316,7 +305,6 @@ namespace ServerWCF.Services
 
                         dbUser.Email = user.Email;
                         dbUser.Bio = user.Bio;
-                        dbUser.Avatar = user.Avatar;
                         dbUser.FirstName = user.FirstName;
                         dbUser.Status = user.Status;
                         dbUser.Phone = user.Phone;
@@ -351,10 +339,7 @@ namespace ServerWCF.Services
                 try
                 {
                    User user =  db.Users.Where(x => x.Login.Contains(login)).FirstOrDefault();
-                    if (user != null) {
-                        user.Avatar = null;
-                    }
-                    return user;
+                   return user;
                 }
                 catch (Exception ex)
                 {
@@ -370,11 +355,6 @@ namespace ServerWCF.Services
                 using (UserContext db = new UserContext())
                 {
                     var user = db.Users.FirstOrDefault(u => u.Login == login);
-                    if (user.Login == login && user.Password.SequenceEqual(password))
-                    {
-                        user.Avatar = null;
-                        return user;
-                    }
                 }
                 return null;
             }
@@ -391,7 +371,6 @@ namespace ServerWCF.Services
                 using (UserContext db = new UserContext())
                 {
                     User user = db.Users.FirstOrDefault(u => u.Id == id);
-                    user.Avatar = null;
                     return user;
                 }
             }
@@ -412,10 +391,8 @@ namespace ServerWCF.Services
                     {
                         if (user.Email == email)
                         {
-                            user.Avatar = null;
                             return user;
                         }
-
                     }
                     return null;
                 }
@@ -447,10 +424,6 @@ namespace ServerWCF.Services
         public List<UiInfo> FindUsersUiUnfoByLogin(string keyWorkForLogin)
         {
             List<UiInfo> usersUiInfos = new List<UiInfo>(FindUsersByLogin(keyWorkForLogin).Select(u => new UserUiInfo(u)));
-            foreach (var item in usersUiInfos)
-            {
-                item.Avatar = null;
-            }
             return usersUiInfos;
         }
 
@@ -579,10 +552,6 @@ namespace ServerWCF.Services
                         if (message is GroupMessage)
                         {
                             GroupMessage groupMessage = message as GroupMessage;
-                            if (groupMessage.Type == "DATA")
-                            {
-                                groupMessage.Content = null;
-                            }
                             if (messagesToReturn.Count == limit)
                             {
                                 break;
@@ -616,11 +585,6 @@ namespace ServerWCF.Services
                         if (message is UserMessage)
                         {
                             UserMessage userMessage = message as UserMessage;
-
-                            if (userMessage.Type == "DATA")
-                            {
-                                userMessage.Content = null;
-                            }
 
                             if (messagesToReturn.Count == limin)
                             {
@@ -658,9 +622,9 @@ namespace ServerWCF.Services
 
                 try
                 {
-                    foreach (BaseMessage message in userContext.Messages.Where(mes => mes.Type == "TEXT").ToList())
+                    foreach (BaseMessage message in userContext.Messages)
                     {
-                        string textMessage = System.Text.Encoding.UTF8.GetString(message.Content);
+                        string textMessage = System.Text.Encoding.UTF8.GetString(message.Text);
                         if (textMessage.Contains(keyWord))
                         {
                             searchingResult.Add(message);
@@ -710,9 +674,7 @@ namespace ServerWCF.Services
                     }
                     dbMessage.Sender = editedMessage.Sender;
                     dbMessage.SenderId = editedMessage.SenderId;
-                    dbMessage.Type = editedMessage.Type;
                     dbMessage.DateOfSending = editedMessage.DateOfSending;
-                    dbMessage.Content = editedMessage.Content;
 
                     CallbackData callbackData = usersOnline.Where(cd => cd.User.Id == dbMessage.SenderId).FirstOrDefault();
                     if (callbackData == null)
@@ -912,7 +874,7 @@ namespace ServerWCF.Services
 
         private string Validate(BaseMessage baseMessage)
         {
-            if (baseMessage.Content.Length == 0)
+            if (baseMessage.Text.Length == 0)
             {
                 return "Message is empty.";
             }

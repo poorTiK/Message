@@ -13,7 +13,7 @@ namespace ServerWCF.Model.UiInfo
         [DataMember]
         public int ChatGroupId { get; set; }
 
-        public ChatGroupUiInfo(ChatGroup chatGroup) : base(chatGroup.Name, chatGroup.Name, "Group", chatGroup.Avatar)
+        public ChatGroupUiInfo(ChatGroup chatGroup) : base(chatGroup.Name, chatGroup.Name, "Group", chatGroup.ImageId)
         {
             ChatGroupId = chatGroup.Id;
         }

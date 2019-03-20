@@ -35,7 +35,14 @@ namespace ServerWCF.Model
         public string Bio { get; set; }
 
         [DataMember]
-        public byte[] Avatar { get; set; }
+        public int ImageId { get; set; }
+
+        [ForeignKey("ImageId")]
+        public ChatFile Image { get; set; }
+
+        [DataMember]
+        [NotMapped]
+        public Image UiImage { get; set; }
 
         [DataMember]
         public string Status { get; set; }

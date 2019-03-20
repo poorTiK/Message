@@ -189,6 +189,11 @@
     <Compile Include="ChatSettingWindow.xaml.cs">
       <DependentUpon>ChatSettingWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Connected Services\FileService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
     <Compile Include="Connected Services\PhotoServiceReference\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -360,6 +365,19 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="Connected Services\FileService\Message.FileService.ChatFile.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Connected Services\FileService\ServerWCF.Model.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\FileService\service.wsdl" />
+    <None Include="Connected Services\FileService\service.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\FileService\service1.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Connected Services\PhotoServiceReference\service.wsdl" />
     <None Include="Connected Services\PhotoServiceReference\service.xsd">
       <SubType>Designer</SubType>
@@ -428,6 +446,7 @@
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <ItemGroup>
+    <WCFMetadataStorage Include="Connected Services\FileService\" />
     <WCFMetadataStorage Include="Connected Services\PhotoServiceReference\" />
     <WCFMetadataStorage Include="Connected Services\UserServiceReference\" />
   </ItemGroup>
@@ -469,6 +488,18 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Connected Services\UserServiceReference\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\FileService\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\FileService\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Connected Services\FileService\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>

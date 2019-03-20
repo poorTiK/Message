@@ -9,11 +9,11 @@
   <xs:element name="ArrayOfUiInfo" nillable="true" type="tns:ArrayOfUiInfo" />
   <xs:complexType name="UiInfo">
     <xs:sequence>
-      <xs:element minOccurs="0" name="Avatar" nillable="true" type="xs:base64Binary" />
-      <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/System.Drawing" minOccurs="0" name="Images" nillable="true" type="q1:Image" />
+      <xs:element minOccurs="0" name="ImageId" type="xs:int" />
       <xs:element minOccurs="0" name="IsSelected" type="xs:boolean" />
       <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="Status" nillable="true" type="xs:string" />
+      <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/System.Drawing" minOccurs="0" name="UiImage" nillable="true" type="q1:Image" />
       <xs:element minOccurs="0" name="UniqueName" nillable="true" type="xs:string" />
     </xs:sequence>
   </xs:complexType>
