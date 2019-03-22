@@ -22,7 +22,6 @@
     <Window.Resources>
         <med:ImageConverter x:Key="imageConverter" />
         <BooleanToVisibilityConverter x:Key="BoolToVisConverter" />
-        <converter:ByteToImageConverter x:Key="imgConverter" />
     </Window.Resources>
 
     <Grid Background="{DynamicResource PopUpBackground}">

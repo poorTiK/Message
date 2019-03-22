@@ -182,7 +182,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="AdditionalItems\ByteToImageConverter.cs" />
     <Compile Include="AdditionalItems\CustomMessageBox.xaml.cs">
       <DependentUpon>CustomMessageBox.xaml</DependentUpon>
     </Compile>
@@ -232,6 +231,7 @@
       <DependentUpon>MessageMainWnd.xaml</DependentUpon>
     </Compile>
     <Compile Include="Model\GlobalBase.cs" />
+    <Compile Include="Model\ImageHelper.cs" />
     <Compile Include="Model\ImageToByteArrayConverter.cs" />
     <Compile Include="Model\SerializeUserToRegistry.cs" />
     <Compile Include="Model\Translations.cs" />

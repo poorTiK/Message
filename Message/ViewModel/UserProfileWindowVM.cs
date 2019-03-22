@@ -149,7 +149,7 @@ namespace Message.ViewModel
         private DelegateCommand _onCloseCommand;
 
         public DelegateCommand CloseCommand =>
-            _onCloseCommand ?? (_onApplyChanges = new DelegateCommand(ExecuteClose));
+            _onCloseCommand ?? (_onCloseCommand = new DelegateCommand(ExecuteClose));
 
         private void ExecuteClose()
         {

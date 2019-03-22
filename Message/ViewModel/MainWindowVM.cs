@@ -8,7 +8,9 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using Message.Encryption;
+using Message.FileService;
 using Message.Model;
+using Message.PhotoServiceReference;
 
 namespace Message.ViewModel
 {
@@ -269,10 +271,12 @@ namespace Message.ViewModel
                         Status = DateTime.Now.ToString()
                     };
 
-                    if (UserServiceClient.GetUserByLogin(UserLogin) == null) //if time move validation parts to ValidateOnRegister()
+                    if (UserServiceClient.GetUserByLogin(UserLogin) == null) //TODO if time move validation parts to ValidateOnRegister()
                     {
                         if (UserServiceClient.AddOrUpdateUser(user) == string.Empty)
                         {
+                            //var addedUser = UserServiceClient.GetUserByLogin(UserLogin);
+                            //GlobalBase.FileServiceClient.UploadFile(new FileService.ChatFile(){ Source = ImageHelper.GetDefImage() });
                             Application.Current.Dispatcher.Invoke(new Action((() =>
                             {
                                 CustomMessageBox.Show(Translations.GetTranslation()["RegisterDone"].ToString());

@@ -18,7 +18,6 @@
 
     <Window.Resources>
         <med:ImageConverter x:Key="imageConverter" />
-        <converter:ByteToImageConverter x:Key="imgConverter" />
         <BooleanToVisibilityConverter x:Key="BoolToVisConverter" />
     </Window.Resources>
 

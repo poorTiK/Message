@@ -426,7 +426,6 @@ namespace Message.ViewModel
 
         private void SetAvatarForUI()
         {
-
             GlobalBase.loadPictureForUser(GlobalBase.CurrentUser, Images);
         }
 

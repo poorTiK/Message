@@ -21,7 +21,6 @@
     </WindowChrome.WindowChrome>
 
     <Window.Resources>
-        <converter:ByteToImageConverter x:Key="imgConverter" />
         <BooleanToVisibilityConverter x:Key="BoolToVisConverter" />
         <med:ImageConverter x:Key="imageConverter" />
     </Window.Resources>
