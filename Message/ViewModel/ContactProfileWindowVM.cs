@@ -184,7 +184,7 @@ namespace Message.ViewModel
         {
             if (Profile.ImageId != 0)
             {
-                ChatFile chatFile = GlobalBase.FileServiceClient.getChatFileById(Profile.ImageId);
+                FileService.ChatFile chatFile = GlobalBase.FileServiceClient.getChatFileById(Profile.ImageId);
 
                 if (chatFile?.Source?.Length > 0)
                 {

@@ -14,10 +14,11 @@ namespace ServerWCF.Model
         [DataMember]
         public string Name { get; set; }
 
+
+        [ForeignKey("Image")]
         [DataMember]
         public int ImageId { get; set; }
 
-        [ForeignKey("ImageId")]
         public ChatFile Image { get; set; }
 
         [DataMember]

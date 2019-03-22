@@ -18,10 +18,15 @@ namespace ServerWCF.Context
         public DbSet<BaseMessage> Messages { get; set; }
         public DbSet<ApplicationSettings> ApplicationSettings { get; set; }
         public DbSet<ChatGroup> ChatGroups { get; set; }
-        public DbSet<ChatFile> Files { get; set; }
+        public DbSet<ChatFile> ChatFiles { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<BaseContact>()
+                .HasRequired(s => s.UserOwner)
+                .WithMany()
+                .WillCascadeOnDelete(false);
+
             modelBuilder.Entity<UserToUserContact>()
                 .HasRequired(s => s.UserOwned)
                 .WithMany()
@@ -32,20 +37,32 @@ namespace ServerWCF.Context
                 .WithMany()
                 .WillCascadeOnDelete(false);
 
-            modelBuilder.Entity<BaseContact>()
-                .HasRequired(s => s.UserOwner)
-                .WithMany()
+            //files
+            modelBuilder.Entity<BaseMessage>()
+                .HasRequired(m => m.ChatFile)
+                .WithRequiredPrincipal()
                 .WillCascadeOnDelete(false);
 
-            modelBuilder.Entity<UserMessage>()
+            modelBuilder.Entity<User>()
+                .HasRequired(u => u.Image)
+                .WithRequiredPrincipal()
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<ChatGroup>()
+                .HasRequired(cg => cg.Image)
+                .WithRequiredPrincipal()
+                .WillCascadeOnDelete(false);
+            ///////////////////////////
+            modelBuilder.Entity<BaseMessage>()
                 .HasRequired(s => s.Sender)
                 .WithMany()
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<UserMessage>()
-                .HasRequired(s => s.Receiver)
-                .WithMany()
-                .WillCascadeOnDelete(false);
+                  .HasRequired(s => s.Receiver)
+                  .WithMany()
+                  .WillCascadeOnDelete(false);
+
         }
     }
 }

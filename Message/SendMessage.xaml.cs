@@ -21,9 +21,9 @@ namespace Message
         {
             InitializeComponent();
 
-            MessageText.Text = message.FileId == 0 ? GlobalBase.Base64Decode(message.Text) : "File";
+            MessageText.Text = message.ChatFileId == 0 ? GlobalBase.Base64Decode(message.Text) : "File";
             SendTime.Text = message.DateOfSending.Hour + ":" + message.DateOfSending.Minute;
-            ButtonDwnld.Visibility = message.FileId != 0 ? Visibility.Visible : Visibility.Collapsed;
+            ButtonDwnld.Visibility = message.ChatFileId != 0 ? Visibility.Visible : Visibility.Collapsed;
 
             DataContext = new MessageControlVM(message);
         }

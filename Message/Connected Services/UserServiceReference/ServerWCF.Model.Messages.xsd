@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/ServerWCF.Model.Messages" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/ServerWCF.Model.Messages" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import namespace="http://schemas.datacontract.org/2004/07/ServerWCF.Model" />
   <xs:complexType name="ArrayOfGroupMessage">
     <xs:sequence>
       <xs:element minOccurs="0" maxOccurs="unbounded" name="GroupMessage" nillable="true" type="tns:GroupMessage" />
@@ -18,9 +19,11 @@
   <xs:element name="GroupMessage" nillable="true" type="tns:GroupMessage" />
   <xs:complexType name="BaseMessage">
     <xs:sequence>
+      <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/ServerWCF.Model" minOccurs="0" name="ChatFile" nillable="true" type="q1:ChatFile" />
+      <xs:element minOccurs="0" name="ChatFileId" type="xs:int" />
       <xs:element minOccurs="0" name="DateOfSending" type="xs:dateTime" />
-      <xs:element minOccurs="0" name="FileId" type="xs:int" />
       <xs:element minOccurs="0" name="Id" type="xs:int" />
+      <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/ServerWCF.Model" minOccurs="0" name="Sender" nillable="true" type="q2:User" />
       <xs:element minOccurs="0" name="SenderId" type="xs:int" />
       <xs:element minOccurs="0" name="Text" nillable="true" type="xs:base64Binary" />
     </xs:sequence>

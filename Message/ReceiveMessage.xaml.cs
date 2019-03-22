@@ -22,10 +22,10 @@ namespace Message
         {
             InitializeComponent();
 
-            ChatFile chatFile = GlobalBase.FileServiceClient.getChatFileById(message.FileId);
-            MessageText.Text = message.FileId == 0 ? GlobalBase.Base64Decode(chatFile.Source) : "File";
+            FileService.ChatFile chatFile = GlobalBase.FileServiceClient.getChatFileById(message.ChatFileId);
+            MessageText.Text = message.ChatFileId == 0 ? GlobalBase.Base64Decode(chatFile.Source) : "File";
             SendTime.Text = message.DateOfSending.Hour + ":" + message.DateOfSending.Minute;
-            ButtonDwnld.Visibility = message.FileId != 0 ? Visibility.Visible : Visibility.Collapsed;
+            ButtonDwnld.Visibility = message.ChatFileId != 0 ? Visibility.Visible : Visibility.Collapsed;
 
             DataContext = new MessageControlVM(message);
         }
