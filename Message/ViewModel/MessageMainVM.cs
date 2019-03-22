@@ -52,8 +52,6 @@ namespace Message.ViewModel
                     List<UiInfo> temp = new List<UiInfo>();
                     temp.AddRange(UserServiceClient.GetAllContactsUiInfo(GlobalBase.CurrentUser.Id));
 
-                    SetPhotosForUiInfo(temp);
-
                     ContactsList = temp;
 
                     GlobalBase.loadPictures(UserServiceClient, ContactsList);
@@ -74,8 +72,6 @@ namespace Message.ViewModel
                             UserId = u.Id,
                             Status = u.Status
                         }));
-
-                    SetPhotosForUiInfo(temp);
 
                     ContactsList = temp;
 
@@ -581,7 +577,7 @@ namespace Message.ViewModel
 
             if (sender.Id != (SelectedContact as UserUiInfo).UserId)
             {
-                var mes = "New message from  @" + sender.Login + "\n" + "\"" + GlobalBase.Base64Decode(message.Content) +
+                var mes = "New message from  @" + sender.Login + "\n" + "\"" + GlobalBase.Base64Decode(message.Text) +
                           "\"";
                 GlobalBase.ShowNotify("New message", mes);
             }
@@ -640,32 +636,6 @@ namespace Message.ViewModel
             //throw new NotImplementedException();
         }
 
-        private void SetPhotosForUiInfo(List<UiInfo> infoList)
-        {
-            foreach (var item in infoList)
-            {
-                if (item is UserUiInfo)
-                {
-                    UserUiInfo userUiInfo = item as UserUiInfo;
-                    item.Avatar = GlobalBase.PhotoServiceClient.GetPhotoById(userUiInfo.UserId);
-
-                    if (item.Avatar != null && item.Avatar.Length != 0)
-                    {
-                        MemoryStream memstr = new MemoryStream(item.Avatar);
-                        Dispatcher.CurrentDispatcher.Invoke(() => { item.Images = Image.FromStream(memstr); });
-                    }
-                    else
-                    {
-                        Dispatcher.CurrentDispatcher.Invoke(() => {
-                            item.Images = Image.FromFile(@"../../Resources/DefaultPicture.jpg");
-                        });
-                    }
-                }
-                else if (item is ChatGroupUiInfo)
-                {
-                    // todo: create ability to get picture for groups
-                }
-            }
-        }
+        
     }
 }
