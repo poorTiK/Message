@@ -234,6 +234,7 @@
     <Compile Include="Model\GlobalBase.cs" />
     <Compile Include="Model\ImageToByteArrayConverter.cs" />
     <Compile Include="Model\SerializeUserToRegistry.cs" />
+    <Compile Include="Model\Translations.cs" />
     <Compile Include="ReceiveMessage.xaml.cs">
       <DependentUpon>ReceiveMessage.xaml</DependentUpon>
     </Compile>

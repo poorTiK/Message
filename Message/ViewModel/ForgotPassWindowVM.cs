@@ -1,5 +1,6 @@
 ﻿using Message.AdditionalItems;
 using Message.Interfaces;
+using Message.Model;
 using Message.UserServiceReference;
 using Prism.Commands;
 using System;
@@ -102,7 +103,7 @@ namespace Message.ViewModel
 
                 Application.Current.Dispatcher.Invoke(new Action((() =>
                 {
-                    CustomMessageBox.Show(Application.Current.Resources.MergedDictionaries[4]["Error"].ToString(), Application.Current.Resources.MergedDictionaries[4]["CantFindUser"].ToString());
+                    CustomMessageBox.Show(Translations.GetTranslation()["Error"].ToString(), Application.Current.Resources.MergedDictionaries[4]["CantFindUser"].ToString());
                     ts.Cancel();
                 })));
             }, ct).ContinueWith((task =>
@@ -111,7 +112,7 @@ namespace Message.ViewModel
                 {
                     Application.Current.Dispatcher.Invoke(new Action((() =>
                     {
-                        CustomMessageBox.Show(Application.Current.Resources.MergedDictionaries[4]["RestorePass"].ToString(), Application.Current.Resources.MergedDictionaries[4]["EmailSend"].ToString());
+                        CustomMessageBox.Show(Translations.GetTranslation()["RestorePass"].ToString(), Application.Current.Resources.MergedDictionaries[4]["EmailSend"].ToString());
                     })));
                 }
                 IsSending = false;
@@ -144,7 +145,7 @@ namespace Message.ViewModel
 
             Application.Current.Dispatcher.Invoke(new Action((() =>
             {
-                CustomMessageBox.Show(Application.Current.Resources.MergedDictionaries[4]["RestorePass"].ToString(), Application.Current.Resources.MergedDictionaries[4]["EmailSend"].ToString());
+                CustomMessageBox.Show(Translations.GetTranslation()["RestorePass"].ToString(), Application.Current.Resources.MergedDictionaries[4]["EmailSend"].ToString());
                 IsSending = false;
             })));
         }

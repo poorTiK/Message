@@ -224,7 +224,6 @@ namespace Message.ViewModel
                     {
                         GlobalBase.PhotoServiceClient.SetPhotoById(GlobalBase.CurrentUser.Id, tempAvatar);
                         GlobalBase.CurrentUser.ImageId = chatFile.Id;
-                    
                     }
 
                     SetAvatarForUI();
@@ -233,7 +232,7 @@ namespace Message.ViewModel
                     {
                         Application.Current.Dispatcher.Invoke(new Action((() =>
                         {
-                            CustomMessageBox.Show(Application.Current.Resources.MergedDictionaries[4]["ChangesSaved"].ToString());
+                            CustomMessageBox.Show(Translations.GetTranslation()["ChangesSaved"].ToString());
                         })));
                     }
                 }

@@ -275,7 +275,7 @@ namespace Message.ViewModel
                         {
                             Application.Current.Dispatcher.Invoke(new Action((() =>
                             {
-                                CustomMessageBox.Show(Application.Current.Resources.MergedDictionaries[4]["RegisterDone"].ToString());
+                                CustomMessageBox.Show(Translations.GetTranslation()["RegisterDone"].ToString());
                                 Clear();
                                 ExecuteOnBackCommand();
                                 return;
@@ -283,19 +283,19 @@ namespace Message.ViewModel
                         }
                         else
                         {
-                            message = Application.Current.Resources.MergedDictionaries[4]["RegError"].ToString();
+                            message = Translations.GetTranslation()["RegError"].ToString();
                         }
                     }
                     else
                     {
-                        message = Application.Current.Resources.MergedDictionaries[4]["SameUserExits"].ToString();
+                        message = Translations.GetTranslation()["SameUserExits"].ToString();
                     }
 
                     if (message != string.Empty)
                     {
                         Application.Current.Dispatcher.Invoke(new Action(() =>
                         {
-                            CustomMessageBox.Show(Application.Current.Resources.MergedDictionaries[4]["Error"].ToString(), message);
+                            CustomMessageBox.Show(Translations.GetTranslation()["Error"].ToString(), message);
                         }));
                     }
                 }
@@ -352,20 +352,20 @@ namespace Message.ViewModel
 
             if (string.IsNullOrWhiteSpace(LoginText))
             {
-                message = Application.Current.Resources.MergedDictionaries[4]["EmptyLogin"].ToString();
+                message = Translations.GetTranslation()["EmptyLogin"].ToString();
             }
             else if (Password.Length < 8 || string.IsNullOrWhiteSpace(Password) || Password == string.Empty || !Regex.IsMatch(Password, @"^[a-zA-Z0-9]{8,}$"))
             {
-                message = Application.Current.Resources.MergedDictionaries[4]["PassValidation"].ToString();
+                message = Translations.GetTranslation()["PassValidation"].ToString();
             }
             else if (UserServiceClient.GetUser(LoginText, AESEncryptor.encryptPassword(Password)) == null)
             {
-                message = Application.Current.Resources.MergedDictionaries[4]["LogPassValid"].ToString();
+                message = Translations.GetTranslation()["LogPassValid"].ToString();
             }
 
             if (message != string.Empty)
             {
-                Application.Current.Dispatcher.Invoke(new Action((() => { CustomMessageBox.Show(Application.Current.Resources.MergedDictionaries[4]["Error"].ToString(), message); })));
+                Application.Current.Dispatcher.Invoke(new Action((() => { CustomMessageBox.Show(Translations.GetTranslation()["Error"].ToString(), message); })));
                 return false;
             }
 
