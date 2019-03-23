@@ -23,8 +23,8 @@ namespace Message.ViewModel
     [CallbackBehavior(ConcurrencyMode = ConcurrencyMode.Reentrant)]
     internal class MessageMainVM : BaseViewModel
     {
-
         private IMessaging _view;
+
         private Image _image;
 
         public Image Images
@@ -634,7 +634,5 @@ namespace Message.ViewModel
         {
             //throw new NotImplementedException();
         }
-
-        
     }
 }

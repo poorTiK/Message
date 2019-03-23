@@ -193,7 +193,7 @@ namespace Message.ViewModel
             }
             else
             {
-                Dispatcher.CurrentDispatcher.Invoke(() => { Images = Image.FromFile(@"../../Resources/DefaultPicture.jpg"); });
+                Dispatcher.CurrentDispatcher.Invoke(() => { Images = ImageHelper.GetDefImage(); });
             }
         }
 

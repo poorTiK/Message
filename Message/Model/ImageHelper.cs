@@ -10,7 +10,7 @@ namespace Message.Model
 {
     public static class ImageHelper
     {
-        public static byte[] GetDefImage()
+        public static byte[] GetDefImageBytes()
         {
             using (var ms = new MemoryStream())
             {
@@ -18,6 +18,11 @@ namespace Message.Model
                 defImg.Save(ms, defImg.RawFormat);
                 return ms.ToArray();
             }
+        }
+
+        public static Image GetDefImage()
+        {
+            return Image.FromFile(@"../../Resources/DefaultPicture.jpg");
         }
     }
 }

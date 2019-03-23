@@ -94,7 +94,7 @@ namespace Message.Model
                 }
                 else
                 {
-                    Dispatcher.CurrentDispatcher.Invoke(() => { uiInfos.UiImage = Image.FromFile(@"../../Resources/DefaultPicture.jpg"); });
+                    Dispatcher.CurrentDispatcher.Invoke(() => { uiInfos.UiImage = ImageHelper.GetDefImage(); });
                 }
             }
         }
@@ -109,7 +109,7 @@ namespace Message.Model
             }
             else
             {
-                Dispatcher.CurrentDispatcher.Invoke(() => { Images = Image.FromFile(@"../../Resources/DefaultPicture.jpg"); });
+                Dispatcher.CurrentDispatcher.Invoke(() => { Images = ImageHelper.GetDefImage(); });
             }
         }
     }
