@@ -210,21 +210,21 @@ namespace Message.ViewModel
                     GlobalBase.CurrentUser.Phone = UserPhone;
                     GlobalBase.CurrentUser.Email = UserEmail;
                     GlobalBase.CurrentUser.Bio = UserBio;
-                    FileService.ChatFile chatFile = GlobalBase.FileServiceClient.getChatFileById(GlobalBase.CurrentUser.ImageId);
+                    var chatFile = GlobalBase.FileServiceClient.getChatFileById(GlobalBase.CurrentUser.ImageId);
                     var tempAvatar = chatFile.Source;
                     res = UserServiceClient.AddOrUpdateUser(GlobalBase.CurrentUser);
 
                     if (_newAvatar != null)
                     {
-                        GlobalBase.PhotoServiceClient.SetPhotoById(GlobalBase.CurrentUser.Id, _newAvatar);
-                        GlobalBase.CurrentUser.ImageId = chatFile.Id;
-
+                        GlobalBase.FileServiceClient.UpdateFileSource(chatFile.Id, _newAvatar);
+                        //GlobalBase.PhotoServiceClient.SetPhotoById(GlobalBase.CurrentUser.Id, _newAvatar);
+                        //GlobalBase.CurrentUser.ImageId = chatFile.Id;
                     }
-                    else
-                    {
-                        GlobalBase.PhotoServiceClient.SetPhotoById(GlobalBase.CurrentUser.Id, tempAvatar);
-                        GlobalBase.CurrentUser.ImageId = chatFile.Id;
-                    }
+                    //else
+                    //{
+                    //    GlobalBase.PhotoServiceClient.SetPhotoById(GlobalBase.CurrentUser.Id, tempAvatar);
+                    //    GlobalBase.CurrentUser.ImageId = chatFile.Id;
+                    //}
 
                     SetAvatarForUI();
 

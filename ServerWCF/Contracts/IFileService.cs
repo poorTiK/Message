@@ -19,5 +19,8 @@ namespace ServerWCF.Contracts
 
         [OperationContract]
         int UploadFile(ChatFile chatFile);
+
+        [OperationContract]
+        ChatFile UpdateFileSource(int fileId, byte[] source);
     }
 }

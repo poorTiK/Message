@@ -6,8 +6,6 @@ using ServerWCF.Model.Messages;
 using ServerWCF.Model.UiInfo;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity;
-using System.Data.Entity.Migrations;
 using System.Linq;
 using System.ServiceModel;
 using System.Threading;
@@ -308,6 +306,7 @@ namespace ServerWCF.Services
                         dbUser.FirstName = user.FirstName;
                         dbUser.Status = user.Status;
                         dbUser.Phone = user.Phone;
+                        dbUser.ImageId = user.ImageId;
                         dbUser.Password = user.Password;
                     }
                     else

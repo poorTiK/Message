@@ -127,6 +127,12 @@ namespace Message.FileService {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IFileService/UploadFile", ReplyAction="http://tempuri.org/IFileService/UploadFileResponse")]
         System.Threading.Tasks.Task<int> UploadFileAsync(Message.FileService.ChatFile chatFile);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IFileService/UpdateFileSource", ReplyAction="http://tempuri.org/IFileService/UpdateFileSourceResponse")]
+        Message.FileService.ChatFile UpdateFileSource(int fileId, byte[] source);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IFileService/UpdateFileSource", ReplyAction="http://tempuri.org/IFileService/UpdateFileSourceResponse")]
+        System.Threading.Tasks.Task<Message.FileService.ChatFile> UpdateFileSourceAsync(int fileId, byte[] source);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -178,6 +184,14 @@ namespace Message.FileService {
         
         public System.Threading.Tasks.Task<int> UploadFileAsync(Message.FileService.ChatFile chatFile) {
             return base.Channel.UploadFileAsync(chatFile);
+        }
+        
+        public Message.FileService.ChatFile UpdateFileSource(int fileId, byte[] source) {
+            return base.Channel.UpdateFileSource(fileId, source);
+        }
+        
+        public System.Threading.Tasks.Task<Message.FileService.ChatFile> UpdateFileSourceAsync(int fileId, byte[] source) {
+            return base.Channel.UpdateFileSourceAsync(fileId, source);
         }
     }
 }

@@ -1,10 +1,5 @@
-﻿using System;
-using System.Data.Entity.Migrations;
-using System.Linq;
-using System.ServiceModel;
-using ServerWCF.Context;
+﻿using System.ServiceModel;
 using ServerWCF.Contracts;
-using ServerWCF.Model.Messages;
 
 namespace ServerWCF.Services
 {

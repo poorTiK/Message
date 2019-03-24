@@ -2,11 +2,8 @@
 using ServerWCF.Contracts;
 using ServerWCF.Model;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.ServiceModel;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ServerWCF.Services
 {
@@ -15,29 +12,69 @@ namespace ServerWCF.Services
     {
         public ChatFile getChatFileById(int id)
         {
-            using (UserContext userContext = new UserContext())
+            try
             {
-                return userContext.ChatFiles.FirstOrDefault(f => f.Id == id);
+                using (UserContext userContext = new UserContext())
+                {
+                    return userContext.ChatFiles.FirstOrDefault(f => f.Id == id);
+                }
+            }
+            catch (Exception e)
+            {
+                return null;
             }
         }
 
         public ChatFile getChatFileByName(string name)
         {
-            using (UserContext userContext = new UserContext())
+            try
             {
-                return userContext.ChatFiles.FirstOrDefault(f => f.Name == name);
+                using (UserContext userContext = new UserContext())
+                {
+                    return userContext.ChatFiles.FirstOrDefault(f => f.Name == name);
+                }
+            }
+            catch (Exception e)
+            {
+                return null;
             }
         }
 
         public int UploadFile(ChatFile chatFile)
         {
-            using (UserContext userContext = new UserContext())
+            try
             {
-                userContext.ChatFiles.Add(chatFile);
-                userContext.SaveChanges();
-                int id = userContext.ChatFiles.Max(ch => ch.Id);
+                using (UserContext userContext = new UserContext())
+                {
+                    userContext.ChatFiles.Add(chatFile);
+                    userContext.SaveChanges();
+                    int id = userContext.ChatFiles.Max(ch => ch.Id);
 
-                return id;
+                    return id;
+                }
+            }
+            catch (Exception e)
+            {
+                return -1;
+            }
+        }
+
+        public ChatFile UpdateFileSource(int fileId, byte[] source)
+        {
+            try
+            {
+                using (UserContext userContext = new UserContext())
+                {
+                    var file = userContext.ChatFiles.FirstOrDefault(x => x.Id == fileId);
+                    file.Source = source;
+                    userContext.SaveChanges();
+
+                    return file;
+                }
+            }
+            catch (Exception)
+            {
+                return null;
             }
         }
     }

@@ -101,8 +101,8 @@ namespace Message.Model
 
         public static void loadPictureForUser(User user, Image Images)
         {
-            FileService.ChatFile chatFile = FileServiceClient.getChatFileById(user.Id);
-            if (chatFile != null && chatFile?.Source?.Length > 0)
+            FileService.ChatFile chatFile = FileServiceClient.getChatFileById(user.ImageId);
+            if (chatFile?.Source?.Length > 0)
             {
                 MemoryStream memstr = new MemoryStream(chatFile.Source);
                 Dispatcher.CurrentDispatcher.Invoke(() => { Images = Image.FromStream(memstr); });

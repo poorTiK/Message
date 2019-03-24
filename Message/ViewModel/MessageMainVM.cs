@@ -426,7 +426,16 @@ namespace Message.ViewModel
 
         private void SetAvatarForUI()
         {
-            GlobalBase.loadPictureForUser(GlobalBase.CurrentUser, Images);
+            FileService.ChatFile chatFile = GlobalBase.FileServiceClient.getChatFileById(GlobalBase.CurrentUser.ImageId);
+            if (chatFile?.Source?.Length > 0)
+            {
+                MemoryStream memstr = new MemoryStream(chatFile.Source);
+                Dispatcher.CurrentDispatcher.Invoke(() => { Images = Image.FromStream(memstr); });
+            }
+            else
+            {
+                Dispatcher.CurrentDispatcher.Invoke(() => { Images = ImageHelper.GetDefImage(); });
+            }
         }
 
         private void ExecuteOnSettingsCommand()
