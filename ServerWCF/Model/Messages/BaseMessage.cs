@@ -24,7 +24,7 @@ namespace ServerWCF.Model.Messages
 
         [ForeignKey("ChatFile")]
         [DataMember]
-        public int ChatFileId { get; set; }
+        public virtual int ChatFileId { get; set; }
 
         [DataMember]
         public ChatFile ChatFile { get; set; }

@@ -17,7 +17,7 @@ namespace ServerWCF.Model
 
         [ForeignKey("Image")]
         [DataMember]
-        public int ImageId { get; set; }
+        public virtual int ImageId { get; set; }
 
         public ChatFile Image { get; set; }
 

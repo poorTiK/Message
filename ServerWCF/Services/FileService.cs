@@ -33,8 +33,9 @@ namespace ServerWCF.Services
         {
             using (UserContext userContext = new UserContext())
             {
-                int id = userContext.ChatFiles.Add(chatFile).Id;
+                userContext.ChatFiles.Add(chatFile);
                 userContext.SaveChanges();
+                int id = userContext.ChatFiles.Max(ch => ch.Id);
 
                 return id;
             }

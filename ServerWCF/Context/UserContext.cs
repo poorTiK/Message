@@ -39,18 +39,18 @@ namespace ServerWCF.Context
 
             //files
             modelBuilder.Entity<BaseMessage>()
-                .HasRequired(m => m.ChatFile)
-                .WithRequiredPrincipal()
+                .HasOptional(m => m.ChatFile)
+                .WithOptionalPrincipal()
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<User>()
-                .HasRequired(u => u.Image)
-                .WithRequiredPrincipal()
+                .HasOptional(u => u.Image)
+                .WithOptionalPrincipal()
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<ChatGroup>()
-                .HasRequired(cg => cg.Image)
-                .WithRequiredPrincipal()
+                .HasOptional(cg => cg.Image)
+                .WithOptionalPrincipal()
                 .WillCascadeOnDelete(false);
             ///////////////////////////
             modelBuilder.Entity<BaseMessage>()
