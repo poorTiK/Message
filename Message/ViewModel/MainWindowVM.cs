@@ -275,8 +275,9 @@ namespace Message.ViewModel
                     {
                         if (UserServiceClient.AddOrUpdateUser(user) == string.Empty)
                         {
-                            //var addedUser = UserServiceClient.GetUserByLogin(UserLogin);
-                            //GlobalBase.FileServiceClient.UploadFile(new FileService.ChatFile(){ Source = ImageHelper.GetDefImage() });
+                            user.ImageId = GlobalBase.FileServiceClient.UploadFile(new FileService.ChatFile(){ Source = ImageHelper.GetDefImageBytes() });
+                            UserServiceClient.AddOrUpdateUser(user);
+
                             Application.Current.Dispatcher.Invoke(new Action((() =>
                             {
                                 CustomMessageBox.Show(Translations.GetTranslation()["RegisterDone"].ToString());
