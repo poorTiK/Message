@@ -23,27 +23,27 @@ namespace Message.ViewModel
 
         public virtual void OnMessageEdited(BaseMessage message)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         public virtual void OnMessageRemoved(BaseMessage message)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         public virtual void ReceiveMessage(BaseMessage message)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         public virtual void UserCame(User user)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         public virtual void UserLeave(User user)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
     }
 }

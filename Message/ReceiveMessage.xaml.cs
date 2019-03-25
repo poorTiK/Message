@@ -27,7 +27,13 @@ namespace Message
             MessageText.Text = GlobalBase.Base64Decode(message.Text);
             SendTime.Text = message.DateOfSending.Hour + ":" + message.DateOfSending.Minute;
             ButtonDwnld.Visibility = message.ChatFileId != 0 ? Visibility.Visible : Visibility.Collapsed;
-            SenderName.Visibility = Visibility.Collapsed;
+
+            if (message is GroupMessage)
+            {
+                SenderName.Visibility = Visibility.Visible;
+                SenderName.Text = message.Sender.FirstName;
+            }
+            
 
             DataContext = new MessageControlVM(message);
         }

@@ -230,6 +230,7 @@ namespace Message.ViewModel
                     {
                         foreach (BaseMessage mes in res)
                         {
+                            var mesSender = UserServiceClient.GetUserById(mes.SenderId);
                             if (mes is UserMessage)
                             {
                                 UserMessage userMessage = mes as UserMessage;
@@ -242,6 +243,7 @@ namespace Message.ViewModel
                                         DateOfSending = mes.DateOfSending,
                                         ReceiverId = userMessage.ReceiverId,
                                         SenderId = mes.SenderId,
+                                        Sender = mesSender,
                                     });
                                 }));
                             }
@@ -257,6 +259,7 @@ namespace Message.ViewModel
                                         DateOfSending = mes.DateOfSending,
                                         ChatGroupId = chatGroupMessage.ChatGroupId,
                                         SenderId = mes.SenderId,
+                                        Sender = mesSender,
                                     });
                                 }));
                             }
@@ -365,6 +368,7 @@ namespace Message.ViewModel
                             Text = Encoding.UTF8.GetBytes(MessageText),
                             DateOfSending = DateTime.Now,
                             SenderId = GlobalBase.CurrentUser.Id,
+                            Sender = GlobalBase.CurrentUser,
                             ReceiverId = userUiInfo.UserId,
                         };
                     }
@@ -378,6 +382,7 @@ namespace Message.ViewModel
                                 Text = GlobalBase.FileToByte(file),
                                 DateOfSending = DateTime.Now,
                                 SenderId = GlobalBase.CurrentUser.Id,
+                                Sender = GlobalBase.CurrentUser,
                                 ReceiverId = userUiInfo.UserId,
                             });
                         }
@@ -394,6 +399,7 @@ namespace Message.ViewModel
                             Text = Encoding.UTF8.GetBytes(MessageText),
                             DateOfSending = DateTime.Now,
                             SenderId = GlobalBase.CurrentUser.Id,
+                            Sender = GlobalBase.CurrentUser,
                             ChatGroupId = userUiInfo.ChatGroupId,
                         };
                     }
@@ -407,6 +413,7 @@ namespace Message.ViewModel
                                 Text = GlobalBase.FileToByte(file),
                                 DateOfSending = DateTime.Now,
                                 SenderId = GlobalBase.CurrentUser.Id,
+                                Sender = GlobalBase.CurrentUser,
                                 ChatGroupId = userUiInfo.ChatGroupId,
                             });
                         }
