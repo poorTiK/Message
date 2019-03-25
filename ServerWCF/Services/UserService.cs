@@ -337,8 +337,8 @@ namespace ServerWCF.Services
             {
                 try
                 {
-                   User user =  db.Users.Where(x => x.Login.Contains(login)).FirstOrDefault();
-                   return user;
+                    User user = db.Users.Where(x => x.Login.Contains(login)).FirstOrDefault();
+                    return user;
                 }
                 catch (Exception ex)
                 {

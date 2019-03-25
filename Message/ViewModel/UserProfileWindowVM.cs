@@ -22,6 +22,7 @@ namespace Message.ViewModel
     {
         private IView _view;
         private byte[] _newAvatar;
+
         private Image _image;
 
         public Image Images
@@ -211,20 +212,20 @@ namespace Message.ViewModel
                     GlobalBase.CurrentUser.Email = UserEmail;
                     GlobalBase.CurrentUser.Bio = UserBio;
                     var chatFile = GlobalBase.FileServiceClient.getChatFileById(GlobalBase.CurrentUser.ImageId);
-                    var tempAvatar = chatFile.Source;
                     res = UserServiceClient.AddOrUpdateUser(GlobalBase.CurrentUser);
-
+                    
                     if (_newAvatar != null)
                     {
-                        GlobalBase.FileServiceClient.UpdateFileSource(chatFile.Id, _newAvatar);
-                        //GlobalBase.PhotoServiceClient.SetPhotoById(GlobalBase.CurrentUser.Id, _newAvatar);
-                        //GlobalBase.CurrentUser.ImageId = chatFile.Id;
+                        if (chatFile == null)
+                        {
+                            GlobalBase.CurrentUser.ImageId = GlobalBase.FileServiceClient.UploadFile(new FileService.ChatFile() { Source = _newAvatar });
+                            UserServiceClient.AddOrUpdateUser(GlobalBase.CurrentUser);
+                        }
+                        else
+                        {
+                            GlobalBase.FileServiceClient.UpdateFileSource(chatFile.Id, _newAvatar);
+                        }
                     }
-                    //else
-                    //{
-                    //    GlobalBase.PhotoServiceClient.SetPhotoById(GlobalBase.CurrentUser.Id, tempAvatar);
-                    //    GlobalBase.CurrentUser.ImageId = chatFile.Id;
-                    //}
 
                     SetAvatarForUI();
 

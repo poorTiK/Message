@@ -97,6 +97,22 @@ namespace Message.Model
                     Dispatcher.CurrentDispatcher.Invoke(() => { uiInfos.UiImage = ImageHelper.GetDefImage(); });
                 }
             }
+            else if (uiInfos is ChatGroupUiInfo)
+            {
+                ChatGroupUiInfo groupUiInfo = uiInfos as ChatGroupUiInfo;
+                ChatGroup group = userServiceClient.GetChatGroup(groupUiInfo.Name);
+                FileService.ChatFile chatFile = FileServiceClient.getChatFileById(group.Id);
+
+                if (chatFile?.Source?.Length > 0)
+                {
+                    MemoryStream memstr = new MemoryStream(chatFile.Source);
+                    Dispatcher.CurrentDispatcher.Invoke(() => { uiInfos.UiImage = Image.FromStream(memstr); });
+                }
+                else
+                {
+                    Dispatcher.CurrentDispatcher.Invoke(() => { uiInfos.UiImage = ImageHelper.GetDefGroupImage(); });
+                }
+            }
         }
 
         public static void loadPictureForUser(User user, Image Images)

@@ -24,5 +24,19 @@ namespace Message.Model
         {
             return Image.FromFile(@"../../Resources/DefaultPicture.jpg");
         }
+
+        public static byte[] GetImageBytes(Image image)
+        {
+            using (var ms = new MemoryStream())
+            {
+                image.Save(ms, image.RawFormat);
+                return ms.ToArray();
+            }
+        }
+
+        internal static Image GetDefGroupImage()
+        {
+            return Image.FromFile(@"../../Resources/group.png");
+        }
     }
 }

@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Message"
         mc:Ignorable="d"
+        xmlns:med="clr-namespace:System.Windows.Media"
 
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
 
@@ -16,6 +17,19 @@
     <WindowChrome.WindowChrome>
         <WindowChrome CaptionHeight="0" />
     </WindowChrome.WindowChrome>
+
+    <Window.Resources>
+        <med:ImageConverter x:Key="imageConverter" />
+        <BooleanToVisibilityConverter x:Key="BoolToVisConverter" />
+        <Style TargetType="Ellipse">
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Stroke" Value="#FF63A35D"></Setter>
+                    <Setter Property="Cursor" Value="Hand"></Setter>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
 
     <Grid Background="{DynamicResource PopUpBackground}">
         <Grid  VerticalAlignment="Top">
@@ -37,13 +51,23 @@
                 <RowDefinition/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
+            <StackPanel Orientation="Horizontal" Grid.Row="0" HorizontalAlignment="Stretch" Margin="10,0,0,0">
+                <Ellipse Height="45" Width="45" Grid.Column="0" Grid.Row="0" Grid.RowSpan="2"
+                         ToolTip="Upload new photo" StrokeThickness="3">
+                    <Ellipse.Fill>
+                        <ImageBrush ImageSource = "{ Binding Path=Images, Converter={StaticResource imageConverter}}"/>
+                    </Ellipse.Fill>
+                    <Ellipse.InputBindings>
+                        <MouseBinding Command="{Binding LoadPhoto}" MouseAction="LeftClick" />
+                    </Ellipse.InputBindings>
+                </Ellipse>
+                <TextBox materialDesign:HintAssist.Hint="{DynamicResource GroupName}" Text="{Binding Name}"
+                         Foreground="{DynamicResource Foreground}" SelectionBrush="{DynamicResource SelectionBrush}" Margin="10,0,10,5" Width="256">
 
-            <TextBox materialDesign:HintAssist.Hint="{DynamicResource GroupName}" Text="{Binding Name}"
-                     Foreground="{DynamicResource Foreground}" SelectionBrush="{DynamicResource SelectionBrush}" Margin="10,0,10,5">
+                </TextBox>
+            </StackPanel>
 
-            </TextBox>
-
-            <ScrollViewer Grid.Row="2">
+            <ScrollViewer Grid.Row="2" Grid.ColumnSpan="2"> 
                 <ItemsControl ItemsSource="{Binding ContactList}" Margin="10,5,10,0">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
@@ -89,11 +113,14 @@
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
             </ScrollViewer>
-            
 
-            <Button Width="150" Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,5,0,5"
+
+            <Button Grid.ColumnSpan="2" Width="150" Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,5,0,5"
                 Foreground="{DynamicResource ButtonForeground}" 
-                Background="{DynamicResource ButtonBackground}" 
+                Background="{DynamicResource ButtonBackground}"
+                materialDesign:ButtonProgressAssist.Value="-1"
+                materialDesign:ButtonProgressAssist.IsIndicatorVisible="{Binding IsCreating}"
+                materialDesign:ButtonProgressAssist.IsIndeterminate="{Binding IsCreating}"
                 Content="{DynamicResource Create}"
                 Command="{Binding Path=CreateGroup}"/>
         </Grid>
