@@ -33,6 +33,10 @@ namespace Message
                 SenderName.Visibility = Visibility.Visible;
                 SenderName.Text = message.Sender.FirstName;
             }
+            else
+            {
+                SenderName.Visibility = Visibility.Collapsed;
+            }
             
 
             DataContext = new MessageControlVM(message);
