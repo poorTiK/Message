@@ -30,6 +30,7 @@ namespace Message.ViewModel
                 OnPropertyChanged(new System.ComponentModel.PropertyChangedEventArgs("Image"));
             }
         }
+
         private User Profile;
 
         private string _currentUserName;
@@ -127,6 +128,8 @@ namespace Message.ViewModel
             UserBio = Profile.Bio;
             bool contact;
 
+            SetAvatarForUI();
+
             contact = UserServiceClient.IsExistsInContacts(GlobalBase.CurrentUser.Id, Profile.Id);           
 
             if (contact)
@@ -139,8 +142,6 @@ namespace Message.ViewModel
                 IsContact = false;
                 IsNonContact = true;
             }
-
-            SetAvatarForUI();
         }
 
         private DelegateCommand _onAddContact;
@@ -191,10 +192,10 @@ namespace Message.ViewModel
                     MemoryStream memstr = new MemoryStream(chatFile.Source);
                     Dispatcher.CurrentDispatcher.Invoke(() => { Image = Image.FromStream(memstr); });
                 }
-                else
-                {
-                    Dispatcher.CurrentDispatcher.Invoke(() => { Image = ImageHelper.GetDefImage(); });
-                }
+            }
+            else
+            {
+                Dispatcher.CurrentDispatcher.Invoke(() => { Image = ImageHelper.GetDefImage(); });
             }
         }
     }

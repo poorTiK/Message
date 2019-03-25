@@ -342,8 +342,10 @@ namespace Message.ViewModel
                 var wnd = new ContactProfileWindow(user);
                 wnd.Owner = (Window)_view;
                 wnd.ShowDialog();
-
-                UpdateContactList();
+            }
+            else if (SelectedContact is ChatGroupUiInfo)
+            {
+                //TODO
             }
         }
 

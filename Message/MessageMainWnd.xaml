@@ -22,6 +22,13 @@
     <Window.Resources>
         <med:ImageConverter x:Key="imageConverter" />
         <BooleanToVisibilityConverter x:Key="BoolToVisConverter" />
+        <Style TargetType="StackPanel" x:Key="StackStyle">
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Cursor" Value="Hand"></Setter>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
     </Window.Resources>
 
     <Grid>
@@ -64,7 +71,7 @@
                     </Border.Effect>
                     <Grid Background="{DynamicResource WindowBackGround}">
                         <Grid Margin="0">
-                            <StackPanel Orientation="Vertical" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="15,5,0,0">
+                            <StackPanel Orientation="Vertical" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="15,5,0,0" Style="{StaticResource StackStyle}">
                                 <TextBlock Foreground="{DynamicResource Foreground}">
                                     <TextBlock.Text>
                                         <MultiBinding StringFormat="{}{0}">
@@ -73,6 +80,11 @@
                                     </TextBlock.Text>
                                 </TextBlock>
                                 <TextBlock Foreground="{DynamicResource Status}" Text="{Binding SelectedContact.Status}"></TextBlock>
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="MouseLeftButtonDown" >
+                                        <i:InvokeCommandAction Command="{Binding ViewProfile}" />
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
                             </StackPanel>
 
                             <StackPanel Name="DialogSearch" Visibility="{Binding IsDialogSearchVisible, Converter={StaticResource BoolToVisConverter}}"

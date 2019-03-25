@@ -85,7 +85,7 @@ namespace Message.Model
             {
                 UserUiInfo userUiInfo = uiInfos as UserUiInfo;
                 User user = userServiceClient.GetUserById(userUiInfo.UserId);
-                FileService.ChatFile chatFile = FileServiceClient.getChatFileById(user.Id);
+                FileService.ChatFile chatFile = FileServiceClient.getChatFileById(user.ImageId);
 
                 if (chatFile?.Source?.Length > 0)
                 {
@@ -101,7 +101,7 @@ namespace Message.Model
             {
                 ChatGroupUiInfo groupUiInfo = uiInfos as ChatGroupUiInfo;
                 ChatGroup group = userServiceClient.GetChatGroup(groupUiInfo.Name);
-                FileService.ChatFile chatFile = FileServiceClient.getChatFileById(group.Id);
+                FileService.ChatFile chatFile = FileServiceClient.getChatFileById(group.ImageId);
 
                 if (chatFile?.Source?.Length > 0)
                 {
