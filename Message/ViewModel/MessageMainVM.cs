@@ -592,7 +592,7 @@ namespace Message.ViewModel
                 {
                     UserUiInfo userUiInfo = temp as UserUiInfo;
 
-                    if (ContactsList.Any(x => temp != null && ((x as UserUiInfo).UserId == userUiInfo.UserId)))
+                    if (ContactsList.Any(x => temp != null && (x is UserUiInfo) && ((x as UserUiInfo).UserId == userUiInfo.UserId)))
                     {
                         Dispatcher.CurrentDispatcher.Invoke(() => { SelectedContact = temp; });
                     }
