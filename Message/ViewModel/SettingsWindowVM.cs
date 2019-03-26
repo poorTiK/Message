@@ -8,6 +8,7 @@ using System.IO;
 using System.Windows;
 using System.Windows.Threading;
 using Message.PhotoServiceReference;
+using System.Threading.Tasks;
 
 namespace Message.ViewModel
 {
@@ -87,16 +88,13 @@ namespace Message.ViewModel
 
         private void SetAvatarForUI()
         {
-            FileService.ChatFile chatFile = GlobalBase.FileServiceClient.getChatFileById(GlobalBase.CurrentUser.ImageId);
-            if (chatFile?.Source?.Length > 0)
+            Task.Run( () =>
             {
-                MemoryStream memstr = new MemoryStream(chatFile.Source);
-                Dispatcher.CurrentDispatcher.Invoke(() => { Images = Image.FromStream(memstr); });
-            }
-            else
-            {
-                Dispatcher.CurrentDispatcher.Invoke(() => { Images = ImageHelper.GetDefImage(); });
-            }
+                Dispatcher.CurrentDispatcher.Invoke(() =>
+                {
+                    Images = GlobalBase.getUsersAvatar(GlobalBase.CurrentUser);
+                });
+            });
         }
 
     }

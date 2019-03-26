@@ -9,6 +9,7 @@ using System.ServiceModel;
 using System.Windows.Threading;
 using Message.PhotoServiceReference;
 using Message.FileService;
+using System.Threading.Tasks;
 
 namespace Message.ViewModel
 {
@@ -183,20 +184,13 @@ namespace Message.ViewModel
 
         private void SetAvatarForUI()
         {
-            if (Profile.ImageId != 0)
+            Task.Run(() =>
             {
-                FileService.ChatFile chatFile = GlobalBase.FileServiceClient.getChatFileById(Profile.ImageId);
-
-                if (chatFile?.Source?.Length > 0)
+                System.Windows.Application.Current.Dispatcher.Invoke(() =>
                 {
-                    MemoryStream memstr = new MemoryStream(chatFile.Source);
-                    Dispatcher.CurrentDispatcher.Invoke(() => { Image = Image.FromStream(memstr); });
-                }
-            }
-            else
-            {
-                Dispatcher.CurrentDispatcher.Invoke(() => { Image = ImageHelper.GetDefImage(); });
-            }
+                    Image = GlobalBase.getUsersAvatar(Profile);
+                });
+            });
         }
     }
 }

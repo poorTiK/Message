@@ -115,18 +115,32 @@ namespace Message.Model
             }
         }
 
-        public static void loadPictureForUser(User user, Image Images)
+        public static void loadUsersPicture(User user, Image Image)
         {
             FileService.ChatFile chatFile = FileServiceClient.getChatFileById(user.ImageId);
             if (chatFile?.Source?.Length > 0)
             {
                 MemoryStream memstr = new MemoryStream(chatFile.Source);
-                Dispatcher.CurrentDispatcher.Invoke(() => { Images = Image.FromStream(memstr); });
+                Dispatcher.CurrentDispatcher.Invoke(() => { Image = Image.FromStream(memstr); });
             }
             else
             {
-                Dispatcher.CurrentDispatcher.Invoke(() => { Images = ImageHelper.GetDefImage(); });
+                Dispatcher.CurrentDispatcher.Invoke(() => { Image = ImageHelper.GetDefImage(); });
             }
         }
+
+        public static Image getUsersAvatar(User user)
+        {
+            FileService.ChatFile chatFile = FileServiceClient.getChatFileById(user.ImageId);
+            if (chatFile?.Source?.Length > 0)
+            {
+                MemoryStream memstr = new MemoryStream(chatFile.Source);
+                return Image.FromStream(memstr);
+            }
+            else
+            {
+                return ImageHelper.GetDefImage();
+            }
+        } 
     }
 }
