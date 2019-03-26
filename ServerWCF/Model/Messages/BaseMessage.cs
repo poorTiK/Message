@@ -13,7 +13,6 @@ namespace ServerWCF.Model.Messages
         [Key]
         [DataMember]
         public int Id { get; set; }
-
         
         [DataMember]
         public int SenderId { get; set; }

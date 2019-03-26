@@ -11,5 +11,8 @@ namespace ServerWCF.Model.Messages
 
         [ForeignKey("ChatGroupId")]
         public ChatGroup ChatGroup { get; set; }
+
+        [DataMember]
+        public string SenderName { get; set; }
     }
 }

@@ -555,8 +555,11 @@ namespace ServerWCF.Services
                             {
                                 break;
                             }
+
                             if (chatGroupId == groupMessage.ChatGroupId)
                             {
+                                User usrSender = GetUserById(groupMessage.SenderId);
+                                groupMessage.SenderName = usrSender.FirstName;
                                 messagesToReturn.Add(groupMessage);
                             }
                         }
@@ -572,7 +575,7 @@ namespace ServerWCF.Services
             }
         }
 
-        public List<UserMessage> GetUserMessages(int sender, int receiver, int limin)
+        public List<UserMessage> GetUserMessages(int sender, int receiver, int limit)
         {
             using (UserContext context = new UserContext())
             {
@@ -583,12 +586,12 @@ namespace ServerWCF.Services
                     {
                         if (message is UserMessage)
                         {
-                            UserMessage userMessage = message as UserMessage;
-
-                            if (messagesToReturn.Count == limin)
+                            if (messagesToReturn.Count == limit)
                             {
                                 break;
                             }
+
+                            UserMessage userMessage = message as UserMessage;
 
                             if (userMessage.SenderId == sender &&
                                 userMessage.ReceiverId == receiver)

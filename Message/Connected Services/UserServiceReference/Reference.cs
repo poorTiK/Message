@@ -839,6 +839,9 @@ namespace Message.UserServiceReference {
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private int ChatGroupIdField;
         
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string SenderNameField;
+        
         [System.Runtime.Serialization.DataMemberAttribute()]
         public int ChatGroupId {
             get {
@@ -848,6 +851,19 @@ namespace Message.UserServiceReference {
                 if ((this.ChatGroupIdField.Equals(value) != true)) {
                     this.ChatGroupIdField = value;
                     this.RaisePropertyChanged("ChatGroupId");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string SenderName {
+            get {
+                return this.SenderNameField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.SenderNameField, value) != true)) {
+                    this.SenderNameField = value;
+                    this.RaisePropertyChanged("SenderName");
                 }
             }
         }

@@ -12,6 +12,7 @@
       <xs:extension base="tns:BaseMessage">
         <xs:sequence>
           <xs:element minOccurs="0" name="ChatGroupId" type="xs:int" />
+          <xs:element minOccurs="0" name="SenderName" nillable="true" type="xs:string" />
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
