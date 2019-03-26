@@ -115,20 +115,6 @@ namespace Message.Model
             }
         }
 
-        public static void loadUsersPicture(User user, Image Image)
-        {
-            FileService.ChatFile chatFile = FileServiceClient.getChatFileById(user.ImageId);
-            if (chatFile?.Source?.Length > 0)
-            {
-                MemoryStream memstr = new MemoryStream(chatFile.Source);
-                Dispatcher.CurrentDispatcher.Invoke(() => { Image = Image.FromStream(memstr); });
-            }
-            else
-            {
-                Dispatcher.CurrentDispatcher.Invoke(() => { Image = ImageHelper.GetDefImage(); });
-            }
-        }
-
         public static Image getUsersAvatar(User user)
         {
             FileService.ChatFile chatFile = FileServiceClient.getChatFileById(user.ImageId);

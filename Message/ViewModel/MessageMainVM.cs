@@ -228,43 +228,10 @@ namespace Message.ViewModel
 
                     if (res.Count != 0)
                     {
-                        foreach (BaseMessage mes in res)
+                        Application.Current.Dispatcher.Invoke(new Action(() =>
                         {
-                            var mesSender = UserServiceClient.GetUserById(mes.SenderId);
-                            if (mes is UserMessage)
-                            {
-                                UserMessage userMessage = mes as UserMessage;
-                                Application.Current.Dispatcher.Invoke(new Action(() =>
-                                {
-                                    _view.MessageList.Add(new UserMessage()
-                                    {
-                                        Id = mes.Id,
-                                        Text = mes.Text,
-                                        DateOfSending = mes.DateOfSending,
-                                        ReceiverId = userMessage.ReceiverId,
-                                        SenderId = mes.SenderId,
-                                        Sender = mesSender,
-                                    });
-                                }));
-                            }
-                            else if (mes is GroupMessage)
-                            {
-                                GroupMessage chatGroupMessage = mes as GroupMessage;
-                                Application.Current.Dispatcher.Invoke(new Action(() =>
-                                {
-                                    _view.MessageList.Add(new GroupMessage()
-                                    {
-                                        Id = mes.Id,
-                                        Text = mes.Text,
-                                        DateOfSending = mes.DateOfSending,
-                                        ChatGroupId = chatGroupMessage.ChatGroupId,
-                                        SenderId = mes.SenderId,
-                                        Sender = mesSender,
-                                    });
-                                }));
-                            }
-
-                        }
+                            _view.MessageList.AddRange(res);
+                        }));
                     }
                 }).ContinueWith((task =>
                 {

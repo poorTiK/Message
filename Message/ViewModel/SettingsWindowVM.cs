@@ -38,7 +38,6 @@ namespace Message.ViewModel
         {
             get { return _image; }
             set { _image = value; OnPropertyChanged(new System.ComponentModel.PropertyChangedEventArgs("Images")); }
-
         }
 
         public SettingsWindowVM(IView view) : base()
