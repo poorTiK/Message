@@ -80,7 +80,12 @@ namespace Message.ViewModel
 
         private void SetAvatarForUI()
         {
-            System.Windows.Application.Current.Dispatcher.Invoke(() => { Images = ImageHelper.GetDefGroupImage(); });
+            Task.Run(() =>
+            {
+                System.Windows.Application.Current.Dispatcher.Invoke(() => {
+                    Images = ImageHelper.GetDefGroupImage();
+                });
+            });
         }
 
         private bool _isCreating;
