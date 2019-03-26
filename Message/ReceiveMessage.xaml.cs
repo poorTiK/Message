@@ -30,10 +30,10 @@ namespace Message
             SendTime.Text = message.DateOfSending.Hour + ":" + message.DateOfSending.Minute;
             ButtonDwnld.Visibility = message.ChatFileId != 0 ? Visibility.Visible : Visibility.Collapsed;
 
-            if (message is GroupMessage)
+            if (message is GroupMessage mes)
             {
                 SenderName.Visibility = Visibility.Visible;
-                SenderName.Text = message.Sender.FirstName;
+                SenderName.Text = mes.SenderName;
             }
             else
             {
