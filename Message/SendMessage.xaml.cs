@@ -22,7 +22,11 @@ namespace Message
             InitializeComponent();
 
             //MessageText.Text = message.ChatFileId == 0 ? GlobalBase.Base64Decode(message.Text) : "File";
-            MessageText.Text = GlobalBase.Base64Decode(message.Text);
+            if (message.Text != null)
+            {
+                MessageText.Text = GlobalBase.Base64Decode(message.Text);
+            }
+            
             SendTime.Text = message.DateOfSending.Hour + ":" + message.DateOfSending.Minute;
             ButtonDwnld.Visibility = message.ChatFileId != 0 ? Visibility.Visible : Visibility.Collapsed;
 
