@@ -69,7 +69,7 @@ namespace Message.ViewModel
 
                 if (!string.IsNullOrEmpty(value))
                 {
-                    List<UiInfo> tempUiInfo = UserServiceClient.FindUsersUiUnfoByLogin(ContactsSearch);
+                    List<UiInfo> tempUiInfo = UserServiceClient.FindNewUsersUiUnfoByLogin(GlobalBase.CurrentUser.Id, ContactsSearch);
 
                     foreach (UiInfo uiInfo in tempUiInfo)
                     {

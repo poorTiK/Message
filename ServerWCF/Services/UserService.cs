@@ -402,29 +402,33 @@ namespace ServerWCF.Services
             }
         }
 
-        public List<User> FindUsersByLogin(string keyWorkForLogin)
+        public List<User> FindNewUsersByLogin(int userId, string keyWorkForLogin)
         {
             using (UserContext usersContext = new UserContext())
             {
-                List<User> searchinfResult = new List<User>();
+                List<User> searchingResult = new List<User>();
+                List<int> contacts = new List<int>();
                 try
                 {
-                    searchinfResult = usersContext.Users.Where(u => u.Login.Contains(keyWorkForLogin)).ToList();
+                    contacts = GetAllUsersContacts(userId).Select(u => u.Id).ToList();
+                    searchingResult = usersContext.Users.Where(u => u.Login.Contains(keyWorkForLogin) && !contacts.Contains(u.Id) && u.Id != userId ).ToList();
                 }
                 catch (Exception ex)
                 {
-                    searchinfResult = new List<User>();
+                    searchingResult = new List<User>();
                 }
 
-                return searchinfResult;
+                return searchingResult;
             }
         }
 
-        public List<UiInfo> FindUsersUiUnfoByLogin(string keyWorkForLogin)
+        public List<UiInfo> FindNewUsersUiUnfoByLogin(int userId, string keyWorkForLogin)
         {
-            List<UiInfo> usersUiInfos = new List<UiInfo>(FindUsersByLogin(keyWorkForLogin).Select(u => new UserUiInfo(u)));
+            List<UiInfo> usersUiInfos = new List<UiInfo>(FindNewUsersByLogin(userId, keyWorkForLogin).Select(u => new UserUiInfo(u)));
             return usersUiInfos;
         }
+
+
 
         //application settings
         public ApplicationSettings GetAppSettings(int userId)

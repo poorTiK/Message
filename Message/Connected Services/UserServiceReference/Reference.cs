@@ -1162,17 +1162,17 @@ namespace Message.UserServiceReference {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/GetUserByEmail", ReplyAction="http://tempuri.org/IUserService/GetUserByEmailResponse")]
         System.Threading.Tasks.Task<Message.UserServiceReference.User> GetUserByEmailAsync(string email);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/FindUsersByLogin", ReplyAction="http://tempuri.org/IUserService/FindUsersByLoginResponse")]
-        System.Collections.Generic.List<Message.UserServiceReference.User> FindUsersByLogin(string login);
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/FindNewUsersByLogin", ReplyAction="http://tempuri.org/IUserService/FindNewUsersByLoginResponse")]
+        System.Collections.Generic.List<Message.UserServiceReference.User> FindNewUsersByLogin(int userId, string keyWorkForLogin);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/FindUsersByLogin", ReplyAction="http://tempuri.org/IUserService/FindUsersByLoginResponse")]
-        System.Threading.Tasks.Task<System.Collections.Generic.List<Message.UserServiceReference.User>> FindUsersByLoginAsync(string login);
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/FindNewUsersByLogin", ReplyAction="http://tempuri.org/IUserService/FindNewUsersByLoginResponse")]
+        System.Threading.Tasks.Task<System.Collections.Generic.List<Message.UserServiceReference.User>> FindNewUsersByLoginAsync(int userId, string keyWorkForLogin);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/FindUsersUiUnfoByLogin", ReplyAction="http://tempuri.org/IUserService/FindUsersUiUnfoByLoginResponse")]
-        System.Collections.Generic.List<Message.UserServiceReference.UiInfo> FindUsersUiUnfoByLogin(string keyWorkForLogin);
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/FindNewUsersUiUnfoByLogin", ReplyAction="http://tempuri.org/IUserService/FindNewUsersUiUnfoByLoginResponse")]
+        System.Collections.Generic.List<Message.UserServiceReference.UiInfo> FindNewUsersUiUnfoByLogin(int userId, string keyWorkForLogin);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/FindUsersUiUnfoByLogin", ReplyAction="http://tempuri.org/IUserService/FindUsersUiUnfoByLoginResponse")]
-        System.Threading.Tasks.Task<System.Collections.Generic.List<Message.UserServiceReference.UiInfo>> FindUsersUiUnfoByLoginAsync(string keyWorkForLogin);
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/FindNewUsersUiUnfoByLogin", ReplyAction="http://tempuri.org/IUserService/FindNewUsersUiUnfoByLoginResponse")]
+        System.Threading.Tasks.Task<System.Collections.Generic.List<Message.UserServiceReference.UiInfo>> FindNewUsersUiUnfoByLoginAsync(int userId, string keyWorkForLogin);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/GetUserByLogin", ReplyAction="http://tempuri.org/IUserService/GetUserByLoginResponse")]
         Message.UserServiceReference.User GetUserByLogin(string login);
@@ -1394,20 +1394,20 @@ namespace Message.UserServiceReference {
             return base.Channel.GetUserByEmailAsync(email);
         }
         
-        public System.Collections.Generic.List<Message.UserServiceReference.User> FindUsersByLogin(string login) {
-            return base.Channel.FindUsersByLogin(login);
+        public System.Collections.Generic.List<Message.UserServiceReference.User> FindNewUsersByLogin(int userId, string keyWorkForLogin) {
+            return base.Channel.FindNewUsersByLogin(userId, keyWorkForLogin);
         }
         
-        public System.Threading.Tasks.Task<System.Collections.Generic.List<Message.UserServiceReference.User>> FindUsersByLoginAsync(string login) {
-            return base.Channel.FindUsersByLoginAsync(login);
+        public System.Threading.Tasks.Task<System.Collections.Generic.List<Message.UserServiceReference.User>> FindNewUsersByLoginAsync(int userId, string keyWorkForLogin) {
+            return base.Channel.FindNewUsersByLoginAsync(userId, keyWorkForLogin);
         }
         
-        public System.Collections.Generic.List<Message.UserServiceReference.UiInfo> FindUsersUiUnfoByLogin(string keyWorkForLogin) {
-            return base.Channel.FindUsersUiUnfoByLogin(keyWorkForLogin);
+        public System.Collections.Generic.List<Message.UserServiceReference.UiInfo> FindNewUsersUiUnfoByLogin(int userId, string keyWorkForLogin) {
+            return base.Channel.FindNewUsersUiUnfoByLogin(userId, keyWorkForLogin);
         }
         
-        public System.Threading.Tasks.Task<System.Collections.Generic.List<Message.UserServiceReference.UiInfo>> FindUsersUiUnfoByLoginAsync(string keyWorkForLogin) {
-            return base.Channel.FindUsersUiUnfoByLoginAsync(keyWorkForLogin);
+        public System.Threading.Tasks.Task<System.Collections.Generic.List<Message.UserServiceReference.UiInfo>> FindNewUsersUiUnfoByLoginAsync(int userId, string keyWorkForLogin) {
+            return base.Channel.FindNewUsersUiUnfoByLoginAsync(userId, keyWorkForLogin);
         }
         
         public Message.UserServiceReference.User GetUserByLogin(string login) {

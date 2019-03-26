@@ -333,7 +333,7 @@
       </wsp:All>
     </wsp:ExactlyOne>
   </wsp:Policy>
-  <wsp:Policy wsu:Id="WSDualHttpBinding_IUserService_FindUsersByLogin_Input_policy">
+  <wsp:Policy wsu:Id="WSDualHttpBinding_IUserService_FindNewUsersByLogin_Input_policy">
     <wsp:ExactlyOne>
       <wsp:All>
         <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
@@ -356,7 +356,7 @@
       </wsp:All>
     </wsp:ExactlyOne>
   </wsp:Policy>
-  <wsp:Policy wsu:Id="WSDualHttpBinding_IUserService_FindUsersByLogin_output_policy">
+  <wsp:Policy wsu:Id="WSDualHttpBinding_IUserService_FindNewUsersByLogin_output_policy">
     <wsp:ExactlyOne>
       <wsp:All>
         <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
@@ -379,7 +379,7 @@
       </wsp:All>
     </wsp:ExactlyOne>
   </wsp:Policy>
-  <wsp:Policy wsu:Id="WSDualHttpBinding_IUserService_FindUsersUiUnfoByLogin_Input_policy">
+  <wsp:Policy wsu:Id="WSDualHttpBinding_IUserService_FindNewUsersUiUnfoByLogin_Input_policy">
     <wsp:ExactlyOne>
       <wsp:All>
         <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
@@ -402,7 +402,7 @@
       </wsp:All>
     </wsp:ExactlyOne>
   </wsp:Policy>
-  <wsp:Policy wsu:Id="WSDualHttpBinding_IUserService_FindUsersUiUnfoByLogin_output_policy">
+  <wsp:Policy wsu:Id="WSDualHttpBinding_IUserService_FindNewUsersUiUnfoByLogin_output_policy">
     <wsp:ExactlyOne>
       <wsp:All>
         <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
@@ -1478,17 +1478,17 @@
   <wsdl:message name="IUserService_GetUserByEmail_OutputMessage">
     <wsdl:part name="parameters" element="tns:GetUserByEmailResponse" />
   </wsdl:message>
-  <wsdl:message name="IUserService_FindUsersByLogin_InputMessage">
-    <wsdl:part name="parameters" element="tns:FindUsersByLogin" />
+  <wsdl:message name="IUserService_FindNewUsersByLogin_InputMessage">
+    <wsdl:part name="parameters" element="tns:FindNewUsersByLogin" />
   </wsdl:message>
-  <wsdl:message name="IUserService_FindUsersByLogin_OutputMessage">
-    <wsdl:part name="parameters" element="tns:FindUsersByLoginResponse" />
+  <wsdl:message name="IUserService_FindNewUsersByLogin_OutputMessage">
+    <wsdl:part name="parameters" element="tns:FindNewUsersByLoginResponse" />
   </wsdl:message>
-  <wsdl:message name="IUserService_FindUsersUiUnfoByLogin_InputMessage">
-    <wsdl:part name="parameters" element="tns:FindUsersUiUnfoByLogin" />
+  <wsdl:message name="IUserService_FindNewUsersUiUnfoByLogin_InputMessage">
+    <wsdl:part name="parameters" element="tns:FindNewUsersUiUnfoByLogin" />
   </wsdl:message>
-  <wsdl:message name="IUserService_FindUsersUiUnfoByLogin_OutputMessage">
-    <wsdl:part name="parameters" element="tns:FindUsersUiUnfoByLoginResponse" />
+  <wsdl:message name="IUserService_FindNewUsersUiUnfoByLogin_OutputMessage">
+    <wsdl:part name="parameters" element="tns:FindNewUsersUiUnfoByLoginResponse" />
   </wsdl:message>
   <wsdl:message name="IUserService_GetUserByLogin_InputMessage">
     <wsdl:part name="parameters" element="tns:GetUserByLogin" />
@@ -1643,13 +1643,13 @@
       <wsdl:input wsaw:Action="http://tempuri.org/IUserService/GetUserByEmail" message="tns:IUserService_GetUserByEmail_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IUserService/GetUserByEmailResponse" message="tns:IUserService_GetUserByEmail_OutputMessage" />
     </wsdl:operation>
-    <wsdl:operation name="FindUsersByLogin">
-      <wsdl:input wsaw:Action="http://tempuri.org/IUserService/FindUsersByLogin" message="tns:IUserService_FindUsersByLogin_InputMessage" />
-      <wsdl:output wsaw:Action="http://tempuri.org/IUserService/FindUsersByLoginResponse" message="tns:IUserService_FindUsersByLogin_OutputMessage" />
+    <wsdl:operation name="FindNewUsersByLogin">
+      <wsdl:input wsaw:Action="http://tempuri.org/IUserService/FindNewUsersByLogin" message="tns:IUserService_FindNewUsersByLogin_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IUserService/FindNewUsersByLoginResponse" message="tns:IUserService_FindNewUsersByLogin_OutputMessage" />
     </wsdl:operation>
-    <wsdl:operation name="FindUsersUiUnfoByLogin">
-      <wsdl:input wsaw:Action="http://tempuri.org/IUserService/FindUsersUiUnfoByLogin" message="tns:IUserService_FindUsersUiUnfoByLogin_InputMessage" />
-      <wsdl:output wsaw:Action="http://tempuri.org/IUserService/FindUsersUiUnfoByLoginResponse" message="tns:IUserService_FindUsersUiUnfoByLogin_OutputMessage" />
+    <wsdl:operation name="FindNewUsersUiUnfoByLogin">
+      <wsdl:input wsaw:Action="http://tempuri.org/IUserService/FindNewUsersUiUnfoByLogin" message="tns:IUserService_FindNewUsersUiUnfoByLogin_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IUserService/FindNewUsersUiUnfoByLoginResponse" message="tns:IUserService_FindNewUsersUiUnfoByLogin_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation name="GetUserByLogin">
       <wsdl:input wsaw:Action="http://tempuri.org/IUserService/GetUserByLogin" message="tns:IUserService_GetUserByLogin_InputMessage" />
@@ -1808,25 +1808,25 @@
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="FindUsersByLogin">
-      <soap12:operation soapAction="http://tempuri.org/IUserService/FindUsersByLogin" style="document" />
+    <wsdl:operation name="FindNewUsersByLogin">
+      <soap12:operation soapAction="http://tempuri.org/IUserService/FindNewUsersByLogin" style="document" />
       <wsdl:input>
-        <wsp:PolicyReference URI="#WSDualHttpBinding_IUserService_FindUsersByLogin_Input_policy" />
+        <wsp:PolicyReference URI="#WSDualHttpBinding_IUserService_FindNewUsersByLogin_Input_policy" />
         <soap12:body use="literal" />
       </wsdl:input>
       <wsdl:output>
-        <wsp:PolicyReference URI="#WSDualHttpBinding_IUserService_FindUsersByLogin_output_policy" />
+        <wsp:PolicyReference URI="#WSDualHttpBinding_IUserService_FindNewUsersByLogin_output_policy" />
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="FindUsersUiUnfoByLogin">
-      <soap12:operation soapAction="http://tempuri.org/IUserService/FindUsersUiUnfoByLogin" style="document" />
+    <wsdl:operation name="FindNewUsersUiUnfoByLogin">
+      <soap12:operation soapAction="http://tempuri.org/IUserService/FindNewUsersUiUnfoByLogin" style="document" />
       <wsdl:input>
-        <wsp:PolicyReference URI="#WSDualHttpBinding_IUserService_FindUsersUiUnfoByLogin_Input_policy" />
+        <wsp:PolicyReference URI="#WSDualHttpBinding_IUserService_FindNewUsersUiUnfoByLogin_Input_policy" />
         <soap12:body use="literal" />
       </wsdl:input>
       <wsdl:output>
-        <wsp:PolicyReference URI="#WSDualHttpBinding_IUserService_FindUsersUiUnfoByLogin_output_policy" />
+        <wsp:PolicyReference URI="#WSDualHttpBinding_IUserService_FindNewUsersUiUnfoByLogin_output_policy" />
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>

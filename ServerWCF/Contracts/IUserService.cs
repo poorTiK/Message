@@ -27,18 +27,16 @@ namespace ServerWCF.Contracts
         User GetUserByEmail(string email);
 
         [OperationContract]
-        List<User> FindUsersByLogin(string login);
+        List<User> FindNewUsersByLogin(int userId, string keyWorkForLogin);
 
         [OperationContract]
-        List<UiInfo> FindUsersUiUnfoByLogin(string keyWorkForLogin);
+        List<UiInfo> FindNewUsersUiUnfoByLogin(int userId, string keyWorkForLogin);
 
         [OperationContract]
         User GetUserByLogin(string login);
 
         [OperationContract]
         User GetUserById(int id);
-
-
 
         [OperationContract]
         string AddOrUpdateChatGroup(ChatGroup chatGroupToAdd);

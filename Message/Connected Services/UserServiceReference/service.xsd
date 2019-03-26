@@ -70,31 +70,33 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
-  <xs:element name="FindUsersByLogin">
+  <xs:element name="FindNewUsersByLogin">
     <xs:complexType>
       <xs:sequence>
-        <xs:element minOccurs="0" name="login" nillable="true" type="xs:string" />
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="FindUsersByLoginResponse">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element xmlns:q6="http://schemas.datacontract.org/2004/07/ServerWCF.Model" minOccurs="0" name="FindUsersByLoginResult" nillable="true" type="q6:ArrayOfUser" />
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="FindUsersUiUnfoByLogin">
-    <xs:complexType>
-      <xs:sequence>
+        <xs:element minOccurs="0" name="userId" type="xs:int" />
         <xs:element minOccurs="0" name="keyWorkForLogin" nillable="true" type="xs:string" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
-  <xs:element name="FindUsersUiUnfoByLoginResponse">
+  <xs:element name="FindNewUsersByLoginResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q7="http://schemas.datacontract.org/2004/07/ServerWCF.Model.UiInfo" minOccurs="0" name="FindUsersUiUnfoByLoginResult" nillable="true" type="q7:ArrayOfUiInfo" />
+        <xs:element xmlns:q6="http://schemas.datacontract.org/2004/07/ServerWCF.Model" minOccurs="0" name="FindNewUsersByLoginResult" nillable="true" type="q6:ArrayOfUser" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="FindNewUsersUiUnfoByLogin">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="userId" type="xs:int" />
+        <xs:element minOccurs="0" name="keyWorkForLogin" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="FindNewUsersUiUnfoByLoginResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q7="http://schemas.datacontract.org/2004/07/ServerWCF.Model.UiInfo" minOccurs="0" name="FindNewUsersUiUnfoByLoginResult" nillable="true" type="q7:ArrayOfUiInfo" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
