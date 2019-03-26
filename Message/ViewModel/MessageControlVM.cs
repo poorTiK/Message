@@ -66,7 +66,6 @@ namespace Message.ViewModel
 
         private void OnDownloadData()
         {
-            var file = GlobalBase.PhotoServiceClient.GetFileByMessageId(Message.Id);
             //TODO change to SaveFileDialog
             var fileDialog = new FolderBrowserDialog();
             var res = fileDialog.ShowDialog();
@@ -78,9 +77,7 @@ namespace Message.ViewModel
                     FileService.ChatFile chatFile = GlobalBase.FileServiceClient.getChatFileById(Message.ChatFileId);
                     using (Stream fileStr = File.OpenWrite(savePath + "\\" + chatFile.Name))
                     {
-                        fileStr.Write(file, 0, file.Length);
-
-                        //File.Open(savePath + Message.AdditionalInfo, FileMode.Open);
+                        fileStr.Write(chatFile.Source, 0, chatFile.Source.Length);
                     }
                 }
             }

@@ -341,12 +341,27 @@ namespace Message.ViewModel
                     }
                     else
                     {
+                        var tempMes = new UserMessage()
+                        {
+                            Text = Encoding.UTF8.GetBytes(MessageText),
+                            DateOfSending = DateTime.Now,
+                            SenderId = GlobalBase.CurrentUser.Id,
+                            Sender = GlobalBase.CurrentUser,
+                            ReceiverId = userUiInfo.UserId,
+                        };
+                        UserServiceClient.SendMessageAsync(tempMes);
+
+                        _view.MessageList.Add(tempMes);
+
                         messagesWithFile = new List<BaseMessage>();
                         foreach (var file in FilesPath)
                         {
+                            var chatFile = new Message.FileService.ChatFile() {Source = GlobalBase.FileToByte(file), Name = GlobalBase.GetShortName(file)};
+
                             messagesWithFile.Add(new UserMessage()
                             {
-                                Text = GlobalBase.FileToByte(file),
+                                Text = Encoding.UTF8.GetBytes(chatFile.Name),
+                                ChatFileId = GlobalBase.FileServiceClient.UploadFile(chatFile),
                                 DateOfSending = DateTime.Now,
                                 SenderId = GlobalBase.CurrentUser.Id,
                                 Sender = GlobalBase.CurrentUser,
@@ -372,12 +387,27 @@ namespace Message.ViewModel
                     }
                     else
                     {
+                        var tempMes = new GroupMessage()
+                        {
+                            Text = Encoding.UTF8.GetBytes(MessageText),
+                            DateOfSending = DateTime.Now,
+                            SenderId = GlobalBase.CurrentUser.Id,
+                            Sender = GlobalBase.CurrentUser,
+                            ChatGroupId = userUiInfo.ChatGroupId,
+                        };
+                        UserServiceClient.SendMessageAsync(tempMes);
+
+                        _view.MessageList.Add(tempMes);
+
                         messagesWithFile = new List<BaseMessage>();
                         foreach (var file in FilesPath)
                         {
+                            var chatFile = new Message.FileService.ChatFile() { Source = GlobalBase.FileToByte(file), Name = GlobalBase.GetShortName(file) };
+
                             messagesWithFile.Add(new GroupMessage()
                             {
-                                Text = GlobalBase.FileToByte(file),
+                                Text = Encoding.UTF8.GetBytes(chatFile.Name),
+                                ChatFileId = GlobalBase.FileServiceClient.UploadFile(chatFile),
                                 DateOfSending = DateTime.Now,
                                 SenderId = GlobalBase.CurrentUser.Id,
                                 Sender = GlobalBase.CurrentUser,
@@ -397,11 +427,11 @@ namespace Message.ViewModel
                     foreach (var fileMessage in messagesWithFile)
                     {
                         UserServiceClient.SendMessage(fileMessage);
-                        var mes = UserServiceClient.GetUserMessages(GlobalBase.CurrentUser.Id,
-                            (SelectedContact as UserUiInfo).UserId, 1);
-                        GlobalBase.PhotoServiceClient.SetFileToMessage(mes.Last().Id, fileMessage.Text);
-                        fileMessage.Id = mes.Last().Id;
-                        fileMessage.Text = null;
+                        //var mes = UserServiceClient.GetUserMessages(GlobalBase.CurrentUser.Id,
+                        //    (SelectedContact as UserUiInfo).UserId, 1);
+                        //GlobalBase.PhotoServiceClient.SetFileToMessage(mes.Last().Id, fileMessage.Text);
+                        //fileMessage.Id = mes.Last().Id;
+                        //fileMessage.Text = null;
                         _view.MessageList.Add(fileMessage);
                     }
 
