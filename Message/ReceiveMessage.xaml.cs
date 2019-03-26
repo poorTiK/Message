@@ -22,8 +22,6 @@ namespace Message
         {
             InitializeComponent();
 
-            FileService.ChatFile chatFile = GlobalBase.FileServiceClient.getChatFileById(message.ChatFileId);
-
             if (message.Text != null)
             {
                 MessageText.Text = GlobalBase.Base64Decode(message.Text);

@@ -20,8 +20,7 @@ namespace Message
         public SendMessage(BaseMessage message)
         {
             InitializeComponent();
-
-            //MessageText.Text = message.ChatFileId == 0 ? GlobalBase.Base64Decode(message.Text) : "File";
+            
             if (message.Text != null)
             {
                 MessageText.Text = GlobalBase.Base64Decode(message.Text);
