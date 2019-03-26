@@ -602,7 +602,7 @@ namespace Message.ViewModel
                     ChatGroupUiInfo chatGroupUiInfo = temp as ChatGroupUiInfo;
 
                     if (ContactsList.Any(x =>
-                        temp != null && ((x as ChatGroupUiInfo).ChatGroupId == chatGroupUiInfo.ChatGroupId)))
+                        temp != null && ((x is ChatGroupUiInfo) && (x as ChatGroupUiInfo).ChatGroupId == chatGroupUiInfo.ChatGroupId)))
                     {
                         Dispatcher.CurrentDispatcher.Invoke(() => { SelectedContact = temp; });
                     }
