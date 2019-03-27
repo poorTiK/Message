@@ -215,12 +215,12 @@ namespace Message.ViewModel
                     {
                         if (chatFile == null)
                         {
-                            GlobalBase.CurrentUser.ImageId = GlobalBase.FileServiceClient.UploadFile(new FileService.ChatFile() { Source = _newAvatar });
+                            GlobalBase.CurrentUser.ImageId = GlobalBase.FileServiceClient.UploadFile(new FileService.ChatFile() { Source = CompressionHelper.Compress(_newAvatar) });
                             UserServiceClient.AddOrUpdateUser(GlobalBase.CurrentUser);
                         }
                         else
                         {
-                            GlobalBase.FileServiceClient.UpdateFileSource(chatFile.Id, _newAvatar);
+                            GlobalBase.FileServiceClient.UpdateFileSource(chatFile.Id, CompressionHelper.Compress(_newAvatar));
                         }
                     }
 

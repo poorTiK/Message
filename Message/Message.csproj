@@ -230,6 +230,7 @@
     <Compile Include="MessageMainWnd.xaml.cs">
       <DependentUpon>MessageMainWnd.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Model\CompressionHelper.cs" />
     <Compile Include="Model\GlobalBase.cs" />
     <Compile Include="Model\ImageHelper.cs" />
     <Compile Include="Model\ImageToByteArrayConverter.cs" />

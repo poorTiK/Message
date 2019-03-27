@@ -275,9 +275,9 @@ namespace Message.ViewModel
                     {
                         if (UserServiceClient.AddOrUpdateUser(user) == string.Empty)
                         {
-                            var updatedUser = UserServiceClient.GetUserByLogin(UserLogin);
-                            updatedUser.ImageId = GlobalBase.FileServiceClient.UploadFile(new FileService.ChatFile(){ Source = ImageHelper.GetDefImageBytes() });
-                            UserServiceClient.AddOrUpdateUser(updatedUser);
+                            //var updatedUser = UserServiceClient.GetUserByLogin(UserLogin);
+                            //updatedUser.ImageId = GlobalBase.FileServiceClient.UploadFile(new FileService.ChatFile(){ Source = ImageHelper.GetDefImageBytes() });
+                            //UserServiceClient.AddOrUpdateUser(updatedUser);
 
                             Application.Current.Dispatcher.Invoke(new Action((() =>
                             {

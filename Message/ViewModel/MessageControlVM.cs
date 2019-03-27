@@ -77,7 +77,7 @@ namespace Message.ViewModel
                     FileService.ChatFile chatFile = GlobalBase.FileServiceClient.getChatFileById(Message.ChatFileId);
                     using (Stream fileStr = File.OpenWrite(savePath + "\\" + chatFile.Name))
                     {
-                        fileStr.Write(chatFile.Source, 0, chatFile.Source.Length);
+                        fileStr.Write(CompressionHelper.Decompress(chatFile.Source), 0, CompressionHelper.Decompress(chatFile.Source).Length);
                     }
                 }
             }

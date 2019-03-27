@@ -341,32 +341,55 @@ namespace Message.ViewModel
                     }
                     else
                     {
-                        var tempMes = new UserMessage()
+                        if (FilesPath.Length == 1)
                         {
-                            Text = Encoding.UTF8.GetBytes(MessageText),
-                            DateOfSending = DateTime.Now,
-                            SenderId = GlobalBase.CurrentUser.Id,
-                            Sender = GlobalBase.CurrentUser,
-                            ReceiverId = userUiInfo.UserId,
-                        };
-                        UserServiceClient.SendMessageAsync(tempMes);
+                            var chatFile = new Message.FileService.ChatFile() { Source = CompressionHelper.Compress(GlobalBase.FileToByte(FilesPath[0])), Name = GlobalBase.GetShortName(FilesPath[0]) };
 
-                        _view.MessageList.Add(tempMes);
-
-                        messagesWithFile = new List<BaseMessage>();
-                        foreach (var file in FilesPath)
-                        {
-                            var chatFile = new Message.FileService.ChatFile() {Source = GlobalBase.FileToByte(file), Name = GlobalBase.GetShortName(file)};
-
-                            messagesWithFile.Add(new UserMessage()
+                            var tempMes = new UserMessage()
                             {
-                                Text = Encoding.UTF8.GetBytes(chatFile.Name),
+                                Text = MessageText != null ? Encoding.UTF8.GetBytes(MessageText) : Encoding.UTF8.GetBytes(chatFile.Name),
                                 ChatFileId = GlobalBase.FileServiceClient.UploadFile(chatFile),
                                 DateOfSending = DateTime.Now,
                                 SenderId = GlobalBase.CurrentUser.Id,
                                 Sender = GlobalBase.CurrentUser,
                                 ReceiverId = userUiInfo.UserId,
-                            });
+                            };
+                            UserServiceClient.SendMessageAsync(tempMes);
+
+                            _view.MessageList.Add(tempMes);
+                        }
+                        else
+                        {
+                            if (MessageText != null)
+                            {
+                                var tempMes = new UserMessage()
+                                {
+                                    Text = Encoding.UTF8.GetBytes(MessageText),
+                                    DateOfSending = DateTime.Now,
+                                    SenderId = GlobalBase.CurrentUser.Id,
+                                    Sender = GlobalBase.CurrentUser,
+                                    ReceiverId = userUiInfo.UserId,
+                                };
+                                UserServiceClient.SendMessageAsync(tempMes);
+
+                                _view.MessageList.Add(tempMes);
+                            }
+
+                            messagesWithFile = new List<BaseMessage>();
+                            foreach (var file in FilesPath)
+                            {
+                                var chatFile = new Message.FileService.ChatFile() { Source = CompressionHelper.Compress(GlobalBase.FileToByte(file)), Name = GlobalBase.GetShortName(file) };
+
+                                messagesWithFile.Add(new UserMessage()
+                                {
+                                    Text = Encoding.UTF8.GetBytes(chatFile.Name),
+                                    ChatFileId = GlobalBase.FileServiceClient.UploadFile(chatFile),
+                                    DateOfSending = DateTime.Now,
+                                    SenderId = GlobalBase.CurrentUser.Id,
+                                    Sender = GlobalBase.CurrentUser,
+                                    ReceiverId = userUiInfo.UserId,
+                                });
+                            }
                         }
                     }
                     
@@ -402,7 +425,7 @@ namespace Message.ViewModel
                         messagesWithFile = new List<BaseMessage>();
                         foreach (var file in FilesPath)
                         {
-                            var chatFile = new Message.FileService.ChatFile() { Source = GlobalBase.FileToByte(file), Name = GlobalBase.GetShortName(file) };
+                            var chatFile = new Message.FileService.ChatFile() { Source = CompressionHelper.Compress(GlobalBase.FileToByte(file)), Name = GlobalBase.GetShortName(file) };
 
                             messagesWithFile.Add(new GroupMessage()
                             {
@@ -422,7 +445,7 @@ namespace Message.ViewModel
                     UserServiceClient.SendMessageAsync(message);
                     _view.MessageList.Add(message);
                 }
-                else
+                else if(messagesWithFile != null)
                 {
                     foreach (var fileMessage in messagesWithFile)
                     {
@@ -434,16 +457,16 @@ namespace Message.ViewModel
                         //fileMessage.Text = null;
                         _view.MessageList.Add(fileMessage);
                     }
-
-                    FilesPath = null;
-                    FileAmount = 0;
                 }
 
-                Debug.WriteLine("Send Message");
+                FilesPath = null;
+                FileAmount = 0;
                 
                 _view.UpdateMessageList();
 
                 MessageText = string.Empty;
+
+                Debug.WriteLine("Send Message");
             }
         }
 

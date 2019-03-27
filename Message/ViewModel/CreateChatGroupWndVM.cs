@@ -119,7 +119,7 @@ namespace Message.ViewModel
                 if (_newAvatar != null)
                 {
                     var updatedChat = UserServiceClient.GetChatGroup(Name);
-                    updatedChat.ImageId = GlobalBase.FileServiceClient.UploadFile(new FileService.ChatFile() { Source = _newAvatar });
+                    updatedChat.ImageId = GlobalBase.FileServiceClient.UploadFile(new FileService.ChatFile() { Source = CompressionHelper.Compress(_newAvatar) });
                     UserServiceClient.AddOrUpdateChatGroup(updatedChat);
                 }
             }).ContinueWith(task =>
