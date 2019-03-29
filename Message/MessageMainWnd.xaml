@@ -200,15 +200,15 @@
                     </ScrollViewer>
                 </Grid>
                 <Grid Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2">
-                    <Border Height="35" Background="{DynamicResource WindowBackGround}" VerticalAlignment="Bottom">
-                        <Grid Height="auto">
+                    <Border Height="auto" Background="{DynamicResource WindowBackGround}" VerticalAlignment="Bottom" MaxHeight="100" MinHeight="35">
+                        <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition />
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
 
-                            <materialDesign:Badged Grid.Column="0" Badge="{Binding FileAmount}">
+                            <materialDesign:Badged Grid.Column="0" Badge="{Binding FileAmount}" HorizontalAlignment="Left" VerticalAlignment="Center">
                                 <Button Style="{StaticResource MaterialDesignFlatButton}"
                                         Command="{Binding AddFile}" IsEnabled="{Binding IsMenuEnabled}">
                                     <materialDesign:PackIcon Kind="Paperclip" Foreground="{DynamicResource ButtonForeground}" />

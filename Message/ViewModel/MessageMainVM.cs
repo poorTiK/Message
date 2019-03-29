@@ -629,7 +629,7 @@ namespace Message.ViewModel
         {
             User sender = UserServiceClient.GetAllUsers().FirstOrDefault(x => x.Id == message.SenderId);
 
-            if (sender.Id != (SelectedContact as UserUiInfo).UserId)
+            if (sender.Id != (SelectedContact as UserUiInfo)?.UserId)
             {
                 var mes = "New message from  @" + sender.Login + "\n" + "\"" + GlobalBase.Base64Decode(message.Text) +
                           "\"";
