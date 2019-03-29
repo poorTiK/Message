@@ -2,7 +2,7 @@
 using System.IO;
 using System.Windows.Media.Imaging;
 
-namespace Message.Model
+namespace Message.Compression
 {
     public static class ImageToByteArrayConverter
     {

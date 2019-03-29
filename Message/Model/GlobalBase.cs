@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using System.Windows.Threading;
 using System.Drawing;
 
-namespace Message.Model
+namespace Message.Compression
 {
     public static class GlobalBase
     {
@@ -18,13 +18,10 @@ namespace Message.Model
 
         public static Action UpdateUI;
 
-        public static PhotoServiceClient PhotoServiceClient { get; set; }
-
         public static FileServiceClient FileServiceClient { get; set; } 
 
         static GlobalBase()
         {
-            PhotoServiceClient = new PhotoServiceClient();
             FileServiceClient = new FileServiceClient();
         }
 
@@ -73,60 +70,42 @@ namespace Message.Model
 
         public static void loadPictures(UserServiceClient userServiceClient, List<UiInfo> uiInfos)
         {
-            foreach (var item in uiInfos)
-            {
-                loadPicture(userServiceClient, item);
-            }
+            uiInfos.ForEach(item => loadPicture(userServiceClient, item));
         }
 
         public static void loadPicture(UserServiceClient userServiceClient, UiInfo uiInfos)
         {
-            if (uiInfos is UserUiInfo)
-            {
-                UserUiInfo userUiInfo = uiInfos as UserUiInfo;
-                User user = userServiceClient.GetUserById(userUiInfo.UserId);
-                FileService.ChatFile chatFile = FileServiceClient.getChatFileById(user.ImageId);
+            FileService.ChatFile chatFile = FileServiceClient.getChatFileById(uiInfos.ImageId);
 
-                if (chatFile?.Source?.Length > 0)
-                {
-                    MemoryStream memstr = new MemoryStream(chatFile.Source);
-                    Dispatcher.CurrentDispatcher.Invoke(() => { uiInfos.UiImage = Image.FromStream(memstr); });
-                }
-                else
-                {
-                    Dispatcher.CurrentDispatcher.Invoke(() => { uiInfos.UiImage = ImageHelper.GetDefImage(); });
-                }
+            if (chatFile?.Source?.Length > 0)
+            {
+                //chatFile.Source = CompressionHelper.Decompress(chatFile.Source);
+                MemoryStream memstr = new MemoryStream(chatFile.Source);
+                Dispatcher.CurrentDispatcher.Invoke(() => { uiInfos.UiImage = Image.FromStream(memstr); });
             }
-            else if (uiInfos is ChatGroupUiInfo)
+            else
             {
-                ChatGroupUiInfo groupUiInfo = uiInfos as ChatGroupUiInfo;
-                ChatGroup group = userServiceClient.GetChatGroup(groupUiInfo.Name);
-                FileService.ChatFile chatFile = FileServiceClient.getChatFileById(group.ImageId);
-
-                if (chatFile?.Source?.Length > 0)
-                {
-                    MemoryStream memstr = new MemoryStream(chatFile.Source);
-                    Dispatcher.CurrentDispatcher.Invoke(() => { uiInfos.UiImage = Image.FromStream(memstr); });
-                }
-                else
-                {
-                    Dispatcher.CurrentDispatcher.Invoke(() => { uiInfos.UiImage = ImageHelper.GetDefGroupImage(); });
-                }
+                Dispatcher.CurrentDispatcher.Invoke(() => { uiInfos.UiImage = ImageHelper.GetDefImage(); });
             }
         }
 
         public static Image getUsersAvatar(User user)
         {
             FileService.ChatFile chatFile = FileServiceClient.getChatFileById(user.ImageId);
+            Image usersImage = null;
+
             if (chatFile?.Source?.Length > 0)
             {
                 MemoryStream memstr = new MemoryStream(chatFile.Source);
-                return Image.FromStream(memstr);
+                usersImage = Image.FromStream(memstr);
             }
             else
             {
-                return ImageHelper.GetDefImage();
+                usersImage = ImageHelper.GetDefImage();
             }
+
+            return usersImage;
+
         } 
     }
 }

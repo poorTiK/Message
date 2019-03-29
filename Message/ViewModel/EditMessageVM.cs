@@ -6,7 +6,7 @@ using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
 using Message.Interfaces;
-using Message.Model;
+using Message.Compression;
 using Prism.Commands;
 
 namespace Message.ViewModel

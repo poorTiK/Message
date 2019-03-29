@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using Message.Encryption;
 using Message.FileService;
-using Message.Model;
+using Message.Compression;
 using Message.PhotoServiceReference;
 
 namespace Message.ViewModel

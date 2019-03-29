@@ -1,5 +1,5 @@
 ﻿using Message.Interfaces;
-using Message.Model;
+using Message.Compression;
 using Prism.Commands;
 using System.Windows.Media.Imaging;
 using System.Drawing;

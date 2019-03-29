@@ -1,6 +1,6 @@
 ﻿using Message.AdditionalItems;
 using Message.Interfaces;
-using Message.Model;
+using Message.Compression;
 using Message.UserServiceReference;
 using Microsoft.Win32;
 using Prism.Commands;
@@ -201,26 +201,26 @@ namespace Message.ViewModel
             string res;
             Task.Run((() =>
             {
-                if (Validate())
+            if (Validate())
+            {
+                GlobalBase.CurrentUser.FirstName = UserName;
+                GlobalBase.CurrentUser.LastName = UserLastName;
+                GlobalBase.CurrentUser.Phone = UserPhone;
+                GlobalBase.CurrentUser.Email = UserEmail;
+                GlobalBase.CurrentUser.Bio = UserBio;
+                var chatFile = GlobalBase.FileServiceClient.getChatFileById(GlobalBase.CurrentUser.ImageId);
+                res = UserServiceClient.AddOrUpdateUser(GlobalBase.CurrentUser);
+
+                if (_newAvatar != null)
                 {
-                    GlobalBase.CurrentUser.FirstName = UserName;
-                    GlobalBase.CurrentUser.LastName = UserLastName;
-                    GlobalBase.CurrentUser.Phone = UserPhone;
-                    GlobalBase.CurrentUser.Email = UserEmail;
-                    GlobalBase.CurrentUser.Bio = UserBio;
-                    var chatFile = GlobalBase.FileServiceClient.getChatFileById(GlobalBase.CurrentUser.ImageId);
-                    res = UserServiceClient.AddOrUpdateUser(GlobalBase.CurrentUser);
-                    
-                    if (_newAvatar != null)
+                    if (chatFile == null)
                     {
-                        if (chatFile == null)
-                        {
-                            GlobalBase.CurrentUser.ImageId = GlobalBase.FileServiceClient.UploadFile(new FileService.ChatFile() { Source = CompressionHelper.Compress(_newAvatar) });
+                            GlobalBase.CurrentUser.ImageId = GlobalBase.FileServiceClient.UploadFile(new FileService.ChatFile() { Source = CompressionHelper.CompressImage(_newAvatar) });
                             UserServiceClient.AddOrUpdateUser(GlobalBase.CurrentUser);
                         }
                         else
                         {
-                            GlobalBase.FileServiceClient.UpdateFileSource(chatFile.Id, CompressionHelper.Compress(_newAvatar));
+                            GlobalBase.FileServiceClient.UpdateFileSource(chatFile.Id, CompressionHelper.CompressFile(_newAvatar));
                         }
                     }
 

@@ -681,6 +681,7 @@ namespace ServerWCF.Services
                     dbMessage.Sender = editedMessage.Sender;
                     dbMessage.SenderId = editedMessage.SenderId;
                     dbMessage.DateOfSending = editedMessage.DateOfSending;
+                    dbMessage.Text = editedMessage.Text;
 
                     CallbackData callbackData = usersOnline.Where(cd => cd.User.Id == dbMessage.SenderId).FirstOrDefault();
                     if (callbackData == null)

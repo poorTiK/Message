@@ -1,6 +1,6 @@
 ﻿using Message.AdditionalItems;
 using Message.Interfaces;
-using Message.Model;
+using Message.Compression;
 using Message.UserServiceReference;
 using Prism.Commands;
 using System;

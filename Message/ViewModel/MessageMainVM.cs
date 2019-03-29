@@ -1,5 +1,5 @@
 ﻿using Message.Interfaces;
-using Message.Model;
+using Message.Compression;
 using Message.UserServiceReference;
 using Microsoft.Win32;
 using Prism.Commands;
@@ -343,7 +343,7 @@ namespace Message.ViewModel
                     {
                         if (FilesPath.Length == 1)
                         {
-                            var chatFile = new Message.FileService.ChatFile() { Source = CompressionHelper.Compress(GlobalBase.FileToByte(FilesPath[0])), Name = GlobalBase.GetShortName(FilesPath[0]) };
+                            var chatFile = new Message.FileService.ChatFile() { Source = CompressionHelper.CompressFile(GlobalBase.FileToByte(FilesPath[0])), Name = GlobalBase.GetShortName(FilesPath[0]) };
 
                             var tempMes = new UserMessage()
                             {
@@ -378,7 +378,7 @@ namespace Message.ViewModel
                             messagesWithFile = new List<BaseMessage>();
                             foreach (var file in FilesPath)
                             {
-                                var chatFile = new Message.FileService.ChatFile() { Source = CompressionHelper.Compress(GlobalBase.FileToByte(file)), Name = GlobalBase.GetShortName(file) };
+                                var chatFile = new Message.FileService.ChatFile() { Source = CompressionHelper.CompressFile(GlobalBase.FileToByte(file)), Name = GlobalBase.GetShortName(file) };
 
                                 messagesWithFile.Add(new UserMessage()
                                 {
@@ -425,7 +425,7 @@ namespace Message.ViewModel
                         messagesWithFile = new List<BaseMessage>();
                         foreach (var file in FilesPath)
                         {
-                            var chatFile = new Message.FileService.ChatFile() { Source = CompressionHelper.Compress(GlobalBase.FileToByte(file)), Name = GlobalBase.GetShortName(file) };
+                            var chatFile = new Message.FileService.ChatFile() { Source = CompressionHelper.CompressFile(GlobalBase.FileToByte(file)), Name = GlobalBase.GetShortName(file) };
 
                             messagesWithFile.Add(new GroupMessage()
                             {

@@ -2,7 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 using Message.FileService;
-using Message.Model;
+using Message.Compression;
 using Message.UserServiceReference;
 using Message.ViewModel;
 

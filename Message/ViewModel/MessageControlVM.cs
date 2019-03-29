@@ -1,5 +1,5 @@
 ﻿using Message.AdditionalItems;
-using Message.Model;
+using Message.Compression;
 using Message.UserServiceReference;
 using Prism.Commands;
 using System;
@@ -77,7 +77,7 @@ namespace Message.ViewModel
                     FileService.ChatFile chatFile = GlobalBase.FileServiceClient.getChatFileById(Message.ChatFileId);
                     using (Stream fileStr = File.OpenWrite(savePath + "\\" + chatFile.Name))
                     {
-                        fileStr.Write(CompressionHelper.Decompress(chatFile.Source), 0, CompressionHelper.Decompress(chatFile.Source).Length);
+                        fileStr.Write(CompressionHelper.DecompressFile(chatFile.Source), 0, CompressionHelper.DecompressFile(chatFile.Source).Length);
                     }
                 }
             }

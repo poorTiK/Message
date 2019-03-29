@@ -1,5 +1,5 @@
 ﻿using Message.Interfaces;
-using Message.Model;
+using Message.Compression;
 using Message.ViewModel;
 using System;
 using System.Windows;

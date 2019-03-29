@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Forms;
 using Message.Interfaces;
-using Message.Model;
+using Message.Compression;
 using Message.UserServiceReference;
 using Prism.Commands;
 
@@ -119,7 +119,7 @@ namespace Message.ViewModel
                 if (_newAvatar != null)
                 {
                     var updatedChat = UserServiceClient.GetChatGroup(Name);
-                    updatedChat.ImageId = GlobalBase.FileServiceClient.UploadFile(new FileService.ChatFile() { Source = CompressionHelper.Compress(_newAvatar) });
+                    updatedChat.ImageId = GlobalBase.FileServiceClient.UploadFile(new FileService.ChatFile() { Source = CompressionHelper.CompressImage(_newAvatar) });
                     UserServiceClient.AddOrUpdateChatGroup(updatedChat);
                 }
             }).ContinueWith(task =>
