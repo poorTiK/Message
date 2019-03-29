@@ -22,7 +22,14 @@ namespace Message.ViewModel
         public string MessageText
         {
             get { return _messageText; }
-            set { SetProperty(ref _messageText, value); }
+            set { SetProperty(ref _messageText, value, () => Validate()); }
+        }
+
+        private bool isApplyEnabled;
+        public bool IsApplyEnabled
+        {
+            get { return isApplyEnabled; }
+            set { SetProperty(ref isApplyEnabled, value); }
         }
 
         public EditMessageVM(BaseMessage message, IView View) : base()
@@ -55,6 +62,11 @@ namespace Message.ViewModel
             UserServiceClient.EditMessage(Message);
 
             _view.CloseWindow();
+        }
+
+        private void Validate()
+        {
+            IsApplyEnabled = !string.IsNullOrWhiteSpace(MessageText);
         }
     }
 }

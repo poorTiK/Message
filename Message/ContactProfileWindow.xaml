@@ -23,7 +23,7 @@
 
     <Grid Background="{DynamicResource PopUpBackground}">
         <Grid VerticalAlignment="Top">
-            <TextBlock Margin="10,0,0,0" HorizontalAlignment="Left"
+            <TextBlock Margin="10,0,0,0" HorizontalAlignment="Left" Style="{StaticResource MaterialDesignSubheadingTextBlock}" Foreground="{DynamicResource Foreground}"
                        VerticalAlignment="Center" Text="{DynamicResource ViewProfile}"></TextBlock>
             <Button x:Name="ButtonClose" Click="ButtonClose_OnClick" HorizontalAlignment="Right" VerticalAlignment="Top" Background="{x:Null}" Foreground="{DynamicResource ButtonForeground}" BorderBrush="{x:Null}" Width="30" Height="30" Padding="0">
                 <materialDesign:PackIcon Kind="Close" Foreground="{DynamicResource HeaderButton}"/>

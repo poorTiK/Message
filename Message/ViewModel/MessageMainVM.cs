@@ -627,45 +627,7 @@ namespace Message.ViewModel
 
         public override void ReceiveMessage(BaseMessage message)
         {
-            User sender = UserServiceClient.GetAllUsers().FirstOrDefault(x => x.Id == message.SenderId);
-
-            if (sender.Id != (SelectedContact as UserUiInfo)?.UserId)
-            {
-                var mes = "New message from  @" + sender.Login + "\n" + "\"" + GlobalBase.Base64Decode(message.Text) +
-                          "\"";
-                GlobalBase.ShowNotify("New message", mes);
-            }
-
-            Debug.WriteLine("Receave Message from - ", sender.Login);
-
-            if (message is UserMessage)
-            {
-                if (ContactsList.Where(c => c is UserUiInfo).FirstOrDefault(x => (x as UserUiInfo).UserId == sender.Id) == null)
-                {
-                    UserServiceClient.AddUserToUserContactAsync(GlobalBase.CurrentUser.Id, sender.Id).ContinueWith(task =>
-                    {
-                        UpdateContactList();
-                    });
-                }
-                else if ( (SelectedContact is UserUiInfo) && ((SelectedContact as UserUiInfo).UserId == sender.Id) )
-                {
-                    SelectedContactChanged();
-                }
-            }
-            else if (message is GroupMessage)
-            {
-                if (ContactsList.Where(c => c is ChatGroupUiInfo).FirstOrDefault(x => (x as ChatGroupUiInfo).ChatGroupId == (message as GroupMessage).ChatGroupId) == null)
-                {
-                    UserServiceClient.AddUserToChatGroupContactAsync((message as GroupMessage).ChatGroupId, GlobalBase.CurrentUser.Id).ContinueWith(task =>
-                    {
-                        UpdateContactList();
-                    });
-                }
-                else if ( (SelectedContact is ChatGroupUiInfo) && ((SelectedContact as ChatGroupUiInfo).ChatGroupId == (message as GroupMessage).ChatGroupId) )
-                {
-                    SelectedContactChanged();
-                }
-            }
+            UpdateMessages(message, AddMessage);
         }
 
         public override void UserLeave(User user)
@@ -687,7 +649,73 @@ namespace Message.ViewModel
 
         public override void OnMessageEdited(BaseMessage message)
         {
-            //throw new NotImplementedException();
+            UpdateMessages(message, UppdateMessage);
         }
+
+        private bool AddMessage(BaseMessage message)
+        {
+            _view.MessageList.Add(message);
+            _view.UpdateMessageList();
+
+            return true;
+        }
+
+        private bool UppdateMessage(BaseMessage message)
+        {
+            var mes = _view.MessageList.FirstOrDefault(x => x.Id == message.Id);
+            if (mes != null)
+            {
+                mes.Text = message.Text;
+                _view.UpdateMessageList();
+                return true;
+            }
+
+            return false;
+        }
+
+        private void UpdateMessages(BaseMessage message, Func<BaseMessage,bool> updateMethod)
+        {
+            User sender = UserServiceClient.GetAllUsers().FirstOrDefault(x => x.Id == message.SenderId);
+
+            if (sender.Id != (SelectedContact as UserUiInfo)?.UserId)
+            {
+                var mes = "New message from  @" + sender.Login + "\n" + "\"" + GlobalBase.Base64Decode(message.Text) +
+                          "\"";
+                GlobalBase.ShowNotify("New message", mes);
+            }
+
+            Debug.WriteLine("Receave Message from - ", sender.Login);
+
+            if (message is UserMessage)
+            {
+                if (ContactsList.Where(c => c is UserUiInfo).FirstOrDefault(x => (x as UserUiInfo).UserId == sender.Id) == null)
+                {
+                    UserServiceClient.AddUserToUserContactAsync(GlobalBase.CurrentUser.Id, sender.Id).ContinueWith(task =>
+                    {
+                        UpdateContactList();
+                    });
+                }
+                else if ((SelectedContact is UserUiInfo) && ((SelectedContact as UserUiInfo).UserId == sender.Id))
+                {
+                    updateMethod(message);
+                }
+            }
+            else if (message is GroupMessage)
+            {
+                if (ContactsList.Where(c => c is ChatGroupUiInfo).FirstOrDefault(x => (x as ChatGroupUiInfo).ChatGroupId == (message as GroupMessage).ChatGroupId) == null)
+                {
+                    UserServiceClient.AddUserToChatGroupContactAsync((message as GroupMessage).ChatGroupId, GlobalBase.CurrentUser.Id).ContinueWith(task =>
+                    {
+                        UpdateContactList();
+                    });
+                }
+                else if ((SelectedContact is ChatGroupUiInfo) && ((SelectedContact as ChatGroupUiInfo).ChatGroupId == (message as GroupMessage).ChatGroupId))
+                {
+                    updateMethod(message);
+                }
+            }
+        }
+
+        
     }
 }

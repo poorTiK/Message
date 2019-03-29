@@ -36,8 +36,8 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <Grid VerticalAlignment="Top" Grid.Row="0">
-            <TextBlock Margin="10,0,0,0" HorizontalAlignment="Left"
-                       VerticalAlignment="Center" Text="{DynamicResource Settings}"></TextBlock>
+            <TextBlock Margin="10,0,0,0" HorizontalAlignment="Left" Style="{StaticResource MaterialDesignSubheadingTextBlock}"
+                       VerticalAlignment="Center" Text="{DynamicResource Settings}" Foreground="{DynamicResource Foreground}"></TextBlock>
             <Button x:Name="ButtonClose" Click="ButtonClose_OnClick" HorizontalAlignment="Right" VerticalAlignment="Top" Background="{x:Null}" BorderBrush="{x:Null}" Width="30" Height="30" Padding="0">
                 <materialDesign:PackIcon Kind="Close" Foreground="{DynamicResource HeaderButton}"/>
             </Button>
