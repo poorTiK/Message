@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using System.Windows.Threading;
 using System.Drawing;
 
-namespace Message.Compression
+namespace Message.Model
 {
     public static class GlobalBase
     {

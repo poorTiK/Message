@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Message.Compression
+namespace Message.Model
 {
     public static class ImageHelper
     {

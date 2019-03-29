@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace Message.Compression
+namespace Message.Model
 {
     public static class Translations
     {

@@ -3,7 +3,7 @@ using Message.Interfaces;
 using Message.UserServiceReference;
 using Microsoft.Win32;
 
-namespace Message.Compression
+namespace Message.Model
 {
     public class SerializeUserToRegistry: ISerializeUser
     {
