@@ -105,9 +105,8 @@
                                         <materialDesign:PackIcon Kind="EllipsisVertical" Width="25" Height="25" Foreground="{DynamicResource Foreground}" />
                                     </MenuItem.Header>
                                     <MenuItem Header="{DynamicResource ViewProfile}" Command="{Binding ViewProfile}" Background="{DynamicResource MenuItem}" Foreground="{DynamicResource Foreground}"/>
-                                    <MenuItem Header="{DynamicResource EditContact}" Background="{DynamicResource MenuItem}" Foreground="{DynamicResource Foreground}"/>
                                     <MenuItem Header="{DynamicResource DeleteСontact}" Background="{DynamicResource MenuItem}" Foreground="{DynamicResource Foreground}"/>
-                                    <MenuItem Header="{DynamicResource DeleteConversation}" Background="{DynamicResource MenuItem}" Foreground="{DynamicResource Foreground}"/>
+                                    <MenuItem Header="{DynamicResource ClearConversation}" Background="{DynamicResource MenuItem}" Foreground="{DynamicResource Foreground}"/>
                                     <MenuItem Header="{DynamicResource BlockUser}"  Background="{DynamicResource MenuItem}" Foreground="{DynamicResource Foreground}"/>
                                 </MenuItem>
                             </Menu>

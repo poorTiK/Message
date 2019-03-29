@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 using Message.Compression;
+using Message.Model;
 using Message.UserServiceReference;
 using Message.ViewModel;
 

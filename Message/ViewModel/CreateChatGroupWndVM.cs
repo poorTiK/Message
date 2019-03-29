@@ -12,6 +12,7 @@ using Message.Interfaces;
 using Message.Compression;
 using Message.UserServiceReference;
 using Prism.Commands;
+using Message.Model;
 
 namespace Message.ViewModel
 {

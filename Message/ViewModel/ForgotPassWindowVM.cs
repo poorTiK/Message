@@ -11,6 +11,7 @@ using System.ServiceModel;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using Message.Model;
 
 namespace Message.ViewModel
 {

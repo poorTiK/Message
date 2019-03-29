@@ -5,6 +5,7 @@ using Message.FileService;
 using Message.Compression;
 using Message.UserServiceReference;
 using Message.ViewModel;
+using Message.Model;
 
 namespace Message
 {

@@ -9,6 +9,7 @@ using System.ServiceModel;
 using Message.Compression;
 using Message.PhotoServiceReference;
 using Prism.Commands;
+using Message.Model;
 
 namespace Message.ViewModel
 {

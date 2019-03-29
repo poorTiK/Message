@@ -15,8 +15,9 @@
     <v:String x:Key="ChatSettings">Настройки чата</v:String>
     <v:String x:Key="Contacts">Контакты</v:String>
     <v:String x:Key="Copy">Копировать</v:String>
-    <v:String x:Key="DeleteConversation">Очистить диалог</v:String>
-    <v:String x:Key="DeleteСontact">Удалить</v:String>
+    <v:String x:Key="ClearConversation">Очистить диалог</v:String>
+    <v:String x:Key="DeleteСontact">Удалить контакт</v:String>
+    <v:String x:Key="Delete">Удалить</v:String>
     <v:String x:Key="EditContact">Редактировать</v:String>
     <v:String x:Key="EditMessage">Изменить</v:String>
     <v:String x:Key="EditProfile">Редактировать профиль</v:String>

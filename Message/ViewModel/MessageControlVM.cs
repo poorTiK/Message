@@ -12,6 +12,7 @@ using Application = System.Windows.Application;
 using Clipboard = System.Windows.Clipboard;
 using System.IO;
 using Message.FileService;
+using Message.Model;
 
 namespace Message.ViewModel
 {

@@ -15,8 +15,9 @@
     <v:String x:Key="ChatSettings">Chat settings</v:String>
     <v:String x:Key="Contacts">Contacts</v:String>
     <v:String x:Key="Copy">Copy</v:String>
-    <v:String x:Key="DeleteConversation">Delete conversation</v:String>
-    <v:String x:Key="DeleteСontact">Delete</v:String>
+    <v:String x:Key="ClearConversation">Clear conversation</v:String>
+    <v:String x:Key="DeleteСontact">Remove contact</v:String>
+    <v:String x:Key="Delete">Delete</v:String>
     <v:String x:Key="EditContact">Edit</v:String>
     <v:String x:Key="EditMessage">Edit message</v:String>
     <v:String x:Key="EditProfile">Edit profile</v:String>

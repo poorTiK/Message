@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Message.Interfaces;
 using Message.Compression;
 using Prism.Commands;
+using Message.Model;
 
 namespace Message.ViewModel
 {

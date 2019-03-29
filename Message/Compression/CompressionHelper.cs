@@ -11,8 +11,8 @@ namespace Message.Compression
 {
     public static class CompressionHelper
     {
-        private static long imageCompressionLevel = 50;
-        private static int imageCompressingBarrier = 1000000;
+        private static readonly long imageCompressionLevel = 50;
+        private static readonly int imageCompressingBarrier = 1000000;
 
         private static ICompressStrategy CompressStrategy = new GZipCompressStrategy();
 

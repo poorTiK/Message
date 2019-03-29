@@ -12,6 +12,7 @@ using System.IO;
 using System.Linq;
 using System.Windows.Threading;
 using Message.FileService;
+using Message.Model;
 
 namespace Message.ViewModel
 {

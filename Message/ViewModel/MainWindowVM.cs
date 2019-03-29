@@ -11,6 +11,7 @@ using Message.Encryption;
 using Message.FileService;
 using Message.Compression;
 using Message.PhotoServiceReference;
+using Message.Model;
 
 namespace Message.ViewModel
 {

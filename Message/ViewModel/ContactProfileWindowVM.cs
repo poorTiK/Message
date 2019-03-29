@@ -10,6 +10,7 @@ using System.Windows.Threading;
 using Message.PhotoServiceReference;
 using Message.FileService;
 using System.Threading.Tasks;
+using Message.Model;
 
 namespace Message.ViewModel
 {
