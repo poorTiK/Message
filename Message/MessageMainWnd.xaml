@@ -145,7 +145,7 @@
                                               Header="{DynamicResource MarkAsUread}"></MenuItem>
                                     <MenuItem Background="{DynamicResource MenuItem}"
                                               Foreground="{DynamicResource Foreground}"
-                                              Header="{DynamicResource DeleteConversation}"></MenuItem>
+                                              Header="{DynamicResource ClearConversation}"></MenuItem>
                                     <MenuItem Background="{DynamicResource MenuItem}" Foreground="Salmon"
                                               Header="{DynamicResource BlockUser}"></MenuItem>
                                 </ContextMenu>
@@ -201,7 +201,7 @@
                 </Grid>
                 <Grid Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2">
                     <Border Height="35" Background="{DynamicResource WindowBackGround}" VerticalAlignment="Bottom">
-                        <Grid>
+                        <Grid Height="auto">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition />
@@ -233,7 +233,8 @@
                     </Border>
                 </Grid>
             </Grid>
-            <Grid x:Name="SideMenu" Focusable="True" Width="0" HorizontalAlignment="Left" Background="{DynamicResource SideSlideMenu}" RenderTransformOrigin="0.5,0.5" Margin="0,22,0,0">
+            <Grid x:Name="SideMenu" Focusable="True" Width="0" HorizontalAlignment="Left" PreviewMouseDown="SideMenu_OnPreviewMouseDown"
+                  Background="{DynamicResource SideSlideMenu}" RenderTransformOrigin="0.5,0.5" Margin="0,22,0,0">
                 <StackPanel Background="{DynamicResource SideSlideMenu}">
                     <Grid Height="140" Background="{DynamicResource SideMenuTopPanel}">
                         <Grid.RowDefinitions>

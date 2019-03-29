@@ -44,9 +44,9 @@
                 <Grid Background="{DynamicResource WindowBackGround}">
                     <Grid>
                         <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="50" />
                             <ColumnDefinition />
-                            <ColumnDefinition Width="auto" />
-                            <ColumnDefinition />
+                            <ColumnDefinition Width="50"/>
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
                             <RowDefinition />
@@ -58,7 +58,6 @@
                             <TextBox Name="LoginText" Focusable="True" Text="{Binding LoginText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 materialDesign:HintAssist.Hint="{DynamicResource Login}"
                                 Foreground="{DynamicResource Foreground}"
-                                Style="{StaticResource MaterialDesignFloatingHintTextBox}"
                                 CaretBrush="{x:Null}" SelectionBrush="{DynamicResource SelectionBrush}" Margin="0,0,0,15"
                                 IsEnabled="{Binding Path = IsLoginNotPregress}">
                                 <TextBox.InputBindings>
@@ -69,7 +68,6 @@
                                          Foreground="{DynamicResource Foreground}"
                                         CaretBrush="{x:Null}" SelectionBrush="{DynamicResource SelectionBrush}"
                                         materialDesign:HintAssist.Hint="{DynamicResource Password}" Margin="0,0,0,15"
-                                        Style="{StaticResource MaterialDesignFloatingHintPasswordBox}"
                                         IsEnabled="{Binding Path = IsLoginNotPregress}">
                                 <PasswordBox.InputBindings>
                                     <KeyBinding Command="{Binding Path = OnLogin}" Key="Enter" />
@@ -115,9 +113,9 @@
                             IsEnabled="{Binding IsRegisterNotProgress}">
                             <TextBox.Text>
                                 <Binding Path="Name" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
-                                    <Binding.ValidationRules>
+                                    <!--<Binding.ValidationRules>
                                         <validate:NameSurname_ValidationRule ValidatesOnTargetUpdated="True" />
-                                    </Binding.ValidationRules>
+                                    </Binding.ValidationRules>-->
                                 </Binding>
                             </TextBox.Text>
                             <TextBox.InputBindings>
@@ -133,9 +131,9 @@
                             IsEnabled="{Binding IsRegisterNotProgress}">
                             <TextBox.Text>
                                 <Binding Path="Surname" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
-                                    <Binding.ValidationRules>
+                                    <!--<Binding.ValidationRules>
                                         <validate:NameSurname_ValidationRule ValidatesOnTargetUpdated="True" />
-                                    </Binding.ValidationRules>
+                                    </Binding.ValidationRules>-->
                                 </Binding>
                             </TextBox.Text>
                             <TextBox.InputBindings>
@@ -151,9 +149,9 @@
                             IsEnabled="{Binding IsRegisterNotProgress}">
                             <TextBox.Text>
                                 <Binding Path="UserLogin" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
-                                    <Binding.ValidationRules>
+                                    <!--<Binding.ValidationRules>
                                         <validate:Login_ValidationRule ValidatesOnTargetUpdated="True" />
-                                    </Binding.ValidationRules>
+                                    </Binding.ValidationRules>-->
                                 </Binding>
                             </TextBox.Text>
                             <TextBox.InputBindings>
@@ -191,9 +189,9 @@
                             IsEnabled="{Binding IsRegisterNotProgress}">
                             <TextBox.Text>
                                 <Binding Path="Email" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
-                                    <Binding.ValidationRules>
+                                    <!--<Binding.ValidationRules>
                                         <validate:Email_ValidationRule ValidatesOnTargetUpdated="True" />
-                                    </Binding.ValidationRules>
+                                    </Binding.ValidationRules>-->
                                 </Binding>
                             </TextBox.Text>
                             <TextBox.InputBindings>

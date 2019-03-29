@@ -279,5 +279,10 @@ namespace Message
                 }
             }
         }
+
+        private void SideMenu_OnPreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            ButtonClose_Click(null, null);
+        }
     }
 }
