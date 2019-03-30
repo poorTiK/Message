@@ -1,5 +1,4 @@
 ﻿using Message.Interfaces;
-using Message.Compression;
 using Message.UserServiceReference;
 using Message.ViewModel;
 using System;
@@ -14,15 +13,11 @@ namespace Message
     {
         public ContactProfileWindow()
         {
-             
-
             InitializeComponent();
         }
 
         public ContactProfileWindow(User profile)
         {
-             
-
             InitializeComponent();
 
             DataContext = new ContactProfileWindowVM(this, profile);

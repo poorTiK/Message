@@ -1,18 +1,14 @@
 ﻿using Message.Interfaces;
-using Message.Compression;
+using Message.Model;
 using Message.UserServiceReference;
 using Prism.Commands;
-using System;
 using System.Collections.Generic;
-using System.ServiceModel;
-using System.Windows;
-using Message.PhotoServiceReference;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.ServiceModel;
+using System.Windows;
 using System.Windows.Threading;
-using Message.FileService;
-using Message.Model;
 
 namespace Message.ViewModel
 {
@@ -22,7 +18,7 @@ namespace Message.ViewModel
         private IView view;
 
         private List<UiInfo> _contacts;
-        
+
         public List<UiInfo> ContactsList
         {
             get { return _contacts; }
@@ -85,7 +81,8 @@ namespace Message.ViewModel
                         }
                         else
                         {
-                            Dispatcher.CurrentDispatcher.Invoke(() => {
+                            Dispatcher.CurrentDispatcher.Invoke(() =>
+                            {
                                 uiInfo.UiImage = Image.FromFile("../../Resources/DefaultPicture.jpg");
                             });
                         }
@@ -102,6 +99,7 @@ namespace Message.ViewModel
         }
 
         private bool _isAddEnabled;
+
         public bool IsAddEnabled
         {
             get { return _isAddEnabled; }
@@ -128,7 +126,8 @@ namespace Message.ViewModel
                     }
                     else
                     {
-                        Dispatcher.CurrentDispatcher.Invoke(() => {
+                        Dispatcher.CurrentDispatcher.Invoke(() =>
+                        {
                             item.UiImage = Image.FromFile("../../Resources/DefaultPicture.jpg");
                         });
                     }
@@ -156,8 +155,8 @@ namespace Message.ViewModel
 
         private void ExecuteOnOpenProfile()
         {
-            if (SelectedContact is UserUiInfo) {
-
+            if (SelectedContact is UserUiInfo)
+            {
                 UserUiInfo userUiInfo = SelectedContact as UserUiInfo;
                 User user = UserServiceClient.GetUserById(userUiInfo.UserId);
 
@@ -191,7 +190,7 @@ namespace Message.ViewModel
         private void UpdateContacts()
         {
             List<UiInfo> uiInfos = UserServiceClient.GetAllContactsUiInfo(GlobalBase.CurrentUser.Id);
-            GlobalBase.loadPictures(UserServiceClient,uiInfos);
+            GlobalBase.loadPictures(UserServiceClient, uiInfos);
 
             ContactsList = uiInfos;
             ManageControls();

@@ -1,8 +1,5 @@
-﻿using System;
-using System.Globalization;
+﻿using System.Drawing;
 using System.IO;
-using System.Windows.Media.Imaging;
-using System.Drawing;
 
 namespace Message.AdditionalItems
 {

@@ -1,16 +1,10 @@
 ﻿using Message.Interfaces;
-using Message.Compression;
+using Message.Model;
 using Message.UserServiceReference;
 using Prism.Commands;
-using System;
 using System.Drawing;
-using System.IO;
 using System.ServiceModel;
-using System.Windows.Threading;
-using Message.PhotoServiceReference;
-using Message.FileService;
 using System.Threading.Tasks;
-using Message.Model;
 
 namespace Message.ViewModel
 {
@@ -132,7 +126,7 @@ namespace Message.ViewModel
 
             SetAvatarForUI();
 
-            contact = UserServiceClient.IsExistsInContacts(GlobalBase.CurrentUser.Id, Profile.Id);           
+            contact = UserServiceClient.IsExistsInContacts(GlobalBase.CurrentUser.Id, Profile.Id);
 
             if (contact)
             {
@@ -181,7 +175,6 @@ namespace Message.ViewModel
                 IsNonContact = !IsNonContact;
             }
         }
-
 
         private void SetAvatarForUI()
         {

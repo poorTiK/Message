@@ -1,8 +1,8 @@
-﻿using ServerWCF.Model;
+﻿using ServerWCF.Initializers;
+using ServerWCF.Model;
 using ServerWCF.Model.Contacts;
 using ServerWCF.Model.Messages;
 using System.Data.Entity;
-using ServerWCF.Initializers;
 
 namespace ServerWCF.Context
 {
@@ -62,7 +62,6 @@ namespace ServerWCF.Context
                   .HasRequired(s => s.Receiver)
                   .WithMany()
                   .WillCascadeOnDelete(false);
-
         }
     }
 }

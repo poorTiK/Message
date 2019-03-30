@@ -1,10 +1,8 @@
 ﻿using ServerWCF.Model;
-using ServerWCF.Model.Contacts;
 using ServerWCF.Model.Messages;
 using ServerWCF.Model.UiInfo;
 using System.Collections.Generic;
 using System.ServiceModel;
-using System.Threading.Tasks;
 
 namespace ServerWCF.Contracts
 {
@@ -44,7 +42,6 @@ namespace ServerWCF.Contracts
         [OperationContract]
         ChatGroup GetChatGroup(string chatGroupName);
 
-
         [OperationContract]
         bool AddUserToUserContact(int id_owner, int id_owned);
 
@@ -66,10 +63,8 @@ namespace ServerWCF.Contracts
         [OperationContract]
         List<UiInfo> GetAllContactsUiInfo(int id);
 
-
         [OperationContract]
         bool IsExistsInContacts(int id_owner, int id_owned);
-
 
         [OperationContract]
         ApplicationSettings GetAppSettings(int userId);
@@ -77,13 +72,11 @@ namespace ServerWCF.Contracts
         [OperationContract]
         bool SaveAppSettings(ApplicationSettings appSettings);
 
-
         [OperationContract(IsOneWay = true)]
         void OnUserCame(int userId);
 
         [OperationContract(IsOneWay = true)]
         void OnUserLeave(int userId);
-
 
         [OperationContract]
         List<GroupMessage> GetGroupMessages(int chatGroupId, int limin);

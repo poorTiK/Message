@@ -18,8 +18,8 @@
                 <Grid MinWidth="50" MaxWidth="350"
                       HorizontalAlignment="Left" Margin="10,3,0,3">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto" />
@@ -41,11 +41,11 @@
             </Border>
             <Grid.ContextMenu>
                 <ContextMenu Background="{DynamicResource MenuItem}">
-                    <MenuItem Header="{DynamicResource Copy}" Background="{DynamicResource MenuItem}" 
+                    <MenuItem Header="{DynamicResource Copy}" Background="{DynamicResource MenuItem}"
                               Foreground="White" Command="{Binding Copy}"></MenuItem>
-                    <MenuItem Header="{DynamicResource Forvard}" Background="{DynamicResource MenuItem}" 
+                    <MenuItem Header="{DynamicResource Forvard}" Background="{DynamicResource MenuItem}"
                               Foreground="White" Command="{Binding Forward}"></MenuItem>
-                    <MenuItem Header="{DynamicResource DeleteСontact}" Background="{DynamicResource MenuItem}" 
+                    <MenuItem Header="{DynamicResource DeleteСontact}" Background="{DynamicResource MenuItem}"
                               Foreground="White" Command="{Binding Delete}"></MenuItem>
                 </ContextMenu>
             </Grid.ContextMenu>

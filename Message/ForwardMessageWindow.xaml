@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Message"
-        
+
         mc:Ignorable="d" ShowInTaskbar="False" Topmost="True"
 
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
@@ -20,19 +20,19 @@
 
     <Grid Background="{DynamicResource PopUpBackground}">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-            <ColumnDefinition/>
+            <ColumnDefinition />
+            <ColumnDefinition />
         </Grid.ColumnDefinitions>
 
         <TextBlock Grid.ColumnSpan="2" Grid.Row="0" Foreground="{DynamicResource Foreground}"
                    Style="{StaticResource MaterialDesignSubheadingTextBlock}" Margin="10,0,0,0"
-                   Text="{DynamicResource Forvard}"/>
+                   Text="{DynamicResource Forvard}" />
 
         <TextBox Grid.Row="1" Margin="10" Grid.ColumnSpan="2"
                  Style="{StaticResource MaterialDesignOutlinedTextFieldTextBox}"
@@ -40,7 +40,7 @@
                  VerticalAlignment="Top" IsEnabled="False"
                  TextWrapping="Wrap" SelectionBrush="{DynamicResource SelectionBrush}"
                  VerticalScrollBarVisibility="Auto"
-                 Text="{Binding MessageText, Mode=OneWay}"/>
+                 Text="{Binding MessageText, Mode=OneWay}" />
 
         <ComboBox Grid.Row="2" Grid.ColumnSpan="2" Name="Combo" ItemsSource="{Binding ContactsList}"
                   SelectedItem="{Binding SelectedContact}" Margin="10,0,10,5" Foreground="{DynamicResource Foreground}"
@@ -48,7 +48,7 @@
             <ComboBox.ItemTemplate>
                 <DataTemplate>
                     <WrapPanel  Orientation="Horizontal">
-                        <Image Width="16" Height="16" Source="Resources/Test.jpg" Margin="5,0,0,0"/>
+                        <Image Width="16" Height="16" Source="Resources/Test.jpg" Margin="5,0,0,0" />
                         <TextBlock Margin="10,0,0,0">
                             <TextBlock.Text>
                                 <MultiBinding StringFormat="{}{0}">
@@ -61,12 +61,12 @@
             </ComboBox.ItemTemplate>
         </ComboBox>
 
-        <Button Grid.Row="3" Grid.Column="0" Margin="10,0,5,0" 
+        <Button Grid.Row="3" Grid.Column="0" Margin="10,0,5,0"
                 Content="{DynamicResource Forvard}"
-                Command="{Binding Forward}"/>
+                Command="{Binding Forward}" />
 
         <Button Grid.Row="3" Grid.Column="1" Margin="5,0,10,0"
                 Content="{DynamicResource Back}"
-                Command="{Binding Back}"/>
+                Command="{Binding Back}" />
     </Grid>
 </Window>

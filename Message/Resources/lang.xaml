@@ -48,7 +48,7 @@
     <v:String x:Key="EmailSend">Message send to Email</v:String>
     <v:String x:Key="RestorePass">Password restore</v:String>
     <v:String x:Key="AskForDelMessage">Are you sure want to delete message?</v:String>
-    <v:String x:Key="CantFindUser"> Can't find such user :(</v:String>
+    <v:String x:Key="CantFindUser">Can't find such user :(</v:String>
     <v:String x:Key="RegError">Registration error</v:String>
     <v:String x:Key="SameUserExits">Same user exist's</v:String>
     <v:String x:Key="EmptyLogin">Login is empty</v:String>

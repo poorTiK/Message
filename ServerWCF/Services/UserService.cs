@@ -46,7 +46,7 @@ namespace ServerWCF.Services
                     contact.UserOwner = ownerFromDb;
                     contact.UserOwned = ownedFromDb;
 
-                    if (userContext.Contacts.FirstOrDefault(c => ( (c.UserOwnerId == id_owner) && ( (c as UserToUserContact).UserOwnedId == id_owned) )) != null )
+                    if (userContext.Contacts.FirstOrDefault(c => ((c.UserOwnerId == id_owner) && ((c as UserToUserContact).UserOwnedId == id_owned))) != null)
                     {
                         return false;
                     }
@@ -56,7 +56,7 @@ namespace ServerWCF.Services
 
                     return true;
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     return false;
                 }
@@ -87,7 +87,7 @@ namespace ServerWCF.Services
 
                     return true;
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     return false;
                 }
@@ -116,11 +116,11 @@ namespace ServerWCF.Services
                     }
 
                     return true;
-                } catch (Exception ex)
+                }
+                catch (Exception)
                 {
                     return false;
                 }
-
             }
         }
 
@@ -147,11 +147,10 @@ namespace ServerWCF.Services
 
                     return true;
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     return false;
                 }
-
             }
         }
 
@@ -175,7 +174,7 @@ namespace ServerWCF.Services
                             "from BaseContacts " +
                             "where BaseContacts.UserOwnerId = @p0);", userId).ToList();
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     contactsForOwner = new List<User>();
                 }
@@ -196,7 +195,7 @@ namespace ServerWCF.Services
                           " from BaseContacts" +
                           " where BaseContacts.UserOwnerId = @p0);", userId).ToList();
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     contactsForOwner = new List<ChatGroup>();
                 }
@@ -206,8 +205,8 @@ namespace ServerWCF.Services
 
         public List<UiInfo> GetAllContactsUiInfo(int id)
         {
-            List<UiInfo> usersUiInfos = new List<UiInfo>(GetAllUsersContacts(id).Select( u => new UserUiInfo(u)));
-            List<UiInfo> chatGroupsUiInfo = new List<UiInfo>(GetAllChatGroupsContacts(id).Select( cg => new ChatGroupUiInfo(cg) ));
+            List<UiInfo> usersUiInfos = new List<UiInfo>(GetAllUsersContacts(id).Select(u => new UserUiInfo(u)));
+            List<UiInfo> chatGroupsUiInfo = new List<UiInfo>(GetAllChatGroupsContacts(id).Select(cg => new ChatGroupUiInfo(cg)));
 
             usersUiInfos.AddRange(chatGroupsUiInfo);
 
@@ -241,7 +240,7 @@ namespace ServerWCF.Services
 
                     return successResult;
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     return "Exceptions were occured during adding new chat group.";
                 }
@@ -256,7 +255,7 @@ namespace ServerWCF.Services
                 {
                     return db.ChatGroups.FirstOrDefault(cg => cg.Name.Contains(chatGroupName));
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     return null;
                 }
@@ -273,7 +272,7 @@ namespace ServerWCF.Services
                 {
                     allUsers = db.Users.ToList();
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     allUsers = new List<User>();
                 }
@@ -300,7 +299,6 @@ namespace ServerWCF.Services
 
                     if (dbUser != null)
                     {
-
                         dbUser.Email = user.Email;
                         dbUser.Bio = user.Bio;
                         dbUser.FirstName = user.FirstName;
@@ -324,7 +322,7 @@ namespace ServerWCF.Services
 
                     return successResult;
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     return "Exceptions occured during adding user.";
                 }
@@ -340,7 +338,7 @@ namespace ServerWCF.Services
                     User user = db.Users.Where(x => x.Login.Contains(login)).FirstOrDefault();
                     return user;
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     return null;
                 }
@@ -357,7 +355,7 @@ namespace ServerWCF.Services
                     return user;
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return null;
             }
@@ -395,7 +393,7 @@ namespace ServerWCF.Services
                     }
                     return null;
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     return null;
                 }
@@ -411,9 +409,9 @@ namespace ServerWCF.Services
                 try
                 {
                     contacts = GetAllUsersContacts(userId).Select(u => u.Id).ToList();
-                    searchingResult = usersContext.Users.Where(u => u.Login.Contains(keyWorkForLogin) && !contacts.Contains(u.Id) && u.Id != userId ).ToList();
+                    searchingResult = usersContext.Users.Where(u => u.Login.Contains(keyWorkForLogin) && !contacts.Contains(u.Id) && u.Id != userId).ToList();
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     searchingResult = new List<User>();
                 }
@@ -427,8 +425,6 @@ namespace ServerWCF.Services
             List<UiInfo> usersUiInfos = new List<UiInfo>(FindNewUsersByLogin(userId, keyWorkForLogin).Select(u => new UserUiInfo(u)));
             return usersUiInfos;
         }
-
-
 
         //application settings
         public ApplicationSettings GetAppSettings(int userId)
@@ -464,7 +460,7 @@ namespace ServerWCF.Services
                     context.SaveChanges();
                     return true;
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     return false;
                 }
@@ -569,7 +565,7 @@ namespace ServerWCF.Services
                         }
                     }
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     messagesToReturn = new List<GroupMessage>();
                 }
@@ -611,7 +607,7 @@ namespace ServerWCF.Services
                         }
                     }
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     messagesToReturn = new List<UserMessage>();
                 }
@@ -637,7 +633,7 @@ namespace ServerWCF.Services
                         }
                     }
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     searchingResult = new List<BaseMessage>();
                 }
@@ -699,7 +695,7 @@ namespace ServerWCF.Services
                     t.IsBackground = true;
                     t.Start(messageInfo);
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     return;
                 }
@@ -749,7 +745,7 @@ namespace ServerWCF.Services
                     t.IsBackground = true;
                     t.Start(messageInfo);
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                 }
             }
@@ -820,7 +816,7 @@ namespace ServerWCF.Services
                     t.IsBackground = true;
                     t.Start(messageInfo);
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     return;
                 }
@@ -843,7 +839,7 @@ namespace ServerWCF.Services
         //validation
         private bool IsEmailUnique(List<User> users, string email)
         {
-            using(UserContext userContext = new UserContext())
+            using (UserContext userContext = new UserContext())
             {
                 return userContext.Users.Where(u => u.Email == email).FirstOrDefault() == null;
             }

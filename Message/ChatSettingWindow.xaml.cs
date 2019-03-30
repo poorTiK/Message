@@ -1,18 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using Microsoft.EntityFrameworkCore.Internal;
 
 namespace Message
 {
@@ -24,14 +15,14 @@ namespace Message
         public ChatSettingWindow()
         {
             InitializeComponent();
-            
+
             CultureInfo currLang = App.Language;
 
             LangComboBox.Items.Clear();
 
             foreach (var language in App.Languages)
             {
-                var item = new ComboBoxItem() {Content = language.DisplayName};
+                var item = new ComboBoxItem() { Content = language.DisplayName };
                 item.Tag = language;
                 item.Selected += ItemOnSelected;
                 item.IsSelected = language.Equals(currLang);

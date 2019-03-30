@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ServerWCF.Encryption
 {
@@ -13,6 +9,7 @@ namespace ServerWCF.Encryption
         //encryption data
         private static byte[] Key
             = new byte[32] { 147, 132, 16, 132, 16, 125, 36, 150, 32, 9, 252, 4, 11, 236, 212, 97, 116, 22, 239, 139, 44, 200, 47, 252, 250, 217, 247, 12, 3, 116, 1, 71 };
+
         private static byte[] IV
             = new byte[16] { 37, 52, 91, 37, 213, 38, 140, 90, 183, 22, 216, 0, 0, 0, 1, 128 };
 
@@ -21,11 +18,20 @@ namespace ServerWCF.Encryption
         {
             // Check arguments.
             if (plainPassword == null || plainPassword.Length <= 0)
+            {
                 throw new ArgumentNullException("plainText");
+            }
+
             if (Key == null || Key.Length <= 0)
+            {
                 throw new ArgumentNullException("Key");
+            }
+
             if (IV == null || IV.Length <= 0)
+            {
                 throw new ArgumentNullException("IV");
+            }
+
             byte[] encrypted;
 
             // Create an Aes object
@@ -55,7 +61,6 @@ namespace ServerWCF.Encryption
 
             // Return the encrypted bytes from the memory stream.
             return encrypted;
-
         }
 
         //decryption algorithm - Advanced Encryption Standard (AES)
@@ -63,11 +68,19 @@ namespace ServerWCF.Encryption
         {
             // Check arguments.
             if (encryptedPassword == null || encryptedPassword.Length <= 0)
+            {
                 throw new ArgumentNullException("cipherText");
+            }
+
             if (Key == null || Key.Length <= 0)
+            {
                 throw new ArgumentNullException("Key");
+            }
+
             if (IV == null || IV.Length <= 0)
+            {
                 throw new ArgumentNullException("IV");
+            }
 
             // Declare the string used to hold
             // the decrypted text.
@@ -90,18 +103,15 @@ namespace ServerWCF.Encryption
                     {
                         using (StreamReader srDecrypt = new StreamReader(csDecrypt))
                         {
-
                             // Read the decrypted bytes from the decrypting stream
                             // and place them in a string.
                             plaintext = srDecrypt.ReadToEnd();
                         }
                     }
                 }
-
             }
 
             return plaintext;
-
         }
     }
 }

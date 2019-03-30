@@ -1,11 +1,11 @@
-﻿using System;
-using Message.Interfaces;
+﻿using Message.Interfaces;
 using Message.UserServiceReference;
 using Microsoft.Win32;
+using System;
 
 namespace Message.Model
 {
-    public class SerializeUserToRegistry: ISerializeUser
+    public class SerializeUserToRegistry : ISerializeUser
     {
         public void SerializeUser(User user)
         {
@@ -31,13 +31,13 @@ namespace Message.Model
                 string userLogin = null;
                 using (var key = Registry.CurrentUser.CreateSubKey($"Software\\Message", true))
                 {
-                  var IsAutorize = Convert.ToBoolean(key.GetValue("IsAutorize", false));
-                  if (IsAutorize)
-                  {
-                      userLogin =  key.GetValue("Login",null) as string;
-                  }
-                  key.Close();
-                  return userLogin;
+                    var IsAutorize = Convert.ToBoolean(key.GetValue("IsAutorize", false));
+                    if (IsAutorize)
+                    {
+                        userLogin = key.GetValue("Login", null) as string;
+                    }
+                    key.Close();
+                    return userLogin;
                 }
             }
             catch (Exception e)

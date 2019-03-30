@@ -1,5 +1,7 @@
 ﻿using Message.AdditionalItems;
+using Message.Encryption;
 using Message.Interfaces;
+using Message.Model;
 using Message.UserServiceReference;
 using Prism.Commands;
 using System;
@@ -7,11 +9,6 @@ using System.ServiceModel;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
-using Message.Encryption;
-using Message.FileService;
-using Message.Compression;
-using Message.PhotoServiceReference;
-using Message.Model;
 
 namespace Message.ViewModel
 {
@@ -21,9 +18,8 @@ namespace Message.ViewModel
         #region PrivateReadOnly
 
         private readonly ISerializeUser _serializeUser;
-        
 
-        #endregion
+        #endregion PrivateReadOnly
 
         private IView view;
         private IPasswordSupplier passwordSupplier;
@@ -119,7 +115,8 @@ namespace Message.ViewModel
             {
                 return passwordSupplier.GetPasswordForLogin();
             }
-            set {
+            set
+            {
                 SetProperty(ref _password, value);
             }
         }
@@ -238,7 +235,7 @@ namespace Message.ViewModel
             {
                 if (ValidateOnLogin())
                 {
-                    var user =  UserServiceClient.GetUser(LoginText, AESEncryptor.encryptPassword(Password));
+                    var user = UserServiceClient.GetUser(LoginText, AESEncryptor.encryptPassword(Password));
                     if (user != null)
                     {
                         _serializeUser.SerializeUser(user);

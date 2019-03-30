@@ -1,24 +1,19 @@
-﻿using Message.UserServiceReference;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.ServiceModel;
-using System.Text;
-using System.Threading.Tasks;
-using Message.Interfaces;
-using Message.Compression;
-using Prism.Commands;
+﻿using Message.Interfaces;
 using Message.Model;
+using Message.UserServiceReference;
+using Prism.Commands;
+using System.Text;
 
 namespace Message.ViewModel
 {
-    class EditMessageVM : BaseViewModel
+    internal class EditMessageVM : BaseViewModel
     {
         private IView _view;
 
         private BaseMessage Message { get; set; }
 
         private string _messageText;
+
         public string MessageText
         {
             get { return _messageText; }
@@ -26,6 +21,7 @@ namespace Message.ViewModel
         }
 
         private bool isApplyEnabled;
+
         public bool IsApplyEnabled
         {
             get { return isApplyEnabled; }

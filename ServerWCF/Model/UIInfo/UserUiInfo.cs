@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Runtime.Serialization;
 
 namespace ServerWCF.Model.UiInfo
 {
@@ -12,8 +7,8 @@ namespace ServerWCF.Model.UiInfo
     {
         [DataMember]
         public int UserId { get; set; }
-        
-        public UserUiInfo(User user) : base( (user.FirstName + " " + user.LastName), user.Login, user.Status, user.ImageId)
+
+        public UserUiInfo(User user) : base((user.FirstName + " " + user.LastName), user.Login, user.Status, user.ImageId)
         {
             UserId = user.Id;
         }

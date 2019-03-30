@@ -1,24 +1,20 @@
-﻿using Message.Interfaces;
-using Message.Compression;
+﻿using Message.Compression;
+using Message.Interfaces;
+using Message.Model;
 using Message.UserServiceReference;
 using Microsoft.Win32;
 using Prism.Commands;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
-using System.IO;
 using System.Linq;
-using System.Net;
 using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
-using Message.PhotoServiceReference;
-using Message.Model;
 
 namespace Message.ViewModel
 {
@@ -40,10 +36,10 @@ namespace Message.ViewModel
         }
 
         public User CurrentUser { get; set; }
-       
+
         private string _searchContactStr;
 
-        public string SearchContactStr 
+        public string SearchContactStr
         {
             get { return _searchContactStr; }
             set
@@ -83,6 +79,7 @@ namespace Message.ViewModel
                 SetProperty(ref _searchContactStr, value);
             }
         }
+
         private string _currentUserName;
 
         public string CurrentUserName
@@ -122,7 +119,7 @@ namespace Message.ViewModel
             get { return _selectedContact; }
             set
             {
-                SetProperty(ref _selectedContact, value, () => {SelectedContactChanged();});
+                SetProperty(ref _selectedContact, value, () => { SelectedContactChanged(); });
             }
         }
 
@@ -163,9 +160,11 @@ namespace Message.ViewModel
         }
 
         private int? _fileAmount;
+
         public int? FileAmount
         {
-            get {
+            get
+            {
                 if (_fileAmount == 0)
                 {
                     return null;
@@ -300,7 +299,7 @@ namespace Message.ViewModel
 
         private void ExecuteOnExit()
         {
-           UserServiceClient.OnUserLeave(GlobalBase.CurrentUser.Id);
+            UserServiceClient.OnUserLeave(GlobalBase.CurrentUser.Id);
             _view.CloseWindow();
         }
 
@@ -393,7 +392,6 @@ namespace Message.ViewModel
                             }
                         }
                     }
-                    
                 }
                 else if (SelectedContact is ChatGroupUiInfo)
                 {
@@ -446,7 +444,7 @@ namespace Message.ViewModel
                     UserServiceClient.SendMessageAsync(message);
                     _view.MessageList.Add(message);
                 }
-                else if(messagesWithFile != null)
+                else if (messagesWithFile != null)
                 {
                     foreach (var fileMessage in messagesWithFile)
                     {
@@ -462,7 +460,7 @@ namespace Message.ViewModel
 
                 FilesPath = null;
                 FileAmount = 0;
-                
+
                 _view.UpdateMessageList();
 
                 MessageText = string.Empty;
@@ -473,12 +471,13 @@ namespace Message.ViewModel
 
         private void SetAvatarForUI()
         {
-                Task.Run(() =>
+            Task.Run(() =>
+            {
+                Dispatcher.CurrentDispatcher.Invoke(() =>
                 {
-                    Dispatcher.CurrentDispatcher.Invoke(() => {
-                        Images = GlobalBase.getUsersAvatar(GlobalBase.CurrentUser);
-                    });
+                    Images = GlobalBase.getUsersAvatar(GlobalBase.CurrentUser);
                 });
+            });
         }
 
         private void ExecuteOnSettingsCommand()
@@ -621,7 +620,6 @@ namespace Message.ViewModel
                         Dispatcher.CurrentDispatcher.Invoke(() => { SelectedContact = temp; });
                     }
                 }
-
             });
         }
 
@@ -673,7 +671,7 @@ namespace Message.ViewModel
             return false;
         }
 
-        private void UpdateMessages(BaseMessage message, Func<BaseMessage,bool> updateMethod)
+        private void UpdateMessages(BaseMessage message, Func<BaseMessage, bool> updateMethod)
         {
             User sender = UserServiceClient.GetAllUsers().FirstOrDefault(x => x.Id == message.SenderId);
 
@@ -715,7 +713,5 @@ namespace Message.ViewModel
                 }
             }
         }
-
-        
     }
 }

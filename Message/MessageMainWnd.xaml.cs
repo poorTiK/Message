@@ -1,5 +1,5 @@
 ﻿using Message.Interfaces;
-using Message.Compression;
+using Message.Model;
 using Message.UserServiceReference;
 using Message.ViewModel;
 using System;
@@ -12,7 +12,6 @@ using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Navigation;
-using Message.Model;
 
 namespace Message
 {
@@ -273,9 +272,9 @@ namespace Message
 
             if (hitTestResult != null)
             {
-                if (!((hitTestResult?.VisualHit  as Grid)?.Name == "SideMenu"))
+                if (!((hitTestResult?.VisualHit as Grid)?.Name == "SideMenu"))
                 {
-                    ButtonClose_Click(null,null);
+                    ButtonClose_Click(null, null);
                 }
             }
         }
