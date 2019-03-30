@@ -642,7 +642,7 @@ namespace Message.ViewModel
 
         public override void OnMessageRemoved(BaseMessage message)
         {
-            //throw new NotImplementedException();
+            UpdateMessages(message, DeleteMessage);
         }
 
         public override void OnMessageEdited(BaseMessage message)
@@ -664,6 +664,19 @@ namespace Message.ViewModel
             if (mes != null)
             {
                 mes.Text = message.Text;
+                _view.UpdateMessageList();
+                return true;
+            }
+
+            return false;
+        }
+
+        private bool DeleteMessage(BaseMessage message)
+        {
+            var mes = _view.MessageList.FirstOrDefault(x => x.Id == message.Id);
+            if (mes != null)
+            {
+                _view.MessageList.Remove(mes);
                 _view.UpdateMessageList();
                 return true;
             }
