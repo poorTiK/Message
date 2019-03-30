@@ -1,7 +1,7 @@
-﻿using System;
-using System.Windows;
-using Message.Interfaces;
+﻿using Message.Interfaces;
 using Message.ViewModel;
+using System;
+using System.Windows;
 
 namespace Message
 {

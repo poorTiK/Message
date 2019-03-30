@@ -4,16 +4,17 @@
              xmlns:controls="clr-namespace:Notifications.Wpf.Controls;assembly=Notifications.Wpf"
              xmlns:local="clr-namespace:Message"
              StartupUri="MainWindow.xaml"
-             
+
              LoadCompleted="Application_LoadCompleted">
     <Application.Resources>
 
         <ResourceDictionary>
 
             <!-- primary -->
-            <SolidColorBrush x:Key="PrimaryHueMidBrush" Color="#FF63A35D" /> <!-- button and underline background color -->
-            <SolidColorBrush x:Key="PrimaryHueMidForegroundBrush" Color="White" /> <!-- button background color -->
-            
+            <SolidColorBrush x:Key="PrimaryHueMidBrush" Color="#FF63A35D" />
+            <!-- button and underline background color -->
+            <SolidColorBrush x:Key="PrimaryHueMidForegroundBrush" Color="White" />
+            <!-- button background color -->
 
             <!--ScrollView-->
             <!--#region -->
@@ -112,6 +113,7 @@
             <Style TargetType="TextBlock">
                 <Setter Property="Foreground" Value="{DynamicResource Foreground}"></Setter>
             </Style>
+
             <!--#endregion-->
 
             <ResourceDictionary.MergedDictionaries>

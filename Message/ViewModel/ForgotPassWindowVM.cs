@@ -1,6 +1,6 @@
 ﻿using Message.AdditionalItems;
 using Message.Interfaces;
-using Message.Compression;
+using Message.Model;
 using Message.UserServiceReference;
 using Prism.Commands;
 using System;
@@ -11,7 +11,6 @@ using System.ServiceModel;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using Message.Model;
 
 namespace Message.ViewModel
 {
@@ -19,6 +18,7 @@ namespace Message.ViewModel
     internal class ForgotPassWindowVM : BaseViewModel
     {
         private IView view;
+
         public ForgotPassWindowVM(IView view) : base()
         {
             this.view = view;

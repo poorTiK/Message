@@ -45,7 +45,7 @@
                     <Button Name="MaximizeMinimizeButton" Background="{x:Null}" BorderBrush="{x:Null}"
                         Foreground="{DynamicResource Foreground}" Height="auto" HorizontalAlignment="Center"
                         VerticalAlignment="Center">
-                        <materialDesign:PackIcon Kind="WindowMaximize" Foreground="White"/>
+                        <materialDesign:PackIcon Kind="WindowMaximize" Foreground="White" />
                     </Button>
                     <Button Name="CloseButton" Background="{x:Null}" BorderBrush="{x:Null}"
                         Foreground="{DynamicResource Foreground}" Height="auto" HorizontalAlignment="Center"
@@ -81,7 +81,7 @@
                                 </TextBlock>
                                 <TextBlock Foreground="{DynamicResource Status}" Text="{Binding SelectedContact.Status}"></TextBlock>
                                 <i:Interaction.Triggers>
-                                    <i:EventTrigger EventName="MouseLeftButtonDown" >
+                                    <i:EventTrigger EventName="MouseLeftButtonDown">
                                         <i:InvokeCommandAction Command="{Binding ViewProfile}" />
                                     </i:EventTrigger>
                                 </i:Interaction.Triggers>
@@ -104,10 +104,10 @@
                                     <MenuItem.Header>
                                         <materialDesign:PackIcon Kind="EllipsisVertical" Width="25" Height="25" Foreground="{DynamicResource Foreground}" />
                                     </MenuItem.Header>
-                                    <MenuItem Header="{DynamicResource ViewProfile}" Command="{Binding ViewProfile}" Background="{DynamicResource MenuItem}" Foreground="{DynamicResource Foreground}"/>
-                                    <MenuItem Header="{DynamicResource DeleteСontact}" Background="{DynamicResource MenuItem}" Foreground="{DynamicResource Foreground}"/>
-                                    <MenuItem Header="{DynamicResource ClearConversation}" Background="{DynamicResource MenuItem}" Foreground="{DynamicResource Foreground}"/>
-                                    <MenuItem Header="{DynamicResource BlockUser}"  Background="{DynamicResource MenuItem}" Foreground="{DynamicResource Foreground}"/>
+                                    <MenuItem Header="{DynamicResource ViewProfile}" Command="{Binding ViewProfile}" Background="{DynamicResource MenuItem}" Foreground="{DynamicResource Foreground}" />
+                                    <MenuItem Header="{DynamicResource DeleteСontact}" Background="{DynamicResource MenuItem}" Foreground="{DynamicResource Foreground}" />
+                                    <MenuItem Header="{DynamicResource ClearConversation}" Background="{DynamicResource MenuItem}" Foreground="{DynamicResource Foreground}" />
+                                    <MenuItem Header="{DynamicResource BlockUser}"  Background="{DynamicResource MenuItem}" Foreground="{DynamicResource Foreground}" />
                                 </MenuItem>
                             </Menu>
                         </Grid>
@@ -125,7 +125,7 @@
                     <StackPanel Grid.Column="1" Margin="5"
                     Orientation="Horizontal">
                         <materialDesign:PackIcon Kind="Magnify" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="{DynamicResource Foreground}" />
-                        <TextBox Margin="0,10,10,10" Width="122" Foreground="{DynamicResource Foreground}" SelectionBrush="{DynamicResource SelectionBrush}" Text="{Binding SearchContactStr, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        <TextBox Margin="0,10,10,10" Width="122" Foreground="{DynamicResource Foreground}" SelectionBrush="{DynamicResource SelectionBrush}" Text="{Binding SearchContactStr, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                     </StackPanel>
                 </Grid>
                 <Border Grid.Column="0" Grid.Row="1">
@@ -145,7 +145,7 @@
                                               Header="{DynamicResource MarkAsUread}"></MenuItem>
                                     <MenuItem Background="{DynamicResource MenuItem}"
                                               Foreground="{DynamicResource Foreground}"
-                                              Header="{DynamicResource DeleteConversation}"></MenuItem>
+                                              Header="{DynamicResource ClearConversation}"></MenuItem>
                                     <MenuItem Background="{DynamicResource MenuItem}" Foreground="Salmon"
                                               Header="{DynamicResource BlockUser}"></MenuItem>
                                 </ContextMenu>
@@ -200,7 +200,7 @@
                     </ScrollViewer>
                 </Grid>
                 <Grid Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2">
-                    <Border Height="35" Background="{DynamicResource WindowBackGround}" VerticalAlignment="Bottom">
+                    <Border Height="auto" Background="{DynamicResource WindowBackGround}" VerticalAlignment="Bottom" MaxHeight="100" MinHeight="35">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" />
@@ -208,13 +208,13 @@
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
 
-                            <materialDesign:Badged Grid.Column="0" Badge="{Binding FileAmount}">
+                            <materialDesign:Badged Grid.Column="0" Badge="{Binding FileAmount}" HorizontalAlignment="Left" VerticalAlignment="Center">
                                 <Button Style="{StaticResource MaterialDesignFlatButton}"
                                         Command="{Binding AddFile}" IsEnabled="{Binding IsMenuEnabled}">
                                     <materialDesign:PackIcon Kind="Paperclip" Foreground="{DynamicResource ButtonForeground}" />
                                 </Button>
                             </materialDesign:Badged>
-                            
+
                             <TextBox Grid.Column="1" IsEnabled="{Binding IsMenuEnabled}"
                                 SelectionBrush="{DynamicResource SelectionBrush}" TextWrapping="Wrap"
                                      VerticalContentAlignment="Stretch" Name="MessageTextBox" Foreground="{DynamicResource Foreground}"
@@ -233,7 +233,8 @@
                     </Border>
                 </Grid>
             </Grid>
-            <Grid x:Name="SideMenu" Focusable="True" Width="0" HorizontalAlignment="Left" Background="{DynamicResource SideSlideMenu}" RenderTransformOrigin="0.5,0.5" Margin="0,22,0,0">
+            <Grid x:Name="SideMenu" Focusable="True" Width="0" HorizontalAlignment="Left" PreviewMouseDown="SideMenu_OnPreviewMouseDown"
+                  Background="{DynamicResource SideSlideMenu}" RenderTransformOrigin="0.5,0.5" Margin="0,22,0,0">
                 <StackPanel Background="{DynamicResource SideSlideMenu}">
                     <Grid Height="140" Background="{DynamicResource SideMenuTopPanel}">
                         <Grid.RowDefinitions>
@@ -257,7 +258,7 @@
                         <ListViewItem Padding="0" Margin="0">
                             <Grid Background="Transparent" MinWidth="200">
                                 <i:Interaction.Triggers>
-                                    <i:EventTrigger EventName="MouseLeftButtonDown" >
+                                    <i:EventTrigger EventName="MouseLeftButtonDown">
                                         <i:InvokeCommandAction Command="{Binding ContactsCommand}" />
                                     </i:EventTrigger>
                                 </i:Interaction.Triggers>
@@ -266,13 +267,13 @@
                                     <ColumnDefinition Width="Auto"></ColumnDefinition>
                                 </Grid.ColumnDefinitions>
                                         <materialDesign:PackIcon Kind="AccountSupervisor" Grid.Column="0" Width="20" Height="20" Foreground="Gray" Margin="5" VerticalAlignment="Center" />
-                                <TextBlock Text="{DynamicResource Contacts}" Grid.Column="1" FontSize="15" Margin="10"/>
+                                <TextBlock Text="{DynamicResource Contacts}" Grid.Column="1" FontSize="15" Margin="10" />
                             </Grid>
                         </ListViewItem>
                         <ListViewItem Height="45" Padding="0">
                             <Grid Background="Transparent" MinWidth="200">
                                 <i:Interaction.Triggers>
-                                    <i:EventTrigger EventName="MouseLeftButtonDown" >
+                                    <i:EventTrigger EventName="MouseLeftButtonDown">
                                         <i:InvokeCommandAction Command="{Binding SettingsCommand}" />
                                     </i:EventTrigger>
                                 </i:Interaction.Triggers>
@@ -281,14 +282,14 @@
                                     <ColumnDefinition Width="Auto"></ColumnDefinition>
                                 </Grid.ColumnDefinitions>
                                 <materialDesign:PackIcon Kind="GearBox" Width="20" Height="20" Foreground="Gray" Margin="5" VerticalAlignment="Center" />
-                                <TextBlock Grid.Column="1" Text="{DynamicResource Settings}" FontSize="15" Margin="10"/>
+                                <TextBlock Grid.Column="1" Text="{DynamicResource Settings}" FontSize="15" Margin="10" />
                             </Grid>
                         </ListViewItem>
 
                         <ListViewItem Height="45" Padding="0">
                             <Grid Background="Transparent" MinWidth="200">
                                 <i:Interaction.Triggers>
-                                    <i:EventTrigger EventName="MouseLeftButtonDown" >
+                                    <i:EventTrigger EventName="MouseLeftButtonDown">
                                         <i:InvokeCommandAction Command="{Binding CreateChatGroup}" />
                                     </i:EventTrigger>
                                 </i:Interaction.Triggers>
@@ -297,16 +298,15 @@
                                     <ColumnDefinition Width="Auto"></ColumnDefinition>
                                 </Grid.ColumnDefinitions>
                                 <materialDesign:PackIcon Kind="MessageGroup" Width="20" Height="20" Foreground="Gray" Margin="5" VerticalAlignment="Center" />
-                                <TextBlock Grid.Column="1" Text="{DynamicResource CreateGroup}" FontSize="15" Margin="10"/>
+                                <TextBlock Grid.Column="1" Text="{DynamicResource CreateGroup}" FontSize="15" Margin="10" />
                             </Grid>
                         </ListViewItem>
-                        
                     </ListView>
                 </StackPanel>
                 <StackPanel VerticalAlignment="Bottom" Margin="10,0,10,10">
                     <TextBlock FontWeight="Bold" Text="{DynamicResource AppName}"></TextBlock>
                     <TextBlock Text="{DynamicResource AppVersion}"></TextBlock>
-                    <TextBlock >
+                    <TextBlock>
                         <Hyperlink NavigateUri="https://github.com/poorTiK/Message" RequestNavigate="Hyperlink_OnRequestNavigate" Foreground="#FF63A35D">Source code
                         </Hyperlink>
                     </TextBlock>

@@ -16,7 +16,7 @@
     <WindowChrome.WindowChrome>
         <WindowChrome CaptionHeight="0" />
     </WindowChrome.WindowChrome>
-    
+
     <Window.Resources>
         <Style TargetType="Rectangle">
             <Style.Triggers>
@@ -30,62 +30,61 @@
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <Grid VerticalAlignment="Top" Grid.Row="0">
-            <TextBlock Margin="10,0,0,0" HorizontalAlignment="Left"
-                       VerticalAlignment="Center" Text="{DynamicResource Settings}"></TextBlock>
+            <TextBlock Margin="10,0,0,0" HorizontalAlignment="Left" Style="{StaticResource MaterialDesignSubheadingTextBlock}"
+                       VerticalAlignment="Center" Text="{DynamicResource Settings}" Foreground="{DynamicResource Foreground}"></TextBlock>
             <Button x:Name="ButtonClose" Click="ButtonClose_OnClick" HorizontalAlignment="Right" VerticalAlignment="Top" Background="{x:Null}" BorderBrush="{x:Null}" Width="30" Height="30" Padding="0">
-                <materialDesign:PackIcon Kind="Close" Foreground="{DynamicResource HeaderButton}"/>
+                <materialDesign:PackIcon Kind="Close" Foreground="{DynamicResource HeaderButton}" />
             </Button>
         </Grid>
         <Grid VerticalAlignment="Top" Grid.Row="1" Margin="0,10,0,0">
             <Grid.RowDefinitions>
-                <RowDefinition/>
-                <RowDefinition/>
+                <RowDefinition />
+                <RowDefinition />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
             </Grid.ColumnDefinitions>
 
             <TextBlock Margin="10,0,0,0" Text="{DynamicResource Themes}"></TextBlock>
 
             <Rectangle Grid.Row="1" Grid.Column="0" Fill="DarkGray" Height="50" Width="50" Name="DarkTheme"
-                       Margin="10,5,0,0" HorizontalAlignment="Left" MouseDown="DarkTheme_OnMouseDown"/>
+                       Margin="10,5,0,0" HorizontalAlignment="Left" MouseDown="DarkTheme_OnMouseDown" />
             <Rectangle Grid.Row="1" Grid.Column="1" Fill="LightBlue" Height="50" Width="50" Name="LightTheme"
-                       Margin="0,5,0,0" HorizontalAlignment="Center" VerticalAlignment="Center" MouseDown="LightTheme_OnMouseDown"/>
+                       Margin="0,5,0,0" HorizontalAlignment="Center" VerticalAlignment="Center" MouseDown="LightTheme_OnMouseDown" />
             <Rectangle Grid.Row="1" Grid.Column="2" Fill="LightGreen" Height="50" Width="50" Name="GreenTheme"
-                       Margin="0,5,10,0" HorizontalAlignment="Right" MouseDown="GreenTheme_OnMouseDown"/>
+                       Margin="0,5,10,0" HorizontalAlignment="Right" MouseDown="GreenTheme_OnMouseDown" />
         </Grid>
         <Grid Grid.Row="2" Margin="0,10,0,0">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition />
+                <ColumnDefinition Width="2*" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition/>
-                <RowDefinition/>
+                <RowDefinition />
+                <RowDefinition />
             </Grid.RowDefinitions>
-            
+
             <TextBlock Grid.ColumnSpan="2" Text="{DynamicResource ChatBackgroundColor}" Margin="10,0,0,0"></TextBlock>
             <Rectangle Grid.Column="0" Grid.Row="1" Fill="White" Height="50" Width="50" Margin="10,5,0,0" HorizontalAlignment="Left"></Rectangle>
             <Grid Grid.Column="1" Grid.Row="1" Margin="0,5,0,0">
                 <Grid.RowDefinitions>
-                    <RowDefinition/>
-                    <RowDefinition/>
+                    <RowDefinition />
+                    <RowDefinition />
                 </Grid.RowDefinitions>
-
             </Grid>
         </Grid>
         <Grid Grid.Row="3" Margin="0,10,0,0">
             <Grid.RowDefinitions>
-                <RowDefinition/>
-                <RowDefinition/>
+                <RowDefinition />
+                <RowDefinition />
             </Grid.RowDefinitions>
             <TextBlock Text="{DynamicResource SelectLaguage}" Margin="10,0,0,0"></TextBlock>
             <ComboBox Name="LangComboBox" Grid.Row="1" Margin="10,5,10,0" Foreground="White">

@@ -14,7 +14,6 @@ namespace ServerWCF.Model
         [DataMember]
         public string Name { get; set; }
 
-
         [ForeignKey("Image")]
         [DataMember]
         public virtual int ImageId { get; set; }

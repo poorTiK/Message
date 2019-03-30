@@ -1,11 +1,8 @@
-﻿using System;
-using System.Windows;
-using System.Windows.Controls;
-using Message.FileService;
-using Message.Compression;
+﻿using Message.Model;
 using Message.UserServiceReference;
 using Message.ViewModel;
-using Message.Model;
+using System.Windows;
+using System.Windows.Controls;
 
 namespace Message
 {
@@ -40,7 +37,6 @@ namespace Message
             {
                 SenderName.Visibility = Visibility.Collapsed;
             }
-            
 
             DataContext = new MessageControlVM(message);
         }

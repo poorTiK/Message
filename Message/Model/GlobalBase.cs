@@ -1,14 +1,12 @@
-﻿using System;
+﻿using Message.FileService;
 using Message.UserServiceReference;
 using Notifications.Wpf;
-using System.Globalization;
-using Message.PhotoServiceReference;
+using System;
+using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
-using Message.FileService;
-using System.Collections.Generic;
 using System.Windows.Threading;
-using System.Drawing;
 
 namespace Message.Model
 {
@@ -68,7 +66,7 @@ namespace Message.Model
             string fileName = pathArr.Last().ToString();
 
             return fileName;
-        } 
+        }
 
         public static void loadPictures(UserServiceClient userServiceClient, List<UiInfo> uiInfos)
         {
@@ -106,7 +104,6 @@ namespace Message.Model
             }
 
             return usersImage;
-
-        } 
+        }
     }
 }

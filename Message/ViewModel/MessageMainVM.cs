@@ -1,24 +1,20 @@
-﻿using Message.Interfaces;
-using Message.Compression;
+﻿using Message.Compression;
+using Message.Interfaces;
+using Message.Model;
 using Message.UserServiceReference;
 using Microsoft.Win32;
 using Prism.Commands;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
-using System.IO;
 using System.Linq;
-using System.Net;
 using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
-using Message.PhotoServiceReference;
-using Message.Model;
 
 namespace Message.ViewModel
 {
@@ -42,10 +38,10 @@ namespace Message.ViewModel
         }
 
         public User CurrentUser { get; set; }
-       
+
         private string _searchContactStr;
 
-        public string SearchContactStr 
+        public string SearchContactStr
         {
             get { return _searchContactStr; }
             set
@@ -85,6 +81,7 @@ namespace Message.ViewModel
                 SetProperty(ref _searchContactStr, value);
             }
         }
+
         private string _currentUserName;
 
         public string CurrentUserName
@@ -124,7 +121,7 @@ namespace Message.ViewModel
             get { return _selectedContact; }
             set
             {
-                SetProperty(ref _selectedContact, value, () => {SelectedContactChanged();});
+                SetProperty(ref _selectedContact, value, () => { SelectedContactChanged(); });
             }
         }
 
@@ -165,9 +162,11 @@ namespace Message.ViewModel
         }
 
         private int? _fileAmount;
+
         public int? FileAmount
         {
-            get {
+            get
+            {
                 if (_fileAmount == 0)
                 {
                     return null;
@@ -307,7 +306,7 @@ namespace Message.ViewModel
 
         private void ExecuteOnExit()
         {
-           UserServiceClient.OnUserLeave(GlobalBase.CurrentUser.Id);
+            UserServiceClient.OnUserLeave(GlobalBase.CurrentUser.Id);
             _view.CloseWindow();
         }
 
@@ -400,7 +399,6 @@ namespace Message.ViewModel
                             }
                         }
                     }
-                    
                 }
                 else if (SelectedContact is ChatGroupUiInfo)
                 {
@@ -453,7 +451,7 @@ namespace Message.ViewModel
                     UserServiceClient.SendMessageAsync(message);
                     _view.MessageList.Add(message);
                 }
-                else if(messagesWithFile != null)
+                else if (messagesWithFile != null)
                 {
                     foreach (var fileMessage in messagesWithFile)
                     {
@@ -469,7 +467,7 @@ namespace Message.ViewModel
 
                 FilesPath = null;
                 FileAmount = 0;
-                
+
                 _view.UpdateMessageList();
 
                 MessageText = string.Empty;
@@ -624,9 +622,70 @@ namespace Message.ViewModel
 
         public override void ReceiveMessage(BaseMessage message)
         {
+            UpdateMessages(message, AddMessage);
+        }
+
+        public override void UserLeave(User user)
+        {
+            UpdateContactList();
+            Debug.WriteLine("Works(Leave) - " + user.FirstName + " - (currentUser - " + GlobalBase.CurrentUser.FirstName + ")");
+        }
+
+        public override void UserCame(User user)
+        {
+            UpdateContactList();
+            Debug.WriteLine("Works(Came) - " + user.FirstName + " - (currentUser - " + GlobalBase.CurrentUser.FirstName + ")");
+        }
+
+        public override void OnMessageRemoved(BaseMessage message)
+        {
+            UpdateMessages(message, DeleteMessage);
+        }
+
+        public override void OnMessageEdited(BaseMessage message)
+        {
+            UpdateMessages(message, UppdateMessage);
+        }
+
+        private bool AddMessage(BaseMessage message)
+        {
+            _view.MessageList.Add(message);
+            _view.UpdateMessageList();
+
+            return true;
+        }
+
+        private bool UppdateMessage(BaseMessage message)
+        {
+            var mes = _view.MessageList.FirstOrDefault(x => x.Id == message.Id);
+            if (mes != null)
+            {
+                mes.Text = message.Text;
+                _view.UpdateMessageList();
+                return true;
+            }
+
+            return false;
+        }
+
+        private bool DeleteMessage(BaseMessage message)
+        {
+            var mes = _view.MessageList.FirstOrDefault(x => x.Id == message.Id);
+            if (mes != null)
+            {
+                _view.MessageList.Remove(mes);
+                _view.UpdateMessageList();
+                return true;
+            }
+
+            return false;
+        }
+
+        private void UpdateMessages(BaseMessage message, Func<BaseMessage, bool> updateMethod)
+        {
             User sender = UserServiceClient.GetAllUsers().FirstOrDefault(x => x.Id == message.SenderId);
 
-            if (sender.Id != (SelectedContact as UserUiInfo).UserId)
+            if (sender.Id != (SelectedContact as UserUiInfo)?.UserId)
             {
                 var mes = "New message from  @" + sender.Login + "\n" + "\"" + GlobalBase.Base64Decode(message.Text) +
                           "\"";
@@ -644,9 +703,9 @@ namespace Message.ViewModel
                         UpdateContactList();
                     });
                 }
-                else if ( (SelectedContact is UserUiInfo) && ((SelectedContact as UserUiInfo).UserId == sender.Id) )
+                else if ((SelectedContact is UserUiInfo) && ((SelectedContact as UserUiInfo).UserId == sender.Id))
                 {
-                    SelectedContactChanged();
+                    updateMethod(message);
                 }
             }
             else if (message is GroupMessage)
@@ -658,33 +717,11 @@ namespace Message.ViewModel
                         UpdateContactList();
                     });
                 }
-                else if ( (SelectedContact is ChatGroupUiInfo) && ((SelectedContact as ChatGroupUiInfo).ChatGroupId == (message as GroupMessage).ChatGroupId) )
+                else if ((SelectedContact is ChatGroupUiInfo) && ((SelectedContact as ChatGroupUiInfo).ChatGroupId == (message as GroupMessage).ChatGroupId))
                 {
-                    SelectedContactChanged();
+                    updateMethod(message);
                 }
             }
-        }
-
-        public override void UserLeave(User user)
-        {
-            UpdateContactList();
-            Debug.WriteLine("Works(Leave) - " + user.FirstName + " - (currentUser - " + GlobalBase.CurrentUser.FirstName + ")");
-        }
-
-        public override void UserCame(User user)
-        {
-            UpdateContactList();
-            Debug.WriteLine("Works(Came) - " + user.FirstName + " - (currentUser - " + GlobalBase.CurrentUser.FirstName + ")");
-        }
-
-        public override void OnMessageRemoved(BaseMessage message)
-        {
-            //throw new NotImplementedException();
-        }
-
-        public override void OnMessageEdited(BaseMessage message)
-        {
-            //throw new NotImplementedException();
         }
     }
 }

@@ -19,7 +19,7 @@ namespace ServerWCF.Services
                     return userContext.ChatFiles.FirstOrDefault(f => f.Id == id);
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return null;
             }
@@ -34,7 +34,7 @@ namespace ServerWCF.Services
                     return userContext.ChatFiles.FirstOrDefault(f => f.Name == name);
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return null;
             }
@@ -53,7 +53,7 @@ namespace ServerWCF.Services
                     return id;
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return -1;
             }

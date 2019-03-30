@@ -1,15 +1,10 @@
 ﻿using Message.Interfaces;
-using Message.Compression;
+using Message.Model;
 using Prism.Commands;
-using System.Windows.Media.Imaging;
 using System.Drawing;
-using System.Drawing.Imaging;
-using System.IO;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
-using Message.PhotoServiceReference;
-using System.Threading.Tasks;
-using Message.Model;
 
 namespace Message.ViewModel
 {
@@ -88,14 +83,13 @@ namespace Message.ViewModel
 
         private void SetAvatarForUI()
         {
-            Task.Run( () =>
-            {
-                Dispatcher.CurrentDispatcher.Invoke(() =>
-                {
-                    Images = GlobalBase.getUsersAvatar(GlobalBase.CurrentUser);
-                });
-            });
+            Task.Run(() =>
+           {
+               Dispatcher.CurrentDispatcher.Invoke(() =>
+               {
+                   Images = GlobalBase.getUsersAvatar(GlobalBase.CurrentUser);
+               });
+           });
         }
-
     }
 }

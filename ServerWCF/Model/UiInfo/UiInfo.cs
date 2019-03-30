@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.Drawing;
-using System.Linq;
 using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ServerWCF.Model.UiInfo
 {
@@ -34,7 +29,7 @@ namespace ServerWCF.Model.UiInfo
         public Image UiImage { get; set; }
 
         [DataMember]
-        public bool IsSelected{ get; set; }
+        public bool IsSelected { get; set; }
 
         protected UiInfo(string name, string uniqueName, string status, int imageId)
         {

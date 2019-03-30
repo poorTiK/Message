@@ -1,6 +1,7 @@
 ﻿using Message.AdditionalItems;
-using Message.Interfaces;
 using Message.Compression;
+using Message.Interfaces;
+using Message.Model;
 using Message.UserServiceReference;
 using Microsoft.Win32;
 using Prism.Commands;
@@ -12,9 +13,6 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
-using Message.PhotoServiceReference;
-using Message.FileService;
-using Message.Model;
 
 namespace Message.ViewModel
 {
@@ -30,7 +28,6 @@ namespace Message.ViewModel
         {
             get { return _image; }
             set { _image = value; OnPropertyChanged(new System.ComponentModel.PropertyChangedEventArgs("Images")); }
-
         }
 
         private string _currentUserName;
@@ -155,8 +152,7 @@ namespace Message.ViewModel
 
         private void ExecuteClose()
         {
-
-            GlobalBase.CurrentUser.ImageId = GlobalBase.FileServiceClient.getChatFileById(GlobalBase.CurrentUser.ImageId).Id;   
+            GlobalBase.CurrentUser.ImageId = GlobalBase.FileServiceClient.getChatFileById(GlobalBase.CurrentUser.ImageId).Id;
             _view.CloseWindow();
         }
 
@@ -169,7 +165,7 @@ namespace Message.ViewModel
 
         public DelegateCommand LoadPhoto =>
             _onLoadPhoto ?? (_onLoadPhoto = new DelegateCommand(ExecuteOnLoadPhoto));
-        
+
         private void ExecuteOnLoadPhoto()
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
@@ -189,7 +185,7 @@ namespace Message.ViewModel
         {
             Task.Run(() =>
             {
-                Dispatcher.CurrentDispatcher.Invoke(() => 
+                Dispatcher.CurrentDispatcher.Invoke(() =>
                 {
                     Images = GlobalBase.getUsersAvatar(GlobalBase.CurrentUser);
                 });
@@ -202,20 +198,20 @@ namespace Message.ViewModel
             string res;
             Task.Run((() =>
             {
-            if (Validate())
-            {
-                GlobalBase.CurrentUser.FirstName = UserName;
-                GlobalBase.CurrentUser.LastName = UserLastName;
-                GlobalBase.CurrentUser.Phone = UserPhone;
-                GlobalBase.CurrentUser.Email = UserEmail;
-                GlobalBase.CurrentUser.Bio = UserBio;
-                var chatFile = GlobalBase.FileServiceClient.getChatFileById(GlobalBase.CurrentUser.ImageId);
-                res = UserServiceClient.AddOrUpdateUser(GlobalBase.CurrentUser);
-
-                if (_newAvatar != null)
+                if (Validate())
                 {
-                    if (chatFile == null)
+                    GlobalBase.CurrentUser.FirstName = UserName;
+                    GlobalBase.CurrentUser.LastName = UserLastName;
+                    GlobalBase.CurrentUser.Phone = UserPhone;
+                    GlobalBase.CurrentUser.Email = UserEmail;
+                    GlobalBase.CurrentUser.Bio = UserBio;
+                    var chatFile = GlobalBase.FileServiceClient.getChatFileById(GlobalBase.CurrentUser.ImageId);
+                    res = UserServiceClient.AddOrUpdateUser(GlobalBase.CurrentUser);
+
+                    if (_newAvatar != null)
                     {
+                        if (chatFile == null)
+                        {
                             GlobalBase.CurrentUser.ImageId = GlobalBase.FileServiceClient.UploadFile(new FileService.ChatFile() { Source = CompressionHelper.CompressImage(_newAvatar) });
                             UserServiceClient.AddOrUpdateUser(GlobalBase.CurrentUser);
                         }

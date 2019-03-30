@@ -1,18 +1,13 @@
 ﻿using Message.AdditionalItems;
 using Message.Compression;
+using Message.Model;
 using Message.UserServiceReference;
 using Prism.Commands;
-using System;
-using System.ServiceModel;
-using System.Threading.Tasks;
+using System.IO;
 using System.Windows;
 using System.Windows.Forms;
-using Message.PhotoServiceReference;
 using Application = System.Windows.Application;
 using Clipboard = System.Windows.Clipboard;
-using System.IO;
-using Message.FileService;
-using Message.Model;
 
 namespace Message.ViewModel
 {

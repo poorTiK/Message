@@ -1,7 +1,6 @@
 ﻿using System.Globalization;
 using System.Text.RegularExpressions;
 using System.Windows.Controls;
-using Message.Compression;
 
 namespace Message.ValidationRules
 {

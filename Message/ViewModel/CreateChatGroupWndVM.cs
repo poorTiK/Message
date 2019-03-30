@@ -1,22 +1,19 @@
-﻿using System;
+﻿using Message.Compression;
+using Message.Interfaces;
+using Message.Model;
+using Message.UserServiceReference;
+using Prism.Commands;
+using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Forms;
-using Message.Interfaces;
-using Message.Compression;
-using Message.UserServiceReference;
-using Prism.Commands;
-using Message.Model;
 
 namespace Message.ViewModel
 {
-    class CreateChatGroupWndVM : BaseViewModel
+    internal class CreateChatGroupWndVM : BaseViewModel
     {
         private IView _view;
 
@@ -42,11 +39,10 @@ namespace Message.ViewModel
         {
             get { return _image; }
             set { _image = value; OnPropertyChanged(new System.ComponentModel.PropertyChangedEventArgs("Images")); }
-
         }
 
         private string _name;
-        
+
         public string Name
         {
             get { return _name; }
@@ -83,13 +79,15 @@ namespace Message.ViewModel
         {
             Task.Run(() =>
             {
-                System.Windows.Application.Current.Dispatcher.Invoke(() => {
+                System.Windows.Application.Current.Dispatcher.Invoke(() =>
+                {
                     Images = ImageHelper.GetDefGroupImage();
                 });
             });
         }
 
         private bool _isCreating;
+
         public bool IsCreating
         {
             get { return _isCreating; }

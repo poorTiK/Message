@@ -21,5 +21,4 @@
     <SolidColorBrush x:Key="MessageForeground" Color="White"></SolidColorBrush>
     <SolidColorBrush x:Key="MessageTime" Color="#FF63A35D"></SolidColorBrush>
     <SolidColorBrush x:Key="SectionBackground" Color="#4A4A4A"></SolidColorBrush>
-
 </ResourceDictionary>

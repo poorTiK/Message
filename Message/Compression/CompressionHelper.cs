@@ -1,13 +1,4 @@
-﻿using Message.Compression;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.IO.Compression;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Message.Compression
+﻿namespace Message.Compression
 {
     public static class CompressionHelper
     {
@@ -25,7 +16,7 @@ namespace Message.Compression
         public static byte[] DecompressFile(byte[] data)
         {
             SetStrategyForFiles();
-            return CompressStrategy.Decompress(data); 
+            return CompressStrategy.Decompress(data);
         }
 
         public static byte[] CompressImage(byte[] imageData)

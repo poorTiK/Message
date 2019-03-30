@@ -9,10 +9,9 @@
 
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
 
-        Title="CreateChatGroupWnd" 
+        Title="CreateChatGroupWnd"
         Height="250" Width="350" WindowStyle="None" ResizeMode="NoResize"
-        ShowInTaskbar="False" WindowStartupLocation="CenterScreen"
-        >
+        ShowInTaskbar="False" WindowStartupLocation="CenterScreen">
 
     <WindowChrome.WindowChrome>
         <WindowChrome CaptionHeight="0" />
@@ -34,28 +33,28 @@
     <Grid Background="{DynamicResource PopUpBackground}">
         <Grid  VerticalAlignment="Top">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="191*"/>
-                <ColumnDefinition Width="153*"/>
+                <ColumnDefinition Width="191*" />
+                <ColumnDefinition Width="153*" />
             </Grid.ColumnDefinitions>
             <TextBlock Grid.ColumnSpan="2" Grid.Row="0" VerticalAlignment="Center" Foreground="{DynamicResource Foreground}"
                        Style="{StaticResource MaterialDesignSubheadingTextBlock}" Margin="10,5,0,5"
-                       Text="{DynamicResource CreateGroup}"/>
+                       Text="{DynamicResource CreateGroup}" />
             <Button x:Name="ButtonClose" Click="ButtonClose_OnClick" HorizontalAlignment="Right" VerticalAlignment="Top" Background="{x:Null}" Foreground="{DynamicResource ButtonForeground}" BorderBrush="{x:Null}" Width="30" Height="30" Padding="0" Grid.Column="1">
-                <materialDesign:PackIcon Kind="Close" Foreground="{DynamicResource HeaderButton}"/>
+                <materialDesign:PackIcon Kind="Close" Foreground="{DynamicResource HeaderButton}" />
             </Button>
         </Grid>
         <Grid Margin="0,30,0,0">
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition/>
-                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <StackPanel Orientation="Horizontal" Grid.Row="0" HorizontalAlignment="Stretch" Margin="10,0,0,0">
                 <Ellipse Height="45" Width="45" Grid.Column="0" Grid.Row="0" Grid.RowSpan="2"
                          ToolTip="Upload new photo" StrokeThickness="3">
                     <Ellipse.Fill>
-                        <ImageBrush ImageSource = "{ Binding Path=Images, Converter={StaticResource imageConverter}}"/>
+                        <ImageBrush ImageSource = "{ Binding Path=Images, Converter={StaticResource imageConverter}}" />
                     </Ellipse.Fill>
                     <Ellipse.InputBindings>
                         <MouseBinding Command="{Binding LoadPhoto}" MouseAction="LeftClick" />
@@ -63,11 +62,10 @@
                 </Ellipse>
                 <TextBox materialDesign:HintAssist.Hint="{DynamicResource GroupName}" Text="{Binding Name}"
                          Foreground="{DynamicResource Foreground}" SelectionBrush="{DynamicResource SelectionBrush}" Margin="10,0,10,5" Width="256">
-
                 </TextBox>
             </StackPanel>
 
-            <ScrollViewer Grid.Row="2" Grid.ColumnSpan="2"> 
+            <ScrollViewer Grid.Row="2" Grid.ColumnSpan="2">
                 <ItemsControl ItemsSource="{Binding ContactList}" Margin="10,5,10,0">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
@@ -114,15 +112,14 @@
                 </ItemsControl>
             </ScrollViewer>
 
-
             <Button Grid.ColumnSpan="2" Width="150" Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,5,0,5"
-                Foreground="{DynamicResource ButtonForeground}" 
+                Foreground="{DynamicResource ButtonForeground}"
                 Background="{DynamicResource ButtonBackground}"
                 materialDesign:ButtonProgressAssist.Value="-1"
                 materialDesign:ButtonProgressAssist.IsIndicatorVisible="{Binding IsCreating}"
                 materialDesign:ButtonProgressAssist.IsIndeterminate="{Binding IsCreating}"
                 Content="{DynamicResource Create}"
-                Command="{Binding Path=CreateGroup}"/>
+                Command="{Binding Path=CreateGroup}" />
         </Grid>
     </Grid>
 </Window>

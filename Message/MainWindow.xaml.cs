@@ -1,5 +1,4 @@
 ﻿using Message.Interfaces;
-using Message.Compression;
 using Message.ViewModel;
 using System;
 using System.Windows;
@@ -15,8 +14,6 @@ namespace Message
     {
         public MainWindow()
         {
-             
-
             InitializeComponent();
 
             MinimizeButton.Click += (s, e) => WindowState = WindowState.Minimized;
