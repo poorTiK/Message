@@ -76,7 +76,7 @@ namespace Message.ViewModel
             profEditWnd.Owner = (Window)view;
             profEditWnd.ShowDialog();
             UpdateUI();
-            GlobalBase.UpdateUI.Invoke();
+            GlobalBase.UpdateContactList.Invoke();
 
             view.Hide(true);
         }

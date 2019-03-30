@@ -84,7 +84,7 @@ namespace Message.ViewModel
             var wnd = new ForwardMessageWindow(Message);
             wnd.ShowDialog();
 
-            GlobalBase.UpdateMessages.Invoke();
+            GlobalBase.UpdateMessagesOnUI.Invoke();
         }
 
         private void OnEdit()
@@ -92,7 +92,7 @@ namespace Message.ViewModel
             var wnd = new MessageEditWindow(Message);
             wnd.ShowDialog();
 
-            GlobalBase.UpdateMessages.Invoke();
+            GlobalBase.UpdateMessagesOnUI.Invoke();
         }
 
         private void OnDelete()
@@ -103,8 +103,7 @@ namespace Message.ViewModel
             {
                 case MessageBoxResult.Yes:
                     UserServiceClient.RemoveMessage(Message);
-
-                    GlobalBase.UpdateMessages.Invoke();
+                    GlobalBase.RemoveMessageOnUI.Invoke(Message);
                     break;
 
                 case MessageBoxResult.No:

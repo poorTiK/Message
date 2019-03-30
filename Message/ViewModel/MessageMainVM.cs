@@ -37,8 +37,6 @@ namespace Message.ViewModel
             }
         }
 
-        public User CurrentUser { get; set; }
-
         private string _searchContactStr;
 
         public string SearchContactStr
@@ -86,7 +84,7 @@ namespace Message.ViewModel
 
         public string CurrentUserName
         {
-            get { return CurrentUser.FirstName + " " + CurrentUser.LastName; }
+            get { return GlobalBase.CurrentUser.FirstName + " " + GlobalBase.CurrentUser.LastName; }
             set { SetProperty(ref _currentUserName, value); }
         }
 
@@ -94,7 +92,7 @@ namespace Message.ViewModel
 
         public string CurrentUserLogin
         {
-            get { return "@" + CurrentUser.Login; }
+            get { return "@" + GlobalBase.CurrentUser.Login; }
             set { SetProperty(ref _currentUserLogin, value); }
         }
 
@@ -133,7 +131,7 @@ namespace Message.ViewModel
             set
             {
                 SetProperty(ref _dialogSearchStr, value);
-                OnDialogSearch();
+                ExecuteOnDialogSearch();
             }
         }
 
@@ -153,7 +151,7 @@ namespace Message.ViewModel
             set { SetProperty(ref _filesPath, value); }
         }
 
-        private bool _isMenuEnabled;
+        private bool _isMenuEnabled = false;
 
         public bool IsMenuEnabled
         {
@@ -177,75 +175,6 @@ namespace Message.ViewModel
             set { SetProperty(ref _fileAmount, value); }
         }
 
-        public MessageMainVM(IMessaging View, User user) : base()
-        {
-            _view = View;
-
-            CurrentUser = user;
-            GlobalBase.CurrentUser = user;
-            GlobalBase.UpdateUI += () =>
-            {
-                Update();
-            };
-
-            GlobalBase.UpdateMessages += () => 
-            {
-                Application.Current.Dispatcher.Invoke(new Action(() => { _view.UpdateMessageList(); }));
-            };
-
-            SetAvatarForUI();
-            Update();
-
-            IsMenuEnabled = false;
-            FileAmount = 0;
-
-            UserServiceClient.OnUserCame(user.Id);
-        }
-
-        private void SelectedContactChanged(object sender = null, PropertyChangedEventArgs e = null)
-        {
-            if (SelectedContact != null)
-            {
-                IsMenuEnabled = true;
-            }
-            else
-            {
-                IsMenuEnabled = false;
-            }
-
-            if (_view.MessageList != null)
-            {
-                Task.Run(() =>
-                {
-                    _view.MessageList.Clear();
-
-                    GlobalBase.loadPictures(UserServiceClient, ContactsList);
-
-                    List<BaseMessage> res = new List<BaseMessage>();
-                    if (SelectedContact is UserUiInfo)
-                    {
-                        res.AddRange(UserServiceClient.GetUserMessages(GlobalBase.CurrentUser.Id,
-                            (SelectedContact as UserUiInfo).UserId, messageLimit));
-                    }
-                    else if (SelectedContact is ChatGroupUiInfo)
-                    {
-                        res.AddRange(
-                            UserServiceClient.GetGroupMessages((SelectedContact as ChatGroupUiInfo).ChatGroupId, messageLimit));
-                    }
-
-                    if (res.Count != 0)
-                    {
-                        Application.Current.Dispatcher.Invoke(new Action(() =>
-                        {
-                            _view.MessageList.AddRange(res);
-                        }));
-                    }
-                }).ContinueWith((task =>
-                {
-                    Application.Current.Dispatcher.Invoke(new Action(() => { _view.UpdateMessageList(); }));
-                }));
-            }
-        }
 
         private DelegateCommand _onContactsCommand;
 
@@ -294,6 +223,187 @@ namespace Message.ViewModel
         public DelegateCommand CreateChatGroup =>
             _createChatGroup ?? (_createChatGroup = new DelegateCommand(ExecuteOnCreateChatGroup));
 
+
+        public MessageMainVM(IMessaging View, User user) : base()
+        {
+            _view = View;
+
+            GlobalBase.CurrentUser = user;
+            GlobalBase.UpdateMessagesOnUI += () => 
+            {
+                Application.Current.Dispatcher.Invoke(new Action(() => { _view.UpdateMessageList(); }));
+            };
+            GlobalBase.UpdateContactList += UpdateContactList;
+            GlobalBase.RemoveMessageOnUI += DeleteMessageOnUI;
+
+            SetAvatarForUI();
+            UpdateContactList();
+            UserServiceClient.OnUserCame(user.Id);
+
+            IsMenuEnabled = false;
+            FileAmount = 0;
+        }
+
+        //update data using server
+        private void UpdateContactList()
+        {
+            Task.Run(() =>
+            {
+                UiInfo temp = SelectedContact;
+
+                List<UiInfo> tempUiInfos = UserServiceClient.GetAllContactsUiInfo(GlobalBase.CurrentUser.Id);
+                GlobalBase.loadPictures(UserServiceClient, tempUiInfos);
+
+                Dispatcher.CurrentDispatcher.Invoke(() =>
+                {
+                    ContactsList.Clear();
+                    ContactsList = tempUiInfos;
+                });
+
+                if (temp != null)
+                {
+                    Dispatcher.CurrentDispatcher.Invoke(() =>
+                    {
+                        SelectedContact = ContactsList.FirstOrDefault(ct => ct.UniqueName == temp.UniqueName);
+                    });
+                }
+            });
+        }
+
+        private void SelectedContactChanged(object sender = null, PropertyChangedEventArgs e = null)
+        {
+            if (SelectedContact != null)
+            {
+                IsMenuEnabled = true;
+            }
+            else
+            {
+                IsMenuEnabled = false;
+            }
+
+            if (_view.MessageList != null)
+            {
+                Task.Run(() =>
+                {
+                    _view.MessageList.Clear();
+
+                    GlobalBase.loadPictures(UserServiceClient, ContactsList);
+
+                    List<BaseMessage> res = new List<BaseMessage>();
+                    if (SelectedContact is UserUiInfo)
+                    {
+                        res.AddRange(UserServiceClient.GetUserMessages(GlobalBase.CurrentUser.Id,
+                            (SelectedContact as UserUiInfo).UserId, messageLimit));
+                    }
+                    else if (SelectedContact is ChatGroupUiInfo)
+                    {
+                        res.AddRange(
+                            UserServiceClient.GetGroupMessages((SelectedContact as ChatGroupUiInfo).ChatGroupId, messageLimit));
+                    }
+
+                    if (res.Count != 0)
+                    {
+                        Application.Current.Dispatcher.Invoke(new Action(() =>
+                        {
+                            _view.MessageList.AddRange(res);
+                        }));
+                    }
+                }).ContinueWith((task =>
+                {
+                    Application.Current.Dispatcher.Invoke(new Action(() => { _view.UpdateMessageList(); }));
+                }));
+            }
+        }
+
+        private void UpdateMessages(BaseMessage message, Func<BaseMessage, bool> updateStrategy)
+        {
+            User sender = UserServiceClient.GetAllUsers().FirstOrDefault(x => x.Id == message.SenderId);
+
+            if (sender.Id != (SelectedContact as UserUiInfo)?.UserId)
+            {
+                var mes = "New message from  @" + sender.Login + "\n" + "\"" + GlobalBase.Base64Decode(message.Text) +
+                          "\"";
+                GlobalBase.ShowNotify("New message", mes);
+            }
+
+            Debug.WriteLine("Receave Message from - ", sender.Login);
+
+            if (message is UserMessage)
+            {
+                if (ContactsList.Where(c => c is UserUiInfo).FirstOrDefault(x => (x as UserUiInfo).UserId == sender.Id) == null)
+                {
+                    UserServiceClient.AddUserToUserContactAsync(GlobalBase.CurrentUser.Id, sender.Id).ContinueWith(task =>
+                    {
+                        UpdateContactList();
+                    });
+                }
+                else if ((SelectedContact is UserUiInfo) && ((SelectedContact as UserUiInfo).UserId == sender.Id))
+                {
+                    updateStrategy(message);
+                }
+            }
+            else if (message is GroupMessage)
+            {
+                if (ContactsList.Where(c => c is ChatGroupUiInfo).FirstOrDefault(x => (x as ChatGroupUiInfo).ChatGroupId == (message as GroupMessage).ChatGroupId) == null)
+                {
+                    UserServiceClient.AddUserToChatGroupContactAsync((message as GroupMessage).ChatGroupId, GlobalBase.CurrentUser.Id).ContinueWith(task =>
+                    {
+                        UpdateContactList();
+                    });
+                }
+                else if ((SelectedContact is ChatGroupUiInfo) && ((SelectedContact as ChatGroupUiInfo).ChatGroupId == (message as GroupMessage).ChatGroupId))
+                {
+                    updateStrategy(message);
+                }
+            }
+        }
+
+        //UI update
+        private bool AddMessageOnUI(BaseMessage message)
+        {
+            _view.MessageList.Add(message);
+            GlobalBase.UpdateMessagesOnUI.Invoke();
+
+            return true;
+        }
+
+        private bool UppdateMessageOnUI(BaseMessage message)
+        {
+            var mes = _view.MessageList.FirstOrDefault(x => x.Id == message.Id);
+            if (mes != null)
+            {
+                mes.Text = message.Text;
+                GlobalBase.UpdateMessagesOnUI.Invoke();
+                return true;
+            }
+
+            return false;
+        }
+
+        private bool DeleteMessageOnUI(BaseMessage message)
+        {
+            var mes = _view.MessageList.FirstOrDefault(x => x.Id == message.Id);
+            if (mes != null)
+            {
+                _view.MessageList.Remove(mes);
+                GlobalBase.UpdateMessagesOnUI.Invoke();
+                return true;
+            }
+
+            return false;
+        }
+
+        private void SetAvatarForUI()
+        {
+            Task.Run(() =>
+            {
+                Dispatcher.CurrentDispatcher.Invoke(() => {
+                    Images = GlobalBase.getUsersAvatar(GlobalBase.CurrentUser);
+                });
+            });
+        }
+        
+        //executes for commands
         private void ExecuteOnAddFile()
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
@@ -476,16 +586,6 @@ namespace Message.ViewModel
             }
         }
 
-        private void SetAvatarForUI()
-        {
-            Task.Run(() =>
-            {
-                Dispatcher.CurrentDispatcher.Invoke(() => {
-                    Images = GlobalBase.getUsersAvatar(GlobalBase.CurrentUser);
-                });
-            });
-        }
-
         private void ExecuteOnSettingsCommand()
         {
             _view.SetOpacity(0.5);
@@ -494,7 +594,7 @@ namespace Message.ViewModel
             wnd.Owner = (Window)_view;
             wnd.ShowDialog();
 
-            Update();
+            UpdateContactList();
 
             _view.SetOpacity(1);
         }
@@ -509,7 +609,7 @@ namespace Message.ViewModel
 
             _view.SetOpacity(1);
 
-            Update();
+            UpdateContactList();
         }
 
         private void ExecuteOnCreateChatGroup()
@@ -522,10 +622,10 @@ namespace Message.ViewModel
 
             _view.SetOpacity(1);
 
-            Update();
+            UpdateContactList();
         }
 
-        private void OnDialogSearch()
+        private void ExecuteOnDialogSearch()
         {
             if (IsDialogSearchVisible)
             {
@@ -590,39 +690,10 @@ namespace Message.ViewModel
             }
         }
 
-        public void Update()
-        {
-            UpdateContactList();
-            ////SetAvatarForUI();
-        }
-
-        private void UpdateContactList()
-        {
-            Task.Run(() =>
-            {
-            UiInfo temp = SelectedContact;
-
-            List<UiInfo> tempUiInfos = UserServiceClient.GetAllContactsUiInfo(GlobalBase.CurrentUser.Id);
-            GlobalBase.loadPictures(UserServiceClient, tempUiInfos);
-
-            Dispatcher.CurrentDispatcher.Invoke(() =>
-            {
-                ContactsList.Clear();
-                ContactsList = tempUiInfos;
-            });
-
-                    if (temp != null) {
-                    Dispatcher.CurrentDispatcher.Invoke(() =>
-                    {
-                        SelectedContact = ContactsList.FirstOrDefault(ct => ct.UniqueName == temp.UniqueName);
-                    });
-                }
-            });
-        }
-
+        //service callbacks
         public override void ReceiveMessage(BaseMessage message)
         {
-            UpdateMessages(message, AddMessage);
+            UpdateMessages(message, AddMessageOnUI);
         }
 
         public override void UserLeave(User user)
@@ -639,89 +710,14 @@ namespace Message.ViewModel
 
         public override void OnMessageRemoved(BaseMessage message)
         {
-            UpdateMessages(message, DeleteMessage);
+            UpdateMessages(message, DeleteMessageOnUI);
         }
 
         public override void OnMessageEdited(BaseMessage message)
         {
-            UpdateMessages(message, UppdateMessage);
+            UpdateMessages(message, UppdateMessageOnUI);
         }
 
-        private bool AddMessage(BaseMessage message)
-        {
-            _view.MessageList.Add(message);
-            _view.UpdateMessageList();
 
-            return true;
-        }
-
-        private bool UppdateMessage(BaseMessage message)
-        {
-            var mes = _view.MessageList.FirstOrDefault(x => x.Id == message.Id);
-            if (mes != null)
-            {
-                mes.Text = message.Text;
-                _view.UpdateMessageList();
-                return true;
-            }
-
-            return false;
-        }
-
-        private bool DeleteMessage(BaseMessage message)
-        {
-            var mes = _view.MessageList.FirstOrDefault(x => x.Id == message.Id);
-            if (mes != null)
-            {
-                _view.MessageList.Remove(mes);
-                _view.UpdateMessageList();
-                return true;
-            }
-
-            return false;
-        }
-
-        private void UpdateMessages(BaseMessage message, Func<BaseMessage, bool> updateMethod)
-        {
-            User sender = UserServiceClient.GetAllUsers().FirstOrDefault(x => x.Id == message.SenderId);
-
-            if (sender.Id != (SelectedContact as UserUiInfo)?.UserId)
-            {
-                var mes = "New message from  @" + sender.Login + "\n" + "\"" + GlobalBase.Base64Decode(message.Text) +
-                          "\"";
-                GlobalBase.ShowNotify("New message", mes);
-            }
-
-            Debug.WriteLine("Receave Message from - ", sender.Login);
-
-            if (message is UserMessage)
-            {
-                if (ContactsList.Where(c => c is UserUiInfo).FirstOrDefault(x => (x as UserUiInfo).UserId == sender.Id) == null)
-                {
-                    UserServiceClient.AddUserToUserContactAsync(GlobalBase.CurrentUser.Id, sender.Id).ContinueWith(task =>
-                    {
-                        UpdateContactList();
-                    });
-                }
-                else if ((SelectedContact is UserUiInfo) && ((SelectedContact as UserUiInfo).UserId == sender.Id))
-                {
-                    updateMethod(message);
-                }
-            }
-            else if (message is GroupMessage)
-            {
-                if (ContactsList.Where(c => c is ChatGroupUiInfo).FirstOrDefault(x => (x as ChatGroupUiInfo).ChatGroupId == (message as GroupMessage).ChatGroupId) == null)
-                {
-                    UserServiceClient.AddUserToChatGroupContactAsync((message as GroupMessage).ChatGroupId, GlobalBase.CurrentUser.Id).ContinueWith(task =>
-                    {
-                        UpdateContactList();
-                    });
-                }
-                else if ((SelectedContact is ChatGroupUiInfo) && ((SelectedContact as ChatGroupUiInfo).ChatGroupId == (message as GroupMessage).ChatGroupId))
-                {
-                    updateMethod(message);
-                }
-            }
-        }
     }
 }

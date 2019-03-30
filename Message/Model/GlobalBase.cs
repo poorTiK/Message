@@ -13,10 +13,9 @@ namespace Message.Model
     public static class GlobalBase
     {
         public static User CurrentUser { get; set; }
-
-        public static Action UpdateUI;
-        public static Action UpdateMessages;
-
+        public static Action UpdateContactList;
+        public static Action UpdateMessagesOnUI;
+        public static Func<BaseMessage, bool> RemoveMessageOnUI;
 
         public static FileServiceClient FileServiceClient { get; set; }
 
