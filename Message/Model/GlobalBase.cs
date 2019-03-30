@@ -17,8 +17,10 @@ namespace Message.Model
         public static User CurrentUser { get; set; }
 
         public static Action UpdateUI;
+        public static Action UpdateMessages;
 
-        public static FileServiceClient FileServiceClient { get; set; } 
+
+        public static FileServiceClient FileServiceClient { get; set; }
 
         static GlobalBase()
         {
@@ -79,7 +81,6 @@ namespace Message.Model
 
             if (chatFile?.Source?.Length > 0)
             {
-                //chatFile.Source = CompressionHelper.Decompress(chatFile.Source);
                 MemoryStream memstr = new MemoryStream(chatFile.Source);
                 Dispatcher.CurrentDispatcher.Invoke(() => { uiInfos.UiImage = Image.FromStream(memstr); });
             }

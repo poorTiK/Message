@@ -25,6 +25,8 @@ namespace Message.ViewModel
     [CallbackBehavior(ConcurrencyMode = ConcurrencyMode.Reentrant)]
     internal class MessageMainVM : BaseViewModel
     {
+        private int messageLimit = 50;
+
         private IMessaging _view;
 
         private Image _image;
@@ -107,7 +109,7 @@ namespace Message.ViewModel
             set { SetProperty(ref _isDialogSearchVisible, value); }
         }
 
-        private List<UiInfo> _contactsList;
+        private List<UiInfo> _contactsList = new List<UiInfo>();
 
         public List<UiInfo> ContactsList
         {
@@ -187,6 +189,11 @@ namespace Message.ViewModel
                 Update();
             };
 
+            GlobalBase.UpdateMessages += () => 
+            {
+                Application.Current.Dispatcher.Invoke(new Action(() => { _view.UpdateMessageList(); }));
+            };
+
             SetAvatarForUI();
             Update();
 
@@ -209,22 +216,22 @@ namespace Message.ViewModel
 
             if (_view.MessageList != null)
             {
-                _view.MessageList.Clear();
-
                 Task.Run(() =>
                 {
+                    _view.MessageList.Clear();
+
                     GlobalBase.loadPictures(UserServiceClient, ContactsList);
 
                     List<BaseMessage> res = new List<BaseMessage>();
                     if (SelectedContact is UserUiInfo)
                     {
                         res.AddRange(UserServiceClient.GetUserMessages(GlobalBase.CurrentUser.Id,
-                            (SelectedContact as UserUiInfo).UserId, 50));
+                            (SelectedContact as UserUiInfo).UserId, messageLimit));
                     }
                     else if (SelectedContact is ChatGroupUiInfo)
                     {
                         res.AddRange(
-                            UserServiceClient.GetGroupMessages((SelectedContact as ChatGroupUiInfo).ChatGroupId, 50));
+                            UserServiceClient.GetGroupMessages((SelectedContact as ChatGroupUiInfo).ChatGroupId, messageLimit));
                     }
 
                     if (res.Count != 0)
@@ -473,12 +480,12 @@ namespace Message.ViewModel
 
         private void SetAvatarForUI()
         {
-                Task.Run(() =>
-                {
-                    Dispatcher.CurrentDispatcher.Invoke(() => {
-                        Images = GlobalBase.getUsersAvatar(GlobalBase.CurrentUser);
-                    });
+            Task.Run(() =>
+            {
+                Dispatcher.CurrentDispatcher.Invoke(() => {
+                    Images = GlobalBase.getUsersAvatar(GlobalBase.CurrentUser);
                 });
+            });
         }
 
         private void ExecuteOnSettingsCommand()
@@ -587,41 +594,31 @@ namespace Message.ViewModel
 
         public void Update()
         {
-            //make all update modular and put here plz
             UpdateContactList();
-            SetAvatarForUI();
+            ////SetAvatarForUI();
         }
 
         private void UpdateContactList()
         {
             Task.Run(() =>
             {
-                UiInfo temp = SelectedContact;
+            UiInfo temp = SelectedContact;
 
-                List<UiInfo> tempUiInfos = UserServiceClient.GetAllContactsUiInfo(GlobalBase.CurrentUser.Id);
-                GlobalBase.loadPictures(UserServiceClient, tempUiInfos);
+            List<UiInfo> tempUiInfos = UserServiceClient.GetAllContactsUiInfo(GlobalBase.CurrentUser.Id);
+            GlobalBase.loadPictures(UserServiceClient, tempUiInfos);
+
+            Dispatcher.CurrentDispatcher.Invoke(() =>
+            {
+                ContactsList.Clear();
                 ContactsList = tempUiInfos;
+            });
 
-                if (temp is UserUiInfo)
-                {
-                    UserUiInfo userUiInfo = temp as UserUiInfo;
-
-                    if (ContactsList.Any(x => temp != null && (x is UserUiInfo) && ((x as UserUiInfo).UserId == userUiInfo.UserId)))
+                    if (temp != null) {
+                    Dispatcher.CurrentDispatcher.Invoke(() =>
                     {
-                        Dispatcher.CurrentDispatcher.Invoke(() => { SelectedContact = temp; });
-                    }
+                        SelectedContact = ContactsList.FirstOrDefault(ct => ct.UniqueName == temp.UniqueName);
+                    });
                 }
-                else if (temp is ChatGroupUiInfo)
-                {
-                    ChatGroupUiInfo chatGroupUiInfo = temp as ChatGroupUiInfo;
-
-                    if (ContactsList.Any(x =>
-                        temp != null && ((x is ChatGroupUiInfo) && (x as ChatGroupUiInfo).ChatGroupId == chatGroupUiInfo.ChatGroupId)))
-                    {
-                        Dispatcher.CurrentDispatcher.Invoke(() => { SelectedContact = temp; });
-                    }
-                }
-
             });
         }
 
