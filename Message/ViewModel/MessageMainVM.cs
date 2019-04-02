@@ -471,9 +471,8 @@ namespace Message.ViewModel
                                 Sender = GlobalBase.CurrentUser,
                                 ReceiverId = userUiInfo.UserId,
                             };
-                            UserServiceClient.SendMessageAsync(tempMes);
-
-                            _view.MessageList.Add(tempMes);
+                            UserServiceClient.SendMessageAsync(tempMes).ContinueWith(task => _view.MessageList.Add(UserServiceClient.GetLastMessage()));
+                           
                         }
                         else
                         {
@@ -487,9 +486,7 @@ namespace Message.ViewModel
                                     Sender = GlobalBase.CurrentUser,
                                     ReceiverId = userUiInfo.UserId,
                                 };
-                                UserServiceClient.SendMessageAsync(tempMes);
-
-                                _view.MessageList.Add(tempMes);
+                                UserServiceClient.SendMessageAsync(tempMes).ContinueWith(task => _view.MessageList.Add(UserServiceClient.GetLastMessage()));
                             }
 
                             messagesWithFile = new List<BaseMessage>();
@@ -534,9 +531,7 @@ namespace Message.ViewModel
                             Sender = GlobalBase.CurrentUser,
                             ChatGroupId = userUiInfo.ChatGroupId,
                         };
-                        UserServiceClient.SendMessageAsync(tempMes);
-
-                        _view.MessageList.Add(tempMes);
+                        UserServiceClient.SendMessageAsync(tempMes).ContinueWith(task => _view.MessageList.Add(UserServiceClient.GetLastMessage()));
 
                         messagesWithFile = new List<BaseMessage>();
                         foreach (var file in FilesPath)
@@ -558,8 +553,11 @@ namespace Message.ViewModel
 
                 if (FilesPath == null)
                 {
-                    UserServiceClient.SendMessageAsync(message);
-                    _view.MessageList.Add(message);
+                    UserServiceClient.SendMessageAsync(message).ContinueWith(task => {
+                        BaseMessage lastMessage = UserServiceClient.GetLastMessage();
+                        _view.MessageList.Add(lastMessage);
+                        _view.UpdateMessageList();
+                    });
                 }
                 else if (messagesWithFile != null)
                 {
@@ -571,14 +569,14 @@ namespace Message.ViewModel
                         //GlobalBase.PhotoServiceClient.SetFileToMessage(mes.Last().Id, fileMessage.Text);
                         //fileMessage.Id = mes.Last().Id;
                         //fileMessage.Text = null;
-                        _view.MessageList.Add(fileMessage);
+                        _view.MessageList.Add(UserServiceClient.GetLastMessage());
                     }
                 }
 
                 FilesPath = null;
                 FileAmount = 0;
 
-                _view.UpdateMessageList();
+                //_view.UpdateMessageList();
 
                 MessageText = string.Empty;
 
@@ -710,7 +708,7 @@ namespace Message.ViewModel
 
         public override void OnMessageRemoved(BaseMessage message)
         {
-            UpdateMessages(message, DeleteMessageOnUI);
+            DeleteMessageOnUI(message);
         }
 
         public override void OnMessageEdited(BaseMessage message)

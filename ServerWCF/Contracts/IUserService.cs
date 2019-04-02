@@ -87,6 +87,9 @@ namespace ServerWCF.Contracts
         [OperationContract]
         List<BaseMessage> FindMessage(string keyWord);
 
+        [OperationContract]
+        BaseMessage GetLastMessage();
+
         [OperationContract(IsOneWay = true)]
         void SendMessage(BaseMessage message);
 

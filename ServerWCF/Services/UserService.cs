@@ -906,5 +906,14 @@ namespace ServerWCF.Services
 
             return successResult;
         }
+
+        public BaseMessage GetLastMessage()
+        {
+            using (UserContext userContext = new UserContext())
+            {
+                int maxId = userContext.Messages.Max(m => m.Id);
+                return userContext.Messages.FirstOrDefault(m => m.Id == maxId);
+            }
+        }
     }
 }

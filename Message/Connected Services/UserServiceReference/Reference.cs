@@ -1288,6 +1288,12 @@ namespace Message.UserServiceReference {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/FindMessage", ReplyAction="http://tempuri.org/IUserService/FindMessageResponse")]
         System.Threading.Tasks.Task<System.Collections.Generic.List<Message.UserServiceReference.BaseMessage>> FindMessageAsync(string keyWord);
         
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/GetLastMessage", ReplyAction="http://tempuri.org/IUserService/GetLastMessageResponse")]
+        Message.UserServiceReference.BaseMessage GetLastMessage();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/GetLastMessage", ReplyAction="http://tempuri.org/IUserService/GetLastMessageResponse")]
+        System.Threading.Tasks.Task<Message.UserServiceReference.BaseMessage> GetLastMessageAsync();
+        
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IUserService/SendMessage")]
         void SendMessage(Message.UserServiceReference.BaseMessage message);
         
@@ -1560,6 +1566,14 @@ namespace Message.UserServiceReference {
         
         public System.Threading.Tasks.Task<System.Collections.Generic.List<Message.UserServiceReference.BaseMessage>> FindMessageAsync(string keyWord) {
             return base.Channel.FindMessageAsync(keyWord);
+        }
+        
+        public Message.UserServiceReference.BaseMessage GetLastMessage() {
+            return base.Channel.GetLastMessage();
+        }
+        
+        public System.Threading.Tasks.Task<Message.UserServiceReference.BaseMessage> GetLastMessageAsync() {
+            return base.Channel.GetLastMessageAsync();
         }
         
         public void SendMessage(Message.UserServiceReference.BaseMessage message) {

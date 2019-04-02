@@ -235,21 +235,23 @@ namespace Message
 
         public void UpdateMessageList()
         {
-            MessageControl.Children.Clear();
+            Dispatcher.Invoke(() => {
+                MessageControl.Children.Clear();
 
-            foreach (var message in MessageList)
-            {
-                if (message.SenderId == GlobalBase.CurrentUser.Id)
+                foreach (var message in MessageList)
                 {
-                    MessageControl.Children.Add(new SendMessage(message));
+                    if (message.SenderId == GlobalBase.CurrentUser.Id)
+                    {
+                        MessageControl.Children.Add(new SendMessage(message));
+                    }
+                    else
+                    {
+                        MessageControl.Children.Add(new ReceiveMessage(message));
+                    }
                 }
-                else
-                {
-                    MessageControl.Children.Add(new ReceiveMessage(message));
-                }
-            }
 
-            ScrollV.ScrollToBottom();
+                ScrollV.ScrollToBottom();
+            });
         }
 
         public void Hide(bool isVisible)
