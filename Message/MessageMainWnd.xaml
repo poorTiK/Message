@@ -194,7 +194,7 @@
                         <ColumnDefinition Width="3*" />
                         <ColumnDefinition Width="38*" />
                     </Grid.ColumnDefinitions>
-                    <ScrollViewer Name="ScrollV" IsHitTestVisible="True" Grid.ColumnSpan="2" VerticalAlignment="Stretch">
+                    <ScrollViewer Name="ScrollV" IsHitTestVisible="True" Grid.ColumnSpan="2" VerticalAlignment="Stretch" ScrollChanged="ScrollV_OnScrollChanged">
                         <StackPanel Name="MessageControl" Orientation="Vertical" VerticalAlignment="Bottom">
                         </StackPanel>
                     </ScrollViewer>
@@ -266,7 +266,7 @@
                                     <ColumnDefinition Width="35"></ColumnDefinition>
                                     <ColumnDefinition Width="Auto"></ColumnDefinition>
                                 </Grid.ColumnDefinitions>
-                                        <materialDesign:PackIcon Kind="AccountSupervisor" Grid.Column="0" Width="20" Height="20" Foreground="Gray" Margin="5" VerticalAlignment="Center" />
+                                <materialDesign:PackIcon Kind="AccountSupervisor" Grid.Column="0" Width="20" Height="20" Foreground="Gray" Margin="5" VerticalAlignment="Center" />
                                 <TextBlock Text="{DynamicResource Contacts}" Grid.Column="1" FontSize="15" Margin="10" />
                             </Grid>
                         </ListViewItem>

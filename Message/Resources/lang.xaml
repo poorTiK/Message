@@ -62,6 +62,8 @@
     <v:String x:Key="CreateGroup">Create group chat</v:String>
     <v:String x:Key="Create">Create</v:String>
     <v:String x:Key="GroupName">Group name</v:String>
+    <v:String x:Key="EditGroup">Edit group</v:String>
+    <v:String x:Key="GroupMemString">group members</v:String>
 
     <v:String x:Key="Yes">Yes</v:String>
     <v:String x:Key="No">No</v:String>

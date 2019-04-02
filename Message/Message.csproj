@@ -215,6 +215,9 @@
     <Compile Include="CreateChatGroupWnd.xaml.cs">
       <DependentUpon>CreateChatGroupWnd.xaml</DependentUpon>
     </Compile>
+    <Compile Include="EditGroupWindow.xaml.cs">
+      <DependentUpon>EditGroupWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Encryption\AESEncryptor.cs" />
     <Compile Include="ForgotPassWindow.xaml.cs">
       <DependentUpon>ForgotPassWindow.xaml</DependentUpon>
@@ -258,6 +261,7 @@
     <Compile Include="ViewModel\ContactProfileWindowVM.cs" />
     <Compile Include="ViewModel\ContatsWindowVM.cs" />
     <Compile Include="ViewModel\CreateChatGroupWndVM.cs" />
+    <Compile Include="ViewModel\EditGroupWindowVM.cs" />
     <Compile Include="ViewModel\EditMessageVM.cs" />
     <Compile Include="ViewModel\ForgotPassWindowVM.cs" />
     <Compile Include="ViewModel\ForwardMessageWindowVM.cs" />
@@ -283,6 +287,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="CreateChatGroupWnd.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="EditGroupWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -152,6 +152,8 @@ namespace Message
 
         public List<BaseMessage> MessageList { get; set; }
 
+        public Action ScrolledToTop { get; set; }
+
         public MessageMainWnd(User user)
         {
             InitializeComponent();
@@ -235,7 +237,8 @@ namespace Message
 
         public void UpdateMessageList()
         {
-            Dispatcher.Invoke(() => {
+            Dispatcher.Invoke(() =>
+            {
                 MessageControl.Children.Clear();
 
                 foreach (var message in MessageList)
@@ -284,6 +287,15 @@ namespace Message
         private void SideMenu_OnPreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             ButtonClose_Click(null, null);
+        }
+
+        private void ScrollV_OnScrollChanged(object sender, ScrollChangedEventArgs e)
+        {
+            var scrollViewer = (ScrollViewer)sender;
+            if (scrollViewer.VerticalOffset == 0)
+            {
+                ScrolledToTop.Invoke();
+            }
         }
     }
 }

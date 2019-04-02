@@ -45,8 +45,6 @@
                               Foreground="White" Command="{Binding Copy}"></MenuItem>
                     <MenuItem Header="{DynamicResource Forvard}" Background="{DynamicResource MenuItem}"
                               Foreground="White" Command="{Binding Forward}"></MenuItem>
-                    <MenuItem Header="{DynamicResource DeleteСontact}" Background="{DynamicResource MenuItem}"
-                              Foreground="White" Command="{Binding Delete}"></MenuItem>
                 </ContextMenu>
             </Grid.ContextMenu>
         </Grid>

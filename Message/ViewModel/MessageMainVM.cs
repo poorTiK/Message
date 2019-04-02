@@ -15,6 +15,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
+using User = Message.UserServiceReference.User;
 
 namespace Message.ViewModel
 {
@@ -175,7 +176,6 @@ namespace Message.ViewModel
             set { SetProperty(ref _fileAmount, value); }
         }
 
-
         private DelegateCommand _onContactsCommand;
 
         public DelegateCommand ContactsCommand =>
@@ -223,13 +223,13 @@ namespace Message.ViewModel
         public DelegateCommand CreateChatGroup =>
             _createChatGroup ?? (_createChatGroup = new DelegateCommand(ExecuteOnCreateChatGroup));
 
-
         public MessageMainVM(IMessaging View, User user) : base()
         {
             _view = View;
+            _view.ScrolledToTop += OnScrolledToTop;
 
             GlobalBase.CurrentUser = user;
-            GlobalBase.UpdateMessagesOnUI += () => 
+            GlobalBase.UpdateMessagesOnUI += () =>
             {
                 Application.Current.Dispatcher.Invoke(new Action(() => { _view.UpdateMessageList(); }));
             };
@@ -358,6 +358,11 @@ namespace Message.ViewModel
             }
         }
 
+        private void OnScrolledToTop()
+        {
+            //TODO
+        }
+
         //UI update
         private bool AddMessageOnUI(BaseMessage message)
         {
@@ -397,12 +402,13 @@ namespace Message.ViewModel
         {
             Task.Run(() =>
             {
-                Dispatcher.CurrentDispatcher.Invoke(() => {
+                Dispatcher.CurrentDispatcher.Invoke(() =>
+                {
                     Images = GlobalBase.getUsersAvatar(GlobalBase.CurrentUser);
                 });
             });
         }
-        
+
         //executes for commands
         private void ExecuteOnAddFile()
         {
@@ -430,9 +436,11 @@ namespace Message.ViewModel
                 wnd.Owner = (Window)_view;
                 wnd.ShowDialog();
             }
-            else if (SelectedContact is ChatGroupUiInfo)
+            else if (SelectedContact is ChatGroupUiInfo chatGroupUiInfo)
             {
-                //TODO
+                var wnd = new EditGroupWindow(chatGroupUiInfo);
+                wnd.Owner = (Window)_view;
+                wnd.ShowDialog();
             }
         }
 
@@ -472,7 +480,6 @@ namespace Message.ViewModel
                                 ReceiverId = userUiInfo.UserId,
                             };
                             UserServiceClient.SendMessageAsync(tempMes).ContinueWith(task => _view.MessageList.Add(UserServiceClient.GetLastMessage()));
-                           
                         }
                         else
                         {
@@ -553,7 +560,8 @@ namespace Message.ViewModel
 
                 if (FilesPath == null)
                 {
-                    UserServiceClient.SendMessageAsync(message).ContinueWith(task => {
+                    UserServiceClient.SendMessageAsync(message).ContinueWith(task =>
+                    {
                         BaseMessage lastMessage = UserServiceClient.GetLastMessage();
                         _view.MessageList.Add(lastMessage);
                         _view.UpdateMessageList();
@@ -715,7 +723,5 @@ namespace Message.ViewModel
         {
             UpdateMessages(message, UppdateMessageOnUI);
         }
-
-
     }
 }
