@@ -254,7 +254,7 @@
   <xs:element name="GetGroupParticipantsResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q14="http://schemas.datacontract.org/2004/07/ServerWCF.Model.UiInfo" minOccurs="0" name="GetGroupParticipantsResult" nillable="true" type="q14:ArrayOfUserUiInfo" />
+        <xs:element xmlns:q14="http://schemas.datacontract.org/2004/07/ServerWCF.Model.UiInfo" minOccurs="0" name="GetGroupParticipantsResult" nillable="true" type="q14:ArrayOfUiInfo" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>

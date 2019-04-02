@@ -203,7 +203,7 @@ namespace ServerWCF.Services
             }
         }
 
-        public List<UserUiInfo> GetGroupParticipants(int chatGroupId)
+        public List<UiInfo> GetGroupParticipants(int chatGroupId)
         {
             using (UserContext db = new UserContext())
             {
@@ -211,7 +211,10 @@ namespace ServerWCF.Services
                 {
                     ChatGroup chatGroup = db.ChatGroups.Include("Participants").Where(c => c.Id == chatGroupId).First();
 
-                    return chatGroup.Participants.Select(cg => new UserUiInfo(cg.UserOwner)).ToList();
+                    List<UiInfo> result = new List<UiInfo>();
+                    result.AddRange(chatGroup.Participants.Select(cg => new UserUiInfo(cg.UserOwner)).ToList());
+
+                    return result;
                 }
                 catch (Exception ex)
                 {

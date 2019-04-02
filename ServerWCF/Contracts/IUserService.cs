@@ -61,7 +61,7 @@ namespace ServerWCF.Contracts
         List<ChatGroup> GetAllChatGroupsContacts(int userId);
 
         [OperationContract]
-        List<UserUiInfo> GetGroupParticipants(int chatGroupId);
+        List<UiInfo> GetGroupParticipants(int chatGroupId);
 
         [OperationContract]
         List<UiInfo> GetAllContactsUiInfo(int id);

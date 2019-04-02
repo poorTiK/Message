@@ -411,9 +411,6 @@
     <None Include="Connected Services\UserServiceReference\Message.UserServiceReference.UserMessage.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
-    <None Include="Connected Services\UserServiceReference\Message.UserServiceReference.UserUiInfo.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
     <None Include="Connected Services\UserServiceReference\ServerWCF.Model.Contacts.xsd">
       <SubType>Designer</SubType>
     </None>
