@@ -244,6 +244,20 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
+  <xs:element name="GetGroupParticipants">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="chatGroupId" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetGroupParticipantsResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q14="http://schemas.datacontract.org/2004/07/ServerWCF.Model.UiInfo" minOccurs="0" name="GetGroupParticipantsResult" nillable="true" type="q14:ArrayOfUserUiInfo" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
   <xs:element name="GetAllContactsUiInfo">
     <xs:complexType>
       <xs:sequence>
@@ -254,7 +268,7 @@
   <xs:element name="GetAllContactsUiInfoResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q14="http://schemas.datacontract.org/2004/07/ServerWCF.Model.UiInfo" minOccurs="0" name="GetAllContactsUiInfoResult" nillable="true" type="q14:ArrayOfUiInfo" />
+        <xs:element xmlns:q15="http://schemas.datacontract.org/2004/07/ServerWCF.Model.UiInfo" minOccurs="0" name="GetAllContactsUiInfoResult" nillable="true" type="q15:ArrayOfUiInfo" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -283,14 +297,14 @@
   <xs:element name="GetAppSettingsResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q15="http://schemas.datacontract.org/2004/07/ServerWCF.Model" minOccurs="0" name="GetAppSettingsResult" nillable="true" type="q15:ApplicationSettings" />
+        <xs:element xmlns:q16="http://schemas.datacontract.org/2004/07/ServerWCF.Model" minOccurs="0" name="GetAppSettingsResult" nillable="true" type="q16:ApplicationSettings" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="SaveAppSettings">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q16="http://schemas.datacontract.org/2004/07/ServerWCF.Model" minOccurs="0" name="appSettings" nillable="true" type="q16:ApplicationSettings" />
+        <xs:element xmlns:q17="http://schemas.datacontract.org/2004/07/ServerWCF.Model" minOccurs="0" name="appSettings" nillable="true" type="q17:ApplicationSettings" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -326,7 +340,7 @@
   <xs:element name="GetGroupMessagesResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q17="http://schemas.datacontract.org/2004/07/ServerWCF.Model.Messages" minOccurs="0" name="GetGroupMessagesResult" nillable="true" type="q17:ArrayOfGroupMessage" />
+        <xs:element xmlns:q18="http://schemas.datacontract.org/2004/07/ServerWCF.Model.Messages" minOccurs="0" name="GetGroupMessagesResult" nillable="true" type="q18:ArrayOfGroupMessage" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -342,7 +356,7 @@
   <xs:element name="GetUserMessagesResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q18="http://schemas.datacontract.org/2004/07/ServerWCF.Model" minOccurs="0" name="GetUserMessagesResult" nillable="true" type="q18:ArrayOfUserMessage" />
+        <xs:element xmlns:q19="http://schemas.datacontract.org/2004/07/ServerWCF.Model" minOccurs="0" name="GetUserMessagesResult" nillable="true" type="q19:ArrayOfUserMessage" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -356,7 +370,7 @@
   <xs:element name="FindMessageResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q19="http://schemas.datacontract.org/2004/07/ServerWCF.Model.Messages" minOccurs="0" name="FindMessageResult" nillable="true" type="q19:ArrayOfBaseMessage" />
+        <xs:element xmlns:q20="http://schemas.datacontract.org/2004/07/ServerWCF.Model.Messages" minOccurs="0" name="FindMessageResult" nillable="true" type="q20:ArrayOfBaseMessage" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -368,63 +382,63 @@
   <xs:element name="GetLastMessageResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q20="http://schemas.datacontract.org/2004/07/ServerWCF.Model.Messages" minOccurs="0" name="GetLastMessageResult" nillable="true" type="q20:BaseMessage" />
+        <xs:element xmlns:q21="http://schemas.datacontract.org/2004/07/ServerWCF.Model.Messages" minOccurs="0" name="GetLastMessageResult" nillable="true" type="q21:BaseMessage" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="SendMessage">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q21="http://schemas.datacontract.org/2004/07/ServerWCF.Model.Messages" minOccurs="0" name="message" nillable="true" type="q21:BaseMessage" />
+        <xs:element xmlns:q22="http://schemas.datacontract.org/2004/07/ServerWCF.Model.Messages" minOccurs="0" name="message" nillable="true" type="q22:BaseMessage" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="EditMessage">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q22="http://schemas.datacontract.org/2004/07/ServerWCF.Model.Messages" minOccurs="0" name="editedMessage" nillable="true" type="q22:BaseMessage" />
+        <xs:element xmlns:q23="http://schemas.datacontract.org/2004/07/ServerWCF.Model.Messages" minOccurs="0" name="editedMessage" nillable="true" type="q23:BaseMessage" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="RemoveMessage">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q23="http://schemas.datacontract.org/2004/07/ServerWCF.Model.Messages" minOccurs="0" name="removedMessage" nillable="true" type="q23:BaseMessage" />
+        <xs:element xmlns:q24="http://schemas.datacontract.org/2004/07/ServerWCF.Model.Messages" minOccurs="0" name="removedMessage" nillable="true" type="q24:BaseMessage" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="UserLeave">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q24="http://schemas.datacontract.org/2004/07/ServerWCF.Model" minOccurs="0" name="user" nillable="true" type="q24:User" />
+        <xs:element xmlns:q25="http://schemas.datacontract.org/2004/07/ServerWCF.Model" minOccurs="0" name="user" nillable="true" type="q25:User" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="UserCame">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q25="http://schemas.datacontract.org/2004/07/ServerWCF.Model" minOccurs="0" name="user" nillable="true" type="q25:User" />
+        <xs:element xmlns:q26="http://schemas.datacontract.org/2004/07/ServerWCF.Model" minOccurs="0" name="user" nillable="true" type="q26:User" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="ReceiveMessage">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q26="http://schemas.datacontract.org/2004/07/ServerWCF.Model.Messages" minOccurs="0" name="message" nillable="true" type="q26:BaseMessage" />
+        <xs:element xmlns:q27="http://schemas.datacontract.org/2004/07/ServerWCF.Model.Messages" minOccurs="0" name="message" nillable="true" type="q27:BaseMessage" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="OnMessageRemoved">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q27="http://schemas.datacontract.org/2004/07/ServerWCF.Model.Messages" minOccurs="0" name="message" nillable="true" type="q27:BaseMessage" />
+        <xs:element xmlns:q28="http://schemas.datacontract.org/2004/07/ServerWCF.Model.Messages" minOccurs="0" name="message" nillable="true" type="q28:BaseMessage" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="OnMessageEdited">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q28="http://schemas.datacontract.org/2004/07/ServerWCF.Model.Messages" minOccurs="0" name="message" nillable="true" type="q28:BaseMessage" />
+        <xs:element xmlns:q29="http://schemas.datacontract.org/2004/07/ServerWCF.Model.Messages" minOccurs="0" name="message" nillable="true" type="q29:BaseMessage" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>

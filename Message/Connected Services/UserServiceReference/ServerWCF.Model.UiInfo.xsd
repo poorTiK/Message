@@ -38,4 +38,10 @@
     </xs:complexContent>
   </xs:complexType>
   <xs:element name="ChatGroupUiInfo" nillable="true" type="tns:ChatGroupUiInfo" />
+  <xs:complexType name="ArrayOfUserUiInfo">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="UserUiInfo" nillable="true" type="tns:UserUiInfo" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfUserUiInfo" nillable="true" type="tns:ArrayOfUserUiInfo" />
 </xs:schema>

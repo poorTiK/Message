@@ -203,6 +203,23 @@ namespace ServerWCF.Services
             }
         }
 
+        public List<UserUiInfo> GetGroupParticipants(int chatGroupId)
+        {
+            using (UserContext db = new UserContext())
+            {
+                try
+                {
+                    ChatGroup chatGroup = db.ChatGroups.Include("Participants").Where(c => c.Id == chatGroupId).First();
+
+                    return chatGroup.Participants.Select(cg => new UserUiInfo(cg.UserOwner)).ToList();
+                }
+                catch (Exception ex)
+                {
+                    return null;
+                }
+            }
+        }
+
         public List<UiInfo> GetAllContactsUiInfo(int id)
         {
             List<UiInfo> usersUiInfos = new List<UiInfo>(GetAllUsersContacts(id).Select(u => new UserUiInfo(u)));

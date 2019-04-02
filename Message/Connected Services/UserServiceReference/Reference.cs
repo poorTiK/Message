@@ -1234,6 +1234,12 @@ namespace Message.UserServiceReference {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/GetAllChatGroupsContacts", ReplyAction="http://tempuri.org/IUserService/GetAllChatGroupsContactsResponse")]
         System.Threading.Tasks.Task<System.Collections.Generic.List<Message.UserServiceReference.ChatGroup>> GetAllChatGroupsContactsAsync(int userId);
         
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/GetGroupParticipants", ReplyAction="http://tempuri.org/IUserService/GetGroupParticipantsResponse")]
+        System.Collections.Generic.List<Message.UserServiceReference.UserUiInfo> GetGroupParticipants(int chatGroupId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/GetGroupParticipants", ReplyAction="http://tempuri.org/IUserService/GetGroupParticipantsResponse")]
+        System.Threading.Tasks.Task<System.Collections.Generic.List<Message.UserServiceReference.UserUiInfo>> GetGroupParticipantsAsync(int chatGroupId);
+        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/GetAllContactsUiInfo", ReplyAction="http://tempuri.org/IUserService/GetAllContactsUiInfoResponse")]
         System.Collections.Generic.List<Message.UserServiceReference.UiInfo> GetAllContactsUiInfo(int id);
         
@@ -1494,6 +1500,14 @@ namespace Message.UserServiceReference {
         
         public System.Threading.Tasks.Task<System.Collections.Generic.List<Message.UserServiceReference.ChatGroup>> GetAllChatGroupsContactsAsync(int userId) {
             return base.Channel.GetAllChatGroupsContactsAsync(userId);
+        }
+        
+        public System.Collections.Generic.List<Message.UserServiceReference.UserUiInfo> GetGroupParticipants(int chatGroupId) {
+            return base.Channel.GetGroupParticipants(chatGroupId);
+        }
+        
+        public System.Threading.Tasks.Task<System.Collections.Generic.List<Message.UserServiceReference.UserUiInfo>> GetGroupParticipantsAsync(int chatGroupId) {
+            return base.Channel.GetGroupParticipantsAsync(chatGroupId);
         }
         
         public System.Collections.Generic.List<Message.UserServiceReference.UiInfo> GetAllContactsUiInfo(int id) {
