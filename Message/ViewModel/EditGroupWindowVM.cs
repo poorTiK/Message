@@ -1,13 +1,18 @@
-﻿using Message.Interfaces;
-using Message.Model;
-using Message.UserServiceReference;
-using Prism.Commands;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Forms;
 using System.Windows.Threading;
+using Message.AdditionalItems;
+using Message.Compression;
+using Message.Interfaces;
+using Message.Model;
+using Message.UserServiceReference;
+using Prism.Commands;
+using Application = System.Windows.Application;
 
 namespace Message.ViewModel
 {
@@ -17,6 +22,7 @@ namespace Message.ViewModel
         private ChatGroupUiInfo _groupUiInfo;
         private ChatGroup _group;
 
+        private byte[] _newAvatar;
         private Image _image;
 
         public Image Images
@@ -38,7 +44,11 @@ namespace Message.ViewModel
         public string GroupName
         {
             get { return _groupName; }
-            set { SetProperty(ref _groupName, value); }
+            set
+            {
+                SetProperty(ref _groupName, value);
+                CheckChanges();
+            }
         }
 
         private string groupMembersAmout;
@@ -65,24 +75,41 @@ namespace Message.ViewModel
             set { SetProperty(ref _selectedMember, value); }
         }
 
+        private bool _isNewChanges;
+
+        public bool IsNewChanges
+        {
+            get { return _isNewChanges; }
+            set { SetProperty(ref _isNewChanges, value); }
+        }
+
+        private bool _isSavingProgress;
+
+        public bool IsSavingProgress
+        {
+            get { return _isSavingProgress; }
+            set { SetProperty(ref _isSavingProgress, value); }
+        }
+
         public EditGroupWindowVM(IView view, ChatGroupUiInfo group)
         {
             _view = view;
             _groupUiInfo = group;
 
             Init();
-            SetAvatarForUI();
+
+            IsNewChanges = IsSavingProgress = false;
         }
 
         private void SetAvatarForUI()
         {
             Task.Run(() =>
             {
-                var chatFile = GlobalBase.FileServiceClient.getChatFileById(_groupUiInfo.ImageId);
+                var chatFile = GlobalBase.FileServiceClient.getChatFileById(_group.ImageId);
 
                 if (chatFile?.Source?.Length > 0)
                 {
-                    MemoryStream memstr = new MemoryStream(chatFile.Source);
+                    var memstr = new MemoryStream(chatFile.Source);
                     Dispatcher.CurrentDispatcher.Invoke(() => { Images = Image.FromStream(memstr); });
                 }
                 else
@@ -94,7 +121,7 @@ namespace Message.ViewModel
 
         public void Init()
         {
-            List<UiInfo> tempUiInfos = new List<UiInfo>();
+            var tempUiInfos = new List<UiInfo>();
             Task.Run((() =>
             {
                 _group = UserServiceClient.GetChatGroup(_groupUiInfo.UniqueName);
@@ -106,13 +133,13 @@ namespace Message.ViewModel
                 {
                     if (item is UserUiInfo)
                     {
-                        UserUiInfo userUiInfo = item as UserUiInfo;
-                        User user = UserServiceClient.GetUserById(userUiInfo.UserId);
-                        FileService.ChatFile chatFile = GlobalBase.FileServiceClient.getChatFileById(user.Id);
+                        var userUiInfo = item as UserUiInfo;
+                        var user = UserServiceClient.GetUserById(userUiInfo.UserId);
+                        var chatFile = GlobalBase.FileServiceClient.getChatFileById(user.Id);
 
                         if (chatFile?.Source != null && chatFile?.Source?.Length != 0)
                         {
-                            MemoryStream memstr = new MemoryStream(chatFile.Source);
+                            var memstr = new MemoryStream(chatFile.Source);
                             Dispatcher.CurrentDispatcher.Invoke(() => { item.UiImage = Image.FromStream(memstr); });
                         }
                         else
@@ -128,6 +155,8 @@ namespace Message.ViewModel
                 GroupName = _group.Name;
                 CurrentGroupName = _group.Name;
                 GroupMembersAmout = GroupMemberList.Count.ToString();
+
+                SetAvatarForUI();
             });
         }
 
@@ -146,12 +175,57 @@ namespace Message.ViewModel
         public DelegateCommand OpenProfile =>
             _openProfile ?? (_openProfile = new DelegateCommand(ExecuteOnOpenProfile));
 
+        private DelegateCommand _loadPhoto;
+
+        public DelegateCommand LoadPhoto =>
+            _loadPhoto ?? (_loadPhoto = new DelegateCommand(ExecuteOnLoadPhoto));
+
         private void ExecuteOnApplyChanges()
         {
+            IsSavingProgress = true;
+            var res = string.Empty;
+
+            Task.Run(() =>
+            {
+                _group.Name = GroupName;
+
+                var chatFile = GlobalBase.FileServiceClient.getChatFileById(_group.ImageId);
+
+                if (_newAvatar != null)
+                {
+                    if (chatFile == null)
+                    {
+                        _group.ImageId = GlobalBase.FileServiceClient.UploadFile(new FileService.ChatFile() { Source = CompressionHelper.CompressImage(_newAvatar) });
+                    }
+                    else
+                    {
+                        GlobalBase.FileServiceClient.UpdateFileSource(chatFile.Id, CompressionHelper.CompressFile(_newAvatar));
+                    }
+                }
+
+                res = UserServiceClient.AddOrUpdateChatGroup(_group);
+
+                SetAvatarForUI();
+
+                if (res == string.Empty)
+                {
+                    Application.Current.Dispatcher.Invoke(new Action((() =>
+                    {
+                        CustomMessageBox.Show(Translations.GetTranslation()["ChangesSaved"].ToString());
+                    })));
+                }
+            }).ContinueWith(task =>
+            {
+                IsSavingProgress = false;
+                IsNewChanges = false;
+
+                GlobalBase.UpdateContactList();
+            });
         }
 
         private void ExecuteOnBack()
         {
+            _view.CloseWindow();
         }
 
         private void ExecuteOnOpenProfile()
@@ -163,6 +237,47 @@ namespace Message.ViewModel
                 wnd.Owner = (Window)_view;
                 wnd.ShowDialog();
             }
+        }
+
+        private void ExecuteOnLoadPhoto()
+        {
+            var openFileDialog = new OpenFileDialog();
+            openFileDialog.ShowDialog();
+            var FilePath = openFileDialog.FileName;
+
+            if (FilePath != string.Empty)
+            {
+                _newAvatar = File.ReadAllBytes(FilePath);
+                var memstr = new MemoryStream(_newAvatar);
+                Dispatcher.CurrentDispatcher.Invoke(() => { Images = Image.FromStream(memstr); });
+                IsNewChanges = true;
+            }
+        }
+
+        private void CheckChanges()
+        {
+            if (GroupName != _group.Name)
+            {
+                IsNewChanges = true;
+            }
+        }
+
+        private bool Validate()
+        {
+            var message = string.Empty;
+
+            if (string.IsNullOrWhiteSpace(GroupName))
+            {
+                message = Application.Current.Resources.MergedDictionaries[4]["GroupNameValid"].ToString();
+            }
+
+            if (message != string.Empty)
+            {
+                Application.Current.Dispatcher.Invoke(new Action((() => { CustomMessageBox.Show(Application.Current.Resources.MergedDictionaries[4]["Error"].ToString(), message); })));
+                return false;
+            }
+
+            return true;
         }
     }
 }

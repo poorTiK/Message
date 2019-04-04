@@ -196,11 +196,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
-    <Compile Include="Connected Services\PhotoServiceReference\Reference.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Compile>
     <Compile Include="Connected Services\UserServiceReference\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -391,13 +386,6 @@
     <None Include="Connected Services\FileService\service1.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Connected Services\PhotoServiceReference\service.wsdl" />
-    <None Include="Connected Services\PhotoServiceReference\service.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Connected Services\PhotoServiceReference\service1.xsd">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="Connected Services\UserServiceReference\Message.UserServiceReference.ApplicationSettings.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
@@ -460,7 +448,6 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadataStorage Include="Connected Services\FileService\" />
-    <WCFMetadataStorage Include="Connected Services\PhotoServiceReference\" />
     <WCFMetadataStorage Include="Connected Services\UserServiceReference\" />
   </ItemGroup>
   <ItemGroup>
@@ -480,18 +467,6 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Connected Services\PhotoServiceReference\configuration91.svcinfo" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Connected Services\PhotoServiceReference\configuration.svcinfo" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Connected Services\PhotoServiceReference\Reference.svcmap">
-      <Generator>WCF Proxy Generator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="Connected Services\FileService\configuration91.svcinfo" />

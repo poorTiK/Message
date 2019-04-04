@@ -27,8 +27,6 @@ namespace Message.ViewModel
             set { SetProperty(ref _selectedContact, value); }
         }
 
-        private string _messageText;
-
         public string MessageText
         {
             get { return GlobalBase.Base64Decode(_message.Text); }
@@ -36,7 +34,7 @@ namespace Message.ViewModel
 
         public ForwardMessageWindowVM(BaseMessage message, IView view) : base()
         {
-            List<UiInfo> uiInfos = UserServiceClient.GetAllContactsUiInfo(GlobalBase.CurrentUser.Id);
+            var uiInfos = UserServiceClient.GetAllContactsUiInfo(GlobalBase.CurrentUser.Id);
             GlobalBase.loadPictures(UserServiceClient, uiInfos);
             ContactsList = uiInfos;
 
@@ -63,7 +61,7 @@ namespace Message.ViewModel
         {
             if (SelectedContact != null && SelectedContact is UserUiInfo)
             {
-                UserUiInfo userUiInfo = SelectedContact as UserUiInfo;
+                var userUiInfo = SelectedContact as UserUiInfo;
                 var mes = new UserMessage()
                 {
                     Text = _message.Text,

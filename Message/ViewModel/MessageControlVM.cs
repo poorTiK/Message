@@ -70,7 +70,7 @@ namespace Message.ViewModel
                 var savePath = fileDialog.SelectedPath;
                 if (!string.IsNullOrEmpty(savePath))
                 {
-                    FileService.ChatFile chatFile = GlobalBase.FileServiceClient.getChatFileById(Message.ChatFileId);
+                    var chatFile = GlobalBase.FileServiceClient.getChatFileById(Message.ChatFileId);
                     using (Stream fileStr = File.OpenWrite(savePath + "\\" + chatFile.Name))
                     {
                         fileStr.Write(CompressionHelper.DecompressFile(chatFile.Source), 0, CompressionHelper.DecompressFile(chatFile.Source).Length);

@@ -236,28 +236,30 @@ namespace ServerWCF.Services
         //chatGroups
         public string AddOrUpdateChatGroup(ChatGroup chatGroupToAdd)
         {
-            using (UserContext userContext = new UserContext())
+            using (var userContext = new UserContext())
             {
                 try
                 {
-                    ChatGroup dbChatGroup = userContext.ChatGroups.FirstOrDefault(cg => cg.Name == chatGroupToAdd.Name);
+                    var dbChatGroup = userContext.ChatGroups.FirstOrDefault(cg => cg.Id == chatGroupToAdd.Id);
 
                     if (dbChatGroup != null)
                     {
+                        dbChatGroup.Name = chatGroupToAdd.Name;
+                        dbChatGroup.ImageId = chatGroupToAdd.ImageId;
                         dbChatGroup.Participants = chatGroupToAdd.Participants;
                     }
                     else
                     {
-                        string validationInfo = Validate(chatGroupToAdd);
+                        var validationInfo = Validate(chatGroupToAdd);
                         if (validationInfo != successResult)
                         {
                             return validationInfo;
                         }
 
                         userContext.ChatGroups.Add(chatGroupToAdd);
-                        userContext.SaveChanges();
                     }
 
+                    userContext.SaveChanges();
                     return successResult;
                 }
                 catch (Exception)

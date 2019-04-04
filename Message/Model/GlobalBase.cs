@@ -15,6 +15,7 @@ namespace Message.Model
         public static User CurrentUser { get; set; }
         public static Action UpdateContactList;
         public static Action UpdateMessagesOnUI;
+        public static Action UpdateProfileUi;
         public static Func<BaseMessage, bool> RemoveMessageOnUI;
 
         public static FileServiceClient FileServiceClient { get; set; }

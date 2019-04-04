@@ -146,18 +146,16 @@
                         <ColumnDefinition />
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
+                    
                     <Button Content="{DynamicResource Apply}" VerticalAlignment="Center" HorizontalAlignment="Center"
                     materialDesign:ButtonProgressAssist.Value="-1" Grid.Column="0" Width="110"
                     materialDesign:ButtonProgressAssist.IsIndicatorVisible="{Binding IsSavingProgress}"
                     materialDesign:ButtonProgressAssist.IsIndeterminate="{Binding IsSavingProgress}"
                     Command="{Binding ApplyChanges}" IsEnabled="{Binding IsNewChanges}" />
 
-                    <Button Content="{DynamicResource Back}" VerticalAlignment="Center" HorizontalAlignment="Center"
-                                materialDesign:ButtonProgressAssist.Value="-1" Grid.Column="1" Width="110"
-                                materialDesign:ButtonProgressAssist.IsIndicatorVisible="{Binding IsSavingProgress}"
-                                materialDesign:ButtonProgressAssist.IsIndeterminate="{Binding IsSavingProgress}"
-                                Command="{Binding Back}" IsEnabled="{Binding IsNewChanges}">
-                    </Button>
+                    <Button Content="{DynamicResource Back}" VerticalAlignment="Center" 
+                            HorizontalAlignment="Center" Grid.Column="1" Width="110" Command="{Binding Back}"/>
+
                 </Grid>
             </Grid>
         </Grid>

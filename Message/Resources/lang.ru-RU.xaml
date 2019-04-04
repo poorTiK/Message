@@ -64,6 +64,7 @@
     <v:String x:Key="GroupName">Название группы</v:String>
     <v:String x:Key="EditGroup">Редактирование группы</v:String>
     <v:String x:Key="GroupMemString">участника группы</v:String>
+    <v:String x:Key="GroupNameValid">Поле "Название группы" не может быть пустым</v:String>
 
     <v:String x:Key="Yes">Да</v:String>
     <v:String x:Key="No">Нет</v:String>

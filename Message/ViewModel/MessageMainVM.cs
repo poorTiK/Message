@@ -1,10 +1,4 @@
-﻿using Message.Compression;
-using Message.Interfaces;
-using Message.Model;
-using Message.UserServiceReference;
-using Microsoft.Win32;
-using Prism.Commands;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -15,6 +9,12 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
+using Message.Compression;
+using Message.Interfaces;
+using Message.Model;
+using Message.UserServiceReference;
+using Microsoft.Win32;
+using Prism.Commands;
 using User = Message.UserServiceReference.User;
 
 namespace Message.ViewModel
@@ -233,8 +233,10 @@ namespace Message.ViewModel
             {
                 Application.Current.Dispatcher.Invoke(new Action(() => { _view.UpdateMessageList(); }));
             };
+
             GlobalBase.UpdateContactList += UpdateContactList;
             GlobalBase.RemoveMessageOnUI += DeleteMessageOnUI;
+            GlobalBase.UpdateProfileUi += SetAvatarForUI;
 
             SetAvatarForUI();
             UpdateContactList();

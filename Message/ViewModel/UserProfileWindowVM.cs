@@ -240,21 +240,18 @@ namespace Message.ViewModel
 
         private bool Validate()
         {
-            string message = string.Empty;
+            var message = string.Empty;
             if (string.IsNullOrWhiteSpace(UserName))
             {
                 message = Application.Current.Resources.MergedDictionaries[4]["FirstNameValid"].ToString();
-                return false;
             }
             else if (string.IsNullOrWhiteSpace(UserLastName))
             {
                 message = Application.Current.Resources.MergedDictionaries[4]["LastNameValid"].ToString();
-                return false;
             }
             else if (string.IsNullOrWhiteSpace(UserEmail) || UserEmail == string.Empty || !Regex.IsMatch(UserEmail, @"\A(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)\Z", RegexOptions.IgnoreCase))
             {
                 message = Application.Current.Resources.MergedDictionaries[4]["EmailEmpty"].ToString();
-                return false;
             }
 
             if (message != string.Empty)
