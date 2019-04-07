@@ -145,14 +145,16 @@ namespace ServerWCF.Services
                         {
                             userContext.Contacts.Remove(contact);
                             userContext.SaveChanges();
+
+
+                            UserUiInfo uiInfo = new UserUiInfo(ownerFromDb);
+                            RemoveContactCallback(uiInfo, ownedFromDb);
+
                             return true;
                         }
                     }
 
-                    UserUiInfo uiInfo = new UserUiInfo(ownerFromDb);
-                    RemoveContactCallback(uiInfo, ownedFromDb);
-
-                    return true;
+                    return false;
                 }
                 catch (Exception)
                 {
@@ -303,6 +305,7 @@ namespace ServerWCF.Services
                     {
                         dbChatGroup.Name = chatGroupToAdd.Name;
                         dbChatGroup.ImageId = chatGroupToAdd.ImageId;
+                        EntityChangedCallback(new ChatGroupUiInfo(dbChatGroup));
                         //dbChatGroup.Participants = chatGroupToAdd.Participants;
                     }
                     else
@@ -385,6 +388,8 @@ namespace ServerWCF.Services
                         dbUser.Phone = user.Phone;
                         dbUser.ImageId = user.ImageId;
                         dbUser.Password = user.Password;
+
+                        EntityChangedCallback(new UserUiInfo(dbUser));
                     }
                     else
                     {
@@ -985,6 +990,14 @@ namespace ServerWCF.Services
             {
                 int maxId = userContext.Messages.Max(m => m.Id);
                 return userContext.Messages.FirstOrDefault(m => m.Id == maxId);
+            }
+        }
+
+        private void EntityChangedCallback(UiInfo changedEntity)
+        {
+            foreach (CallbackData innerCallbackData in usersOnline)
+            {
+                innerCallbackData.UserCallback.OnEntityChanged(changedEntity);
             }
         }
     }

@@ -1342,6 +1342,9 @@ namespace Message.UserServiceReference {
         
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IUserService/OnContactRemoved")]
         void OnContactRemoved(Message.UserServiceReference.UiInfo newContact);
+        
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IUserService/OnEntityChanged")]
+        void OnEntityChanged(Message.UserServiceReference.UiInfo changedEntity);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]

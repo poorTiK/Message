@@ -456,4 +456,11 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
+  <xs:element name="OnEntityChanged">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q32="http://schemas.datacontract.org/2004/07/ServerWCF.Model.UiInfo" minOccurs="0" name="changedEntity" nillable="true" type="q32:UiInfo" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
 </xs:schema>

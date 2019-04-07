@@ -747,5 +747,24 @@ namespace Message.ViewModel
             }
         }
 
+        public override void OnEntityChanged(UiInfo changedEntity)
+        {
+            if (changedEntity.UniqueName == GlobalBase.CurrentUser.Login)
+            {
+                GlobalBase.UpdateProfileUi.Invoke();
+            }
+            else
+            {
+                foreach(UiInfo uiInfo in ContactsList)
+                {
+                    if (uiInfo.UniqueName == changedEntity.UniqueName)
+                    {
+                        GlobalBase.UpdateContactList();
+                        break;
+                    }
+                }
+            }
+        }
+
     }
 }

@@ -177,6 +177,7 @@ namespace Message.ViewModel
                 _newAvatar = File.ReadAllBytes(FilePath);
                 MemoryStream memstr = new MemoryStream(_newAvatar);
                 Dispatcher.CurrentDispatcher.Invoke(() => { Images = Image.FromStream(memstr); });
+                
                 IsNewChanges = true;
             }
         }

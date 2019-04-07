@@ -81,7 +81,7 @@ namespace Message.Model
             if (chatFile?.Source?.Length > 0)
             {
                 MemoryStream memstr = new MemoryStream(chatFile.Source);
-                Dispatcher.CurrentDispatcher.Invoke(() => { uiInfos.UiImage = Image.FromStream(memstr); });
+               Dispatcher.CurrentDispatcher.Invoke(() => { uiInfos.UiImage = Image.FromStream(memstr); });
             }
             else
             {

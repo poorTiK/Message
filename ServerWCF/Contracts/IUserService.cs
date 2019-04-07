@@ -125,5 +125,8 @@ namespace ServerWCF.Contracts
 
         [OperationContract(IsOneWay = true)]
         void OnContactRemoved(UiInfo newContact);
+
+        [OperationContract(IsOneWay = true)]
+        void OnEntityChanged(UiInfo changedEntity);
     }
 }
