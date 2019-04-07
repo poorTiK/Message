@@ -140,14 +140,14 @@
                                               Foreground="{DynamicResource Foreground}"
                                               Header="{DynamicResource ViewProfile}"
                                               Command="{Binding ViewProfile}"></MenuItem>
-                                    <MenuItem Background="{DynamicResource MenuItem}"
+                                    <!--<MenuItem Background="{DynamicResource MenuItem}"
                                               Foreground="{DynamicResource Foreground}"
-                                              Header="{DynamicResource MarkAsUread}"></MenuItem>
-                                    <MenuItem Background="{DynamicResource MenuItem}"
+                                              Header="{DynamicResource MarkAsUread}"></MenuItem>-->
+                                    <!--<MenuItem Background="{DynamicResource MenuItem}"
                                               Foreground="{DynamicResource Foreground}"
                                               Header="{DynamicResource ClearConversation}"></MenuItem>
                                     <MenuItem Background="{DynamicResource MenuItem}" Foreground="Salmon"
-                                              Header="{DynamicResource BlockUser}"></MenuItem>
+                                              Header="{DynamicResource BlockUser}"></MenuItem>-->
                                 </ContextMenu>
                             </ListBox.ContextMenu>
                             <ListBox.ItemTemplate>
