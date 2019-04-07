@@ -442,4 +442,18 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
+  <xs:element name="OnNewContactAdded">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q30="http://schemas.datacontract.org/2004/07/ServerWCF.Model.UiInfo" minOccurs="0" name="newContact" nillable="true" type="q30:UiInfo" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="OnContactRemoved">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q31="http://schemas.datacontract.org/2004/07/ServerWCF.Model.UiInfo" minOccurs="0" name="newContact" nillable="true" type="q31:UiInfo" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
 </xs:schema>

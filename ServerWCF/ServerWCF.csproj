@@ -153,7 +153,6 @@
     <Compile Include="Algorithms\ImageToArrayConverter.cs" />
     <Compile Include="Context\UserContext.cs" />
     <Compile Include="Contracts\IFileService.cs" />
-    <Compile Include="Contracts\IPhotoService.cs" />
     <Compile Include="Contracts\IUserService.cs" />
     <Compile Include="Algorithms\Encryption\AESEncryptor.cs" />
     <Compile Include="Initializers\UserDBInitializer.cs" />

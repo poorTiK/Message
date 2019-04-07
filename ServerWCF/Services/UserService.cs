@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.ServiceModel;
 using System.Threading;
+using Microsoft.EntityFrameworkCore;
 
 namespace ServerWCF.Services
 {
@@ -18,6 +19,12 @@ namespace ServerWCF.Services
         private static readonly string successResult = "";
 
         private static List<CallbackData> usersOnline = new List<CallbackData>();
+
+        private class ContactInfo
+        {
+            public UiInfo Contact { get; set; }
+            public CallbackData CallbackData { get; set; }
+        }
 
         private class MessageInfo
         {
@@ -54,6 +61,8 @@ namespace ServerWCF.Services
                     userContext.Contacts.Add(contact);
                     userContext.SaveChanges();
 
+                    AddNewContactCallback(new UserUiInfo(ownerFromDb), ownedFromDb);
+
                     return true;
                 }
                 catch (Exception)
@@ -71,7 +80,7 @@ namespace ServerWCF.Services
                 {
                     UserToGroupContact contact = new UserToGroupContact();
 
-                    ChatGroup dbChatGroup = userContext.ChatGroups.FirstOrDefault(chatGroup => chatGroup.Id == chatGroupId);
+                    ChatGroup dbChatGroup = userContext.ChatGroups.Include("Participants").FirstOrDefault(chatGroup => chatGroup.Id == chatGroupId);
                     User ownedFromDb = userContext.Users.FirstOrDefault(dbUser => dbUser.Id == participantId);
 
                     contact.ChatGroup = dbChatGroup;
@@ -85,11 +94,31 @@ namespace ServerWCF.Services
                     userContext.Contacts.Add(contact);
                     userContext.SaveChanges();
 
+                    ChatGroupUiInfo groupInfo = new ChatGroupUiInfo(dbChatGroup);
+                    List<int> userIds = dbChatGroup.Participants.Select(c => c.UserOwnerId).ToList();
+                    List<User> usersFromGroup = userContext.Users.Where(u => userIds.Contains(u.Id)).ToList();
+
+                    foreach (User userToNotify in usersFromGroup)
+                    {
+                        AddNewContactCallback(groupInfo, userToNotify);
+                    }
+
                     return true;
                 }
                 catch (Exception)
                 {
                     return false;
+                }
+            }
+        }
+
+        private void AddNewContactCallback(UiInfo contactCreator, User addedContact)
+        {
+            foreach (CallbackData innerCallbackData in usersOnline)
+            {
+                if (innerCallbackData.User.Id == addedContact.Id)
+                {
+                    innerCallbackData.UserCallback.OnNewContactAdded(contactCreator);
                 }
             }
         }
@@ -115,6 +144,9 @@ namespace ServerWCF.Services
                         }
                     }
 
+                    UserUiInfo uiInfo = new UserUiInfo(ownerFromDb);
+                    RemoveContactCallback(uiInfo, ownedFromDb);
+
                     return true;
                 }
                 catch (Exception)
@@ -132,12 +164,12 @@ namespace ServerWCF.Services
                 {
                     List<BaseContact> contacts = userContext.Contacts.Include("UserOwner").ToList();
 
-                    ChatGroup ownerFromDb = userContext.ChatGroups.Where(cg => cg.Id == chatGroupId).FirstOrDefault();
+                    ChatGroup dbChatGroup = userContext.ChatGroups.Where(cg => cg.Id == chatGroupId).FirstOrDefault();
                     User ownedFromDb = userContext.Users.Where(u => u.Id == participantId).FirstOrDefault();
 
                     foreach (BaseContact contact in contacts)
                     {
-                        if (contact.UserOwnerId == ownerFromDb.Id && (contact as UserToGroupContact).ChatGroupId == chatGroupId)
+                        if (contact.UserOwnerId == dbChatGroup.Id && (contact as UserToGroupContact).ChatGroupId == chatGroupId)
                         {
                             userContext.Contacts.Remove(contact);
                             userContext.SaveChanges();
@@ -145,11 +177,31 @@ namespace ServerWCF.Services
                         }
                     }
 
+                    ChatGroupUiInfo groupInfo = new ChatGroupUiInfo(dbChatGroup);
+                    List<int> userIds = dbChatGroup.Participants.Select(c => c.UserOwnerId).ToList();
+                    List<User> usersFromGroup = userContext.Users.Where(u => userIds.Contains(u.Id)).ToList();
+
+                    foreach (User userToNotify in usersFromGroup)
+                    {
+                        RemoveContactCallback(groupInfo, userToNotify);
+                    }
+
                     return true;
                 }
                 catch (Exception)
                 {
                     return false;
+                }
+            }
+        }
+
+        private void RemoveContactCallback(UiInfo contactRemover, User removedContact)
+        {
+            foreach (CallbackData innerCallbackData in usersOnline)
+            {
+                if (innerCallbackData.User.Id == removedContact.Id)
+                {
+                    innerCallbackData.UserCallback.OnContactRemoved(contactRemover);
                 }
             }
         }

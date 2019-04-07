@@ -1336,6 +1336,12 @@ namespace Message.UserServiceReference {
         
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IUserService/OnMessageEdited")]
         void OnMessageEdited(Message.UserServiceReference.BaseMessage message);
+        
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IUserService/OnNewContactAdded")]
+        void OnNewContactAdded(Message.UserServiceReference.UiInfo newContact);
+        
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IUserService/OnContactRemoved")]
+        void OnContactRemoved(Message.UserServiceReference.UiInfo newContact);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]

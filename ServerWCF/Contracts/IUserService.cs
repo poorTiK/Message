@@ -119,5 +119,11 @@ namespace ServerWCF.Contracts
 
         [OperationContract(IsOneWay = true)]
         void OnMessageEdited(BaseMessage message);
+
+        [OperationContract(IsOneWay = true)]
+        void OnNewContactAdded(UiInfo newContact);
+
+        [OperationContract(IsOneWay = true)]
+        void OnContactRemoved(UiInfo newContact);
     }
 }

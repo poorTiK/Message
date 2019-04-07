@@ -725,5 +725,36 @@ namespace Message.ViewModel
         {
             UpdateMessages(message, UppdateMessageOnUI);
         }
+
+        public override void OnNewContactAdded(UiInfo newContact)
+        {
+            UiInfo foundedUiInfo = ContactsList.FirstOrDefault(c => c.UniqueName == newContact.UniqueName);
+
+            if (foundedUiInfo == null)
+            {
+                List<UiInfo> temp = new List<UiInfo>();
+                temp.AddRange(ContactsList);
+
+                GlobalBase.loadPicture(UserServiceClient, newContact);
+                temp.Add(newContact);
+
+                ContactsList = temp;
+            }
+        }
+
+        public override void OnContactRemoved(UiInfo newContact)
+        {
+            UiInfo foundedUiInfo = ContactsList.FirstOrDefault(c => c.UniqueName == newContact.UniqueName);
+
+            if (foundedUiInfo != null)
+            {
+                List<UiInfo> temp = new List<UiInfo>();
+                temp.AddRange(ContactsList);
+
+                ContactsList.Remove(foundedUiInfo);
+                ContactsList = temp;
+            }
+        }
+
     }
 }
