@@ -120,7 +120,10 @@ namespace Message.ViewModel
             get { return _selectedContact; }
             set
             {
-                SetProperty(ref _selectedContact, value, () => { SelectedContactChanged(); });
+                if (value != null)
+                {
+                    SetProperty(ref _selectedContact, value, () => { SelectedContactChanged(); });
+                }
             }
         }
 
@@ -251,9 +254,9 @@ namespace Message.ViewModel
         {
             Task.Run(() =>
             {
-                UiInfo temp = SelectedContact;
+                var temp = SelectedContact;
 
-                List<UiInfo> tempUiInfos = UserServiceClient.GetAllContactsUiInfo(GlobalBase.CurrentUser.Id);
+                var tempUiInfos = UserServiceClient.GetAllContactsUiInfo(GlobalBase.CurrentUser.Id);
                 GlobalBase.loadPictures(UserServiceClient, tempUiInfos);
 
                 Dispatcher.CurrentDispatcher.Invoke(() =>
@@ -291,7 +294,7 @@ namespace Message.ViewModel
 
                     GlobalBase.loadPictures(UserServiceClient, ContactsList);
 
-                    List<BaseMessage> res = new List<BaseMessage>();
+                    var res = new List<BaseMessage>();
                     if (SelectedContact is UserUiInfo)
                     {
                         res.AddRange(UserServiceClient.GetUserMessages(GlobalBase.CurrentUser.Id,
