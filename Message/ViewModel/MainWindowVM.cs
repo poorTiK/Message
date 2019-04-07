@@ -235,7 +235,7 @@ namespace Message.ViewModel
             {
                 if (ValidateOnLogin())
                 {
-                    var user = UserServiceClient.GetUser(LoginText, AESEncryptor.encryptPassword(Password));=
+                    var user = UserServiceClient.GetUser(LoginText, AESEncryptor.encryptPassword(Password));
                     if (user != null)
                     {
                         if (user.Status == "online")
