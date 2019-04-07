@@ -46,6 +46,7 @@ namespace ServerWCF.Services
                 try
                 {
                     UserToUserContact contact = new UserToUserContact();
+                    UserToUserContact reverseContact = new UserToUserContact();
 
                     User ownerFromDb = userContext.Users.FirstOrDefault(dbUser => dbUser.Id == id_owner);
                     User ownedFromDb = userContext.Users.FirstOrDefault(dbUser => dbUser.Id == id_owned);
@@ -53,12 +54,16 @@ namespace ServerWCF.Services
                     contact.UserOwner = ownerFromDb;
                     contact.UserOwned = ownedFromDb;
 
+                    reverseContact.UserOwner = ownedFromDb;
+                    reverseContact.UserOwned = ownerFromDb;
+
                     if (userContext.Contacts.FirstOrDefault(c => ((c.UserOwnerId == id_owner) && ((c as UserToUserContact).UserOwnedId == id_owned))) != null)
                     {
                         return false;
                     }
 
                     userContext.Contacts.Add(contact);
+                    userContext.Contacts.Add(reverseContact);
                     userContext.SaveChanges();
 
                     AddNewContactCallback(new UserUiInfo(ownerFromDb), ownedFromDb);
