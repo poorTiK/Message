@@ -1,18 +1,9 @@
 ﻿using Message.AdditionalItems;
 using Message.Interfaces;
-using System;
+using Message.UserServiceReference;
+using Message.ViewModel;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace Message
 {
@@ -21,13 +12,13 @@ namespace Message
     /// </summary>
     public partial class SelectUsersWindow : Window, IView
     {
-        public SelectUsersWindow()
+        public SelectUsersWindow(ChatGroup group)
         {
             InitializeComponent();
 
             DwmDropShadow.DropShadowToWindow(this);
 
-            //DataContext = new
+            DataContext = new SelectUsersWindowVM(this, group);
         }
 
         public void AnimatedResize(int h, int w)

@@ -50,7 +50,7 @@
             </Grid.ColumnDefinitions>
 
             <ScrollViewer Grid.Row="0" Grid.ColumnSpan="2">
-                <ItemsControl ItemsSource="{Binding ContactList}" Margin="10,5,10,0">
+                <ItemsControl ItemsSource="{Binding ContactList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="10,5,10,0">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <Border
@@ -63,8 +63,8 @@
                                         <ColumnDefinition />
                                     </Grid.ColumnDefinitions>
                                     <CheckBox
-                                VerticalAlignment="Center"
-                                IsChecked="{Binding IsSelected}" />
+                                VerticalAlignment="Center" Command="{Binding Path=Checked}"
+                                IsChecked="{Binding IsSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                     <StackPanel
                                 Margin="8 0 0 0"
                                 Grid.Column="1">
@@ -100,7 +100,7 @@
                 Foreground="{DynamicResource ButtonForeground}"
                 Background="{DynamicResource ButtonBackground}"
                 Content="{DynamicResource AddContact}"
-                Command="{Binding Path=CreateGroup}" />
+                Command="{Binding Path=AddMembers}" />
 
             <Button Grid.Column="1"  Width="150" Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,5,0,5"
                 Foreground="{DynamicResource ButtonForeground}"

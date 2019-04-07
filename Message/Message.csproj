@@ -268,6 +268,7 @@
     <Compile Include="ViewModel\MainWindowVM.cs" />
     <Compile Include="ViewModel\MessageControlVM.cs" />
     <Compile Include="ViewModel\MessageMainVM.cs" />
+    <Compile Include="ViewModel\SelectUsersWindowVM.cs" />
     <Compile Include="ViewModel\SettingsWindowVM.cs" />
     <Compile Include="ViewModel\UserProfileWindowVM.cs" />
     <Page Include="AdditionalItems\CustomMessageBox.xaml">
