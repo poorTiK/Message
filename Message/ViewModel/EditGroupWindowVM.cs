@@ -21,6 +21,7 @@ namespace Message.ViewModel
         private IView _view;
         private ChatGroupUiInfo _groupUiInfo;
         private ChatGroup _group;
+        private List<UiInfo> _membersToAdd;
 
         private byte[] _newAvatar;
         private Image _image;
@@ -95,6 +96,7 @@ namespace Message.ViewModel
         {
             _view = view;
             _groupUiInfo = group;
+            _membersToAdd = new List<UiInfo>();
 
             Init();
 
@@ -210,6 +212,14 @@ namespace Message.ViewModel
                         }
                     }
 
+                    if (_membersToAdd?.Count != 0)
+                    {
+                        foreach (var uiInfo in _membersToAdd)
+                        {
+                            UserServiceClient.AddUserToChatGroupContact(_group.Id, (uiInfo as UserUiInfo).UserId);
+                        }
+                    }
+
                     res = UserServiceClient.AddOrUpdateChatGroup(_group);
 
                     SetAvatarForUI();
@@ -264,6 +274,11 @@ namespace Message.ViewModel
 
         private void ExecuteOnAddMembers()
         {
+            _view.Hide(false);
+            var wnd = new SelectUsersWindow(_group);
+            wnd.Owner = (Window)_view;
+            wnd.ShowDialog();
+            _view.Hide(true);
         }
 
         private void CheckChanges()
@@ -292,8 +307,44 @@ namespace Message.ViewModel
             return true;
         }
 
-        private void Update()
+        public void Update(List<UiInfo> membersToAdd)
         {
+            if (membersToAdd?.Count != 0)
+            {
+                IsNewChanges = true;
+                _membersToAdd = membersToAdd;
+
+                var temp = new List<UiInfo>();
+                temp.AddRange(_membersToAdd);
+                temp.AddRange(GroupMemberList);
+                var defImage = Image.FromFile("../../Resources/DefaultPicture.jpg");
+
+                Task.Run(() =>
+                {
+                    foreach (var item in temp)
+                    {
+                        if (item is UserUiInfo)
+                        {
+                            var userUiInfo = item as UserUiInfo;
+                            var user = UserServiceClient.GetUserById(userUiInfo.UserId);
+                            var chatFile = GlobalBase.FileServiceClient.getChatFileById(user.Id);
+
+                            if (chatFile?.Source != null && chatFile?.Source?.Length != 0)
+                            {
+                                var memstr = new MemoryStream(chatFile.Source);
+                                Dispatcher.CurrentDispatcher.Invoke(() => { item.UiImage = Image.FromStream(memstr); });
+                            }
+                            else
+                            {
+                                Dispatcher.CurrentDispatcher.Invoke(() => { item.UiImage = defImage; });
+                            }
+                        }
+                    }
+                }).ContinueWith(Task =>
+                {
+                    GroupMemberList = temp;
+                });
+            }
         }
     }
 }

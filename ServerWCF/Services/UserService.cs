@@ -269,7 +269,7 @@ namespace ServerWCF.Services
                     ChatGroup chatGroup = db.ChatGroups.Include("Participants").Where(c => c.Id == chatGroupId).First();
 
                     List<UiInfo> result = new List<UiInfo>();
-                    result.AddRange(chatGroup.Participants.Select(cg => new UserUiInfo( GetUserById(cg.UserOwnerId))).ToList());
+                    result.AddRange(chatGroup.Participants.Select(cg => new UserUiInfo(GetUserById(cg.UserOwnerId))).ToList());
 
                     return result;
                 }
@@ -303,7 +303,7 @@ namespace ServerWCF.Services
                     {
                         dbChatGroup.Name = chatGroupToAdd.Name;
                         dbChatGroup.ImageId = chatGroupToAdd.ImageId;
-                        dbChatGroup.Participants = chatGroupToAdd.Participants;
+                        //dbChatGroup.Participants = chatGroupToAdd.Participants;
                     }
                     else
                     {

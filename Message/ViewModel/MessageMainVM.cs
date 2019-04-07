@@ -120,7 +120,10 @@ namespace Message.ViewModel
             get { return _selectedContact; }
             set
             {
-                SetProperty(ref _selectedContact, value, () => { SelectedContactChanged(); });
+                if (value != null)
+                {
+                    SetProperty(ref _selectedContact, value, () => { SelectedContactChanged(); });
+                }
             }
         }
 
@@ -251,9 +254,9 @@ namespace Message.ViewModel
         {
             Task.Run(() =>
             {
-                UiInfo temp = SelectedContact;
+                var temp = SelectedContact;
 
-                List<UiInfo> tempUiInfos = UserServiceClient.GetAllContactsUiInfo(GlobalBase.CurrentUser.Id);
+                var tempUiInfos = UserServiceClient.GetAllContactsUiInfo(GlobalBase.CurrentUser.Id);
                 GlobalBase.loadPictures(UserServiceClient, tempUiInfos);
 
                 Dispatcher.CurrentDispatcher.Invoke(() =>
@@ -291,7 +294,7 @@ namespace Message.ViewModel
 
                     GlobalBase.loadPictures(UserServiceClient, ContactsList);
 
-                    List<BaseMessage> res = new List<BaseMessage>();
+                    var res = new List<BaseMessage>();
                     if (SelectedContact is UserUiInfo)
                     {
                         res.AddRange(UserServiceClient.GetUserMessages(GlobalBase.CurrentUser.Id,
@@ -319,7 +322,12 @@ namespace Message.ViewModel
 
         private void UpdateMessages(BaseMessage message, Func<BaseMessage, bool> updateStrategy)
         {
-            User sender = UserServiceClient.GetAllUsers().FirstOrDefault(x => x.Id == message.SenderId);
+            var sender = UserServiceClient.GetAllUsers().FirstOrDefault(x => x.Id == message.SenderId);
+
+            if (message is GroupMessage gMes)
+            {
+                gMes.SenderName = sender.FirstName;
+            }
 
             if (sender.Id != (SelectedContact as UserUiInfo)?.UserId)
             {
@@ -440,7 +448,7 @@ namespace Message.ViewModel
                 List<BaseMessage> messagesWithFile = null;
                 if (SelectedContact is UserUiInfo)
                 {
-                    UserUiInfo userUiInfo = SelectedContact as UserUiInfo;
+                    var userUiInfo = SelectedContact as UserUiInfo;
                     if (FilesPath == null)
                     {
                         message = new UserMessage()
@@ -504,7 +512,7 @@ namespace Message.ViewModel
                 }
                 else if (SelectedContact is ChatGroupUiInfo)
                 {
-                    ChatGroupUiInfo userUiInfo = SelectedContact as ChatGroupUiInfo;
+                    var userUiInfo = SelectedContact as ChatGroupUiInfo;
                     if (FilesPath == null)
                     {
                         message = new GroupMessage()
@@ -550,7 +558,7 @@ namespace Message.ViewModel
                 {
                     UserServiceClient.SendMessageAsync(message).ContinueWith(task =>
                     {
-                        BaseMessage lastMessage = UserServiceClient.GetLastMessage();
+                        var lastMessage = UserServiceClient.GetLastMessage();
                         _view.MessageList.Add(lastMessage);
                         _view.UpdateMessageList();
                     });
@@ -560,19 +568,12 @@ namespace Message.ViewModel
                     foreach (var fileMessage in messagesWithFile)
                     {
                         UserServiceClient.SendMessage(fileMessage);
-                        //var mes = UserServiceClient.GetUserMessages(GlobalBase.CurrentUser.Id,
-                        //    (SelectedContact as UserUiInfo).UserId, 1);
-                        //GlobalBase.PhotoServiceClient.SetFileToMessage(mes.Last().Id, fileMessage.Text);
-                        //fileMessage.Id = mes.Last().Id;
-                        //fileMessage.Text = null;
                         _view.MessageList.Add(UserServiceClient.GetLastMessage());
                     }
                 }
 
                 FilesPath = null;
                 FileAmount = 0;
-
-                //_view.UpdateMessageList();
 
                 MessageText = string.Empty;
 
