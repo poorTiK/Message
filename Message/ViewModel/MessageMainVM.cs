@@ -436,13 +436,13 @@ namespace Message.ViewModel
                 var user = UserServiceClient.GetUserById(userUiInfo.UserId);
                 var wnd = new ContactProfileWindow(user);
                 wnd.Owner = (Window)_view;
-                wnd.ShowDialog();
+                wnd.Show();
             }
             else if (SelectedContact is ChatGroupUiInfo chatGroupUiInfo)
             {
                 var wnd = new EditGroupWindow(chatGroupUiInfo);
                 wnd.Owner = (Window)_view;
-                wnd.ShowDialog();
+                wnd.Show();
             }
         }
 

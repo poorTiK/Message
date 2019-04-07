@@ -12,7 +12,7 @@
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         Name="MessageMainWindow"
-        MinWidth="450" MinHeight="600" Height="601" Width="700"
+        MinWidth="699" MinHeight="600" Height="601" Width="700"
              WindowStartupLocation="CenterScreen" OpacityMask="Black"
         BorderThickness="0" Background="Black" AllowsTransparency="False" WindowStyle="None" BorderBrush="Black">
     <WindowChrome.WindowChrome>

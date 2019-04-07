@@ -185,6 +185,7 @@
     <Compile Include="AdditionalItems\CustomMessageBox.xaml.cs">
       <DependentUpon>CustomMessageBox.xaml</DependentUpon>
     </Compile>
+    <Compile Include="AdditionalItems\DwmDropShadow.cs" />
     <Compile Include="ChatSettingWindow.xaml.cs">
       <DependentUpon>ChatSettingWindow.xaml</DependentUpon>
     </Compile>
@@ -239,6 +240,9 @@
     <Compile Include="Model\Translations.cs" />
     <Compile Include="ReceiveMessage.xaml.cs">
       <DependentUpon>ReceiveMessage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SelectUsersWindow.xaml.cs">
+      <DependentUpon>SelectUsersWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="SendMessage.xaml.cs">
       <DependentUpon>SendMessage.xaml</DependentUpon>
@@ -339,6 +343,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Resources\lang.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SelectUsersWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -99,16 +99,16 @@ namespace Message.ViewModel
             IsCreating = true;
             Task.Run(() =>
             {
-                List<UserUiInfo> selectedContacts = ContactList.Where(c => c.IsSelected).Select(ui => ui as UserUiInfo).ToList();
+                var selectedContacts = ContactList.Where(c => c.IsSelected).Select(ui => ui as UserUiInfo).ToList();
 
-                ChatGroup chatGroup = new ChatGroup();
+                var chatGroup = new ChatGroup();
                 //TODO add validate
                 chatGroup.Name = Name;
 
                 UserServiceClient.AddOrUpdateChatGroup(chatGroup);
                 chatGroup = UserServiceClient.GetChatGroup(chatGroup.Name);
 
-                foreach (UserUiInfo uiInfo in selectedContacts)
+                foreach (var uiInfo in selectedContacts)
                 {
                     UserServiceClient.AddUserToChatGroupContact(chatGroup.Id, uiInfo.UserId);
                 }

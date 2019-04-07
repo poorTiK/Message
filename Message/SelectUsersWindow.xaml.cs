@@ -1,28 +1,38 @@
 ﻿using Message.AdditionalItems;
 using Message.Interfaces;
-using Message.UserServiceReference;
-using Message.ViewModel;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Shapes;
 
 namespace Message
 {
     /// <summary>
-    /// Interaction logic for EditGroupWindow.xaml
+    /// Interaction logic for SelectUsersWindow.xaml
     /// </summary>
-    public partial class EditGroupWindow : Window, IView
+    public partial class SelectUsersWindow : Window, IView
     {
-        public EditGroupWindow(ChatGroupUiInfo group)
+        public SelectUsersWindow()
         {
             InitializeComponent();
 
             DwmDropShadow.DropShadowToWindow(this);
 
-            DataContext = new EditGroupWindowVM(this, group);
+            //DataContext = new
         }
 
         public void AnimatedResize(int h, int w)
         {
-            //
+            //throw new NotImplementedException();
         }
 
         public void CloseWindow()
@@ -44,10 +54,10 @@ namespace Message
 
         public void SetOpacity(double opasity)
         {
-            //
+            //throw new NotImplementedException();
         }
 
-        private void ButtonClose_OnClickose_OnClick(object sender, RoutedEventArgs e)
+        private void ButtonClose_Click(object sender, RoutedEventArgs e)
         {
             Close();
         }

@@ -65,6 +65,7 @@
     <v:String x:Key="EditGroup">Edit group</v:String>
     <v:String x:Key="GroupMemString">group members</v:String>
     <v:String x:Key="GroupNameValid">Group name can't be empty</v:String>
+    <v:String x:Key="GroupAddMember">Add members</v:String>
 
     <v:String x:Key="Yes">Yes</v:String>
     <v:String x:Key="No">No</v:String>

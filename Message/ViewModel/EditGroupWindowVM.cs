@@ -180,6 +180,11 @@ namespace Message.ViewModel
         public DelegateCommand LoadPhoto =>
             _loadPhoto ?? (_loadPhoto = new DelegateCommand(ExecuteOnLoadPhoto));
 
+        private DelegateCommand _addMembers;
+
+        public DelegateCommand AddMembers =>
+            _addMembers ?? (_addMembers = new DelegateCommand(ExecuteOnAddMembers));
+
         private void ExecuteOnApplyChanges()
         {
             IsSavingProgress = true;
@@ -187,32 +192,35 @@ namespace Message.ViewModel
 
             Task.Run(() =>
             {
-                _group.Name = GroupName;
-
-                var chatFile = GlobalBase.FileServiceClient.getChatFileById(_group.ImageId);
-
-                if (_newAvatar != null)
+                if (Validate())
                 {
-                    if (chatFile == null)
+                    _group.Name = GroupName;
+
+                    var chatFile = GlobalBase.FileServiceClient.getChatFileById(_group.ImageId);
+
+                    if (_newAvatar != null)
                     {
-                        _group.ImageId = GlobalBase.FileServiceClient.UploadFile(new FileService.ChatFile() { Source = CompressionHelper.CompressImage(_newAvatar) });
+                        if (chatFile == null)
+                        {
+                            _group.ImageId = GlobalBase.FileServiceClient.UploadFile(new FileService.ChatFile() { Source = CompressionHelper.CompressImage(_newAvatar) });
+                        }
+                        else
+                        {
+                            GlobalBase.FileServiceClient.UpdateFileSource(chatFile.Id, CompressionHelper.CompressFile(_newAvatar));
+                        }
                     }
-                    else
+
+                    res = UserServiceClient.AddOrUpdateChatGroup(_group);
+
+                    SetAvatarForUI();
+
+                    if (res == string.Empty)
                     {
-                        GlobalBase.FileServiceClient.UpdateFileSource(chatFile.Id, CompressionHelper.CompressFile(_newAvatar));
+                        Application.Current.Dispatcher.Invoke(new Action((() =>
+                        {
+                            CustomMessageBox.Show(Translations.GetTranslation()["ChangesSaved"].ToString());
+                        })));
                     }
-                }
-
-                res = UserServiceClient.AddOrUpdateChatGroup(_group);
-
-                SetAvatarForUI();
-
-                if (res == string.Empty)
-                {
-                    Application.Current.Dispatcher.Invoke(new Action((() =>
-                    {
-                        CustomMessageBox.Show(Translations.GetTranslation()["ChangesSaved"].ToString());
-                    })));
                 }
             }).ContinueWith(task =>
             {
@@ -254,6 +262,10 @@ namespace Message.ViewModel
             }
         }
 
+        private void ExecuteOnAddMembers()
+        {
+        }
+
         private void CheckChanges()
         {
             if (GroupName != _group.Name)
@@ -278,6 +290,10 @@ namespace Message.ViewModel
             }
 
             return true;
+        }
+
+        private void Update()
+        {
         }
     }
 }
