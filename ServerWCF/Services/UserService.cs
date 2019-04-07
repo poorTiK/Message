@@ -880,13 +880,6 @@ namespace ServerWCF.Services
                     userContext.Messages.Add(message);
                     userContext.SaveChanges();
 
-                    //if (message.Type == "DATA")
-                    //{
-                    //    var serv = new PhotoService();
-
-                    //    serv.SetFileToMessage(userContext.Messages.Last().Id, message.Content);
-                    //}
-
                     MessageInfo messageInfo = new MessageInfo();
                     messageInfo.Message = message;
                     messageInfo.CallbackData = callbackData;

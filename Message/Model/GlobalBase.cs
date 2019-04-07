@@ -19,6 +19,7 @@ namespace Message.Model
         public static Func<BaseMessage, bool> RemoveMessageOnUI;
 
         public static FileServiceClient FileServiceClient { get; set; }
+        public static Func<BaseMessage, bool> AddMessageOnUi { get; internal set; }
 
         static GlobalBase()
         {

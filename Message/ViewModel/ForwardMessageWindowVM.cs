@@ -69,7 +69,15 @@ namespace Message.ViewModel
                     SenderId = _message.SenderId,
                     ReceiverId = userUiInfo.UserId
                 };
-                UserServiceClient.SendMessageAsync(mes);
+                //Temporary implementation, system of receiving messages should be reworked.
+                //For all users should execute callback even for sender.
+                UserServiceClient.SendMessageAsync(mes).ContinueWith((task) => {
+                    if ( (_message.SenderId == userUiInfo.UserId && (_message as UserMessage).ReceiverId == GlobalBase.CurrentUser.Id )
+                    || ( (_message as UserMessage).ReceiverId == userUiInfo.UserId && _message.SenderId == GlobalBase.CurrentUser.Id) )
+                    {
+                        GlobalBase.AddMessageOnUi.Invoke(UserServiceClient.GetLastMessage());
+                    }
+                });              
             }
             _view.CloseWindow();
         }

@@ -236,6 +236,7 @@ namespace Message.ViewModel
             {
                 Application.Current.Dispatcher.Invoke(new Action(() => { _view.UpdateMessageList(); }));
             };
+            GlobalBase.AddMessageOnUi += AddMessageOnUI;
 
             GlobalBase.UpdateContactList += UpdateContactList;
             GlobalBase.RemoveMessageOnUI += DeleteMessageOnUI;
@@ -362,9 +363,12 @@ namespace Message.ViewModel
         //UI update
         private bool AddMessageOnUI(BaseMessage message)
         {
-            _view.MessageList.Add(message);
-            GlobalBase.UpdateMessagesOnUI.Invoke();
+            lock (_view.MessageList)
+            {
+                Dispatcher.CurrentDispatcher.Invoke(() => { _view.MessageList.Add(message); });
+            }
 
+            GlobalBase.UpdateMessagesOnUI.Invoke();
             return true;
         }
 
