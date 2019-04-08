@@ -331,7 +331,7 @@ namespace Message.ViewModel
             }
         }
 
-        private void UpdateMessages(BaseMessage message, Func<BaseMessage, bool> updateStrategy)
+        private void UpdateMessage(BaseMessage message, Func<BaseMessage, bool> updateStrategy)
         {
             var sender = UserServiceClient.GetAllUsers().FirstOrDefault(x => x.Id == message.SenderId);
 
@@ -705,7 +705,7 @@ namespace Message.ViewModel
         //service callbacks
         public override void ReceiveMessage(BaseMessage message)
         {
-            UpdateMessages(message, AddMessageOnUI);
+            UpdateMessage(message, AddMessageOnUI);
         }
 
         public override void UserLeave(User user)
@@ -727,7 +727,7 @@ namespace Message.ViewModel
 
         public override void OnMessageEdited(BaseMessage message)
         {
-            UpdateMessages(message, UppdateMessageOnUI);
+            UpdateMessage(message, UppdateMessageOnUI);
         }
 
         public override void OnNewContactAdded(UiInfo newContact)
