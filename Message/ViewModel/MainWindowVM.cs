@@ -252,7 +252,7 @@ namespace Message.ViewModel
                         _serializeUser.SerializeUser(user);
                         Application.Current.Dispatcher.Invoke(() =>
                         {
-                            MessageMainWnd wnd = new MessageMainWnd(user);
+                            var wnd = new MessageMainWnd(user);
                             wnd.Show();
                             view.CloseWindow();
                             IsLoginProgress = false;
@@ -267,7 +267,7 @@ namespace Message.ViewModel
             IsRegisterProgress = true;
             Task.Run(() =>
             {
-                string message = string.Empty;
+                var message = string.Empty;
                 if (ValidateOnRegister())
                 {
                     var user = new User()
@@ -280,14 +280,10 @@ namespace Message.ViewModel
                         Status = DateTime.Now.ToString()
                     };
 
-                    if (UserServiceClient.GetUserByLogin(UserLogin) == null) //TODO if time move validation parts to ValidateOnRegister()
+                    if (UserServiceClient.GetUserByLogin(UserLogin) == null)
                     {
                         if (UserServiceClient.AddOrUpdateUser(user) == string.Empty)
                         {
-                            //var updatedUser = UserServiceClient.GetUserByLogin(UserLogin);
-                            //updatedUser.ImageId = GlobalBase.FileServiceClient.UploadFile(new FileService.ChatFile(){ Source = ImageHelper.GetDefImageBytes() });
-                            //UserServiceClient.AddOrUpdateUser(updatedUser);
-
                             Application.Current.Dispatcher.Invoke(new Action((() =>
                             {
                                 CustomMessageBox.Show(Translations.GetTranslation()["RegisterDone"].ToString());

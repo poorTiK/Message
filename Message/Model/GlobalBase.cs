@@ -55,19 +55,19 @@ namespace Message.Model
         public static byte[] FileToByte(string path)
         {
             byte[] buff = null;
-            FileStream fs = new FileStream(path,
+            var fs = new FileStream(path,
                 FileMode.Open,
                 FileAccess.Read);
-            BinaryReader br = new BinaryReader(fs);
-            long numBytes = new FileInfo(path).Length;
+            var br = new BinaryReader(fs);
+            var numBytes = new FileInfo(path).Length;
             buff = br.ReadBytes((int)numBytes);
             return buff;
         }
 
         public static string GetShortName(string fullPath)
         {
-            string[] pathArr = fullPath.Split('\\');
-            string fileName = pathArr.Last().ToString();
+            var pathArr = fullPath.Split('\\');
+            var fileName = pathArr.Last().ToString();
 
             return fileName;
         }
@@ -82,12 +82,12 @@ namespace Message.Model
 
         public static void loadPicture(UserServiceClient userServiceClient, UiInfo uiInfos)
         {
-            FileService.ChatFile chatFile = FileServiceClient.getChatFileById(uiInfos.ImageId);
+            var chatFile = FileServiceClient.getChatFileById(uiInfos.ImageId);
 
             if (chatFile?.Source?.Length > 0)
             {
-                MemoryStream memstr = new MemoryStream(chatFile.Source);
-               Dispatcher.CurrentDispatcher.Invoke(() => { uiInfos.UiImage = Image.FromStream(memstr); });
+                var memstr = new MemoryStream(chatFile.Source);
+                Dispatcher.CurrentDispatcher.Invoke(() => { uiInfos.UiImage = Image.FromStream(memstr); });
             }
             else
             {
@@ -97,12 +97,12 @@ namespace Message.Model
 
         public static Image getUsersAvatar(User user)
         {
-            FileService.ChatFile chatFile = FileServiceClient.getChatFileById(user.ImageId);
+            var chatFile = FileServiceClient.getChatFileById(user.ImageId);
             Image usersImage = null;
 
             if (chatFile?.Source?.Length > 0)
             {
-                MemoryStream memstr = new MemoryStream(chatFile.Source);
+                var memstr = new MemoryStream(chatFile.Source);
                 usersImage = Image.FromStream(memstr);
             }
             else

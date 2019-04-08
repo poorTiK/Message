@@ -48,7 +48,7 @@ namespace Message.ViewModel
                 if (string.IsNullOrWhiteSpace(value))
                 {
                     ContactsList.Clear();
-                    List<UiInfo> temp = new List<UiInfo>();
+                    var temp = new List<UiInfo>();
                     temp.AddRange(UserServiceClient.GetAllContactsUiInfo(GlobalBase.CurrentUser.Id));
 
                     ContactsList = temp;
@@ -58,7 +58,7 @@ namespace Message.ViewModel
                 else
                 {
                     ContactsList.Clear();
-                    List<UiInfo> temp = new List<UiInfo>();
+                    var temp = new List<UiInfo>();
                     temp.AddRange(UserServiceClient
                         .GetAllUsersContacts(GlobalBase.CurrentUser.Id)
                         .Where(i => i.FirstName.Contains(value)
@@ -234,7 +234,8 @@ namespace Message.ViewModel
             GlobalBase.CurrentUser = user;
             GlobalBase.UpdateMessagesOnUI += () =>
             {
-                Application.Current.Dispatcher.Invoke(new Action(() => {
+                Application.Current.Dispatcher.Invoke(new Action(() =>
+                {
                     _view.UpdateMessageList();
                 }));
             };
@@ -324,7 +325,8 @@ namespace Message.ViewModel
                     }
                 }).ContinueWith((task =>
                 {
-                    Application.Current.Dispatcher.Invoke(new Action(() => {
+                    Application.Current.Dispatcher.Invoke(new Action(() =>
+                    {
                         GlobalBase.UpdateMessagesOnUI();
                     }));
                 }));
@@ -375,7 +377,8 @@ namespace Message.ViewModel
         {
             lock (_view.MessageList)
             {
-                Dispatcher.CurrentDispatcher.Invoke(() => {
+                Dispatcher.CurrentDispatcher.Invoke(() =>
+                {
                     _view.MessageList.Add(message);
                     _view.UpdateMessageList();
                 });
@@ -425,7 +428,7 @@ namespace Message.ViewModel
         //executes for commands
         private void ExecuteOnAddFile()
         {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
+            var openFileDialog = new OpenFileDialog();
             openFileDialog.Multiselect = true;
             openFileDialog.ShowDialog();
             FilesPath = openFileDialog.FileNames;
@@ -481,7 +484,7 @@ namespace Message.ViewModel
                     {
                         if (FilesPath.Length == 1)
                         {
-                            var chatFile = new Message.FileService.ChatFile() { Source = CompressionHelper.CompressFile(GlobalBase.FileToByte(FilesPath[0])), Name = GlobalBase.GetShortName(FilesPath[0]) };
+                            var chatFile = new FileService.ChatFile() { Source = CompressionHelper.CompressFile(GlobalBase.FileToByte(FilesPath[0])), Name = GlobalBase.GetShortName(FilesPath[0]) };
 
                             var tempMes = new UserMessage()
                             {
@@ -512,7 +515,7 @@ namespace Message.ViewModel
                             messagesWithFile = new List<BaseMessage>();
                             foreach (var file in FilesPath)
                             {
-                                var chatFile = new Message.FileService.ChatFile() { Source = CompressionHelper.CompressFile(GlobalBase.FileToByte(file)), Name = GlobalBase.GetShortName(file) };
+                                var chatFile = new FileService.ChatFile() { Source = CompressionHelper.CompressFile(GlobalBase.FileToByte(file)), Name = GlobalBase.GetShortName(file) };
 
                                 messagesWithFile.Add(new UserMessage()
                                 {
@@ -556,7 +559,7 @@ namespace Message.ViewModel
                         messagesWithFile = new List<BaseMessage>();
                         foreach (var file in FilesPath)
                         {
-                            var chatFile = new Message.FileService.ChatFile() { Source = CompressionHelper.CompressFile(GlobalBase.FileToByte(file)), Name = GlobalBase.GetShortName(file) };
+                            var chatFile = new FileService.ChatFile() { Source = CompressionHelper.CompressFile(GlobalBase.FileToByte(file)), Name = GlobalBase.GetShortName(file) };
 
                             messagesWithFile.Add(new GroupMessage()
                             {
@@ -644,46 +647,44 @@ namespace Message.ViewModel
                 if (SelectedContact != null)
                 {
                     _view.MessageList.Clear();
-                    List<BaseMessage> res = new List<BaseMessage>();
+                    var res = new List<BaseMessage>();
 
                     if (SelectedContact is UserUiInfo)
                     {
-                        UserUiInfo userUiInfo = SelectedContact as UserUiInfo;
+                        var userUiInfo = SelectedContact as UserUiInfo;
                         res.AddRange(UserServiceClient.GetUserMessages(GlobalBase.CurrentUser.Id, userUiInfo.UserId, 50));
                     }
                     else if (SelectedContact is ChatGroupUiInfo)
                     {
-                        ChatGroupUiInfo chatGroupUiInfo = SelectedContact as ChatGroupUiInfo;
+                        var chatGroupUiInfo = SelectedContact as ChatGroupUiInfo;
                         res.AddRange(UserServiceClient.GetGroupMessages(chatGroupUiInfo.ChatGroupId, 50));
                     }
 
                     if (res.Count != 0)
                     {
-                        foreach (BaseMessage mes in res)
+                        foreach (var mes in res)
                         {
                             BaseMessage message = null;
-                            if (mes is UserMessage)
+                            if (mes is UserMessage userMes)
                             {
-                                UserMessage userMessage = mes as UserMessage;
                                 message = new UserMessage()
                                 {
-                                    Id = mes.Id,
-                                    Text = mes.Text,
-                                    DateOfSending = mes.DateOfSending,
-                                    ReceiverId = userMessage.ReceiverId,
-                                    SenderId = mes.SenderId,
+                                    Id = userMes.Id,
+                                    Text = userMes.Text,
+                                    DateOfSending = userMes.DateOfSending,
+                                    ReceiverId = userMes.ReceiverId,
+                                    SenderId = userMes.SenderId,
                                 };
                             }
-                            else if (mes is GroupMessage)
+                            else if (mes is GroupMessage groupMes)
                             {
-                                GroupMessage groupMessage = mes as GroupMessage;
                                 message = new GroupMessage()
                                 {
-                                    Id = mes.Id,
-                                    Text = mes.Text,
-                                    DateOfSending = mes.DateOfSending,
-                                    ChatGroupId = groupMessage.ChatGroupId,
-                                    SenderId = mes.SenderId,
+                                    Id = groupMes.Id,
+                                    Text = groupMes.Text,
+                                    DateOfSending = groupMes.DateOfSending,
+                                    ChatGroupId = groupMes.ChatGroupId,
+                                    SenderId = groupMes.SenderId,
                                 };
                             }
 
@@ -732,11 +733,11 @@ namespace Message.ViewModel
 
         public override void OnNewContactAdded(UiInfo newContact)
         {
-            UiInfo foundedUiInfo = ContactsList.FirstOrDefault(c => c.UniqueName == newContact.UniqueName);
+            var foundedUiInfo = ContactsList.FirstOrDefault(c => c.UniqueName == newContact.UniqueName);
 
             if (foundedUiInfo == null)
             {
-                List<UiInfo> temp = new List<UiInfo>();
+                var temp = new List<UiInfo>();
                 temp.AddRange(ContactsList);
 
                 GlobalBase.loadPicture(UserServiceClient, newContact);
@@ -748,11 +749,11 @@ namespace Message.ViewModel
 
         public override void OnContactRemoved(UiInfo newContact)
         {
-            UiInfo foundedUiInfo = ContactsList.FirstOrDefault(c => c.UniqueName == newContact.UniqueName);
+            var foundedUiInfo = ContactsList.FirstOrDefault(c => c.UniqueName == newContact.UniqueName);
 
             if (foundedUiInfo != null)
             {
-                List<UiInfo> temp = new List<UiInfo>();
+                var temp = new List<UiInfo>();
                 temp.AddRange(ContactsList);
 
                 ContactsList.Remove(foundedUiInfo);
@@ -768,7 +769,7 @@ namespace Message.ViewModel
             }
             else
             {
-                foreach(UiInfo uiInfo in ContactsList)
+                foreach (var uiInfo in ContactsList)
                 {
                     if (uiInfo.UniqueName == changedEntity.UniqueName)
                     {
@@ -778,6 +779,5 @@ namespace Message.ViewModel
                 }
             }
         }
-
     }
 }

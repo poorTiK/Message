@@ -129,7 +129,7 @@ namespace Message.ViewModel
                 _group = UserServiceClient.GetChatGroup(_groupUiInfo.UniqueName);
 
                 tempUiInfos = UserServiceClient.GetGroupParticipants(_group.Id);
-                var defImage = Image.FromFile("../../Resources/DefaultPicture.jpg");
+                var defImage = ImageHelper.GetDefImage();
 
                 foreach (var item in tempUiInfos)
                 {
@@ -137,7 +137,7 @@ namespace Message.ViewModel
                     {
                         var userUiInfo = item as UserUiInfo;
                         var user = UserServiceClient.GetUserById(userUiInfo.UserId);
-                        var chatFile = GlobalBase.FileServiceClient.getChatFileById(user.Id);
+                        var chatFile = GlobalBase.FileServiceClient.getChatFileById(user.ImageId);
 
                         if (chatFile?.Source != null && chatFile?.Source?.Length != 0)
                         {
@@ -329,7 +329,7 @@ namespace Message.ViewModel
                         {
                             var userUiInfo = item as UserUiInfo;
                             var user = UserServiceClient.GetUserById(userUiInfo.UserId);
-                            var chatFile = GlobalBase.FileServiceClient.getChatFileById(user.Id);
+                            var chatFile = GlobalBase.FileServiceClient.getChatFileById(user.ImageId);
 
                             if (chatFile?.Source != null && chatFile?.Source?.Length != 0)
                             {

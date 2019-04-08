@@ -19,9 +19,9 @@ namespace System.Windows.Media
 
             var image = (System.Drawing.Image)value;
             // Winforms Image we want to get the WPF Image from...
-            var bitmap = new System.Windows.Media.Imaging.BitmapImage();
+            var bitmap = new Imaging.BitmapImage();
             bitmap.BeginInit();
-            MemoryStream memoryStream = new MemoryStream();
+            var memoryStream = new MemoryStream();
             // Save to a memory stream...
             image.Save(memoryStream, ImageFormat.Png);
             // Rewind the stream...

@@ -168,14 +168,14 @@ namespace Message.ViewModel
 
         private void ExecuteOnLoadPhoto()
         {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
+            var openFileDialog = new OpenFileDialog();
             openFileDialog.ShowDialog();
             var FilePath = openFileDialog.FileName;
 
             if (FilePath != string.Empty)
             {
                 _newAvatar = File.ReadAllBytes(FilePath);
-                MemoryStream memstr = new MemoryStream(_newAvatar);
+                var memstr = new MemoryStream(_newAvatar);
                 Dispatcher.CurrentDispatcher.Invoke(() => { Images = Image.FromStream(memstr); });
 
                 IsNewChanges = true;

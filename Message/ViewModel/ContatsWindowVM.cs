@@ -66,25 +66,24 @@ namespace Message.ViewModel
 
                 if (!string.IsNullOrEmpty(value))
                 {
-                    List<UiInfo> tempUiInfo = UserServiceClient.FindNewUsersUiUnfoByLogin(GlobalBase.CurrentUser.Id, ContactsSearch);
+                    var tempUiInfo = UserServiceClient.FindNewUsersUiUnfoByLogin(GlobalBase.CurrentUser.Id, ContactsSearch);
 
-                    foreach (UiInfo uiInfo in tempUiInfo)
+                    foreach (var uiInfo in tempUiInfo)
                     {
-                        UserUiInfo userUiInfo = uiInfo as UserUiInfo;
-                        User user = UserServiceClient.GetUserById(userUiInfo.UserId);
-                        FileService.ChatFile chatFile = GlobalBase.FileServiceClient.getChatFileById(user.Id);
+                        var userUiInfo = uiInfo as UserUiInfo;
+                        var user = UserServiceClient.GetUserById(userUiInfo.UserId);
+                        var chatFile = GlobalBase.FileServiceClient.getChatFileById(user.ImageId);
 
                         if (chatFile?.Source != null && chatFile?.Source?.Length != 0)
                         {
-                            MemoryStream memstr = new MemoryStream(chatFile.Source);
+                            var memstr = new MemoryStream(chatFile.Source);
                             Dispatcher.CurrentDispatcher.Invoke(() => { uiInfo.UiImage = Image.FromStream(memstr); });
-                            
                         }
                         else
                         {
                             Dispatcher.CurrentDispatcher.Invoke(() =>
                             {
-                                uiInfo.UiImage = Image.FromFile("../../Resources/DefaultPicture.jpg");
+                                uiInfo.UiImage = ImageHelper.GetDefImage();
                             });
                         }
                     }
@@ -110,27 +109,43 @@ namespace Message.ViewModel
         public ContatsWindowVM(IView iview) : base()
         {
             view = iview;
-            List<UiInfo> tempUiInfos = UserServiceClient.GetAllContactsUiInfo(GlobalBase.CurrentUser.Id);
+            var tempUiInfos = UserServiceClient.GetAllContactsUiInfo(GlobalBase.CurrentUser.Id);
 
             foreach (var item in tempUiInfos)
             {
-                if (item is UserUiInfo)
+                if (item is UserUiInfo userUi)
                 {
-                    UserUiInfo userUiInfo = item as UserUiInfo;
-                    User user = UserServiceClient.GetUserById(userUiInfo.UserId);
-                    FileService.ChatFile chatFile = GlobalBase.FileServiceClient.getChatFileById(user.Id);
+                    var user = UserServiceClient.GetUserById(userUi.UserId);
+                    var chatFile = GlobalBase.FileServiceClient.getChatFileById(user.ImageId);
 
                     if (chatFile?.Source != null && chatFile?.Source?.Length != 0)
                     {
-                        using (MemoryStream memstr = new MemoryStream(chatFile.Source)) {
-                            Dispatcher.CurrentDispatcher.Invoke(() => { item.UiImage = Image.FromStream(memstr); });
-                        }
+                        var memstr = new MemoryStream(chatFile.Source);
+                        Dispatcher.CurrentDispatcher.Invoke(() => { userUi.UiImage = Image.FromStream(memstr); });
                     }
                     else
                     {
                         Dispatcher.CurrentDispatcher.Invoke(() =>
                         {
-                            item.UiImage = Image.FromFile("../../Resources/DefaultPicture.jpg");
+                            userUi.UiImage = ImageHelper.GetDefImage();
+                        });
+                    }
+                }
+                else if (item is ChatGroupUiInfo groupUI)
+                {
+                    var group = UserServiceClient.GetChatGroup(groupUI.UniqueName);
+                    var groupChatFile = GlobalBase.FileServiceClient.getChatFileById(groupUI.ImageId);
+
+                    if (groupChatFile?.Source != null && groupChatFile?.Source?.Length != 0)
+                    {
+                        var memstr = new MemoryStream(groupChatFile.Source);
+                        Dispatcher.CurrentDispatcher.Invoke(() => { groupUI.UiImage = Image.FromStream(memstr); });
+                    }
+                    else
+                    {
+                        Dispatcher.CurrentDispatcher.Invoke(() =>
+                        {
+                            groupUI.UiImage = ImageHelper.GetDefGroupImage();
                         });
                     }
                 }
@@ -157,10 +172,9 @@ namespace Message.ViewModel
 
         private void ExecuteOnOpenProfile()
         {
-            if (SelectedContact is UserUiInfo)
+            if (SelectedContact is UserUiInfo userUI)
             {
-                UserUiInfo userUiInfo = SelectedContact as UserUiInfo;
-                User user = UserServiceClient.GetUserById(userUiInfo.UserId);
+                var user = UserServiceClient.GetUserById(userUI.UserId);
 
                 var wnd = new ContactProfileWindow(user);
                 wnd.Owner = (Window)view;
@@ -177,10 +191,9 @@ namespace Message.ViewModel
 
         private void ExecuteOnAddContactCommand()
         {
-            if (SelectedContact != null)
+            if (SelectedContact != null && SelectedContact is UserUiInfo userUI)
             {
-                UserUiInfo userUiInfo = SelectedContact as UserUiInfo;
-                User user = UserServiceClient.GetUserById(userUiInfo.UserId);
+                var user = UserServiceClient.GetUserById(userUI.UserId);
                 UserServiceClient.AddUserToUserContact(GlobalBase.CurrentUser.Id, user.Id);
 
                 UpdateContacts();
@@ -191,7 +204,7 @@ namespace Message.ViewModel
 
         private void UpdateContacts()
         {
-            List<UiInfo> uiInfos = UserServiceClient.GetAllContactsUiInfo(GlobalBase.CurrentUser.Id);
+            var uiInfos = UserServiceClient.GetAllContactsUiInfo(GlobalBase.CurrentUser.Id);
             GlobalBase.loadPictures(UserServiceClient, uiInfos);
 
             ContactsList = uiInfos;
