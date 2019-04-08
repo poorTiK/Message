@@ -112,7 +112,7 @@
                             <ContextMenu Background="{DynamicResource WindowBackGround}">
                                 <MenuItem Background="{DynamicResource MenuItem}"
                                           Foreground="{DynamicResource Foreground}"
-                                          Header="View profile"
+                                          Header="{DynamicResource ViewProfile}"
                                           Command="{Binding OpenProfile}"></MenuItem>
                             </ContextMenu>
                         </ListBox.ContextMenu>
