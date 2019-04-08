@@ -375,7 +375,10 @@ namespace Message.ViewModel
         {
             lock (_view.MessageList)
             {
-                Dispatcher.CurrentDispatcher.Invoke(() => { GlobalBase.AddMessageOnUi.Invoke(message); });
+                Dispatcher.CurrentDispatcher.Invoke(() => {
+                    _view.MessageList.Add(message);
+                    _view.UpdateMessageList();
+                });
             }
 
             GlobalBase.UpdateMessagesOnUI.Invoke();
