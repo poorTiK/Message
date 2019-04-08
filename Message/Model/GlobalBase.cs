@@ -21,6 +21,9 @@ namespace Message.Model
         public static FileServiceClient FileServiceClient { get; set; }
         public static Func<BaseMessage, bool> AddMessageOnUi { get; internal set; }
 
+        //monitors
+        public static object contactsMonitor = new object();
+
         static GlobalBase()
         {
             FileServiceClient = new FileServiceClient();
@@ -71,7 +74,10 @@ namespace Message.Model
 
         public static void loadPictures(UserServiceClient userServiceClient, List<UiInfo> uiInfos)
         {
-            uiInfos.ForEach(item => loadPicture(userServiceClient, item));
+            lock (contactsMonitor)
+            {
+                uiInfos.ForEach(uiInfo => loadPicture(userServiceClient, uiInfo));
+            }
         }
 
         public static void loadPicture(UserServiceClient userServiceClient, UiInfo uiInfos)

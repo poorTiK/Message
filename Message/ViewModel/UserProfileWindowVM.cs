@@ -206,11 +206,11 @@ namespace Message.ViewModel
                     GlobalBase.CurrentUser.Phone = UserPhone;
                     GlobalBase.CurrentUser.Email = UserEmail;
                     GlobalBase.CurrentUser.Bio = UserBio;
-                    var chatFile = GlobalBase.FileServiceClient.getChatFileById(GlobalBase.CurrentUser.ImageId);
                     res = UserServiceClient.AddOrUpdateUser(GlobalBase.CurrentUser);
 
                     if (_newAvatar != null)
                     {
+                        var chatFile = GlobalBase.FileServiceClient.getChatFileById(GlobalBase.CurrentUser.ImageId);
                         if (chatFile == null)
                         {
                             GlobalBase.CurrentUser.ImageId = GlobalBase.FileServiceClient.UploadFile(new FileService.ChatFile() { Source = CompressionHelper.CompressImage(_newAvatar) });
@@ -218,7 +218,7 @@ namespace Message.ViewModel
                         }
                         else
                         {
-                            GlobalBase.FileServiceClient.UpdateFileSource(chatFile.Id, CompressionHelper.CompressFile(_newAvatar));
+                            GlobalBase.FileServiceClient.UpdateFileSource(chatFile.Id, CompressionHelper.CompressImage(_newAvatar));
                         }
                     }
 

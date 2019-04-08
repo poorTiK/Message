@@ -234,7 +234,9 @@ namespace Message.ViewModel
             GlobalBase.CurrentUser = user;
             GlobalBase.UpdateMessagesOnUI += () =>
             {
-                Application.Current.Dispatcher.Invoke(new Action(() => { _view.UpdateMessageList(); }));
+                Application.Current.Dispatcher.Invoke(new Action(() => {
+                    _view.UpdateMessageList();
+                }));
             };
             GlobalBase.AddMessageOnUi += AddMessageOnUI;
 
@@ -262,15 +264,21 @@ namespace Message.ViewModel
 
                 Dispatcher.CurrentDispatcher.Invoke(() =>
                 {
-                    ContactsList.Clear();
-                    ContactsList = tempUiInfos;
+                    lock (GlobalBase.contactsMonitor)
+                    {
+                        ContactsList.Clear();
+                        ContactsList = tempUiInfos;
+                    }
                 });
 
                 if (temp != null)
                 {
                     Dispatcher.CurrentDispatcher.Invoke(() =>
                     {
-                        SelectedContact = ContactsList.FirstOrDefault(ct => ct.UniqueName == temp.UniqueName);
+                        lock (GlobalBase.contactsMonitor)
+                        {
+                            SelectedContact = ContactsList.FirstOrDefault(ct => ct.UniqueName == temp.UniqueName);
+                        }
                     });
                 }
             });
@@ -316,7 +324,9 @@ namespace Message.ViewModel
                     }
                 }).ContinueWith((task =>
                 {
-                    Application.Current.Dispatcher.Invoke(new Action(() => { _view.UpdateMessageList(); }));
+                    Application.Current.Dispatcher.Invoke(new Action(() => {
+                        GlobalBase.UpdateMessagesOnUI();
+                    }));
                 }));
             }
         }
@@ -365,7 +375,7 @@ namespace Message.ViewModel
         {
             lock (_view.MessageList)
             {
-                Dispatcher.CurrentDispatcher.Invoke(() => { _view.MessageList.Add(message); });
+                Dispatcher.CurrentDispatcher.Invoke(() => { GlobalBase.AddMessageOnUi.Invoke(message); });
             }
 
             GlobalBase.UpdateMessagesOnUI.Invoke();
@@ -564,7 +574,7 @@ namespace Message.ViewModel
                     {
                         var lastMessage = UserServiceClient.GetLastMessage();
                         _view.MessageList.Add(lastMessage);
-                        _view.UpdateMessageList();
+                        GlobalBase.UpdateMessagesOnUI();
                     });
                 }
                 else if (messagesWithFile != null)
@@ -676,10 +686,10 @@ namespace Message.ViewModel
 
                             if (GlobalBase.Base64Decode(mes.Text).Contains(DialogSearchStr))
                             {
-                                _view.MessageList.Add(message);
+                                GlobalBase.AddMessageOnUi.Invoke(message);
                             }
                         }
-                        _view.UpdateMessageList();
+                        GlobalBase.UpdateMessagesOnUI();
                     }
                 }
             }
