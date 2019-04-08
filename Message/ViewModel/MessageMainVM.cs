@@ -1,10 +1,4 @@
-﻿using Message.Compression;
-using Message.Interfaces;
-using Message.Model;
-using Message.UserServiceReference;
-using Microsoft.Win32;
-using Prism.Commands;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -15,6 +9,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
+using Message.Compression;
+using Message.Interfaces;
+using Message.Model;
+using Message.UserServiceReference;
+using Microsoft.Win32;
+using Prism.Commands;
+using User = Message.UserServiceReference.User;
 
 namespace Message.ViewModel
 {
@@ -119,7 +120,10 @@ namespace Message.ViewModel
             get { return _selectedContact; }
             set
             {
-                SetProperty(ref _selectedContact, value, () => { SelectedContactChanged(); });
+                if (value != null)
+                {
+                    SetProperty(ref _selectedContact, value, () => { SelectedContactChanged(); });
+                }
             }
         }
 
@@ -175,7 +179,6 @@ namespace Message.ViewModel
             set { SetProperty(ref _fileAmount, value); }
         }
 
-
         private DelegateCommand _onContactsCommand;
 
         public DelegateCommand ContactsCommand =>
@@ -223,18 +226,23 @@ namespace Message.ViewModel
         public DelegateCommand CreateChatGroup =>
             _createChatGroup ?? (_createChatGroup = new DelegateCommand(ExecuteOnCreateChatGroup));
 
-
         public MessageMainVM(IMessaging View, User user) : base()
         {
             _view = View;
+            _view.ScrolledToTop += OnScrolledToTop;
 
             GlobalBase.CurrentUser = user;
-            GlobalBase.UpdateMessagesOnUI += () => 
+            GlobalBase.UpdateMessagesOnUI += () =>
             {
-                Application.Current.Dispatcher.Invoke(new Action(() => { _view.UpdateMessageList(); }));
+                Application.Current.Dispatcher.Invoke(new Action(() => {
+                    _view.UpdateMessageList();
+                }));
             };
+            GlobalBase.AddMessageOnUi += AddMessageOnUI;
+
             GlobalBase.UpdateContactList += UpdateContactList;
             GlobalBase.RemoveMessageOnUI += DeleteMessageOnUI;
+            GlobalBase.UpdateProfileUi += SetAvatarForUI;
 
             SetAvatarForUI();
             UpdateContactList();
@@ -249,22 +257,28 @@ namespace Message.ViewModel
         {
             Task.Run(() =>
             {
-                UiInfo temp = SelectedContact;
+                var temp = SelectedContact;
 
-                List<UiInfo> tempUiInfos = UserServiceClient.GetAllContactsUiInfo(GlobalBase.CurrentUser.Id);
+                var tempUiInfos = UserServiceClient.GetAllContactsUiInfo(GlobalBase.CurrentUser.Id);
                 GlobalBase.loadPictures(UserServiceClient, tempUiInfos);
 
                 Dispatcher.CurrentDispatcher.Invoke(() =>
                 {
-                    ContactsList.Clear();
-                    ContactsList = tempUiInfos;
+                    lock (GlobalBase.contactsMonitor)
+                    {
+                        ContactsList.Clear();
+                        ContactsList = tempUiInfos;
+                    }
                 });
 
                 if (temp != null)
                 {
                     Dispatcher.CurrentDispatcher.Invoke(() =>
                     {
-                        SelectedContact = ContactsList.FirstOrDefault(ct => ct.UniqueName == temp.UniqueName);
+                        lock (GlobalBase.contactsMonitor)
+                        {
+                            SelectedContact = ContactsList.FirstOrDefault(ct => ct.UniqueName == temp.UniqueName);
+                        }
                     });
                 }
             });
@@ -289,7 +303,7 @@ namespace Message.ViewModel
 
                     GlobalBase.loadPictures(UserServiceClient, ContactsList);
 
-                    List<BaseMessage> res = new List<BaseMessage>();
+                    var res = new List<BaseMessage>();
                     if (SelectedContact is UserUiInfo)
                     {
                         res.AddRange(UserServiceClient.GetUserMessages(GlobalBase.CurrentUser.Id,
@@ -310,14 +324,21 @@ namespace Message.ViewModel
                     }
                 }).ContinueWith((task =>
                 {
-                    Application.Current.Dispatcher.Invoke(new Action(() => { _view.UpdateMessageList(); }));
+                    Application.Current.Dispatcher.Invoke(new Action(() => {
+                        GlobalBase.UpdateMessagesOnUI();
+                    }));
                 }));
             }
         }
 
-        private void UpdateMessage(BaseMessage message, Func<BaseMessage, bool> updateStrategy)
+        private void UpdateMessages(BaseMessage message, Func<BaseMessage, bool> updateStrategy)
         {
-            User sender = UserServiceClient.GetAllUsers().FirstOrDefault(x => x.Id == message.SenderId);
+            var sender = UserServiceClient.GetAllUsers().FirstOrDefault(x => x.Id == message.SenderId);
+
+            if (message is GroupMessage gMes)
+            {
+                gMes.SenderName = sender.FirstName;
+            }
 
             if (sender.Id != (SelectedContact as UserUiInfo)?.UserId)
             {
@@ -330,40 +351,37 @@ namespace Message.ViewModel
 
             if (message is UserMessage)
             {
-                if (ContactsList.Where(c => c is UserUiInfo).FirstOrDefault(x => (x as UserUiInfo).UserId == sender.Id) == null)
-                {
-                    UserServiceClient.AddUserToUserContactAsync(GlobalBase.CurrentUser.Id, sender.Id).ContinueWith(task =>
-                    {
-                        UpdateContactList();
-                    });
-                }
-                else if ((SelectedContact is UserUiInfo) && ((SelectedContact as UserUiInfo).UserId == sender.Id))
+                if ((SelectedContact is UserUiInfo) && ((SelectedContact as UserUiInfo).UserId == sender.Id))
                 {
                     updateStrategy(message);
                 }
             }
             else if (message is GroupMessage)
             {
-                if (ContactsList.Where(c => c is ChatGroupUiInfo).FirstOrDefault(x => (x as ChatGroupUiInfo).ChatGroupId == (message as GroupMessage).ChatGroupId) == null)
-                {
-                    UserServiceClient.AddUserToChatGroupContactAsync((message as GroupMessage).ChatGroupId, GlobalBase.CurrentUser.Id).ContinueWith(task =>
-                    {
-                        UpdateContactList();
-                    });
-                }
-                else if ((SelectedContact is ChatGroupUiInfo) && ((SelectedContact as ChatGroupUiInfo).ChatGroupId == (message as GroupMessage).ChatGroupId))
+                if ((SelectedContact is ChatGroupUiInfo) && ((SelectedContact as ChatGroupUiInfo).ChatGroupId == (message as GroupMessage).ChatGroupId))
                 {
                     updateStrategy(message);
                 }
             }
         }
 
+        private void OnScrolledToTop()
+        {
+            //TODO
+        }
+
         //UI update
         private bool AddMessageOnUI(BaseMessage message)
         {
-            _view.MessageList.Add(message);
-            GlobalBase.UpdateMessagesOnUI.Invoke();
+            lock (_view.MessageList)
+            {
+                Dispatcher.CurrentDispatcher.Invoke(() => {
+                    _view.MessageList.Add(message);
+                    _view.UpdateMessageList();
+                });
+            }
 
+            GlobalBase.UpdateMessagesOnUI.Invoke();
             return true;
         }
 
@@ -397,12 +415,13 @@ namespace Message.ViewModel
         {
             Task.Run(() =>
             {
-                Dispatcher.CurrentDispatcher.Invoke(() => {
+                Dispatcher.CurrentDispatcher.Invoke(() =>
+                {
                     Images = GlobalBase.getUsersAvatar(GlobalBase.CurrentUser);
                 });
             });
         }
-        
+
         //executes for commands
         private void ExecuteOnAddFile()
         {
@@ -428,11 +447,13 @@ namespace Message.ViewModel
                 var user = UserServiceClient.GetUserById(userUiInfo.UserId);
                 var wnd = new ContactProfileWindow(user);
                 wnd.Owner = (Window)_view;
-                wnd.ShowDialog();
+                wnd.Show();
             }
-            else if (SelectedContact is ChatGroupUiInfo)
+            else if (SelectedContact is ChatGroupUiInfo chatGroupUiInfo)
             {
-                //TODO
+                var wnd = new EditGroupWindow(chatGroupUiInfo);
+                wnd.Owner = (Window)_view;
+                wnd.Show();
             }
         }
 
@@ -444,7 +465,7 @@ namespace Message.ViewModel
                 List<BaseMessage> messagesWithFile = null;
                 if (SelectedContact is UserUiInfo)
                 {
-                    UserUiInfo userUiInfo = SelectedContact as UserUiInfo;
+                    var userUiInfo = SelectedContact as UserUiInfo;
                     if (FilesPath == null)
                     {
                         message = new UserMessage()
@@ -472,7 +493,6 @@ namespace Message.ViewModel
                                 ReceiverId = userUiInfo.UserId,
                             };
                             UserServiceClient.SendMessageAsync(tempMes).ContinueWith(task => _view.MessageList.Add(UserServiceClient.GetLastMessage()));
-                           
                         }
                         else
                         {
@@ -509,7 +529,7 @@ namespace Message.ViewModel
                 }
                 else if (SelectedContact is ChatGroupUiInfo)
                 {
-                    ChatGroupUiInfo userUiInfo = SelectedContact as ChatGroupUiInfo;
+                    var userUiInfo = SelectedContact as ChatGroupUiInfo;
                     if (FilesPath == null)
                     {
                         message = new GroupMessage()
@@ -553,10 +573,11 @@ namespace Message.ViewModel
 
                 if (FilesPath == null)
                 {
-                    UserServiceClient.SendMessageAsync(message).ContinueWith(task => {
-                        BaseMessage lastMessage = UserServiceClient.GetLastMessage();
+                    UserServiceClient.SendMessageAsync(message).ContinueWith(task =>
+                    {
+                        var lastMessage = UserServiceClient.GetLastMessage();
                         _view.MessageList.Add(lastMessage);
-                        _view.UpdateMessageList();
+                        GlobalBase.UpdateMessagesOnUI();
                     });
                 }
                 else if (messagesWithFile != null)
@@ -564,19 +585,12 @@ namespace Message.ViewModel
                     foreach (var fileMessage in messagesWithFile)
                     {
                         UserServiceClient.SendMessage(fileMessage);
-                        //var mes = UserServiceClient.GetUserMessages(GlobalBase.CurrentUser.Id,
-                        //    (SelectedContact as UserUiInfo).UserId, 1);
-                        //GlobalBase.PhotoServiceClient.SetFileToMessage(mes.Last().Id, fileMessage.Text);
-                        //fileMessage.Id = mes.Last().Id;
-                        //fileMessage.Text = null;
                         _view.MessageList.Add(UserServiceClient.GetLastMessage());
                     }
                 }
 
                 FilesPath = null;
                 FileAmount = 0;
-
-                //_view.UpdateMessageList();
 
                 MessageText = string.Empty;
 
@@ -675,10 +689,10 @@ namespace Message.ViewModel
 
                             if (GlobalBase.Base64Decode(mes.Text).Contains(DialogSearchStr))
                             {
-                                _view.MessageList.Add(message);
+                                GlobalBase.AddMessageOnUi.Invoke(message);
                             }
                         }
-                        _view.UpdateMessageList();
+                        GlobalBase.UpdateMessagesOnUI();
                     }
                 }
             }
@@ -691,7 +705,7 @@ namespace Message.ViewModel
         //service callbacks
         public override void ReceiveMessage(BaseMessage message)
         {
-            UpdateMessage(message, AddMessageOnUI);
+            UpdateMessages(message, AddMessageOnUI);
         }
 
         public override void UserLeave(User user)
@@ -713,7 +727,56 @@ namespace Message.ViewModel
 
         public override void OnMessageEdited(BaseMessage message)
         {
-            UpdateMessage(message, UppdateMessageOnUI);
+            UpdateMessages(message, UppdateMessageOnUI);
+        }
+
+        public override void OnNewContactAdded(UiInfo newContact)
+        {
+            UiInfo foundedUiInfo = ContactsList.FirstOrDefault(c => c.UniqueName == newContact.UniqueName);
+
+            if (foundedUiInfo == null)
+            {
+                List<UiInfo> temp = new List<UiInfo>();
+                temp.AddRange(ContactsList);
+
+                GlobalBase.loadPicture(UserServiceClient, newContact);
+                temp.Add(newContact);
+
+                ContactsList = temp;
+            }
+        }
+
+        public override void OnContactRemoved(UiInfo newContact)
+        {
+            UiInfo foundedUiInfo = ContactsList.FirstOrDefault(c => c.UniqueName == newContact.UniqueName);
+
+            if (foundedUiInfo != null)
+            {
+                List<UiInfo> temp = new List<UiInfo>();
+                temp.AddRange(ContactsList);
+
+                ContactsList.Remove(foundedUiInfo);
+                ContactsList = temp;
+            }
+        }
+
+        public override void OnEntityChanged(UiInfo changedEntity)
+        {
+            if (changedEntity.UniqueName == GlobalBase.CurrentUser.Login)
+            {
+                GlobalBase.UpdateProfileUi.Invoke();
+            }
+            else
+            {
+                foreach(UiInfo uiInfo in ContactsList)
+                {
+                    if (uiInfo.UniqueName == changedEntity.UniqueName)
+                    {
+                        GlobalBase.UpdateContactList();
+                        break;
+                    }
+                }
+            }
         }
 
     }

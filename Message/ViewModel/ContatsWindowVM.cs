@@ -78,6 +78,7 @@ namespace Message.ViewModel
                         {
                             MemoryStream memstr = new MemoryStream(chatFile.Source);
                             Dispatcher.CurrentDispatcher.Invoke(() => { uiInfo.UiImage = Image.FromStream(memstr); });
+                            
                         }
                         else
                         {
@@ -121,8 +122,9 @@ namespace Message.ViewModel
 
                     if (chatFile?.Source != null && chatFile?.Source?.Length != 0)
                     {
-                        MemoryStream memstr = new MemoryStream(chatFile.Source);
-                        Dispatcher.CurrentDispatcher.Invoke(() => { item.UiImage = Image.FromStream(memstr); });
+                        using (MemoryStream memstr = new MemoryStream(chatFile.Source)) {
+                            Dispatcher.CurrentDispatcher.Invoke(() => { item.UiImage = Image.FromStream(memstr); });
+                        }
                     }
                     else
                     {
@@ -194,6 +196,8 @@ namespace Message.ViewModel
 
             ContactsList = uiInfos;
             ManageControls();
+
+            GlobalBase.UpdateContactList();
         }
 
         private void ManageControls()

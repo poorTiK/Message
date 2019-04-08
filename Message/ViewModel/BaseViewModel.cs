@@ -1,5 +1,6 @@
 ﻿using Message.UserServiceReference;
 using System.ServiceModel;
+using System;
 
 namespace Message.ViewModel
 {
@@ -16,12 +17,24 @@ namespace Message.ViewModel
             UserServiceClient = new UserServiceClient(usersSite);
         }
 
+        public virtual void OnContactRemoved(UiInfo newContact)
+        {
+            //throw new NotImplementedException();
+        }
+
+
+
         public virtual void OnMessageEdited(BaseMessage message)
         {
             //throw new NotImplementedException();
         }
 
         public virtual void OnMessageRemoved(BaseMessage message)
+        {
+            //throw new NotImplementedException();
+        }
+
+        public virtual void OnNewContactAdded(UiInfo newContact)
         {
             //throw new NotImplementedException();
         }
@@ -40,5 +53,11 @@ namespace Message.ViewModel
         {
             //throw new NotImplementedException();
         }
+
+        public virtual void OnEntityChanged(UiInfo changedEntity)
+        {
+            //throw new NotImplementedException();
+        }
+
     }
 }

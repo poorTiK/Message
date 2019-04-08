@@ -28,8 +28,7 @@ namespace Message.AdditionalItems
         private static CustomMessageBox _messageBox;
         private static MessageBoxResult _result = MessageBoxResult.No;
 
-        public static MessageBoxResult Show
-        (string caption, string msg, MessageBoxType type)
+        public static MessageBoxResult Show(string caption, string msg, MessageBoxType type)
         {
             switch (type)
             {

@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.ServiceModel;
 using System.Threading;
+using Microsoft.EntityFrameworkCore;
 
 namespace ServerWCF.Services
 {
@@ -18,6 +19,12 @@ namespace ServerWCF.Services
         private static readonly string successResult = "";
 
         private static List<CallbackData> usersOnline = new List<CallbackData>();
+
+        private class ContactInfo
+        {
+            public UiInfo Contact { get; set; }
+            public CallbackData CallbackData { get; set; }
+        }
 
         private class MessageInfo
         {
@@ -39,6 +46,7 @@ namespace ServerWCF.Services
                 try
                 {
                     UserToUserContact contact = new UserToUserContact();
+                    UserToUserContact reverseContact = new UserToUserContact();
 
                     User ownerFromDb = userContext.Users.FirstOrDefault(dbUser => dbUser.Id == id_owner);
                     User ownedFromDb = userContext.Users.FirstOrDefault(dbUser => dbUser.Id == id_owned);
@@ -46,13 +54,19 @@ namespace ServerWCF.Services
                     contact.UserOwner = ownerFromDb;
                     contact.UserOwned = ownedFromDb;
 
+                    reverseContact.UserOwner = ownedFromDb;
+                    reverseContact.UserOwned = ownerFromDb;
+
                     if (userContext.Contacts.FirstOrDefault(c => ((c.UserOwnerId == id_owner) && ((c as UserToUserContact).UserOwnedId == id_owned))) != null)
                     {
                         return false;
                     }
 
                     userContext.Contacts.Add(contact);
+                    userContext.Contacts.Add(reverseContact);
                     userContext.SaveChanges();
+
+                    AddNewContactCallback(new UserUiInfo(ownerFromDb), ownedFromDb);
 
                     return true;
                 }
@@ -71,7 +85,7 @@ namespace ServerWCF.Services
                 {
                     UserToGroupContact contact = new UserToGroupContact();
 
-                    ChatGroup dbChatGroup = userContext.ChatGroups.FirstOrDefault(chatGroup => chatGroup.Id == chatGroupId);
+                    ChatGroup dbChatGroup = userContext.ChatGroups.Include("Participants").FirstOrDefault(chatGroup => chatGroup.Id == chatGroupId);
                     User ownedFromDb = userContext.Users.FirstOrDefault(dbUser => dbUser.Id == participantId);
 
                     contact.ChatGroup = dbChatGroup;
@@ -85,11 +99,31 @@ namespace ServerWCF.Services
                     userContext.Contacts.Add(contact);
                     userContext.SaveChanges();
 
+                    ChatGroupUiInfo groupInfo = new ChatGroupUiInfo(dbChatGroup);
+                    List<int> userIds = dbChatGroup.Participants.Select(c => c.UserOwnerId).ToList();
+                    List<User> usersFromGroup = userContext.Users.Where(u => userIds.Contains(u.Id)).ToList();
+
+                    foreach (User userToNotify in usersFromGroup)
+                    {
+                        AddNewContactCallback(groupInfo, userToNotify);
+                    }
+
                     return true;
                 }
                 catch (Exception)
                 {
                     return false;
+                }
+            }
+        }
+
+        private void AddNewContactCallback(UiInfo contactCreator, User addedContact)
+        {
+            foreach (CallbackData innerCallbackData in usersOnline)
+            {
+                if (innerCallbackData.User.Id == addedContact.Id)
+                {
+                    innerCallbackData.UserCallback.OnNewContactAdded(contactCreator);
                 }
             }
         }
@@ -111,11 +145,16 @@ namespace ServerWCF.Services
                         {
                             userContext.Contacts.Remove(contact);
                             userContext.SaveChanges();
+
+
+                            UserUiInfo uiInfo = new UserUiInfo(ownerFromDb);
+                            RemoveContactCallback(uiInfo, ownedFromDb);
+
                             return true;
                         }
                     }
 
-                    return true;
+                    return false;
                 }
                 catch (Exception)
                 {
@@ -132,12 +171,12 @@ namespace ServerWCF.Services
                 {
                     List<BaseContact> contacts = userContext.Contacts.Include("UserOwner").ToList();
 
-                    ChatGroup ownerFromDb = userContext.ChatGroups.Where(cg => cg.Id == chatGroupId).FirstOrDefault();
+                    ChatGroup dbChatGroup = userContext.ChatGroups.Where(cg => cg.Id == chatGroupId).FirstOrDefault();
                     User ownedFromDb = userContext.Users.Where(u => u.Id == participantId).FirstOrDefault();
 
                     foreach (BaseContact contact in contacts)
                     {
-                        if (contact.UserOwnerId == ownerFromDb.Id && (contact as UserToGroupContact).ChatGroupId == chatGroupId)
+                        if (contact.UserOwnerId == dbChatGroup.Id && (contact as UserToGroupContact).ChatGroupId == chatGroupId)
                         {
                             userContext.Contacts.Remove(contact);
                             userContext.SaveChanges();
@@ -145,11 +184,31 @@ namespace ServerWCF.Services
                         }
                     }
 
+                    ChatGroupUiInfo groupInfo = new ChatGroupUiInfo(dbChatGroup);
+                    List<int> userIds = dbChatGroup.Participants.Select(c => c.UserOwnerId).ToList();
+                    List<User> usersFromGroup = userContext.Users.Where(u => userIds.Contains(u.Id)).ToList();
+
+                    foreach (User userToNotify in usersFromGroup)
+                    {
+                        RemoveContactCallback(groupInfo, userToNotify);
+                    }
+
                     return true;
                 }
                 catch (Exception)
                 {
                     return false;
+                }
+            }
+        }
+
+        private void RemoveContactCallback(UiInfo contactRemover, User removedContact)
+        {
+            foreach (CallbackData innerCallbackData in usersOnline)
+            {
+                if (innerCallbackData.User.Id == removedContact.Id)
+                {
+                    innerCallbackData.UserCallback.OnContactRemoved(contactRemover);
                 }
             }
         }
@@ -212,7 +271,7 @@ namespace ServerWCF.Services
                     ChatGroup chatGroup = db.ChatGroups.Include("Participants").Where(c => c.Id == chatGroupId).First();
 
                     List<UiInfo> result = new List<UiInfo>();
-                    result.AddRange(chatGroup.Participants.Select(cg => new UserUiInfo( GetUserById(cg.UserOwnerId))).ToList());
+                    result.AddRange(chatGroup.Participants.Select(cg => new UserUiInfo(GetUserById(cg.UserOwnerId))).ToList());
 
                     return result;
                 }
@@ -236,28 +295,31 @@ namespace ServerWCF.Services
         //chatGroups
         public string AddOrUpdateChatGroup(ChatGroup chatGroupToAdd)
         {
-            using (UserContext userContext = new UserContext())
+            using (var userContext = new UserContext())
             {
                 try
                 {
-                    ChatGroup dbChatGroup = userContext.ChatGroups.FirstOrDefault(cg => cg.Name == chatGroupToAdd.Name);
+                    var dbChatGroup = userContext.ChatGroups.FirstOrDefault(cg => cg.Id == chatGroupToAdd.Id);
 
                     if (dbChatGroup != null)
                     {
-                        dbChatGroup.Participants = chatGroupToAdd.Participants;
+                        dbChatGroup.Name = chatGroupToAdd.Name;
+                        dbChatGroup.ImageId = chatGroupToAdd.ImageId;
+                        EntityChangedCallback(new ChatGroupUiInfo(dbChatGroup));
+                        //dbChatGroup.Participants = chatGroupToAdd.Participants;
                     }
                     else
                     {
-                        string validationInfo = Validate(chatGroupToAdd);
+                        var validationInfo = Validate(chatGroupToAdd);
                         if (validationInfo != successResult)
                         {
                             return validationInfo;
                         }
 
                         userContext.ChatGroups.Add(chatGroupToAdd);
-                        userContext.SaveChanges();
                     }
 
+                    userContext.SaveChanges();
                     return successResult;
                 }
                 catch (Exception)
@@ -326,6 +388,8 @@ namespace ServerWCF.Services
                         dbUser.Phone = user.Phone;
                         dbUser.ImageId = user.ImageId;
                         dbUser.Password = user.Password;
+
+                        EntityChangedCallback(new UserUiInfo(dbUser));
                     }
                     else
                     {
@@ -821,13 +885,6 @@ namespace ServerWCF.Services
                     userContext.Messages.Add(message);
                     userContext.SaveChanges();
 
-                    //if (message.Type == "DATA")
-                    //{
-                    //    var serv = new PhotoService();
-
-                    //    serv.SetFileToMessage(userContext.Messages.Last().Id, message.Content);
-                    //}
-
                     MessageInfo messageInfo = new MessageInfo();
                     messageInfo.Message = message;
                     messageInfo.CallbackData = callbackData;
@@ -933,6 +990,14 @@ namespace ServerWCF.Services
             {
                 int maxId = userContext.Messages.Max(m => m.Id);
                 return userContext.Messages.FirstOrDefault(m => m.Id == maxId);
+            }
+        }
+
+        private void EntityChangedCallback(UiInfo changedEntity)
+        {
+            foreach (CallbackData innerCallbackData in usersOnline)
+            {
+                innerCallbackData.UserCallback.OnEntityChanged(changedEntity);
             }
         }
     }

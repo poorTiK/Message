@@ -238,6 +238,17 @@ namespace Message.ViewModel
                     var user = UserServiceClient.GetUser(LoginText, AESEncryptor.encryptPassword(Password));
                     if (user != null)
                     {
+                        if (user.Status == "online")
+                        {
+                            Application.Current.Dispatcher.Invoke(() =>
+                            {
+                                CustomMessageBox.Show(
+                                Translations.GetTranslation()["Error"].ToString(),
+                                Translations.GetTranslation()["UserAlreadyOnline"].ToString(),
+                                MessageBoxType.Error);
+                            });
+                            return;
+                        }
                         _serializeUser.SerializeUser(user);
                         Application.Current.Dispatcher.Invoke(() =>
                         {

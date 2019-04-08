@@ -153,12 +153,14 @@ namespace Message.ViewModel
         private void ExecuteOnAddContact()
         {
             UserServiceClient.AddUserToUserContact(GlobalBase.CurrentUser.Id, Profile.Id);
+            GlobalBase.UpdateContactList();
             ManageControls();
         }
 
         private void ExecuteOnDeleteContact()
         {
             UserServiceClient.RemoveUserToUserContact(GlobalBase.CurrentUser.Id, Profile.Id);
+            GlobalBase.UpdateContactList();
             ManageControls();
         }
 

@@ -35,7 +35,7 @@
                             Height="24"
                             Width="24" />
                     </Button>
-                    <TextBlock Grid.Row="1" Name="MessageText" Grid.Column="1" HorizontalAlignment="Left" Padding="15,5,10,5" TextWrapping="Wrap" Foreground="{DynamicResource MessageForeground}" FontSize="14"> Hello my dear friend</TextBlock>
+                    <TextBlock Grid.Row="1" Name="MessageText" Grid.Column="1" HorizontalAlignment="Left" Padding="5,5,10,5" TextWrapping="Wrap" Foreground="{DynamicResource MessageForeground}" FontSize="14"> Hello my dear friend</TextBlock>
                     <TextBlock Name="SendTime" Grid.Column="1" Margin="0,0,15,0" Grid.Row="2" FontWeight="Bold" Foreground="{DynamicResource MessageTime}" VerticalAlignment="Bottom" HorizontalAlignment="Right">20:11</TextBlock>
                 </Grid>
             </Border>
@@ -45,8 +45,6 @@
                               Foreground="White" Command="{Binding Copy}"></MenuItem>
                     <MenuItem Header="{DynamicResource Forvard}" Background="{DynamicResource MenuItem}"
                               Foreground="White" Command="{Binding Forward}"></MenuItem>
-                    <MenuItem Header="{DynamicResource DeleteСontact}" Background="{DynamicResource MenuItem}"
-                              Foreground="White" Command="{Binding Delete}"></MenuItem>
                 </ContextMenu>
             </Grid.ContextMenu>
         </Grid>

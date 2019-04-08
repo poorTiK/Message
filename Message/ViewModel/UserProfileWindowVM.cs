@@ -177,6 +177,7 @@ namespace Message.ViewModel
                 _newAvatar = File.ReadAllBytes(FilePath);
                 MemoryStream memstr = new MemoryStream(_newAvatar);
                 Dispatcher.CurrentDispatcher.Invoke(() => { Images = Image.FromStream(memstr); });
+                
                 IsNewChanges = true;
             }
         }
@@ -205,11 +206,11 @@ namespace Message.ViewModel
                     GlobalBase.CurrentUser.Phone = UserPhone;
                     GlobalBase.CurrentUser.Email = UserEmail;
                     GlobalBase.CurrentUser.Bio = UserBio;
-                    var chatFile = GlobalBase.FileServiceClient.getChatFileById(GlobalBase.CurrentUser.ImageId);
                     res = UserServiceClient.AddOrUpdateUser(GlobalBase.CurrentUser);
 
                     if (_newAvatar != null)
                     {
+                        var chatFile = GlobalBase.FileServiceClient.getChatFileById(GlobalBase.CurrentUser.ImageId);
                         if (chatFile == null)
                         {
                             GlobalBase.CurrentUser.ImageId = GlobalBase.FileServiceClient.UploadFile(new FileService.ChatFile() { Source = CompressionHelper.CompressImage(_newAvatar) });
@@ -217,7 +218,7 @@ namespace Message.ViewModel
                         }
                         else
                         {
-                            GlobalBase.FileServiceClient.UpdateFileSource(chatFile.Id, CompressionHelper.CompressFile(_newAvatar));
+                            GlobalBase.FileServiceClient.UpdateFileSource(chatFile.Id, CompressionHelper.CompressImage(_newAvatar));
                         }
                     }
 
@@ -240,21 +241,18 @@ namespace Message.ViewModel
 
         private bool Validate()
         {
-            string message = string.Empty;
+            var message = string.Empty;
             if (string.IsNullOrWhiteSpace(UserName))
             {
                 message = Application.Current.Resources.MergedDictionaries[4]["FirstNameValid"].ToString();
-                return false;
             }
             else if (string.IsNullOrWhiteSpace(UserLastName))
             {
                 message = Application.Current.Resources.MergedDictionaries[4]["LastNameValid"].ToString();
-                return false;
             }
             else if (string.IsNullOrWhiteSpace(UserEmail) || UserEmail == string.Empty || !Regex.IsMatch(UserEmail, @"\A(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)\Z", RegexOptions.IgnoreCase))
             {
                 message = Application.Current.Resources.MergedDictionaries[4]["EmailEmpty"].ToString();
-                return false;
             }
 
             if (message != string.Empty)

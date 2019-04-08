@@ -12,7 +12,7 @@
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         Name="MessageMainWindow"
-        MinWidth="450" MinHeight="600" Height="601" Width="700"
+        MinWidth="699" MinHeight="600" Height="601" Width="700"
              WindowStartupLocation="CenterScreen" OpacityMask="Black"
         BorderThickness="0" Background="Black" AllowsTransparency="False" WindowStyle="None" BorderBrush="Black">
     <WindowChrome.WindowChrome>
@@ -140,14 +140,14 @@
                                               Foreground="{DynamicResource Foreground}"
                                               Header="{DynamicResource ViewProfile}"
                                               Command="{Binding ViewProfile}"></MenuItem>
-                                    <MenuItem Background="{DynamicResource MenuItem}"
+                                    <!--<MenuItem Background="{DynamicResource MenuItem}"
                                               Foreground="{DynamicResource Foreground}"
-                                              Header="{DynamicResource MarkAsUread}"></MenuItem>
-                                    <MenuItem Background="{DynamicResource MenuItem}"
+                                              Header="{DynamicResource MarkAsUread}"></MenuItem>-->
+                                    <!--<MenuItem Background="{DynamicResource MenuItem}"
                                               Foreground="{DynamicResource Foreground}"
                                               Header="{DynamicResource ClearConversation}"></MenuItem>
                                     <MenuItem Background="{DynamicResource MenuItem}" Foreground="Salmon"
-                                              Header="{DynamicResource BlockUser}"></MenuItem>
+                                              Header="{DynamicResource BlockUser}"></MenuItem>-->
                                 </ContextMenu>
                             </ListBox.ContextMenu>
                             <ListBox.ItemTemplate>
@@ -194,7 +194,7 @@
                         <ColumnDefinition Width="3*" />
                         <ColumnDefinition Width="38*" />
                     </Grid.ColumnDefinitions>
-                    <ScrollViewer Name="ScrollV" IsHitTestVisible="True" Grid.ColumnSpan="2" VerticalAlignment="Stretch">
+                    <ScrollViewer Name="ScrollV" IsHitTestVisible="True" Grid.ColumnSpan="2" VerticalAlignment="Stretch" ScrollChanged="ScrollV_OnScrollChanged">
                         <StackPanel Name="MessageControl" Orientation="Vertical" VerticalAlignment="Bottom">
                         </StackPanel>
                     </ScrollViewer>
@@ -266,7 +266,7 @@
                                     <ColumnDefinition Width="35"></ColumnDefinition>
                                     <ColumnDefinition Width="Auto"></ColumnDefinition>
                                 </Grid.ColumnDefinitions>
-                                        <materialDesign:PackIcon Kind="AccountSupervisor" Grid.Column="0" Width="20" Height="20" Foreground="Gray" Margin="5" VerticalAlignment="Center" />
+                                <materialDesign:PackIcon Kind="AccountSupervisor" Grid.Column="0" Width="20" Height="20" Foreground="Gray" Margin="5" VerticalAlignment="Center" />
                                 <TextBlock Text="{DynamicResource Contacts}" Grid.Column="1" FontSize="15" Margin="10" />
                             </Grid>
                         </ListViewItem>

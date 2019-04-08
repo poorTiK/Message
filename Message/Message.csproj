@@ -107,6 +107,7 @@
     <Reference Include="Microsoft.Extensions.Primitives, Version=2.2.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Extensions.Primitives.2.2.0\lib\netstandard2.0\Microsoft.Extensions.Primitives.dll</HintPath>
     </Reference>
+    <Reference Include="netstandard, Version=2.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51" />
     <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -185,6 +186,7 @@
     <Compile Include="AdditionalItems\CustomMessageBox.xaml.cs">
       <DependentUpon>CustomMessageBox.xaml</DependentUpon>
     </Compile>
+    <Compile Include="AdditionalItems\DwmDropShadow.cs" />
     <Compile Include="ChatSettingWindow.xaml.cs">
       <DependentUpon>ChatSettingWindow.xaml</DependentUpon>
     </Compile>
@@ -192,11 +194,6 @@
     <Compile Include="Compression\ICompressStrategy.cs" />
     <Compile Include="Compression\ImageCompressStrategy.cs" />
     <Compile Include="Connected Services\FileService\Reference.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Compile>
-    <Compile Include="Connected Services\PhotoServiceReference\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
@@ -214,6 +211,9 @@
     </Compile>
     <Compile Include="CreateChatGroupWnd.xaml.cs">
       <DependentUpon>CreateChatGroupWnd.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="EditGroupWindow.xaml.cs">
+      <DependentUpon>EditGroupWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Encryption\AESEncryptor.cs" />
     <Compile Include="ForgotPassWindow.xaml.cs">
@@ -242,6 +242,9 @@
     <Compile Include="ReceiveMessage.xaml.cs">
       <DependentUpon>ReceiveMessage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="SelectUsersWindow.xaml.cs">
+      <DependentUpon>SelectUsersWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="SendMessage.xaml.cs">
       <DependentUpon>SendMessage.xaml</DependentUpon>
     </Compile>
@@ -258,12 +261,14 @@
     <Compile Include="ViewModel\ContactProfileWindowVM.cs" />
     <Compile Include="ViewModel\ContatsWindowVM.cs" />
     <Compile Include="ViewModel\CreateChatGroupWndVM.cs" />
+    <Compile Include="ViewModel\EditGroupWindowVM.cs" />
     <Compile Include="ViewModel\EditMessageVM.cs" />
     <Compile Include="ViewModel\ForgotPassWindowVM.cs" />
     <Compile Include="ViewModel\ForwardMessageWindowVM.cs" />
     <Compile Include="ViewModel\MainWindowVM.cs" />
     <Compile Include="ViewModel\MessageControlVM.cs" />
     <Compile Include="ViewModel\MessageMainVM.cs" />
+    <Compile Include="ViewModel\SelectUsersWindowVM.cs" />
     <Compile Include="ViewModel\SettingsWindowVM.cs" />
     <Compile Include="ViewModel\UserProfileWindowVM.cs" />
     <Page Include="AdditionalItems\CustomMessageBox.xaml">
@@ -283,6 +288,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="CreateChatGroupWnd.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="EditGroupWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -339,6 +348,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="SelectUsersWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="SendMessage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -381,13 +394,6 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="Connected Services\FileService\service1.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Connected Services\PhotoServiceReference\service.wsdl" />
-    <None Include="Connected Services\PhotoServiceReference\service.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Connected Services\PhotoServiceReference\service1.xsd">
       <SubType>Designer</SubType>
     </None>
     <None Include="Connected Services\UserServiceReference\Message.UserServiceReference.ApplicationSettings.datasource">
@@ -452,7 +458,6 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadataStorage Include="Connected Services\FileService\" />
-    <WCFMetadataStorage Include="Connected Services\PhotoServiceReference\" />
     <WCFMetadataStorage Include="Connected Services\UserServiceReference\" />
   </ItemGroup>
   <ItemGroup>
@@ -472,18 +477,6 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Connected Services\PhotoServiceReference\configuration91.svcinfo" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Connected Services\PhotoServiceReference\configuration.svcinfo" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Connected Services\PhotoServiceReference\Reference.svcmap">
-      <Generator>WCF Proxy Generator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="Connected Services\FileService\configuration91.svcinfo" />

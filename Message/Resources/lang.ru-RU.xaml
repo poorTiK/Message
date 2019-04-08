@@ -16,7 +16,7 @@
     <v:String x:Key="Contacts">Контакты</v:String>
     <v:String x:Key="Copy">Копировать</v:String>
     <v:String x:Key="ClearConversation">Очистить диалог</v:String>
-    <v:String x:Key="DeleteСontact">Удалить контакт</v:String>
+    <v:String x:Key="DeleteСontact">Удалить</v:String>
     <v:String x:Key="Delete">Удалить</v:String>
     <v:String x:Key="EditContact">Редактировать</v:String>
     <v:String x:Key="EditMessage">Изменить</v:String>
@@ -62,6 +62,11 @@
     <v:String x:Key="CreateGroup">Новая группа</v:String>
     <v:String x:Key="Create">Создать</v:String>
     <v:String x:Key="GroupName">Название группы</v:String>
+    <v:String x:Key="EditGroup">Редактирование группы</v:String>
+    <v:String x:Key="GroupMemString">участника группы</v:String>
+    <v:String x:Key="GroupNameValid">Поле "Название группы" не может быть пустым</v:String>
+    <v:String x:Key="GroupAddMember">Добавление участников</v:String>
+    <v:String x:Key="UserAlreadyOnline">Пользователь уже авторизирован.</v:String>
 
     <v:String x:Key="Yes">Да</v:String>
     <v:String x:Key="No">Нет</v:String>

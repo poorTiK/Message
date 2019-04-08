@@ -27,8 +27,6 @@ namespace Message.ViewModel
             set { SetProperty(ref _selectedContact, value); }
         }
 
-        private string _messageText;
-
         public string MessageText
         {
             get { return GlobalBase.Base64Decode(_message.Text); }
@@ -36,7 +34,7 @@ namespace Message.ViewModel
 
         public ForwardMessageWindowVM(BaseMessage message, IView view) : base()
         {
-            List<UiInfo> uiInfos = UserServiceClient.GetAllContactsUiInfo(GlobalBase.CurrentUser.Id);
+            var uiInfos = UserServiceClient.GetAllContactsUiInfo(GlobalBase.CurrentUser.Id);
             GlobalBase.loadPictures(UserServiceClient, uiInfos);
             ContactsList = uiInfos;
 
@@ -61,17 +59,48 @@ namespace Message.ViewModel
 
         private void OnForward()
         {
-            if (SelectedContact != null && SelectedContact is UserUiInfo)
+            if (SelectedContact != null)
             {
-                UserUiInfo userUiInfo = SelectedContact as UserUiInfo;
-                var mes = new UserMessage()
+                if (SelectedContact is UserUiInfo)
                 {
-                    Text = _message.Text,
-                    DateOfSending = _message.DateOfSending,
-                    SenderId = _message.SenderId,
-                    ReceiverId = userUiInfo.UserId
-                };
-                UserServiceClient.SendMessageAsync(mes);
+                    var userUiInfo = SelectedContact as UserUiInfo;
+                    var mes = new UserMessage()
+                    {
+                        Text = _message.Text,
+                        DateOfSending = _message.DateOfSending,
+                        SenderId = GlobalBase.CurrentUser.Id,
+                        ReceiverId = userUiInfo.UserId
+                    };
+                    //Temporary implementation, system of receiving messages should be reworked.
+                    //For all users should execute callback even for sender.
+                    UserServiceClient.SendMessageAsync(mes).ContinueWith((task) => {
+                        if ( (_message.SenderId == userUiInfo.UserId && (_message as UserMessage).ReceiverId == GlobalBase.CurrentUser.Id )
+                        || ( (_message as UserMessage).ReceiverId == userUiInfo.UserId && _message.SenderId == GlobalBase.CurrentUser.Id) )
+                        {
+                            GlobalBase.AddMessageOnUi.Invoke(UserServiceClient.GetLastMessage());
+                        }
+                    });
+                }
+                else if (SelectedContact is ChatGroupUiInfo)
+                {
+                    var groupUiInfo = SelectedContact as ChatGroupUiInfo;
+                    var mes = new GroupMessage()
+                    {
+                        Text = _message.Text,
+                        DateOfSending = _message.DateOfSending,
+                        SenderId = GlobalBase.CurrentUser.Id,
+                        ChatGroupId = groupUiInfo.ChatGroupId
+                    };
+                    //Temporary implementation, system of receiving messages should be reworked.
+                    //For all users should execute callback even for sender.
+                    UserServiceClient.SendMessageAsync(mes).ContinueWith((task) => {
+                        if ((_message.SenderId == groupUiInfo.ChatGroupId && (_message as UserMessage).ReceiverId == GlobalBase.CurrentUser.Id)
+                        || ((_message as GroupMessage).ChatGroupId == groupUiInfo.ChatGroupId && _message.SenderId == GlobalBase.CurrentUser.Id))
+                        {
+                            GlobalBase.AddMessageOnUi.Invoke(UserServiceClient.GetLastMessage());
+                        }
+                    });
+                }
             }
             _view.CloseWindow();
         }

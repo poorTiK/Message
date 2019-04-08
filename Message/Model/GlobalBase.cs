@@ -15,9 +15,14 @@ namespace Message.Model
         public static User CurrentUser { get; set; }
         public static Action UpdateContactList;
         public static Action UpdateMessagesOnUI;
+        public static Action UpdateProfileUi;
         public static Func<BaseMessage, bool> RemoveMessageOnUI;
 
         public static FileServiceClient FileServiceClient { get; set; }
+        public static Func<BaseMessage, bool> AddMessageOnUi { get; internal set; }
+
+        //monitors
+        public static object contactsMonitor = new object();
 
         static GlobalBase()
         {
@@ -69,7 +74,10 @@ namespace Message.Model
 
         public static void loadPictures(UserServiceClient userServiceClient, List<UiInfo> uiInfos)
         {
-            uiInfos.ForEach(item => loadPicture(userServiceClient, item));
+            lock (contactsMonitor)
+            {
+                uiInfos.ForEach(uiInfo => loadPicture(userServiceClient, uiInfo));
+            }
         }
 
         public static void loadPicture(UserServiceClient userServiceClient, UiInfo uiInfos)
@@ -79,7 +87,7 @@ namespace Message.Model
             if (chatFile?.Source?.Length > 0)
             {
                 MemoryStream memstr = new MemoryStream(chatFile.Source);
-                Dispatcher.CurrentDispatcher.Invoke(() => { uiInfos.UiImage = Image.FromStream(memstr); });
+               Dispatcher.CurrentDispatcher.Invoke(() => { uiInfos.UiImage = Image.FromStream(memstr); });
             }
             else
             {
