@@ -189,12 +189,12 @@ namespace Message.ViewModel
 
         private void ExecuteOnApplyChanges()
         {
-            IsSavingProgress = true;
-            var res = string.Empty;
-
-            Task.Run(() =>
+            if (Validate())
             {
-                if (Validate())
+                IsSavingProgress = true;
+                var res = string.Empty;
+
+                Task.Run(() =>
                 {
                     _group.Name = GroupName;
 
@@ -227,18 +227,18 @@ namespace Message.ViewModel
                     if (res == string.Empty)
                     {
                         Application.Current.Dispatcher.Invoke(new Action((() =>
-                        {
-                            CustomMessageBox.Show(Translations.GetTranslation()["ChangesSaved"].ToString());
-                        })));
+                    {
+                        CustomMessageBox.Show(Translations.GetTranslation()["ChangesSaved"].ToString());
+                    })));
                     }
-                }
-            }).ContinueWith(task =>
-            {
-                IsSavingProgress = false;
-                IsNewChanges = false;
+                }).ContinueWith(task =>
+                {
+                    IsSavingProgress = false;
+                    IsNewChanges = false;
 
-                GlobalBase.UpdateContactList();
-            });
+                    GlobalBase.UpdateContactList();
+                });
+            }
         }
 
         private void ExecuteOnBack()
@@ -283,10 +283,12 @@ namespace Message.ViewModel
 
         private void CheckChanges()
         {
-            if (GroupName != _group.Name)
+            if (GroupName != _group.Name && !string.IsNullOrWhiteSpace(GroupName))
             {
                 IsNewChanges = true;
+                return;
             }
+            IsNewChanges = false;
         }
 
         private bool Validate()

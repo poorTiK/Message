@@ -177,7 +177,7 @@ namespace Message.ViewModel
                 _newAvatar = File.ReadAllBytes(FilePath);
                 MemoryStream memstr = new MemoryStream(_newAvatar);
                 Dispatcher.CurrentDispatcher.Invoke(() => { Images = Image.FromStream(memstr); });
-                
+
                 IsNewChanges = true;
             }
         }
@@ -195,11 +195,11 @@ namespace Message.ViewModel
 
         private void ExecuteOnApplyChanges()
         {
-            IsSavingProgress = true;
-            string res;
-            Task.Run((() =>
+            if (Validate())
             {
-                if (Validate())
+                IsSavingProgress = true;
+                string res;
+                Task.Run((() =>
                 {
                     GlobalBase.CurrentUser.FirstName = UserName;
                     GlobalBase.CurrentUser.LastName = UserLastName;
@@ -227,16 +227,16 @@ namespace Message.ViewModel
                     if (res == string.Empty)
                     {
                         Application.Current.Dispatcher.Invoke(new Action((() =>
-                        {
-                            CustomMessageBox.Show(Translations.GetTranslation()["ChangesSaved"].ToString());
-                        })));
+                    {
+                        CustomMessageBox.Show(Translations.GetTranslation()["ChangesSaved"].ToString());
+                    })));
                     }
-                }
-            })).ContinueWith((task =>
-            {
-                IsSavingProgress = false;
-                IsNewChanges = false;
-            }));
+                })).ContinueWith((task =>
+                {
+                    IsSavingProgress = false;
+                    IsNewChanges = false;
+                }));
+            }
         }
 
         private bool Validate()
