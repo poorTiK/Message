@@ -60,7 +60,7 @@
                         <MouseBinding Command="{Binding LoadPhoto}" MouseAction="LeftClick" />
                     </Ellipse.InputBindings>
                 </Ellipse>
-                <TextBox materialDesign:HintAssist.Hint="{DynamicResource GroupName}" Text="{Binding Name}"
+                <TextBox materialDesign:HintAssist.Hint="{DynamicResource GroupName}" Text="{Binding Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                          Foreground="{DynamicResource Foreground}" SelectionBrush="{DynamicResource SelectionBrush}" Margin="10,0,10,5" Width="256">
                 </TextBox>
             </StackPanel>
@@ -118,6 +118,7 @@
                 materialDesign:ButtonProgressAssist.Value="-1"
                 materialDesign:ButtonProgressAssist.IsIndicatorVisible="{Binding IsCreating}"
                 materialDesign:ButtonProgressAssist.IsIndeterminate="{Binding IsCreating}"
+                IsEnabled="{Binding IsCanCreate}"
                 Content="{DynamicResource Create}"
                 Command="{Binding Path=CreateGroup}" />
         </Grid>

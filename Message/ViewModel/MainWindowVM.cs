@@ -319,42 +319,42 @@ namespace Message.ViewModel
 
         private void ExecuteOnForgotPassword()
         {
-            ForgotPassWindow passWindow = new ForgotPassWindow();
+            var passWindow = new ForgotPassWindow();
             passWindow.Owner = (Window)view;
             passWindow.ShowDialog();
         }
 
         private bool ValidateOnRegister()
         {
-            string message = string.Empty;
+            var message = string.Empty;
             if (string.IsNullOrWhiteSpace(Name))
             {
-                message = Application.Current.Resources.MergedDictionaries[4]["FirstNameValid"].ToString();
+                message = Translations.GetTranslation()["FirstNameValid"].ToString();
             }
             else if (string.IsNullOrWhiteSpace(Surname))
             {
-                message = Application.Current.Resources.MergedDictionaries[4]["LastNameValid"].ToString();
+                message = Translations.GetTranslation()["LastNameValid"].ToString();
             }
             else if (string.IsNullOrWhiteSpace(UserLogin))
             {
-                message = Application.Current.Resources.MergedDictionaries[4]["EmptyLogin"].ToString();
+                message = Translations.GetTranslation()["EmptyLogin"].ToString();
             }
             else if (RPassword.Length < 8 || string.IsNullOrWhiteSpace(RPassword) || RPassword == string.Empty || !Regex.IsMatch(RPassword, @"^[a-zA-Z0-9]{8,}$"))
             {
-                message = Application.Current.Resources.MergedDictionaries[4]["PassValidation"].ToString();
+                message = Translations.GetTranslation()["PassValidation"].ToString();
             }
             else if (RPassword != Rep_RPassword)
             {
-                message = Application.Current.Resources.MergedDictionaries[4]["PassMatchValidation"].ToString();
+                message = Translations.GetTranslation()["PassMatchValidation"].ToString();
             }
             else if (string.IsNullOrWhiteSpace(Email) || Email == string.Empty || !Regex.IsMatch(Email, @"\A(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)\Z", RegexOptions.IgnoreCase))
             {
-                message = Application.Current.Resources.MergedDictionaries[4]["EmailValidation"].ToString();
+                message = Translations.GetTranslation()["EmailValidation"].ToString();
             }
 
             if (message != string.Empty)
             {
-                Application.Current.Dispatcher.Invoke(new Action((() => { CustomMessageBox.Show(Application.Current.Resources.MergedDictionaries[4]["Error"].ToString(), message); })));
+                Application.Current.Dispatcher.Invoke(new Action((() => { CustomMessageBox.Show(Translations.GetTranslation()["Error"].ToString(), message); })));
                 return false;
             }
 
@@ -363,7 +363,7 @@ namespace Message.ViewModel
 
         private bool ValidateOnLogin()
         {
-            string message = string.Empty;
+            var message = string.Empty;
 
             if (string.IsNullOrWhiteSpace(LoginText))
             {
