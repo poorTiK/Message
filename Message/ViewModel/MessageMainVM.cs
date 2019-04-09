@@ -1,4 +1,10 @@
-﻿using System;
+﻿using Message.Compression;
+using Message.Interfaces;
+using Message.Model;
+using Message.UserServiceReference;
+using Microsoft.Win32;
+using Prism.Commands;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -9,12 +15,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
-using Message.Compression;
-using Message.Interfaces;
-using Message.Model;
-using Message.UserServiceReference;
-using Microsoft.Win32;
-using Prism.Commands;
 using User = Message.UserServiceReference.User;
 
 namespace Message.ViewModel
@@ -87,7 +87,8 @@ namespace Message.ViewModel
         public bool IsDialogSearchVisible
         {
             get { return _isDialogSearchVisible; }
-            set {
+            set
+            {
                 SetProperty(ref _isDialogSearchVisible, value);
             }
         }
@@ -109,8 +110,8 @@ namespace Message.ViewModel
             {
                 //if (value != null)
                 //{
-                    SetProperty(ref _selectedContact, value, () => { SelectedContactChanged(); });
-                    GlobalBase.SelectedContact = value;
+                SetProperty(ref _selectedContact, value, () => { SelectedContactChanged(); });
+                GlobalBase.SelectedContact = value;
                 //}
             }
         }
@@ -157,7 +158,8 @@ namespace Message.ViewModel
         public bool IsMenuEnabled
         {
             get { return _isMenuEnabled; }
-            set {
+            set
+            {
                 GlobalBase.IsMenuEnabled = value;
                 SetProperty(ref _isMenuEnabled, value);
             }
@@ -235,7 +237,7 @@ namespace Message.ViewModel
 
             GlobalBase.UpdateMessagesOnUI += () =>
             {
-               _view.UpdateMessageList();
+                _view.UpdateMessageList();
             };
             GlobalBase.AddMessageOnUi += AddMessageOnUI;
             GlobalBase.UpdateContactList += UpdateContactList;
@@ -332,7 +334,7 @@ namespace Message.ViewModel
                     }
                 }).ContinueWith((task =>
                 {
-                   GlobalBase.UpdateMessagesOnUI();
+                    GlobalBase.UpdateMessagesOnUI();
                 }));
             }
         }
@@ -390,12 +392,13 @@ namespace Message.ViewModel
         //UI update
         private bool AddMessageOnUI(BaseMessage message)
         {
-                Dispatcher.CurrentDispatcher.Invoke(() =>
+            Dispatcher.CurrentDispatcher.Invoke(() =>
+            {
+                lock (_view.MessageList)
                 {
-                    lock (_view.MessageList) { 
-                        _view.MessageList.Add(message);
-                    }
-                });
+                    _view.MessageList.Add(message);
+                }
+            });
 
             _view.UpdateMessageList();
             return true;
@@ -503,7 +506,7 @@ namespace Message.ViewModel
                 }
                 else if (SelectedContact is ChatGroupUiInfo)
                 {
-                    (messageTemplate as GroupMessage).ChatGroupId = (SelectedContact as ChatGroupUiInfo).ChatGroupId;             
+                    (messageTemplate as GroupMessage).ChatGroupId = (SelectedContact as ChatGroupUiInfo).ChatGroupId;
                 }
 
                 if (MessageText != null && MessageText != string.Empty)
@@ -606,7 +609,7 @@ namespace Message.ViewModel
                             }
                         }
 
-                    GlobalBase.UpdateMessagesOnUI();
+                        GlobalBase.UpdateMessagesOnUI();
                     }
                 }
                 else

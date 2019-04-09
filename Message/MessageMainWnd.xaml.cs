@@ -4,7 +4,6 @@ using Message.UserServiceReference;
 using Message.ViewModel;
 using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -249,29 +248,27 @@ namespace Message
 
         public void UpdateMessageList()
         {
-
-                Dispatcher.Invoke(() =>
+            Dispatcher.Invoke(() =>
+            {
+                lock (MessageList)
                 {
-                    lock (MessageList)
+                    MessageControl.Children.Clear();
+
+                    foreach (var message in MessageList)
                     {
-                        MessageControl.Children.Clear();
-
-                        foreach (var message in MessageList)
+                        if (message.SenderId == GlobalBase.CurrentUser.Id)
                         {
-                            if (message.SenderId == GlobalBase.CurrentUser.Id)
-                            {
-                                MessageControl.Children.Add(new SendMessage(message));
-                            }
-                            else
-                            {
-                                MessageControl.Children.Add(new ReceiveMessage(message));
-                            }
+                            MessageControl.Children.Add(new SendMessage(message));
                         }
-
-                        ScrollV.ScrollToBottom();
+                        else
+                        {
+                            MessageControl.Children.Add(new ReceiveMessage(message));
+                        }
                     }
-                });
 
+                    ScrollV.ScrollToBottom();
+                }
+            });
         }
 
         public void Hide(bool isVisible)

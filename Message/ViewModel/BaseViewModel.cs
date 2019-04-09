@@ -1,6 +1,5 @@
 ﻿using Message.UserServiceReference;
 using System.ServiceModel;
-using System;
 
 namespace Message.ViewModel
 {
@@ -21,8 +20,6 @@ namespace Message.ViewModel
         {
             //throw new NotImplementedException();
         }
-
-
 
         public virtual void OnMessageEdited(BaseMessage message)
         {
@@ -58,6 +55,5 @@ namespace Message.ViewModel
         {
             //throw new NotImplementedException();
         }
-
     }
 }

@@ -9,7 +9,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.ServiceModel;
 using System.Threading;
-using Microsoft.EntityFrameworkCore;
 
 namespace ServerWCF.Services
 {
@@ -145,7 +144,6 @@ namespace ServerWCF.Services
                         {
                             userContext.Contacts.Remove(contact);
                             userContext.SaveChanges();
-
 
                             UserUiInfo uiInfo = new UserUiInfo(ownerFromDb);
                             RemoveContactCallback(uiInfo, ownedFromDb);
@@ -343,7 +341,6 @@ namespace ServerWCF.Services
                 }
             }
         }
-
 
         public ChatGroup GetChatGroupById(int chatGroupId)
         {
