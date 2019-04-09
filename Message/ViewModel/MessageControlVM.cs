@@ -20,7 +20,6 @@ namespace Message.ViewModel
             get
             {
                 return GetContent();
-                //return GlobalBase.Base64Decode(Message.Content);
             }
             set { }
         }

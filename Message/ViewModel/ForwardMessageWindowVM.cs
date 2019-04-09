@@ -81,11 +81,12 @@ namespace Message.ViewModel
                 {
                     return;
                 }
+                BaseMessage mes = null;
 
                 if (SelectedContact is UserUiInfo)
                 {
                     var userUiInfo = SelectedContact as UserUiInfo;
-                    var mes = new UserMessage()
+                    mes = new UserMessage()
                     {
                         Text = _message.Text,
                         DateOfSending = _message.DateOfSending,
@@ -93,33 +94,27 @@ namespace Message.ViewModel
                         ReceiverId = userUiInfo.UserId
                     };
 
-                    UserServiceClient.SendMessageAsync(mes).ContinueWith((task) =>
-                        {
-                            if (GlobalBase.SelectedContact.UniqueName == SelectedContact.UniqueName)
-                            {
-                                GlobalBase.AddMessageOnUi(mes);
-                            }
-                        });
+
                 }
                 else if (SelectedContact is ChatGroupUiInfo)
                 {
                     var groupUiInfo = SelectedContact as ChatGroupUiInfo;
-                    var mes = new GroupMessage()
+                    mes = new GroupMessage()
                     {
                         Text = _message.Text,
                         DateOfSending = _message.DateOfSending,
                         SenderId = GlobalBase.CurrentUser.Id,
                         ChatGroupId = groupUiInfo.ChatGroupId
                     };
-
-                    UserServiceClient.SendMessageAsync(mes).ContinueWith((task) =>
-                    {
-                        if (GlobalBase.SelectedContact.UniqueName == SelectedContact.UniqueName)
-                        {
-                            GlobalBase.AddMessageOnUi(mes);
-                        }
-                    });
                 }
+
+                UserServiceClient.SendMessageAsync(mes).ContinueWith((task) =>
+                {
+                    if (GlobalBase.SelectedContact.UniqueName == SelectedContact.UniqueName)
+                    {
+                        GlobalBase.AddMessageOnUi(mes);
+                    }
+                });
             }
             _view.CloseWindow();
         }
