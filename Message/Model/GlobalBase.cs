@@ -16,6 +16,7 @@ namespace Message.Model
         public static Action UpdateContactList;
         public static Action UpdateMessagesOnUI;
         public static Action UpdateProfileUi;
+        public static Action ExitProgramm;
         public static Func<BaseMessage, bool> RemoveMessageOnUI;
 
         public static FileServiceClient FileServiceClient { get; set; }

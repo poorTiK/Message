@@ -189,11 +189,65 @@ namespace Message.ViewModel
             passwordSupplier = ipasswordSupplier;
             _serializeUser = new SerializeUserToRegistry();
 
-            IsLoginProgress = false;
+            IsLoginProgress = true;
+
+            var userLogin = TryGetUser();
+
+            if (!string.IsNullOrEmpty(userLogin))
+            {
+                InitLogin(userLogin);
+            }
+
+            //IsLoginProgress = false;
             IsRegisterProgress = false;
 
             IsSignUpVisible = true;
             IsRegisterVisible = false;
+        }
+
+        private void InitLogin(string userLogin)
+        {
+            var user = new User();
+            Task.Run(() =>
+            {
+                user = UserServiceClient.GetUserByLogin(userLogin);
+            }).ContinueWith(task =>
+            {
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    if (user?.Status == "online")
+                    {
+                        CustomMessageBox.Show(
+                        Translations.GetTranslation()["Error"].ToString(),
+                        Translations.GetTranslation()["UserAlreadyOnline"].ToString(),
+                        MessageBoxType.Error);
+
+                        return;
+                    }
+                    else if (user == null)
+                    {
+                        IsLoginProgress = false;
+                        return;
+                    }
+
+                    var wnd = new MessageMainWnd(user);
+                    wnd.Show();
+                    view.CloseWindow();
+                    IsLoginProgress = false;
+                });
+            });
+        }
+
+        private string TryGetUser()
+        {
+            try
+            {
+                return _serializeUser.GetCurrentUser();
+            }
+            catch (Exception)
+            {
+                return string.Empty;
+            }
         }
 
         private void ExecuteOnStartRegister()

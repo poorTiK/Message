@@ -103,6 +103,11 @@
                     <ListView>
                         <ListViewItem Padding="0">
                             <Grid Background="Transparent" Height="30" MinWidth="220">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="MouseLeftButtonDown">
+                                        <i:InvokeCommandAction Command="{Binding ExitChat}" />
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="20" />
                                     <ColumnDefinition />

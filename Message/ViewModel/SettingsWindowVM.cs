@@ -1,6 +1,7 @@
 ﻿using Message.Interfaces;
 using Message.Model;
 using Prism.Commands;
+using System;
 using System.Drawing;
 using System.Threading.Tasks;
 using System.Windows;
@@ -10,6 +11,8 @@ namespace Message.ViewModel
 {
     internal class SettingsWindowVM : BaseViewModel
     {
+        private readonly ISerializeUser _serializeUser;
+
         public IView view;
 
         private string _currentUserName;
@@ -39,6 +42,9 @@ namespace Message.ViewModel
         public SettingsWindowVM(IView view) : base()
         {
             this.view = view;
+
+            _serializeUser = new SerializeUserToRegistry();
+
             SetAvatarForUI();
         }
 
@@ -51,6 +57,11 @@ namespace Message.ViewModel
 
         public DelegateCommand ChatSettings =>
             _chatSettings ?? (_chatSettings = new DelegateCommand(ExecuteOnChatSettings));
+
+        private DelegateCommand _exitChat;
+
+        public DelegateCommand ExitChat =>
+            _exitChat ?? (_exitChat = new DelegateCommand(ExecuteOnExitChat));
 
         private void ExecuteOnChatSettings()
         {
@@ -79,6 +90,12 @@ namespace Message.ViewModel
             GlobalBase.UpdateContactList.Invoke();
 
             view.Hide(true);
+        }
+
+        private void ExecuteOnExitChat()
+        {
+            _serializeUser.CleanCurrentUser();
+            GlobalBase.ExitProgramm();
         }
 
         private void SetAvatarForUI()

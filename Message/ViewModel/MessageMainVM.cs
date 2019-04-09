@@ -242,6 +242,7 @@ namespace Message.ViewModel
             GlobalBase.UpdateContactList += UpdateContactList;
             GlobalBase.RemoveMessageOnUI += DeleteMessageOnUI;
             GlobalBase.UpdateProfileUi += SetAvatarForUI;
+            GlobalBase.ExitProgramm += ExecuteOnExit;
 
             SetAvatarForUI();
             UpdateContactList();
