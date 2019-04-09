@@ -249,26 +249,29 @@ namespace Message
 
         public void UpdateMessageList()
         {
-            lock (MessageList) {
+
                 Dispatcher.Invoke(() =>
                 {
-                    MessageControl.Children.Clear();
-
-                    foreach (var message in MessageList)
+                    lock (MessageList)
                     {
-                        if (message.SenderId == GlobalBase.CurrentUser.Id)
-                        {
-                            MessageControl.Children.Add(new SendMessage(message));
-                        }
-                        else
-                        {
-                            MessageControl.Children.Add(new ReceiveMessage(message));
-                        }
-                    }
+                        MessageControl.Children.Clear();
 
-                    ScrollV.ScrollToBottom();
+                        foreach (var message in MessageList)
+                        {
+                            if (message.SenderId == GlobalBase.CurrentUser.Id)
+                            {
+                                MessageControl.Children.Add(new SendMessage(message));
+                            }
+                            else
+                            {
+                                MessageControl.Children.Add(new ReceiveMessage(message));
+                            }
+                        }
+
+                        ScrollV.ScrollToBottom();
+                    }
                 });
-            }
+
         }
 
         public void Hide(bool isVisible)

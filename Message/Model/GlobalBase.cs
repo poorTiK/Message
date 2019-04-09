@@ -20,6 +20,7 @@ namespace Message.Model
 
         public static FileServiceClient FileServiceClient { get; set; }
         public static Func<BaseMessage, bool> AddMessageOnUi { get; internal set; }
+        public static UiInfo SelectedContact { get; internal set; }
 
         //monitors
         public static object contactsMonitor = new object();

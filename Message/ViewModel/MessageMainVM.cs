@@ -123,6 +123,7 @@ namespace Message.ViewModel
                 if (value != null)
                 {
                     SetProperty(ref _selectedContact, value, () => { SelectedContactChanged(); });
+                    GlobalBase.SelectedContact = value;
                 }
             }
         }
@@ -234,10 +235,7 @@ namespace Message.ViewModel
             GlobalBase.CurrentUser = user;
             GlobalBase.UpdateMessagesOnUI += () =>
             {
-                Application.Current.Dispatcher.Invoke(new Action(() =>
-                {
-                    _view.UpdateMessageList();
-                }));
+               _view.UpdateMessageList();
             };
             GlobalBase.AddMessageOnUi += AddMessageOnUI;
 
@@ -375,16 +373,13 @@ namespace Message.ViewModel
         //UI update
         private bool AddMessageOnUI(BaseMessage message)
         {
-            lock (_view.MessageList)
-            {
                 Dispatcher.CurrentDispatcher.Invoke(() =>
                 {
-                    _view.MessageList.Add(message);
+                    lock (_view.MessageList) { 
+                        _view.MessageList.Add(message);
+                    }
                     _view.UpdateMessageList();
                 });
-            }
-
-            GlobalBase.UpdateMessagesOnUI.Invoke();
             return true;
         }
 
@@ -394,6 +389,7 @@ namespace Message.ViewModel
             if (mes != null)
             {
                 mes.Text = message.Text;
+                //fix it
                 GlobalBase.UpdateMessagesOnUI.Invoke();
                 return true;
             }

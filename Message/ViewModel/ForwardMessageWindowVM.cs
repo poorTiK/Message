@@ -90,7 +90,10 @@ namespace Message.ViewModel
 
                     UserServiceClient.SendMessageAsync(mes).ContinueWith((task) =>
                     {
-                        GlobalBase.UpdateMessagesOnUI();
+                        if (GlobalBase.SelectedContact.UniqueName == SelectedContact.UniqueName)
+                        {
+                            GlobalBase.AddMessageOnUi(mes);
+                        }
                     });
                 }
                 else if (SelectedContact is ChatGroupUiInfo)
@@ -106,7 +109,10 @@ namespace Message.ViewModel
 
                     UserServiceClient.SendMessageAsync(mes).ContinueWith((task) =>
                     {
-                        GlobalBase.UpdateMessagesOnUI();
+                        if (GlobalBase.SelectedContact.UniqueName == SelectedContact.UniqueName)
+                        {
+                            GlobalBase.AddMessageOnUi(mes);
+                        }
                     });
                 }
             }
