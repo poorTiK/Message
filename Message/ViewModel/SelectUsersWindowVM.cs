@@ -2,6 +2,7 @@
 using Message.Model;
 using Message.UserServiceReference;
 using Prism.Commands;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -74,6 +75,11 @@ namespace Message.ViewModel
         public DelegateCommand Checked =>
             _checked ?? (_checked = new DelegateCommand(ExecuteOnChecked));
 
+        private DelegateCommand _back;
+
+        public DelegateCommand Back =>
+            _back ?? (_back = new DelegateCommand(ExecuteOnBack));
+
         private void ExecuteOnAddMembers()
         {
             var membersToAdd = ContactList.Where(x => x.IsSelected).ToList();
@@ -93,6 +99,11 @@ namespace Message.ViewModel
         private void ExecuteOnChecked()
         {
             IsAddEnabled = CanExecuteAdd();
+        }
+
+        private void ExecuteOnBack()
+        {
+            _view.CloseWindow();
         }
     }
 }

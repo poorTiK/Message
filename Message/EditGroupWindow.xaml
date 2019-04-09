@@ -97,7 +97,7 @@
                         </Grid.ColumnDefinitions>
                         <materialDesign:PackIcon VerticalAlignment="Center" Grid.Column="0" Grid.Row="0" Kind="UserGroup" Foreground="{DynamicResource HeaderButton}" Margin="10,0" HorizontalAlignment="Left" />
                         <TextBlock Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center">
-                            <Run Text="{Binding GroupMembersAmout}"></Run>
+                            <Run Text="{Binding GroupMembersAmount}"></Run>
                             <Run Text=" "></Run>
                             <Run Text="{DynamicResource GroupMemString}"></Run>
                         </TextBlock>

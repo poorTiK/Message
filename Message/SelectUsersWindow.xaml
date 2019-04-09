@@ -106,7 +106,7 @@
                 Foreground="{DynamicResource ButtonForeground}"
                 Background="{DynamicResource ButtonBackground}"
                 Content="{DynamicResource Back}"
-                Command="{Binding Path=CreateGroup}" />
+                Command="{Binding Back}" />
         </Grid>
     </Grid>
 </Window>
