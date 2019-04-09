@@ -102,7 +102,9 @@ namespace Message.ViewModel
         public bool IsDialogSearchVisible
         {
             get { return _isDialogSearchVisible; }
-            set { SetProperty(ref _isDialogSearchVisible, value); }
+            set {
+                SetProperty(ref _isDialogSearchVisible, value);
+            }
         }
 
         private List<UiInfo> _contactsList = new List<UiInfo>();
@@ -135,6 +137,15 @@ namespace Message.ViewModel
             get { return _dialogSearchStr; }
             set
             {
+                if (value != "" && IsDialogSearchVisible)
+                {
+                    IsMenuEnabled = false;
+                }
+                else
+                {
+                    IsMenuEnabled = true;
+                }
+
                 SetProperty(ref _dialogSearchStr, value);
                 ExecuteOnDialogSearch();
             }
@@ -161,7 +172,10 @@ namespace Message.ViewModel
         public bool IsMenuEnabled
         {
             get { return _isMenuEnabled; }
-            set { SetProperty(ref _isMenuEnabled, value); }
+            set {
+                GlobalBase.IsMenuEnabled = value;
+                SetProperty(ref _isMenuEnabled, value);
+            }
         }
 
         private int? _fileAmount;
@@ -286,6 +300,8 @@ namespace Message.ViewModel
 
         private void SelectedContactChanged(object sender = null, PropertyChangedEventArgs e = null)
         {
+            ResetDialogSearchOnUi();
+
             if (SelectedContact != null)
             {
                 IsMenuEnabled = true;
@@ -420,6 +436,11 @@ namespace Message.ViewModel
                     Images = GlobalBase.getUsersAvatar(GlobalBase.CurrentUser);
                 });
             });
+        }
+
+        private void ResetDialogSearchOnUi()
+        {
+            IsDialogSearchVisible = false;
         }
 
         //executes for commands
@@ -639,65 +660,45 @@ namespace Message.ViewModel
 
         private void ExecuteOnDialogSearch()
         {
-            if (IsDialogSearchVisible)
+            Task.Run(() =>
             {
-                if (SelectedContact != null)
+                if (IsDialogSearchVisible)
                 {
-                    _view.MessageList.Clear();
-                    var res = new List<BaseMessage>();
+                    if (SelectedContact != null)
+                    {
+                        _view.MessageList.Clear();
+                        var res = new List<BaseMessage>();
 
-                    if (SelectedContact is UserUiInfo)
-                    {
-                        var userUiInfo = SelectedContact as UserUiInfo;
-                        res.AddRange(UserServiceClient.GetUserMessages(GlobalBase.CurrentUser.Id, userUiInfo.UserId, 50));
-                    }
-                    else if (SelectedContact is ChatGroupUiInfo)
-                    {
-                        var chatGroupUiInfo = SelectedContact as ChatGroupUiInfo;
-                        res.AddRange(UserServiceClient.GetGroupMessages(chatGroupUiInfo.ChatGroupId, 50));
-                    }
-
-                    if (res.Count != 0)
-                    {
-                        foreach (var mes in res)
+                        if (SelectedContact is UserUiInfo)
                         {
-                            BaseMessage message = null;
-                            if (mes is UserMessage userMes)
-                            {
-                                message = new UserMessage()
-                                {
-                                    Id = userMes.Id,
-                                    Text = userMes.Text,
-                                    DateOfSending = userMes.DateOfSending,
-                                    ReceiverId = userMes.ReceiverId,
-                                    SenderId = userMes.SenderId,
-                                };
-                            }
-                            else if (mes is GroupMessage groupMes)
-                            {
-                                message = new GroupMessage()
-                                {
-                                    Id = groupMes.Id,
-                                    Text = groupMes.Text,
-                                    DateOfSending = groupMes.DateOfSending,
-                                    ChatGroupId = groupMes.ChatGroupId,
-                                    SenderId = groupMes.SenderId,
-                                };
-                            }
+                            var userUiInfo = SelectedContact as UserUiInfo;
+                            res.AddRange(UserServiceClient.GetUserMessages(GlobalBase.CurrentUser.Id, userUiInfo.UserId, messageLimit));
+                        }
+                        else if (SelectedContact is ChatGroupUiInfo)
+                        {
+                            var chatGroupUiInfo = SelectedContact as ChatGroupUiInfo;
+                            res.AddRange(UserServiceClient.GetGroupMessages(chatGroupUiInfo.ChatGroupId, messageLimit));
+                        }
 
-                            if (GlobalBase.Base64Decode(mes.Text).Contains(DialogSearchStr))
+                        if (res.Count != 0)
+                        {
+                            foreach (var mes in res)
                             {
-                                GlobalBase.AddMessageOnUi.Invoke(message);
+                                if (GlobalBase.Base64Decode(mes.Text).Contains(DialogSearchStr))
+                                {
+                                    GlobalBase.AddMessageOnUi.Invoke(mes);
+                                }
                             }
                         }
-                        GlobalBase.UpdateMessagesOnUI();
+
+                    GlobalBase.UpdateMessagesOnUI();
                     }
                 }
-            }
-            else
-            {
-                SelectedContactChanged();
-            }
+                else
+                {
+                    SelectedContactChanged();
+                }
+            });
         }
 
         //service callbacks

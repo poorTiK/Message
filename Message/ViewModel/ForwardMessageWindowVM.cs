@@ -77,6 +77,11 @@ namespace Message.ViewModel
         {
             if (SelectedContact != null)
             {
+                if (!GlobalBase.IsMenuEnabled && GlobalBase.SelectedContact.UniqueName == SelectedContact.UniqueName)
+                {
+                    return;
+                }
+
                 if (SelectedContact is UserUiInfo)
                 {
                     var userUiInfo = SelectedContact as UserUiInfo;
@@ -89,12 +94,12 @@ namespace Message.ViewModel
                     };
 
                     UserServiceClient.SendMessageAsync(mes).ContinueWith((task) =>
-                    {
-                        if (GlobalBase.SelectedContact.UniqueName == SelectedContact.UniqueName)
                         {
-                            GlobalBase.AddMessageOnUi(mes);
-                        }
-                    });
+                            if (GlobalBase.SelectedContact.UniqueName == SelectedContact.UniqueName)
+                            {
+                                GlobalBase.AddMessageOnUi(mes);
+                            }
+                        });
                 }
                 else if (SelectedContact is ChatGroupUiInfo)
                 {
