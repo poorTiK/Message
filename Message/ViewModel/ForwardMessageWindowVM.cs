@@ -87,15 +87,10 @@ namespace Message.ViewModel
                         SenderId = GlobalBase.CurrentUser.Id,
                         ReceiverId = userUiInfo.UserId
                     };
-                    //Temporary implementation, system of receiving messages should be reworked.
-                    //For all users should execute callback even for sender.
+
                     UserServiceClient.SendMessageAsync(mes).ContinueWith((task) =>
                     {
-                        if ((_message.SenderId == userUiInfo.UserId && (_message as UserMessage).ReceiverId == GlobalBase.CurrentUser.Id)
-                        || ((_message as UserMessage).ReceiverId == userUiInfo.UserId && _message.SenderId == GlobalBase.CurrentUser.Id))
-                        {
-                            GlobalBase.AddMessageOnUi.Invoke(UserServiceClient.GetLastMessage());
-                        }
+                        GlobalBase.UpdateMessagesOnUI();
                     });
                 }
                 else if (SelectedContact is ChatGroupUiInfo)
@@ -108,15 +103,10 @@ namespace Message.ViewModel
                         SenderId = GlobalBase.CurrentUser.Id,
                         ChatGroupId = groupUiInfo.ChatGroupId
                     };
-                    //Temporary implementation, system of receiving messages should be reworked.
-                    //For all users should execute callback even for sender.
+
                     UserServiceClient.SendMessageAsync(mes).ContinueWith((task) =>
                     {
-                        if ((_message.SenderId == groupUiInfo.ChatGroupId && (_message as UserMessage).ReceiverId == GlobalBase.CurrentUser.Id)
-                        || ((_message as GroupMessage).ChatGroupId == groupUiInfo.ChatGroupId && _message.SenderId == GlobalBase.CurrentUser.Id))
-                        {
-                            GlobalBase.AddMessageOnUi.Invoke(UserServiceClient.GetLastMessage());
-                        }
+                        GlobalBase.UpdateMessagesOnUI();
                     });
                 }
             }
