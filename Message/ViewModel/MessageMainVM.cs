@@ -482,131 +482,46 @@ namespace Message.ViewModel
         {
             if (SelectedContact != null && (!string.IsNullOrWhiteSpace(MessageText) || FilesPath != null))
             {
-                BaseMessage message = null;
-                List<BaseMessage> messagesWithFile = null;
+                BaseMessage messageTemplate = null;
+
                 if (SelectedContact is UserUiInfo)
                 {
-                    var userUiInfo = SelectedContact as UserUiInfo;
-                    if (FilesPath == null)
-                    {
-                        message = new UserMessage()
-                        {
-                            Text = Encoding.UTF8.GetBytes(MessageText),
-                            DateOfSending = DateTime.Now,
-                            SenderId = GlobalBase.CurrentUser.Id,
-                            Sender = GlobalBase.CurrentUser,
-                            ReceiverId = userUiInfo.UserId,
-                        };
-                    }
-                    else
-                    {
-                        if (FilesPath.Length == 1)
-                        {
-                            var chatFile = new FileService.ChatFile() { Source = CompressionHelper.CompressFile(GlobalBase.FileToByte(FilesPath[0])), Name = GlobalBase.GetShortName(FilesPath[0]) };
-
-                            var tempMes = new UserMessage()
-                            {
-                                Text = MessageText != null ? Encoding.UTF8.GetBytes(MessageText) : Encoding.UTF8.GetBytes(chatFile.Name),
-                                ChatFileId = GlobalBase.FileServiceClient.UploadFile(chatFile),
-                                DateOfSending = DateTime.Now,
-                                SenderId = GlobalBase.CurrentUser.Id,
-                                Sender = GlobalBase.CurrentUser,
-                                ReceiverId = userUiInfo.UserId,
-                            };
-                            UserServiceClient.SendMessageAsync(tempMes).ContinueWith(task => _view.MessageList.Add(UserServiceClient.GetLastMessage()));
-                        }
-                        else
-                        {
-                            if (MessageText != null)
-                            {
-                                var tempMes = new UserMessage()
-                                {
-                                    Text = Encoding.UTF8.GetBytes(MessageText),
-                                    DateOfSending = DateTime.Now,
-                                    SenderId = GlobalBase.CurrentUser.Id,
-                                    Sender = GlobalBase.CurrentUser,
-                                    ReceiverId = userUiInfo.UserId,
-                                };
-                                UserServiceClient.SendMessageAsync(tempMes).ContinueWith(task => _view.MessageList.Add(UserServiceClient.GetLastMessage()));
-                            }
-
-                            messagesWithFile = new List<BaseMessage>();
-                            foreach (var file in FilesPath)
-                            {
-                                var chatFile = new FileService.ChatFile() { Source = CompressionHelper.CompressFile(GlobalBase.FileToByte(file)), Name = GlobalBase.GetShortName(file) };
-
-                                messagesWithFile.Add(new UserMessage()
-                                {
-                                    Text = Encoding.UTF8.GetBytes(chatFile.Name),
-                                    ChatFileId = GlobalBase.FileServiceClient.UploadFile(chatFile),
-                                    DateOfSending = DateTime.Now,
-                                    SenderId = GlobalBase.CurrentUser.Id,
-                                    Sender = GlobalBase.CurrentUser,
-                                    ReceiverId = userUiInfo.UserId,
-                                });
-                            }
-                        }
-                    }
+                    messageTemplate = new UserMessage();
                 }
                 else if (SelectedContact is ChatGroupUiInfo)
                 {
-                    var userUiInfo = SelectedContact as ChatGroupUiInfo;
-                    if (FilesPath == null)
-                    {
-                        message = new GroupMessage()
-                        {
-                            Text = Encoding.UTF8.GetBytes(MessageText),
-                            DateOfSending = DateTime.Now,
-                            SenderId = GlobalBase.CurrentUser.Id,
-                            Sender = GlobalBase.CurrentUser,
-                            ChatGroupId = userUiInfo.ChatGroupId,
-                        };
-                    }
-                    else
-                    {
-                        var tempMes = new GroupMessage()
-                        {
-                            Text = Encoding.UTF8.GetBytes(MessageText),
-                            DateOfSending = DateTime.Now,
-                            SenderId = GlobalBase.CurrentUser.Id,
-                            Sender = GlobalBase.CurrentUser,
-                            ChatGroupId = userUiInfo.ChatGroupId,
-                        };
-                        UserServiceClient.SendMessageAsync(tempMes).ContinueWith(task => _view.MessageList.Add(UserServiceClient.GetLastMessage()));
-
-                        messagesWithFile = new List<BaseMessage>();
-                        foreach (var file in FilesPath)
-                        {
-                            var chatFile = new FileService.ChatFile() { Source = CompressionHelper.CompressFile(GlobalBase.FileToByte(file)), Name = GlobalBase.GetShortName(file) };
-
-                            messagesWithFile.Add(new GroupMessage()
-                            {
-                                Text = Encoding.UTF8.GetBytes(chatFile.Name),
-                                ChatFileId = GlobalBase.FileServiceClient.UploadFile(chatFile),
-                                DateOfSending = DateTime.Now,
-                                SenderId = GlobalBase.CurrentUser.Id,
-                                Sender = GlobalBase.CurrentUser,
-                                ChatGroupId = userUiInfo.ChatGroupId,
-                            });
-                        }
-                    }
+                    messageTemplate = new GroupMessage();
                 }
 
-                if (FilesPath == null)
+                messageTemplate.DateOfSending = DateTime.Now;
+                messageTemplate.SenderId = GlobalBase.CurrentUser.Id;
+                messageTemplate.Sender = GlobalBase.CurrentUser;
+
+                if (SelectedContact is UserUiInfo)
                 {
-                    UserServiceClient.SendMessageAsync(message).ContinueWith(task =>
-                    {
-                        var lastMessage = UserServiceClient.GetLastMessage();
-                        _view.MessageList.Add(lastMessage);
-                        GlobalBase.UpdateMessagesOnUI();
-                    });
+                    (messageTemplate as UserMessage).ReceiverId = (SelectedContact as UserUiInfo).UserId;
                 }
-                else if (messagesWithFile != null)
+                else if (SelectedContact is ChatGroupUiInfo)
                 {
-                    foreach (var fileMessage in messagesWithFile)
+                    (messageTemplate as GroupMessage).ChatGroupId = (SelectedContact as ChatGroupUiInfo).ChatGroupId;             
+                }
+
+                if (MessageText != null && MessageText != string.Empty)
+                {
+                    messageTemplate.Text = Encoding.UTF8.GetBytes(MessageText);
+                    UserServiceClient.SendMessageAsync(messageTemplate).ContinueWith(task => GlobalBase.AddMessageOnUi(UserServiceClient.GetLastMessage()));
+                }
+
+                if (FilesPath != null)
+                {
+                    foreach (var file in FilesPath)
                     {
-                        UserServiceClient.SendMessage(fileMessage);
-                        _view.MessageList.Add(UserServiceClient.GetLastMessage());
+                        var chatFile = new FileService.ChatFile() { Source = CompressionHelper.CompressFile(GlobalBase.FileToByte(file)), Name = GlobalBase.GetShortName(file) };
+
+                        messageTemplate.Text = Encoding.UTF8.GetBytes(chatFile.Name);
+                        messageTemplate.ChatFileId = GlobalBase.FileServiceClient.UploadFile(chatFile);
+
+                        UserServiceClient.SendMessageAsync(messageTemplate).ContinueWith(task => GlobalBase.AddMessageOnUi(UserServiceClient.GetLastMessage()));
                     }
                 }
 
