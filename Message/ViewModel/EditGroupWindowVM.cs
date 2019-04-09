@@ -188,7 +188,7 @@ namespace Message.ViewModel
                         }
                         else
                         {
-                            GlobalBase.FileServiceClient.UpdateFileSource(chatFile.Id, CompressionHelper.CompressFile(_newAvatar));
+                            GlobalBase.FileServiceClient.UpdateFileSource(chatFile.Id, CompressionHelper.CompressImage(_newAvatar));
                         }
                     }
 
@@ -240,6 +240,7 @@ namespace Message.ViewModel
         private void ExecuteOnLoadPhoto()
         {
             var openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = GlobalBase.ImagePattern;
             openFileDialog.ShowDialog();
             var FilePath = openFileDialog.FileName;
 

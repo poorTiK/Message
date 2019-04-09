@@ -169,6 +169,7 @@ namespace Message.ViewModel
         private void ExecuteOnLoadPhoto()
         {
             var openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = GlobalBase.ImagePattern;
             openFileDialog.ShowDialog();
             var FilePath = openFileDialog.FileName;
 
