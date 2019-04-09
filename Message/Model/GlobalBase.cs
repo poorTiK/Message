@@ -23,6 +23,7 @@ namespace Message.Model
         public static Func<BaseMessage, bool> AddMessageOnUi { get; internal set; }
         public static UiInfo SelectedContact { get; internal set; }
         public static bool IsMenuEnabled { get; internal set; }
+        public static readonly long fileSizeConstraint = 524288000L;
         public static readonly string ImagePattern = "Image files (*.jpg, *.jpeg, *.jpe, *.jfif, *.png) | *.jpg; *.jpeg; *.jpe; *.jfif; *.png";
 
         //monitors

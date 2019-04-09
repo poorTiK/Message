@@ -68,6 +68,8 @@
     <v:String x:Key="GroupAddMember">Add members</v:String>
     <v:String x:Key="UserAlreadyOnline">User is already online.</v:String>
     <v:String x:Key="NoMemmbersSelected">No members selected</v:String>
+    <v:String x:Key="FileSizeExcesed">Maximum file size for sending was excesed.</v:String>
+    <v:String x:Key="FileSizeExcesedShort">Size exceesed.</v:String>
 
     <v:String x:Key="Yes">Yes</v:String>
     <v:String x:Key="No">No</v:String>

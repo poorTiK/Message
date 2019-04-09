@@ -1,4 +1,5 @@
-﻿using Message.Compression;
+﻿using Message.AdditionalItems;
+using Message.Compression;
 using Message.Interfaces;
 using Message.Model;
 using Message.UserServiceReference;
@@ -9,6 +10,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.ServiceModel;
 using System.Text;
@@ -108,11 +110,8 @@ namespace Message.ViewModel
             get { return _selectedContact; }
             set
             {
-                //if (value != null)
-                //{
                 SetProperty(ref _selectedContact, value, () => { SelectedContactChanged(); });
                 GlobalBase.SelectedContact = value;
-                //}
             }
         }
 
@@ -452,8 +451,19 @@ namespace Message.ViewModel
             var openFileDialog = new OpenFileDialog();
             openFileDialog.Multiselect = true;
             openFileDialog.ShowDialog();
-            FilesPath = openFileDialog.FileNames;
+            string[] tempFileNames = openFileDialog.FileNames;
 
+            foreach (string fileName in tempFileNames)
+            {
+                FileInfo fileInfo = new FileInfo(fileName);
+                if (fileInfo.Length > GlobalBase.fileSizeConstraint)
+                {
+                    CustomMessageBox.Show(Translations.GetTranslation()["FileSizeExcesedShort"].ToString(), Translations.GetTranslation()["FileSizeExcesed"].ToString(), MessageBoxType.Warning);
+                    return;
+                }
+            }
+
+            FilesPath = tempFileNames;
             FileAmount = FilesPath.Count();
         }
 

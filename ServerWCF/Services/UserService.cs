@@ -612,7 +612,7 @@ namespace ServerWCF.Services
                     usersOnline.Remove(callbackData);
 
                     User userToChangeStatus = userContext.Users.Where(u => u.Id == userId).FirstOrDefault();
-                    userToChangeStatus.Status = DateTime.Now.ToString();
+                    userToChangeStatus.Status = DateTime.Now.ToString("yyyyMMddHHmmss");
                     userContext.SaveChanges();
 
                     foreach (CallbackData innerCallbackData in usersOnline)

@@ -25,7 +25,7 @@ namespace Message
                 MessageText.Text = GlobalBase.Base64Decode(message.Text);
             }
 
-            SendTime.Text = message.DateOfSending.Hour + ":" + message.DateOfSending.Minute;
+            SendTime.Text = message.DateOfSending.ToString("hh:mm");
             ButtonDwnld.Visibility = message.ChatFileId != 0 ? Visibility.Visible : Visibility.Collapsed;
 
             if (message is GroupMessage mes)
