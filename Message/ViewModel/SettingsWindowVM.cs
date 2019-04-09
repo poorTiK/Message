@@ -1,7 +1,6 @@
 ﻿using Message.Interfaces;
 using Message.Model;
 using Prism.Commands;
-using System;
 using System.Drawing;
 using System.Threading.Tasks;
 using System.Windows;

@@ -2,7 +2,6 @@
 using Message.Interfaces;
 using Message.UserServiceReference;
 using Message.ViewModel;
-using System.Collections.Generic;
 using System.Windows;
 
 namespace Message
