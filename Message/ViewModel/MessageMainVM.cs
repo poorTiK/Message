@@ -462,20 +462,20 @@ namespace Message.ViewModel
 
         private void ExecuteOnViewProfile()
         {
-            if (SelectedContact is UserUiInfo)
+            Window wnd = null;
+
+            if (SelectedContact is UserUiInfo userUiInfo)
             {
-                var userUiInfo = SelectedContact as UserUiInfo;
                 var user = UserServiceClient.GetUserById(userUiInfo.UserId);
-                var wnd = new ContactProfileWindow(user);
-                wnd.Owner = (Window)_view;
-                wnd.Show();
+                wnd = new ContactProfileWindow(user);
             }
             else if (SelectedContact is ChatGroupUiInfo chatGroupUiInfo)
             {
-                var wnd = new EditGroupWindow(chatGroupUiInfo);
-                wnd.Owner = (Window)_view;
-                wnd.Show();
+                wnd = new EditGroupWindow(chatGroupUiInfo);
             }
+
+            wnd.Owner = (Window)_view;
+            wnd.Show();
         }
 
         private void ExecuteOnSendMessage()
