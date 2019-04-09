@@ -22,8 +22,6 @@ namespace Message.ViewModel
             //throw new NotImplementedException();
         }
 
-
-
         public virtual void OnMessageEdited(BaseMessage message)
         {
             //throw new NotImplementedException();

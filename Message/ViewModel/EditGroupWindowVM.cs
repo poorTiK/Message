@@ -54,7 +54,7 @@ namespace Message.ViewModel
 
         private string groupMembersAmout;
 
-        public string GroupMembersAmout
+        public string GroupMembersAmount
         {
             get { return groupMembersAmout; }
             set { SetProperty(ref groupMembersAmout, value); }
@@ -129,34 +129,14 @@ namespace Message.ViewModel
                 _group = UserServiceClient.GetChatGroup(_groupUiInfo.UniqueName);
 
                 tempUiInfos = UserServiceClient.GetGroupParticipants(_group.Id);
-                var defImage = ImageHelper.GetDefImage();
-
-                foreach (var item in tempUiInfos)
-                {
-                    if (item is UserUiInfo)
-                    {
-                        var userUiInfo = item as UserUiInfo;
-                        var user = UserServiceClient.GetUserById(userUiInfo.UserId);
-                        var chatFile = GlobalBase.FileServiceClient.getChatFileById(user.ImageId);
-
-                        if (chatFile?.Source != null && chatFile?.Source?.Length != 0)
-                        {
-                            var memstr = new MemoryStream(chatFile.Source);
-                            Dispatcher.CurrentDispatcher.Invoke(() => { item.UiImage = Image.FromStream(memstr); });
-                        }
-                        else
-                        {
-                            Dispatcher.CurrentDispatcher.Invoke(() => { item.UiImage = defImage; });
-                        }
-                    }
-                }
+                GlobalBase.loadPictures(UserServiceClient, tempUiInfos);
             })).ContinueWith(task =>
             {
                 GroupMemberList = tempUiInfos;
 
                 GroupName = _group.Name;
                 CurrentGroupName = _group.Name;
-                GroupMembersAmout = GroupMemberList.Count.ToString();
+                GroupMembersAmount = GroupMemberList.Count.ToString();
 
                 SetAvatarForUI();
             });
@@ -323,25 +303,7 @@ namespace Message.ViewModel
 
                 Task.Run(() =>
                 {
-                    foreach (var item in temp)
-                    {
-                        if (item is UserUiInfo)
-                        {
-                            var userUiInfo = item as UserUiInfo;
-                            var user = UserServiceClient.GetUserById(userUiInfo.UserId);
-                            var chatFile = GlobalBase.FileServiceClient.getChatFileById(user.ImageId);
-
-                            if (chatFile?.Source != null && chatFile?.Source?.Length != 0)
-                            {
-                                var memstr = new MemoryStream(chatFile.Source);
-                                Dispatcher.CurrentDispatcher.Invoke(() => { item.UiImage = Image.FromStream(memstr); });
-                            }
-                            else
-                            {
-                                Dispatcher.CurrentDispatcher.Invoke(() => { item.UiImage = defImage; });
-                            }
-                        }
-                    }
+                    GlobalBase.loadPictures(UserServiceClient, temp);
                 }).ContinueWith(Task =>
                 {
                     GroupMemberList = temp;
