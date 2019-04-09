@@ -47,30 +47,15 @@ namespace Message.ViewModel
             {
                 if (string.IsNullOrWhiteSpace(value))
                 {
-                    ContactsList.Clear();
-                    var temp = new List<UiInfo>();
-                    temp.AddRange(UserServiceClient.GetAllContactsUiInfo(GlobalBase.CurrentUser.Id));
-
-                    ContactsList = temp;
-
-                    GlobalBase.loadPictures(UserServiceClient, ContactsList);
+                    UpdateContactList();
                 }
                 else
                 {
                     ContactsList.Clear();
-                    var temp = new List<UiInfo>();
-                    temp.AddRange(UserServiceClient
-                        .GetAllUsersContacts(GlobalBase.CurrentUser.Id)
-                        .Where(i => i.FirstName.Contains(value)
-                                    || i.LastName.Contains(value)
-                                    || i.Login.Contains(value))
-                        .Select(u => new UserUiInfo
-                        {
-                            Name = u.FirstName + " " + u.LastName,
-                            UniqueName = u.Login,
-                            UserId = u.Id,
-                            Status = u.Status
-                        }));
+                    List<UiInfo> temp = UserServiceClient
+                        .GetAllContactsUiInfo(GlobalBase.CurrentUser.Id)
+                        .Where(i => i.UniqueName.Contains(value))
+                        .ToList();
 
                     ContactsList = temp;
 
@@ -122,11 +107,11 @@ namespace Message.ViewModel
             get { return _selectedContact; }
             set
             {
-                if (value != null)
-                {
+                //if (value != null)
+                //{
                     SetProperty(ref _selectedContact, value, () => { SelectedContactChanged(); });
                     GlobalBase.SelectedContact = value;
-                }
+                //}
             }
         }
 
@@ -247,12 +232,12 @@ namespace Message.ViewModel
             _view.ScrolledToTop += OnScrolledToTop;
 
             GlobalBase.CurrentUser = user;
+
             GlobalBase.UpdateMessagesOnUI += () =>
             {
                _view.UpdateMessageList();
             };
             GlobalBase.AddMessageOnUi += AddMessageOnUI;
-
             GlobalBase.UpdateContactList += UpdateContactList;
             GlobalBase.RemoveMessageOnUI += DeleteMessageOnUI;
             GlobalBase.UpdateProfileUi += SetAvatarForUI;
@@ -315,11 +300,15 @@ namespace Message.ViewModel
             {
                 Task.Run(() =>
                 {
-                    _view.MessageList.Clear();
+                    lock (_view.MessageList)
+                    {
+                        _view.MessageList.Clear();
+                    }
 
                     GlobalBase.loadPictures(UserServiceClient, ContactsList);
 
                     var res = new List<BaseMessage>();
+
                     if (SelectedContact is UserUiInfo)
                     {
                         res.AddRange(UserServiceClient.GetUserMessages(GlobalBase.CurrentUser.Id,
@@ -335,51 +324,62 @@ namespace Message.ViewModel
                     {
                         Application.Current.Dispatcher.Invoke(new Action(() =>
                         {
-                            _view.MessageList.AddRange(res);
+                            lock (_view.MessageList)
+                            {
+                                _view.MessageList.AddRange(res);
+                            }
                         }));
                     }
                 }).ContinueWith((task =>
                 {
-                    Application.Current.Dispatcher.Invoke(new Action(() =>
-                    {
-                        GlobalBase.UpdateMessagesOnUI();
-                    }));
+                   GlobalBase.UpdateMessagesOnUI();
                 }));
             }
         }
 
-        private void UpdateMessage(BaseMessage message, Func<BaseMessage, bool> updateStrategy)
+        private void UpdateMessage(BaseMessage message, Func<BaseMessage, bool> UiUpdateStrategy)
         {
-            var sender = UserServiceClient.GetAllUsers().FirstOrDefault(x => x.Id == message.SenderId);
+            var mes = "New message from  @";
+            var sender = UserServiceClient.GetUserById(message.SenderId);
 
             if (message is GroupMessage gMes)
             {
-                gMes.SenderName = sender.FirstName;
-            }
+                if (SelectedContact is ChatGroupUiInfo)
+                {
+                    if (gMes.ChatGroupId != (SelectedContact as ChatGroupUiInfo).ChatGroupId)
+                    {
+                        gMes.SenderName = sender.FirstName;
+                        ChatGroup chatGroup = UserServiceClient.GetChatGroupById(gMes.ChatGroupId);
 
-            if (sender.Id != (SelectedContact as UserUiInfo)?.UserId)
+                        mes += chatGroup.Name;
+                        mes += " group \n";
+                        mes += "\"" + GlobalBase.Base64Decode(message.Text) + "\"";
+                        GlobalBase.ShowNotify("New message", mes);
+                    }
+                    else
+                    {
+                        UiUpdateStrategy(message);
+                    }
+                }
+            }
+            else if (message is UserMessage uMes)
             {
-                var mes = "New message from  @" + sender.Login + "\n" + "\"" + GlobalBase.Base64Decode(message.Text) +
-                          "\"";
-                GlobalBase.ShowNotify("New message", mes);
+                if (SelectedContact is UserUiInfo)
+                {
+                    if (uMes.SenderId != (SelectedContact as UserUiInfo).UserId)
+                    {
+                        mes += sender.FirstName + sender.LastName + "\n";
+                        mes += "\"" + GlobalBase.Base64Decode(message.Text) + "\"";
+                        GlobalBase.ShowNotify("New message", mes);
+                    }
+                    else
+                    {
+                        UiUpdateStrategy(message);
+                    }
+                }
             }
 
             Debug.WriteLine("Receave Message from - ", sender.Login);
-
-            if (message is UserMessage)
-            {
-                if ((SelectedContact is UserUiInfo) && ((SelectedContact as UserUiInfo).UserId == sender.Id))
-                {
-                    updateStrategy(message);
-                }
-            }
-            else if (message is GroupMessage)
-            {
-                if ((SelectedContact is ChatGroupUiInfo) && ((SelectedContact as ChatGroupUiInfo).ChatGroupId == (message as GroupMessage).ChatGroupId))
-                {
-                    updateStrategy(message);
-                }
-            }
         }
 
         private void OnScrolledToTop()
@@ -395,19 +395,19 @@ namespace Message.ViewModel
                     lock (_view.MessageList) { 
                         _view.MessageList.Add(message);
                     }
-                    _view.UpdateMessageList();
                 });
+
+            _view.UpdateMessageList();
             return true;
         }
 
-        private bool UppdateMessageOnUI(BaseMessage message)
+        private bool UppdateTextOfMessageOnUI(BaseMessage message)
         {
             var mes = _view.MessageList.FirstOrDefault(x => x.Id == message.Id);
             if (mes != null)
             {
                 mes.Text = message.Text;
-                //fix it
-                GlobalBase.UpdateMessagesOnUI.Invoke();
+                _view.UpdateMessageList();
                 return true;
             }
 
@@ -641,7 +641,7 @@ namespace Message.ViewModel
 
         public override void OnMessageEdited(BaseMessage message)
         {
-            UpdateMessage(message, UppdateMessageOnUI);
+            UpdateMessage(message, UppdateTextOfMessageOnUI);
         }
 
         public override void OnNewContactAdded(UiInfo newContact)

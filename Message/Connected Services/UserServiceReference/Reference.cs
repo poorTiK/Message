@@ -1198,6 +1198,12 @@ namespace Message.UserServiceReference {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/GetChatGroup", ReplyAction="http://tempuri.org/IUserService/GetChatGroupResponse")]
         System.Threading.Tasks.Task<Message.UserServiceReference.ChatGroup> GetChatGroupAsync(string chatGroupName);
         
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/GetChatGroupById", ReplyAction="http://tempuri.org/IUserService/GetChatGroupByIdResponse")]
+        Message.UserServiceReference.ChatGroup GetChatGroupById(int chatGroupId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/GetChatGroupById", ReplyAction="http://tempuri.org/IUserService/GetChatGroupByIdResponse")]
+        System.Threading.Tasks.Task<Message.UserServiceReference.ChatGroup> GetChatGroupByIdAsync(int chatGroupId);
+        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/AddUserToUserContact", ReplyAction="http://tempuri.org/IUserService/AddUserToUserContactResponse")]
         bool AddUserToUserContact(int id_owner, int id_owned);
         
@@ -1461,6 +1467,14 @@ namespace Message.UserServiceReference {
         
         public System.Threading.Tasks.Task<Message.UserServiceReference.ChatGroup> GetChatGroupAsync(string chatGroupName) {
             return base.Channel.GetChatGroupAsync(chatGroupName);
+        }
+        
+        public Message.UserServiceReference.ChatGroup GetChatGroupById(int chatGroupId) {
+            return base.Channel.GetChatGroupById(chatGroupId);
+        }
+        
+        public System.Threading.Tasks.Task<Message.UserServiceReference.ChatGroup> GetChatGroupByIdAsync(int chatGroupId) {
+            return base.Channel.GetChatGroupByIdAsync(chatGroupId);
         }
         
         public bool AddUserToUserContact(int id_owner, int id_owned) {

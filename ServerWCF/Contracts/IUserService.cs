@@ -43,6 +43,9 @@ namespace ServerWCF.Contracts
         ChatGroup GetChatGroup(string chatGroupName);
 
         [OperationContract]
+        ChatGroup GetChatGroupById(int chatGroupId);
+
+        [OperationContract]
         bool AddUserToUserContact(int id_owner, int id_owned);
 
         [OperationContract]

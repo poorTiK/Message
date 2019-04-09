@@ -344,6 +344,22 @@ namespace ServerWCF.Services
             }
         }
 
+
+        public ChatGroup GetChatGroupById(int chatGroupId)
+        {
+            using (UserContext db = new UserContext())
+            {
+                try
+                {
+                    return db.ChatGroups.FirstOrDefault(cg => cg.Id == chatGroupId);
+                }
+                catch (Exception)
+                {
+                    return null;
+                }
+            }
+        }
+
         //users
         public List<User> GetAllUsers()
         {
