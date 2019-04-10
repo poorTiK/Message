@@ -72,6 +72,12 @@
     <v:String x:Key="FileSizeExcesedShort">Превышен размер.</v:String>
     <v:String x:Key="ExitGroupTip">Выйти из группы</v:String>
     <v:String x:Key="LeaveGroupAsk">Вы точно хотите покинуть группу?</v:String>
+    <v:String x:Key="SwitchPassword">Изменить пароль</v:String>
+    <v:String x:Key="OldPassword">Текущий пароль</v:String>
+    <v:String x:Key="NewPassword">Новый пароль</v:String>
+    <v:String x:Key="OldPassValid">Поле "Текущий пароль" не может быть пустым</v:String>
+    <v:String x:Key="NewPassValid">Поле "Новый пароль" не может быть пустым или не валидным</v:String>
+    <v:String x:Key="ResPassCurPassNotMatch">Неверный текущий пароль</v:String>
 
     <v:String x:Key="Yes">Да</v:String>
     <v:String x:Key="No">Нет</v:String>

@@ -225,6 +225,7 @@
     <Compile Include="ImageConverter.cs" />
     <Compile Include="Interfaces\IMainView.cs" />
     <Compile Include="Interfaces\IMessaging.cs" />
+    <Compile Include="Interfaces\IRestorePasswordSupplier.cs" />
     <Compile Include="Interfaces\ISerializeUser.cs" />
     <Compile Include="Interfaces\IView.cs" />
     <Compile Include="MessageEditWindow.xaml.cs">
@@ -241,6 +242,9 @@
     <Compile Include="Model\Translations.cs" />
     <Compile Include="ReceiveMessage.xaml.cs">
       <DependentUpon>ReceiveMessage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ResetPassWindow.xaml.cs">
+      <DependentUpon>ResetPassWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="SelectUsersWindow.xaml.cs">
       <DependentUpon>SelectUsersWindow.xaml</DependentUpon>
@@ -268,6 +272,7 @@
     <Compile Include="ViewModel\MainWindowVM.cs" />
     <Compile Include="ViewModel\MessageControlVM.cs" />
     <Compile Include="ViewModel\MessageMainVM.cs" />
+    <Compile Include="ViewModel\ResetPassWindowVM.cs" />
     <Compile Include="ViewModel\SelectUsersWindowVM.cs" />
     <Compile Include="ViewModel\SettingsWindowVM.cs" />
     <Compile Include="ViewModel\UserProfileWindowVM.cs" />
@@ -325,6 +330,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ReceiveMessage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ResetPassWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

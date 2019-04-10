@@ -72,6 +72,12 @@
     <v:String x:Key="FileSizeExcesedShort">Size exceesed.</v:String>
     <v:String x:Key="ExitGroupTip">Leave group</v:String>
     <v:String x:Key="LeaveGroupAsk">Are you sure want to leave group?</v:String>
+    <v:String x:Key="SwitchPassword">Change password</v:String>
+    <v:String x:Key="OldPassword">Current password</v:String>
+    <v:String x:Key="NewPassword">New password</v:String>
+    <v:String x:Key="OldPassValid">Current password can't be empty</v:String>
+    <v:String x:Key="NewPassValid">New password can't be empty</v:String>
+    <v:String x:Key="ResPassCurPassNotMatch">Wrong current password</v:String>
 
     <v:String x:Key="Yes">Yes</v:String>
     <v:String x:Key="No">No</v:String>

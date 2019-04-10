@@ -148,7 +148,6 @@ namespace Message.ViewModel
             }
             catch (Exception)
             {
-
             }
         }
 
@@ -173,6 +172,11 @@ namespace Message.ViewModel
         public DelegateCommand LoadPhoto =>
             _onLoadPhoto ?? (_onLoadPhoto = new DelegateCommand(ExecuteOnLoadPhoto));
 
+        private DelegateCommand _resetPass;
+
+        public DelegateCommand ResetPass =>
+            _resetPass ?? (_resetPass = new DelegateCommand(ExecuteOnResetPass));
+
         private void ExecuteOnLoadPhoto()
         {
             try
@@ -193,7 +197,6 @@ namespace Message.ViewModel
             }
             catch (Exception)
             {
-
             }
         }
 
@@ -209,7 +212,6 @@ namespace Message.ViewModel
                     }
                     catch (Exception)
                     {
-
                     }
                 });
             });
@@ -251,9 +253,9 @@ namespace Message.ViewModel
                         if (res == string.Empty)
                         {
                             Application.Current.Dispatcher.Invoke(new Action((() =>
-                        {
-                            CustomMessageBox.Show(Translations.GetTranslation()["ChangesSaved"].ToString());
-                        })));
+                            {
+                                CustomMessageBox.Show(Translations.GetTranslation()["ChangesSaved"].ToString());
+                            })));
                         }
                     })).ContinueWith((task =>
                     {
@@ -264,8 +266,14 @@ namespace Message.ViewModel
             }
             catch (Exception)
             {
-
             }
+        }
+
+        private void ExecuteOnResetPass()
+        {
+            var wnd = new ResetPassWindow();
+            wnd.Owner = (Window)_view;
+            wnd.ShowDialog();
         }
 
         private bool Validate()
@@ -296,7 +304,6 @@ namespace Message.ViewModel
             }
             catch (Exception)
             {
-
                 return false;
             }
         }

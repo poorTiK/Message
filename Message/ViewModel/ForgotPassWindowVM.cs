@@ -1,4 +1,5 @@
 ﻿using Message.AdditionalItems;
+using Message.Encryption;
 using Message.Interfaces;
 using Message.Model;
 using Message.UserServiceReference;
@@ -8,6 +9,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Mail;
 using System.ServiceModel;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -151,9 +153,14 @@ namespace Message.ViewModel
                 var from = new MailAddress("messagePassRestoration@gmail.com"); // make custom mail adress
                 var to = new MailAddress(user.Email);
 
-                var message = new MailMessage(from, to);
-                message.Subject = "Password restore";
-                message.Body = "Your pass - " + user.Password;
+            var newPas = AESEncryptor.encryptPassword(RandomNumberGenerator.RandomPassword());
+            user.Password = newPas;
+
+            UserServiceClient.AddOrUpdateUser(user);
+
+            var message = new MailMessage(from, to);
+            message.Subject = "Password restore";
+            message.Body = "Your pass - " + AESEncryptor.decryptPassword(newPas);
 
                 var smtp = new SmtpClient("smtp.gmail.com", 587);
                 smtp.Credentials = new NetworkCredential("messagePassRestoration@gmail.com", "messageApp1");
@@ -176,6 +183,39 @@ namespace Message.ViewModel
             finally
             {
 
+            }
+        }
+
+        public static class RandomNumberGenerator
+        {
+            private static int RandomNumber(int min, int max)
+            {
+                var random = new Random();
+                return random.Next(min, max);
+            }
+
+            private static string RandomString(int size, bool lowerCase)
+            {
+                var builder = new StringBuilder();
+                var random = new Random();
+                char ch;
+                for (var i = 0; i < size; i++)
+                {
+                    ch = Convert.ToChar(Convert.ToInt32(Math.Floor(26 * random.NextDouble() + 65)));
+                    builder.Append(ch);
+                }
+                if (lowerCase)
+                    return builder.ToString().ToLower();
+                return builder.ToString();
+            }
+
+            public static string RandomPassword()
+            {
+                var builder = new StringBuilder();
+                builder.Append(RandomString(4, true));
+                builder.Append(RandomNumber(1000, 9999));
+                builder.Append(RandomString(2, false));
+                return builder.ToString();
             }
         }
     }

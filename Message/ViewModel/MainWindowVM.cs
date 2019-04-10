@@ -199,6 +199,10 @@ namespace Message.ViewModel
                 {
                     InitLogin(userLogin);
                 }
+                else
+                {
+                    IsLoginProgress = false;
+                }
 
                 //IsLoginProgress = false;
                 IsRegisterProgress = false;
@@ -208,8 +212,13 @@ namespace Message.ViewModel
             }
             catch (Exception)
             {
-
             }
+
+            //IsLoginProgress = false;
+            IsRegisterProgress = false;
+
+            IsSignUpVisible = true;
+            IsRegisterVisible = false;
         }
 
         private void InitLogin(string userLogin)
@@ -249,14 +258,12 @@ namespace Message.ViewModel
                         }
                         catch (Exception)
                         {
-
                         }
                     });
                 });
             }
             catch (Exception)
             {
-
             }
         }
 
@@ -291,7 +298,6 @@ namespace Message.ViewModel
             }
             catch (Exception)
             {
-
             }
         }
 
@@ -314,7 +320,6 @@ namespace Message.ViewModel
             }
             catch (Exception)
             {
-
             }
         }
 
@@ -356,13 +361,11 @@ namespace Message.ViewModel
                     }
                     catch (Exception)
                     {
-
                     }
                 }).ContinueWith(task => { IsLoginProgress = false; });
             }
             catch (Exception)
             {
-
             }
         }
 
@@ -421,13 +424,11 @@ namespace Message.ViewModel
                     }
                     catch (Exception)
                     {
-
                     }
                 }).ContinueWith(task => { IsRegisterProgress = false; });
             }
             catch (Exception)
             {
-
             }
         }
 
@@ -441,7 +442,6 @@ namespace Message.ViewModel
             }
             catch (Exception)
             {
-
             }
         }
 
@@ -535,7 +535,6 @@ namespace Message.ViewModel
             }
             catch (Exception)
             {
-
             }
         }
     }
