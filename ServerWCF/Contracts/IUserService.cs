@@ -88,7 +88,13 @@ namespace ServerWCF.Contracts
         List<GroupMessage> GetGroupMessages(int chatGroupId, int limin);
 
         [OperationContract]
+        List<GroupMessage> GetGroupMessagesInRange(int chatGroupId, int beginning, int limit);
+
+        [OperationContract]
         List<UserMessage> GetUserMessages(int sender, int receiver, int limin);
+
+        [OperationContract]
+        List<UserMessage> GetUserMessagesInRange(int sender, int receiver, int beginning, int limit);
 
         [OperationContract]
         List<BaseMessage> FindMessage(string keyWord);

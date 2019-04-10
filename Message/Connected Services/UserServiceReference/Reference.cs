@@ -1288,11 +1288,23 @@ namespace Message.UserServiceReference {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/GetGroupMessages", ReplyAction="http://tempuri.org/IUserService/GetGroupMessagesResponse")]
         System.Threading.Tasks.Task<System.Collections.Generic.List<Message.UserServiceReference.GroupMessage>> GetGroupMessagesAsync(int chatGroupId, int limin);
         
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/GetGroupMessagesInRange", ReplyAction="http://tempuri.org/IUserService/GetGroupMessagesInRangeResponse")]
+        System.Collections.Generic.List<Message.UserServiceReference.GroupMessage> GetGroupMessagesInRange(int chatGroupId, int beginning, int limit);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/GetGroupMessagesInRange", ReplyAction="http://tempuri.org/IUserService/GetGroupMessagesInRangeResponse")]
+        System.Threading.Tasks.Task<System.Collections.Generic.List<Message.UserServiceReference.GroupMessage>> GetGroupMessagesInRangeAsync(int chatGroupId, int beginning, int limit);
+        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/GetUserMessages", ReplyAction="http://tempuri.org/IUserService/GetUserMessagesResponse")]
         System.Collections.Generic.List<Message.UserServiceReference.UserMessage> GetUserMessages(int sender, int receiver, int limin);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/GetUserMessages", ReplyAction="http://tempuri.org/IUserService/GetUserMessagesResponse")]
         System.Threading.Tasks.Task<System.Collections.Generic.List<Message.UserServiceReference.UserMessage>> GetUserMessagesAsync(int sender, int receiver, int limin);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/GetUserMessagesInRange", ReplyAction="http://tempuri.org/IUserService/GetUserMessagesInRangeResponse")]
+        System.Collections.Generic.List<Message.UserServiceReference.UserMessage> GetUserMessagesInRange(int sender, int receiver, int beginning, int limit);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/GetUserMessagesInRange", ReplyAction="http://tempuri.org/IUserService/GetUserMessagesInRangeResponse")]
+        System.Threading.Tasks.Task<System.Collections.Generic.List<Message.UserServiceReference.UserMessage>> GetUserMessagesInRangeAsync(int sender, int receiver, int beginning, int limit);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserService/FindMessage", ReplyAction="http://tempuri.org/IUserService/FindMessageResponse")]
         System.Collections.Generic.List<Message.UserServiceReference.BaseMessage> FindMessage(string keyWord);
@@ -1589,12 +1601,28 @@ namespace Message.UserServiceReference {
             return base.Channel.GetGroupMessagesAsync(chatGroupId, limin);
         }
         
+        public System.Collections.Generic.List<Message.UserServiceReference.GroupMessage> GetGroupMessagesInRange(int chatGroupId, int beginning, int limit) {
+            return base.Channel.GetGroupMessagesInRange(chatGroupId, beginning, limit);
+        }
+        
+        public System.Threading.Tasks.Task<System.Collections.Generic.List<Message.UserServiceReference.GroupMessage>> GetGroupMessagesInRangeAsync(int chatGroupId, int beginning, int limit) {
+            return base.Channel.GetGroupMessagesInRangeAsync(chatGroupId, beginning, limit);
+        }
+        
         public System.Collections.Generic.List<Message.UserServiceReference.UserMessage> GetUserMessages(int sender, int receiver, int limin) {
             return base.Channel.GetUserMessages(sender, receiver, limin);
         }
         
         public System.Threading.Tasks.Task<System.Collections.Generic.List<Message.UserServiceReference.UserMessage>> GetUserMessagesAsync(int sender, int receiver, int limin) {
             return base.Channel.GetUserMessagesAsync(sender, receiver, limin);
+        }
+        
+        public System.Collections.Generic.List<Message.UserServiceReference.UserMessage> GetUserMessagesInRange(int sender, int receiver, int beginning, int limit) {
+            return base.Channel.GetUserMessagesInRange(sender, receiver, beginning, limit);
+        }
+        
+        public System.Threading.Tasks.Task<System.Collections.Generic.List<Message.UserServiceReference.UserMessage>> GetUserMessagesInRangeAsync(int sender, int receiver, int beginning, int limit) {
+            return base.Channel.GetUserMessagesInRangeAsync(sender, receiver, beginning, limit);
         }
         
         public System.Collections.Generic.List<Message.UserServiceReference.BaseMessage> FindMessage(string keyWord) {

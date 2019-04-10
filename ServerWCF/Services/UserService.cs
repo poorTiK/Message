@@ -643,22 +643,59 @@ namespace ServerWCF.Services
                 List<GroupMessage> messagesToReturn = new List<GroupMessage>();
                 try
                 {
-                    foreach (BaseMessage message in context.Messages.AsEnumerable().Reverse())
+                    foreach (BaseMessage message in context.Messages.Where(mes => mes is GroupMessage).AsEnumerable().Reverse())
                     {
-                        if (message is GroupMessage)
+                        if (messagesToReturn.Count == limit)
                         {
-                            GroupMessage groupMessage = message as GroupMessage;
-                            if (messagesToReturn.Count == limit)
-                            {
-                                break;
-                            }
+                            break;
+                        }
 
-                            if (chatGroupId == groupMessage.ChatGroupId)
-                            {
-                                User usrSender = GetUserById(groupMessage.SenderId);
-                                groupMessage.SenderName = usrSender.FirstName;
-                                messagesToReturn.Add(groupMessage);
-                            }
+                        GroupMessage groupMessage = message as GroupMessage;
+
+                        if (chatGroupId == groupMessage.ChatGroupId)
+                        {
+                            User usrSender = GetUserById(groupMessage.SenderId);
+                            groupMessage.SenderName = usrSender.FirstName;
+                            messagesToReturn.Add(groupMessage);
+                        }
+                    }
+                }
+                catch (Exception)
+                {
+                    messagesToReturn = new List<GroupMessage>();
+                }
+
+                messagesToReturn.Reverse();
+                return messagesToReturn;
+            }
+        }
+
+        public List<GroupMessage> GetGroupMessagesInRange(int chatGroupId, int beginning, int limit)
+        {
+            using (UserContext context = new UserContext())
+            {
+                List<GroupMessage> messagesToReturn = new List<GroupMessage>();
+                try
+                {
+                    foreach (BaseMessage message in context.Messages.Where(mes => mes is GroupMessage).AsEnumerable().Reverse())
+                    {
+                        if (messagesToReturn.Count == (beginning + limit))
+                        {
+                            break;
+                        }
+
+                        if (chatGroupId < beginning)
+                        {
+                            continue;
+                        }
+
+                        GroupMessage groupMessage = message as GroupMessage;
+
+                        if (chatGroupId == groupMessage.ChatGroupId)
+                        {
+                            User usrSender = GetUserById(groupMessage.SenderId);
+                            groupMessage.SenderName = usrSender.FirstName;
+                            messagesToReturn.Add(groupMessage);
                         }
                     }
                 }
@@ -679,28 +716,25 @@ namespace ServerWCF.Services
                 List<UserMessage> messagesToReturn = new List<UserMessage>();
                 try
                 {
-                    foreach (BaseMessage message in context.Messages.AsEnumerable().Reverse())
+                    foreach (BaseMessage message in context.Messages.Where(mes => mes is UserMessage).AsEnumerable().Reverse())
                     {
-                        if (message is UserMessage)
+                        if (messagesToReturn.Count == limit)
                         {
-                            if (messagesToReturn.Count == limit)
-                            {
-                                break;
-                            }
+                            break;
+                        }
 
-                            UserMessage userMessage = message as UserMessage;
+                        UserMessage userMessage = message as UserMessage;
 
-                            if (userMessage.SenderId == sender &&
-                                userMessage.ReceiverId == receiver)
-                            {
-                                messagesToReturn.Add(userMessage);
-                            }
+                        if (userMessage.SenderId == sender &&
+                            userMessage.ReceiverId == receiver)
+                        {
+                            messagesToReturn.Add(userMessage);
+                        }
 
-                            if (userMessage.SenderId == receiver &&
-                                userMessage.ReceiverId == sender)
-                            {
-                                messagesToReturn.Add(userMessage);
-                            }
+                        if (userMessage.SenderId == receiver &&
+                            userMessage.ReceiverId == sender)
+                        {
+                            messagesToReturn.Add(userMessage);
                         }
                     }
                 }
@@ -708,6 +742,54 @@ namespace ServerWCF.Services
                 {
                     messagesToReturn = new List<UserMessage>();
                 }
+                messagesToReturn.Reverse();
+                return messagesToReturn;
+            }
+        }
+
+        public List<UserMessage> GetUserMessagesInRange(int sender, int receiver, int beginning, int limit)
+        {
+            using (UserContext context = new UserContext())
+            {
+                List<UserMessage> messagesToReturn = new List<UserMessage>();
+                try
+                {
+                    List<BaseMessage> filteredMessage = context.Messages
+                        .Where(mes => mes is UserMessage)
+                        .AsEnumerable().Reverse().ToList();
+
+                    foreach (BaseMessage mes in filteredMessage)
+                    {
+                        if (messagesToReturn.Count == beginning + limit)
+                        {
+                            break;
+                        }
+
+                        if (messagesToReturn.Count < beginning )
+                        {
+                            continue;
+                        }
+
+                        UserMessage uMes = (mes as UserMessage);
+                        if (uMes.SenderId == sender &&
+                            uMes.ReceiverId == receiver)
+                        {
+                            messagesToReturn.Add(uMes);
+                        }
+
+                        if (uMes.SenderId == receiver &&
+                            uMes.ReceiverId == sender)
+                        {
+                            messagesToReturn.Add(uMes);
+                        }
+
+                    }
+                }
+                catch (Exception)
+                {
+                    messagesToReturn = new List<UserMessage>();
+                }
+
                 messagesToReturn.Reverse();
                 return messagesToReturn;
             }
