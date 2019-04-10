@@ -1,4 +1,5 @@
-﻿using Message.Interfaces;
+﻿using Message.AdditionalItems;
+using Message.Interfaces;
 using Message.UserServiceReference;
 using Message.ViewModel;
 using System.Windows;
@@ -13,6 +14,8 @@ namespace Message
         public ForwardMessageWindow(BaseMessage message)
         {
             InitializeComponent();
+
+            DwmDropShadow.DropShadowToWindow(this);
 
             DataContext = new ForwardMessageWindowVM(message, this);
         }

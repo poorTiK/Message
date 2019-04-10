@@ -163,18 +163,18 @@ namespace ServerWCF.Services
 
         public bool RemoveUserToChatGroupContact(int chatGroupId, int participantId)
         {
-            using (UserContext userContext = new UserContext())
+            using (var userContext = new UserContext())
             {
                 try
                 {
-                    List<BaseContact> contacts = userContext.Contacts.Include("UserOwner").ToList();
+                    var contacts = userContext.Contacts.Include("UserOwner").ToList();
 
-                    ChatGroup dbChatGroup = userContext.ChatGroups.Where(cg => cg.Id == chatGroupId).FirstOrDefault();
-                    User ownedFromDb = userContext.Users.Where(u => u.Id == participantId).FirstOrDefault();
+                    var dbChatGroup = userContext.ChatGroups.Where(cg => cg.Id == chatGroupId).FirstOrDefault();
+                    var ownedFromDb = userContext.Users.Where(u => u.Id == participantId).FirstOrDefault();
 
-                    foreach (BaseContact contact in contacts)
+                    foreach (var contact in contacts)
                     {
-                        if (contact.UserOwnerId == dbChatGroup.Id && (contact as UserToGroupContact).ChatGroupId == chatGroupId)
+                        if (contact.UserOwnerId == dbChatGroup.Id && (contact is UserToGroupContact userToGroupContact) && userToGroupContact.ChatGroupId == chatGroupId)
                         {
                             userContext.Contacts.Remove(contact);
                             userContext.SaveChanges();
@@ -182,11 +182,11 @@ namespace ServerWCF.Services
                         }
                     }
 
-                    ChatGroupUiInfo groupInfo = new ChatGroupUiInfo(dbChatGroup);
-                    List<int> userIds = dbChatGroup.Participants.Select(c => c.UserOwnerId).ToList();
-                    List<User> usersFromGroup = userContext.Users.Where(u => userIds.Contains(u.Id)).ToList();
+                    var groupInfo = new ChatGroupUiInfo(dbChatGroup);
+                    var userIds = dbChatGroup.Participants.Select(c => c.UserOwnerId).ToList();
+                    var usersFromGroup = userContext.Users.Where(u => userIds.Contains(u.Id)).ToList();
 
-                    foreach (User userToNotify in usersFromGroup)
+                    foreach (var userToNotify in usersFromGroup)
                     {
                         RemoveContactCallback(groupInfo, userToNotify);
                     }
@@ -765,7 +765,7 @@ namespace ServerWCF.Services
                             break;
                         }
 
-                        if (messagesToReturn.Count < beginning )
+                        if (messagesToReturn.Count < beginning)
                         {
                             continue;
                         }
@@ -782,7 +782,6 @@ namespace ServerWCF.Services
                         {
                             messagesToReturn.Add(uMes);
                         }
-
                     }
                 }
                 catch (Exception)

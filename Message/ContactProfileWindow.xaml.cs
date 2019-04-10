@@ -1,4 +1,5 @@
-﻿using Message.Interfaces;
+﻿using Message.AdditionalItems;
+using Message.Interfaces;
 using Message.UserServiceReference;
 using Message.ViewModel;
 using System;
@@ -14,11 +15,15 @@ namespace Message
         public ContactProfileWindow()
         {
             InitializeComponent();
+
+            DwmDropShadow.DropShadowToWindow(this);
         }
 
         public ContactProfileWindow(User profile)
         {
             InitializeComponent();
+
+            DwmDropShadow.DropShadowToWindow(this);
 
             DataContext = new ContactProfileWindowVM(this, profile);
         }

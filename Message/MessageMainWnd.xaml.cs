@@ -1,4 +1,5 @@
-﻿using Message.Interfaces;
+﻿using Message.AdditionalItems;
+using Message.Interfaces;
 using Message.Model;
 using Message.UserServiceReference;
 using Message.ViewModel;
@@ -156,6 +157,8 @@ namespace Message
         public MessageMainWnd(User user)
         {
             InitializeComponent();
+
+            DwmDropShadow.DropShadowToWindow(this);
 
             DataContext = new MessageMainVM(this, user);
 

@@ -69,7 +69,7 @@
                                 <TextBlock Grid.Column="1" Margin="15,0,0,0" Text="{DynamicResource EditProfile}" HorizontalAlignment="Left" VerticalAlignment="Center" />
                             </Grid>
                         </ListViewItem>
-                        <ListViewItem Padding="0">
+                        <!--<ListViewItem Padding="0">
                             <Grid Background="Transparent" Height="30" MinWidth="220">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="20" />
@@ -79,7 +79,7 @@
                                 <TextBlock Grid.Column="1" Margin="15,0,0,0" HorizontalAlignment="Left"
                                            VerticalAlignment="Center" Text="{DynamicResource Notifications}"></TextBlock>
                             </Grid>
-                        </ListViewItem>
+                        </ListViewItem>-->
                         <ListViewItem Padding="0">
                             <Grid Background="Transparent" Height="30" MinWidth="220">
                                 <i:Interaction.Triggers>

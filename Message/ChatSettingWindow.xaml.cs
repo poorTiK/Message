@@ -4,6 +4,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using Message.AdditionalItems;
 
 namespace Message
 {
@@ -15,6 +16,8 @@ namespace Message
         public ChatSettingWindow()
         {
             InitializeComponent();
+
+            DwmDropShadow.DropShadowToWindow(this);
 
             CultureInfo currLang = App.Language;
 

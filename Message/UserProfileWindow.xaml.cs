@@ -1,4 +1,5 @@
-﻿using Message.Interfaces;
+﻿using Message.AdditionalItems;
+using Message.Interfaces;
 using Message.ViewModel;
 using System.Text.RegularExpressions;
 using System.Windows;
@@ -14,6 +15,8 @@ namespace Message
         public UserProfileWindow()
         {
             InitializeComponent();
+
+            DwmDropShadow.DropShadowToWindow(this);
 
             DataContext = new UserProfileWindowVM(this);
         }

@@ -1,4 +1,5 @@
-﻿using Message.Interfaces;
+﻿using Message.AdditionalItems;
+using Message.Interfaces;
 using Message.ViewModel;
 using System;
 using System.Windows;
@@ -15,6 +16,8 @@ namespace Message
         public MainWindow()
         {
             InitializeComponent();
+
+            DwmDropShadow.DropShadowToWindow(this);
 
             MinimizeButton.Click += (s, e) => WindowState = WindowState.Minimized;
             CloseButton.Click += (s, e) => Close();

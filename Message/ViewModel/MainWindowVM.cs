@@ -222,6 +222,7 @@ namespace Message.ViewModel
                         Translations.GetTranslation()["UserAlreadyOnline"].ToString(),
                         MessageBoxType.Error);
 
+                        IsLoginProgress = false;
                         return;
                     }
                     else if (user == null)

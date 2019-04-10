@@ -35,6 +35,10 @@
         <Grid VerticalAlignment="Top">
             <TextBlock Margin="10,0,0,0" HorizontalAlignment="Left" Style="{StaticResource MaterialDesignSubheadingTextBlock}" Foreground="{DynamicResource Foreground}"
                        VerticalAlignment="Center" Text="{DynamicResource EditGroup}"></TextBlock>
+            <Button Grid.Column="2" HorizontalAlignment="Right" Margin="0,0,30,0" Foreground="{DynamicResource ButtonForeground}" Background="{x:Null}" BorderBrush="{x:Null}" Width="30" Height="30" Padding="0"
+                                Command="{Binding LeaveGroup}" ToolTip="{DynamicResource ExitGroupTip}">
+                <materialDesign:PackIcon Kind="EmergencyExit" Foreground="{DynamicResource Foreground}"></materialDesign:PackIcon>
+            </Button>
             <Button x:Name="ButtonClose" Click="ButtonClose_OnClickose_OnClick" HorizontalAlignment="Right" VerticalAlignment="Top" Background="{x:Null}" Foreground="{DynamicResource ButtonForeground}" BorderBrush="{x:Null}" Width="30" Height="30" Padding="0">
                 <materialDesign:PackIcon Kind="Close" Foreground="{DynamicResource HeaderButton}" />
             </Button>

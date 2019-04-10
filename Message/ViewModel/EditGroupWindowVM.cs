@@ -167,6 +167,11 @@ namespace Message.ViewModel
         public DelegateCommand AddMembers =>
             _addMembers ?? (_addMembers = new DelegateCommand(ExecuteOnAddMembers));
 
+        private DelegateCommand _leaveGroup;
+
+        public DelegateCommand LeaveGroup =>
+            _leaveGroup ?? (_leaveGroup = new DelegateCommand(ExecuteOnLeaveGroup));
+
         private void ExecuteOnApplyChanges()
         {
             if (Validate())
@@ -260,6 +265,25 @@ namespace Message.ViewModel
             wnd.Owner = (Window)_view;
             wnd.ShowDialog();
             _view.Hide(true);
+        }
+
+        private void ExecuteOnLeaveGroup()
+        {
+            if (CustomMessageBox.Show(Translations.GetTranslation()["LeaveGroupAsk"].ToString(), MessageBoxType.ConfirmationWithYesNo) == MessageBoxResult.Yes)
+            {
+                Task.Run(() =>
+                {
+                    UserServiceClient.RemoveUserToChatGroupContact(_group.Id, GlobalBase.CurrentUser.Id);
+                }).ContinueWith(task =>
+                {
+                    Application.Current.Dispatcher.Invoke(new Action(() =>
+                    {
+                        _view.CloseWindow();
+                    }));
+
+                    GlobalBase.UpdateContactList();
+                });
+            }
         }
 
         private void CheckChanges()

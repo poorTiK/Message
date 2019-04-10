@@ -1,4 +1,5 @@
-﻿using Message.Interfaces;
+﻿using Message.AdditionalItems;
+using Message.Interfaces;
 using Message.UserServiceReference;
 using Message.ViewModel;
 using System;
@@ -14,6 +15,8 @@ namespace Message
         public MessageEditWindow(BaseMessage message)
         {
             InitializeComponent();
+
+            DwmDropShadow.DropShadowToWindow(this);
 
             DataContext = new EditMessageVM(message, this);
         }

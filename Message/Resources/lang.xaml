@@ -70,6 +70,8 @@
     <v:String x:Key="NoMemmbersSelected">No members selected</v:String>
     <v:String x:Key="FileSizeExcesed">Maximum file size for sending was excesed.</v:String>
     <v:String x:Key="FileSizeExcesedShort">Size exceesed.</v:String>
+    <v:String x:Key="ExitGroupTip">Leave group</v:String>
+    <v:String x:Key="LeaveGroupAsk">Are you sure want to leave group?</v:String>
 
     <v:String x:Key="Yes">Yes</v:String>
     <v:String x:Key="No">No</v:String>

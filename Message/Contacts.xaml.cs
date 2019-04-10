@@ -1,4 +1,5 @@
-﻿using Message.Interfaces;
+﻿using Message.AdditionalItems;
+using Message.Interfaces;
 using Message.ViewModel;
 using System;
 using System.Windows;
@@ -13,6 +14,8 @@ namespace Message
         public Contacts()
         {
             InitializeComponent();
+
+            DwmDropShadow.DropShadowToWindow(this);
 
             App.LanguageChanged += AppOnLanguageChanged;
             DataContext = new ContatsWindowVM(this);

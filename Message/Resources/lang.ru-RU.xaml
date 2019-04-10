@@ -70,7 +70,9 @@
     <v:String x:Key="NoMemmbersSelected">Не выбраны участники группы</v:String>
     <v:String x:Key="FileSizeExcesed">Превышен максимальный размер файла для отправки.</v:String>
     <v:String x:Key="FileSizeExcesedShort">Превышен размер.</v:String>
-    
+    <v:String x:Key="ExitGroupTip">Выйти из группы</v:String>
+    <v:String x:Key="LeaveGroupAsk">Вы точно хотите покинуть группу?</v:String>
+
     <v:String x:Key="Yes">Да</v:String>
     <v:String x:Key="No">Нет</v:String>
     <v:String x:Key="Ok">ОК</v:String>
