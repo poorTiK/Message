@@ -40,10 +40,11 @@ namespace ServerWCF.Services
         //contacts
         public bool AddUserToUserContact(int id_owner, int id_owned)
         {
-            using (UserContext userContext = new UserContext())
+            try
             {
-                try
+                using (UserContext userContext = new UserContext())
                 {
+
                     UserToUserContact contact = new UserToUserContact();
                     UserToUserContact reverseContact = new UserToUserContact();
 
@@ -69,19 +70,20 @@ namespace ServerWCF.Services
 
                     return true;
                 }
-                catch (Exception)
-                {
-                    return false;
-                }
+            }
+            catch (Exception)
+            {
+                return false;
             }
         }
 
         public bool AddUserToChatGroupContact(int chatGroupId, int participantId)
         {
-            using (UserContext userContext = new UserContext())
+            try
             {
-                try
+                using (UserContext userContext = new UserContext())
                 {
+
                     UserToGroupContact contact = new UserToGroupContact();
 
                     ChatGroup dbChatGroup = userContext.ChatGroups.Include("Participants").FirstOrDefault(chatGroup => chatGroup.Id == chatGroupId);
@@ -109,30 +111,38 @@ namespace ServerWCF.Services
 
                     return true;
                 }
-                catch (Exception)
-                {
-                    return false;
-                }
+            }
+            catch (Exception)
+            {
+                return false;
             }
         }
 
         private void AddNewContactCallback(UiInfo contactCreator, User addedContact)
         {
-            foreach (CallbackData innerCallbackData in usersOnline)
+            try
             {
-                if (innerCallbackData.User.Id == addedContact.Id)
+                foreach (CallbackData innerCallbackData in usersOnline)
                 {
-                    innerCallbackData.UserCallback.OnNewContactAdded(contactCreator);
+                    if (innerCallbackData.User.Id == addedContact.Id)
+                    {
+                        innerCallbackData.UserCallback.OnNewContactAdded(contactCreator);
+                    }
                 }
+            }
+            catch (Exception)
+            {
+
             }
         }
 
         public bool RemoveUserToUserContact(int ownerId, int ownedId)
         {
-            using (UserContext userContext = new UserContext())
+            try
             {
-                try
+                using (UserContext userContext = new UserContext())
                 {
+
                     List<BaseContact> contacts = userContext.Contacts.Include("UserOwner").ToList();
 
                     User ownerFromDb = userContext.Users.Where(u => u.Id == ownerId).FirstOrDefault();
@@ -153,20 +163,22 @@ namespace ServerWCF.Services
                     }
 
                     return false;
+
                 }
-                catch (Exception)
-                {
-                    return false;
-                }
+            }
+            catch (Exception)
+            {
+                return false;
             }
         }
 
         public bool RemoveUserToChatGroupContact(int chatGroupId, int participantId)
         {
-            using (var userContext = new UserContext())
+            try
             {
-                try
+                using (var userContext = new UserContext())
                 {
+
                     var contacts = userContext.Contacts.Where(contact => contact is UserToGroupContact).ToList();
 
                     var dbChatGroup = userContext.ChatGroups.Where(cg => cg.Id == chatGroupId).FirstOrDefault();
@@ -186,38 +198,52 @@ namespace ServerWCF.Services
                     }
 
                     return true;
+
                 }
-                catch (Exception)
-                {
-                    return false;
-                }
+            }
+            catch (Exception)
+            {
+                return false;
             }
         }
 
         private void RemoveContactCallback(UiInfo contactRemover, User removedContact)
         {
-            foreach (CallbackData innerCallbackData in usersOnline)
+            try
             {
-                if (innerCallbackData.User.Id == removedContact.Id)
+                foreach (CallbackData innerCallbackData in usersOnline)
                 {
-                    innerCallbackData.UserCallback.OnContactRemoved(contactRemover);
+                    if (innerCallbackData.User.Id == removedContact.Id)
+                    {
+                        innerCallbackData.UserCallback.OnContactRemoved(contactRemover);
+                    }
                 }
+            }
+            catch (Exception)
+            {
+
             }
         }
 
         public bool IsExistsInContacts(int id_owner, int id_owned)
         {
-            List<User> contactsForOwner = GetAllUsersContacts(id_owner);
-
-            return contactsForOwner.FirstOrDefault(u => u.Id == id_owned) != null;
+            try
+            {
+                List<User> contactsForOwner = GetAllUsersContacts(id_owner);
+                return contactsForOwner.FirstOrDefault(u => u.Id == id_owned) != null;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
         public List<User> GetAllUsersContacts(int userId)
         {
-            using (UserContext db = new UserContext())
+            List<User> contactsForOwner = new List<User>();
+            try
             {
-                List<User> contactsForOwner = new List<User>();
-                try
+                using (UserContext db = new UserContext())
                 {
                     contactsForOwner = db.Users.SqlQuery(" select * " +
                             "from Users " +
@@ -225,20 +251,23 @@ namespace ServerWCF.Services
                             "from BaseContacts " +
                             "where BaseContacts.UserOwnerId = @p0);", userId).ToList();
                 }
-                catch (Exception)
-                {
-                    contactsForOwner = new List<User>();
-                }
-                return contactsForOwner;
             }
+            catch (Exception)
+            {
+                contactsForOwner = new List<User>();
+            }
+
+            return contactsForOwner;
+
         }
 
         public List<ChatGroup> GetAllChatGroupsContacts(int userId)
         {
-            using (UserContext db = new UserContext())
+            List<ChatGroup> contactsForOwner = new List<ChatGroup>();
+
+            try
             {
-                List<ChatGroup> contactsForOwner = new List<ChatGroup>();
-                try
+                using (UserContext db = new UserContext())
                 {
                     contactsForOwner = db.ChatGroups.SqlQuery("select * " +
                           " from ChatGroups" +
@@ -246,50 +275,60 @@ namespace ServerWCF.Services
                           " from BaseContacts" +
                           " where BaseContacts.UserOwnerId = @p0);", userId).ToList();
                 }
-                catch (Exception)
-                {
-                    contactsForOwner = new List<ChatGroup>();
-                }
-                return contactsForOwner;
             }
+            catch (Exception)
+            {
+                contactsForOwner = new List<ChatGroup>();
+            }
+
+            return contactsForOwner;
         }
 
         public List<UiInfo> GetGroupParticipants(int chatGroupId)
         {
-            using (UserContext db = new UserContext())
+            try
             {
-                try
+                using (UserContext db = new UserContext())
                 {
+
                     ChatGroup chatGroup = db.ChatGroups.Include("Participants").Where(c => c.Id == chatGroupId).First();
 
                     List<UiInfo> result = new List<UiInfo>();
                     result.AddRange(chatGroup.Participants.Select(cg => new UserUiInfo(GetUserById(cg.UserOwnerId))).ToList());
 
                     return result;
+
                 }
-                catch (Exception ex)
-                {
-                    return null;
-                }
+            }
+            catch (Exception ex)
+            {
+                return null;
             }
         }
 
         public List<UiInfo> GetAllContactsUiInfo(int id)
         {
-            List<UiInfo> usersUiInfos = new List<UiInfo>(GetAllUsersContacts(id).Select(u => new UserUiInfo(u)));
-            List<UiInfo> chatGroupsUiInfo = new List<UiInfo>(GetAllChatGroupsContacts(id).Select(cg => new ChatGroupUiInfo(cg)));
+            try
+            {
+                List<UiInfo> usersUiInfos = new List<UiInfo>(GetAllUsersContacts(id).Select(u => new UserUiInfo(u)));
+                List<UiInfo> chatGroupsUiInfo = new List<UiInfo>(GetAllChatGroupsContacts(id).Select(cg => new ChatGroupUiInfo(cg)));
 
-            usersUiInfos.AddRange(chatGroupsUiInfo);
+                usersUiInfos.AddRange(chatGroupsUiInfo);
 
-            return usersUiInfos;
+                return usersUiInfos;
+            }
+            catch (Exception)
+            {
+                return new List<UiInfo>();
+            }
         }
 
         //chatGroups
         public string AddOrUpdateChatGroup(ChatGroup chatGroupToAdd)
         {
-            using (var userContext = new UserContext())
+            try
             {
-                try
+                using (var userContext = new UserContext())
                 {
                     var dbChatGroup = userContext.ChatGroups.FirstOrDefault(cg => cg.Id == chatGroupToAdd.Id);
 
@@ -313,69 +352,77 @@ namespace ServerWCF.Services
 
                     userContext.SaveChanges();
                     return successResult;
+
                 }
-                catch (Exception)
-                {
-                    return "Exceptions were occured during adding new chat group.";
-                }
+            }
+            catch (Exception)
+            {
+                return "Exceptions were occured during adding new chat group.";
             }
         }
 
         public ChatGroup GetChatGroup(string chatGroupName)
         {
-            using (UserContext db = new UserContext())
+            try
             {
-                try
+                using (UserContext db = new UserContext())
                 {
                     return db.ChatGroups.FirstOrDefault(cg => cg.Name.Contains(chatGroupName));
                 }
-                catch (Exception)
-                {
-                    return null;
-                }
+            }
+            catch (Exception)
+            {
+                return null;
             }
         }
 
         public ChatGroup GetChatGroupById(int chatGroupId)
         {
-            using (UserContext db = new UserContext())
+            try
             {
-                try
+                using (UserContext db = new UserContext())
                 {
                     return db.ChatGroups.FirstOrDefault(cg => cg.Id == chatGroupId);
                 }
-                catch (Exception)
-                {
-                    return null;
-                }
+            }
+            catch (Exception)
+            {
+                return null;
             }
         }
 
         //users
         public List<User> GetAllUsers()
         {
-            using (UserContext db = new UserContext())
+            List<User> allUsers = new List<User>();
+            try
             {
-                List<User> allUsers = new List<User>();
-                try
+                using (UserContext db = new UserContext())
                 {
                     allUsers = db.Users.ToList();
                 }
-                catch (Exception)
-                {
-                    allUsers = new List<User>();
-                }
-
-                return allUsers;
             }
+            catch (Exception)
+            {
+                allUsers = new List<User>();
+            }
+
+            return allUsers;
         }
 
         public List<UiInfo> GetAllUsersUiInfo()
         {
-            List<User> allUsers = GetAllUsers();
-            List<UiInfo> uiInfoToReturn = new List<UiInfo>(allUsers.Select(u => new UserUiInfo(u)).ToList());
+            try
+            {
+                List<User> allUsers = GetAllUsers();
+                List<UiInfo> uiInfoToReturn = new List<UiInfo>(allUsers.Select(u => new UserUiInfo(u)).ToList());
 
-            return uiInfoToReturn;
+                return uiInfoToReturn;
+            }
+            catch (Exception)
+            {
+                return new List<UiInfo>();
+            }
         }
 
         public string AddOrUpdateUser(User user)
@@ -513,17 +560,31 @@ namespace ServerWCF.Services
 
         public List<UiInfo> FindNewUsersUiUnfoByLogin(int userId, string keyWorkForLogin)
         {
-            List<UiInfo> usersUiInfos = new List<UiInfo>(FindNewUsersByLogin(userId, keyWorkForLogin).Select(u => new UserUiInfo(u)));
-            return usersUiInfos;
+            try
+            {
+                List<UiInfo> usersUiInfos = new List<UiInfo>(FindNewUsersByLogin(userId, keyWorkForLogin).Select(u => new UserUiInfo(u)));
+                return usersUiInfos;
+            }
+            catch (Exception)
+            {
+                return new List<UiInfo>();
+            }
         }
 
         //application settings
         public ApplicationSettings GetAppSettings(int userId)
         {
-            using (UserContext context = new UserContext())
+            try
             {
-                ApplicationSettings appSettings = context.ApplicationSettings.Where(set => set.UserId == userId).FirstOrDefault();
-                return appSettings;
+                using (UserContext context = new UserContext())
+                {
+                    ApplicationSettings appSettings = context.ApplicationSettings.Where(set => set.UserId == userId).FirstOrDefault();
+                    return appSettings;
+                }
+            }
+            catch (Exception)
+            {
+                return null;
             }
         }
 
@@ -561,71 +622,101 @@ namespace ServerWCF.Services
         //online callbacks
         public void OnUserCame(int userId)
         {
-            using (UserContext userContext = new UserContext())
+            try
             {
-                User dbUser = userContext.Users.Where(u => u.Id == userId).FirstOrDefault();
-                dbUser.Status = "online";
-                userContext.SaveChanges();
-                if (dbUser != null)
+                using (UserContext userContext = new UserContext())
                 {
-                    CallbackData callbackData = new CallbackData();
-                    callbackData.User = dbUser;
+                    User dbUser = userContext.Users.Where(u => u.Id == userId).FirstOrDefault();
+                    dbUser.Status = "online";
+                    userContext.SaveChanges();
+                    if (dbUser != null)
+                    {
+                        CallbackData callbackData = new CallbackData();
+                        callbackData.User = dbUser;
 
-                    IUserCallback callback = OperationContext.Current.GetCallbackChannel<IUserCallback>();
-                    callbackData.UserCallback = callback;
+                        IUserCallback callback = OperationContext.Current.GetCallbackChannel<IUserCallback>();
+                        callbackData.UserCallback = callback;
 
-                    usersOnline.Add(callbackData);
+                        usersOnline.Add(callbackData);
 
-                    Thread t = new Thread(new ParameterizedThreadStart(userCameCallback));
-                    t.IsBackground = true;
-                    t.Start(callbackData);
+                        Thread t = new Thread(new ParameterizedThreadStart(userCameCallback));
+                        t.IsBackground = true;
+                        t.Start(callbackData);
+                    }
                 }
+            }
+            catch (Exception)
+            {
+
             }
         }
 
         private void userCameCallback(object callbackDataObj)
         {
-            CallbackData callbackData = callbackDataObj as CallbackData;
-
-            foreach (CallbackData innerCallbackData in usersOnline)
+            try
             {
-                if (innerCallbackData != callbackData)
+                CallbackData callbackData = callbackDataObj as CallbackData;
+
+                foreach (CallbackData innerCallbackData in usersOnline)
                 {
-                    innerCallbackData.UserCallback.UserCame(callbackData.User);
+                    if (innerCallbackData != callbackData)
+                    {
+                        innerCallbackData.UserCallback.UserCame(callbackData.User);
+                    }
                 }
+            }
+            catch (Exception)
+            {
+
             }
         }
 
         public void OnUserLeave(int userId)
         {
-            using (UserContext userContext = new UserContext())
+            try
             {
-                CallbackData callbackData = usersOnline.Where(cd => cd.User.Id == userId).FirstOrDefault();
-                if (callbackData != null)
+
+
+                using (UserContext userContext = new UserContext())
                 {
-                    usersOnline.Remove(callbackData);
-
-                    User userToChangeStatus = userContext.Users.Where(u => u.Id == userId).FirstOrDefault();
-                    userToChangeStatus.Status = DateTime.Now.ToString("yyyyMMddHHmmss");
-                    userContext.SaveChanges();
-
-                    foreach (CallbackData innerCallbackData in usersOnline)
+                    CallbackData callbackData = usersOnline.Where(cd => cd.User.Id == userId).FirstOrDefault();
+                    if (callbackData != null)
                     {
-                        Thread t = new Thread(new ParameterizedThreadStart(userLeaveCallback));
-                        t.IsBackground = true;
-                        t.Start(innerCallbackData);
+                        usersOnline.Remove(callbackData);
+
+                        User userToChangeStatus = userContext.Users.Where(u => u.Id == userId).FirstOrDefault();
+                        userToChangeStatus.Status = DateTime.Now.ToString("yyyyMMddHHmmss");
+                        userContext.SaveChanges();
+
+                        foreach (CallbackData innerCallbackData in usersOnline)
+                        {
+                            Thread t = new Thread(new ParameterizedThreadStart(userLeaveCallback));
+                            t.IsBackground = true;
+                            t.Start(innerCallbackData);
+                        }
                     }
                 }
+            }
+            catch (Exception)
+            {
+
             }
         }
 
         private void userLeaveCallback(object callbackDataObj)
         {
-            CallbackData callbackData = callbackDataObj as CallbackData;
-
-            foreach (CallbackData innerCallbackData in usersOnline)
+            try
             {
-                innerCallbackData.UserCallback.UserLeave(callbackData.User);
+                CallbackData callbackData = callbackDataObj as CallbackData;
+
+                foreach (CallbackData innerCallbackData in usersOnline)
+                {
+                    innerCallbackData.UserCallback.UserLeave(callbackData.User);
+                }
+            }
+            catch (Exception)
+            {
+
             }
         }
 
@@ -653,13 +744,13 @@ namespace ServerWCF.Services
                             messagesToReturn.Add(groupMessage);
                         }
                     }
+
+                    messagesToReturn.Reverse();
                 }
                 catch (Exception)
                 {
                     messagesToReturn = new List<GroupMessage>();
                 }
-
-                messagesToReturn.Reverse();
                 return messagesToReturn;
             }
         }
@@ -692,13 +783,13 @@ namespace ServerWCF.Services
                             messagesToReturn.Add(groupMessage);
                         }
                     }
+                    messagesToReturn.Reverse();
                 }
                 catch (Exception)
                 {
                     messagesToReturn = new List<GroupMessage>();
                 }
 
-                messagesToReturn.Reverse();
                 return messagesToReturn;
             }
         }
@@ -731,12 +822,13 @@ namespace ServerWCF.Services
                             messagesToReturn.Add(userMessage);
                         }
                     }
+                    messagesToReturn.Reverse();
                 }
                 catch (Exception)
                 {
                     messagesToReturn = new List<UserMessage>();
                 }
-                messagesToReturn.Reverse();
+
                 return messagesToReturn;
             }
         }
@@ -816,16 +908,17 @@ namespace ServerWCF.Services
 
         public void EditMessage(BaseMessage editedMessage)
         {
-            string validationInfo = Validate(editedMessage);
-            if (validationInfo != successResult)
+            try
             {
-                return;
-            }
-
-            using (UserContext userContext = new UserContext())
-            {
-                try
+                string validationInfo = Validate(editedMessage);
+                if (validationInfo != successResult)
                 {
+                    return;
+                }
+
+                using (UserContext userContext = new UserContext())
+                {
+
                     BaseMessage dbMessage = userContext.Messages.Where(mes => mes.Id == editedMessage.Id).FirstOrDefault();
                     if (dbMessage == null)
                     {
@@ -866,24 +959,32 @@ namespace ServerWCF.Services
                     Thread t = new Thread(new ParameterizedThreadStart(EditMessageCallback));
                     t.IsBackground = true;
                     t.Start(messageInfo);
+
                 }
-                catch (Exception)
-                {
-                    return;
-                }
+            }
+            catch (Exception)
+            {
+                return;
             }
         }
 
         private void EditMessageCallback(object mesDataObj)
         {
-            MessageInfo messageInfo = mesDataObj as MessageInfo;
-
-            foreach (CallbackData innerCallbackData in usersOnline)
+            try
             {
-                if (innerCallbackData != messageInfo.CallbackData)
+                MessageInfo messageInfo = mesDataObj as MessageInfo;
+
+                foreach (CallbackData innerCallbackData in usersOnline)
                 {
-                    innerCallbackData.UserCallback.OnMessageEdited(messageInfo.Message);
+                    if (innerCallbackData != messageInfo.CallbackData)
+                    {
+                        innerCallbackData.UserCallback.OnMessageEdited(messageInfo.Message);
+                    }
                 }
+            }
+            catch (Exception)
+            {
+
             }
         }
 
@@ -925,29 +1026,37 @@ namespace ServerWCF.Services
 
         private void RemoveMessageCallback(object mesDataObj)
         {
-            MessageInfo messageInfo = mesDataObj as MessageInfo;
-
-            foreach (CallbackData innerCallbackData in usersOnline)
+            try
             {
-                if (innerCallbackData != messageInfo.CallbackData)
+                MessageInfo messageInfo = mesDataObj as MessageInfo;
+
+                foreach (CallbackData innerCallbackData in usersOnline)
                 {
-                    innerCallbackData.UserCallback.OnMessageRemoved(messageInfo.Message);
+                    if (innerCallbackData != messageInfo.CallbackData)
+                    {
+                        innerCallbackData.UserCallback.OnMessageRemoved(messageInfo.Message);
+                    }
                 }
+            }
+            catch (Exception)
+            {
+
             }
         }
 
         public void SendMessage(BaseMessage message)
         {
-            string validationInfo = Validate(message);
-            if (validationInfo != successResult)
+            try
             {
-                return;
-            }
-
-            using (UserContext userContext = new UserContext())
-            {
-                try
+                string validationInfo = Validate(message);
+                if (validationInfo != successResult)
                 {
+                    return;
+                }
+
+                using (UserContext userContext = new UserContext())
+                {
+
                     User dbSender = userContext.Users.Where(u => u.Id == message.SenderId).FirstOrDefault();
                     message.Sender = dbSender;
 
@@ -980,61 +1089,98 @@ namespace ServerWCF.Services
                     Thread t = new Thread(new ParameterizedThreadStart(ReceiveMessageCallback));
                     t.IsBackground = true;
                     t.Start(messageInfo);
+
                 }
-                catch (Exception)
-                {
-                    return;
-                }
+            }
+            catch (Exception)
+            {
+                return;
             }
         }
 
         private void ReceiveMessageCallback(object mesDataObj)
         {
-            MessageInfo messageInfo = mesDataObj as MessageInfo;
-
-            foreach (CallbackData innerCallbackData in usersOnline)
+            try
             {
-                if (innerCallbackData != messageInfo.CallbackData)
+                MessageInfo messageInfo = mesDataObj as MessageInfo;
+
+                foreach (CallbackData innerCallbackData in usersOnline)
                 {
-                    innerCallbackData.UserCallback.ReceiveMessage(messageInfo.Message);
+                    if (innerCallbackData != messageInfo.CallbackData)
+                    {
+                        innerCallbackData.UserCallback.ReceiveMessage(messageInfo.Message);
+                    }
                 }
+            }
+            catch (Exception)
+            {
+
             }
         }
 
         //validation
         private bool IsEmailUnique(List<User> users, string email)
         {
-            using (UserContext userContext = new UserContext())
+            try
             {
-                return userContext.Users.Where(u => u.Email == email).FirstOrDefault() == null;
+                using (UserContext userContext = new UserContext())
+                {
+                    return userContext.Users.Where(u => u.Email == email).FirstOrDefault() == null;
+                }
+            }
+            catch (Exception)
+            {
+
             }
         }
 
         private bool IsLoginUnique(List<User> users, string login)
         {
-            using (UserContext userContext = new UserContext())
+            try
             {
-                return userContext.Users.Where(u => u.Login == login).FirstOrDefault() == null;
+                using (UserContext userContext = new UserContext())
+                {
+                    return userContext.Users.Where(u => u.Login == login).FirstOrDefault() == null;
+                }
+            }
+            catch (Exception)
+            {
+
             }
         }
 
         private string Validate(User user)
         {
-            using (UserContext userContext = new UserContext())
+            try
             {
-                if (!IsEmailUnique(userContext.Users.ToList(), user.Email))
+                using (UserContext userContext = new UserContext())
                 {
-                    return "Email is not unique.";
+                    if (!IsEmailUnique(userContext.Users.ToList(), user.Email))
+                    {
+                        return "Email is not unique.";
+                    }
                 }
+                return successResult;
             }
-            return successResult;
+            catch (Exception)
+            {
+                return "exception";
+            }
+
         }
 
         private string Validate(ChatGroup chatGroupToAdd)
         {
-            if (chatGroupToAdd.Name.Length == 0)
+            try
             {
-                return "Message is empty.";
+                if (chatGroupToAdd.Name.Length == 0)
+                {
+                    return "Message is empty.";
+                }
+            }
+            catch (Exception)
+            {
+
             }
 
             return successResult;
@@ -1042,31 +1188,38 @@ namespace ServerWCF.Services
 
         private string Validate(BaseMessage baseMessage)
         {
-            if (baseMessage.Text.Length == 0)
+            try
             {
-                return "Message is empty.";
-            }
-
-            if (baseMessage.SenderId == 0)
-            {
-                return "Sender is not specified.";
-            }
-
-            if (baseMessage is GroupMessage)
-            {
-                GroupMessage groupMessage = baseMessage as GroupMessage;
-                if (groupMessage.ChatGroupId == 0)
+                if (baseMessage.Text.Length == 0)
                 {
-                    return "Chat group is not specified.";
+                    return "Message is empty.";
+                }
+
+                if (baseMessage.SenderId == 0)
+                {
+                    return "Sender is not specified.";
+                }
+
+                if (baseMessage is GroupMessage)
+                {
+                    GroupMessage groupMessage = baseMessage as GroupMessage;
+                    if (groupMessage.ChatGroupId == 0)
+                    {
+                        return "Chat group is not specified.";
+                    }
+                }
+                else if (baseMessage is UserMessage)
+                {
+                    UserMessage userMessage = baseMessage as UserMessage;
+                    if (userMessage.ReceiverId == 0)
+                    {
+                        return "Receiver is not specified.";
+                    }
                 }
             }
-            else if (baseMessage is UserMessage)
+            catch (Exception)
             {
-                UserMessage userMessage = baseMessage as UserMessage;
-                if (userMessage.ReceiverId == 0)
-                {
-                    return "Receiver is not specified.";
-                }
+
             }
 
             return successResult;
@@ -1074,18 +1227,32 @@ namespace ServerWCF.Services
 
         public BaseMessage GetLastMessage()
         {
-            using (UserContext userContext = new UserContext())
+            try
             {
-                int maxId = userContext.Messages.Max(m => m.Id);
-                return userContext.Messages.FirstOrDefault(m => m.Id == maxId);
+                using (UserContext userContext = new UserContext())
+                {
+                    int maxId = userContext.Messages.Max(m => m.Id);
+                    return userContext.Messages.FirstOrDefault(m => m.Id == maxId);
+                }
+            }
+            catch (Exception)
+            {
+                return null;
             }
         }
 
         private void EntityChangedCallback(UiInfo changedEntity)
         {
-            foreach (CallbackData innerCallbackData in usersOnline)
+            try
             {
-                innerCallbackData.UserCallback.OnEntityChanged(changedEntity);
+                foreach (CallbackData innerCallbackData in usersOnline)
+                {
+                    innerCallbackData.UserCallback.OnEntityChanged(changedEntity);
+                }
+            }
+            catch (Exception)
+            {
+
             }
         }
     }
