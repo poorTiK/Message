@@ -1130,7 +1130,7 @@ namespace ServerWCF.Services
             }
             catch (Exception)
             {
-
+                return false;
             }
         }
 
@@ -1145,7 +1145,7 @@ namespace ServerWCF.Services
             }
             catch (Exception)
             {
-
+                return false;
             }
         }
 

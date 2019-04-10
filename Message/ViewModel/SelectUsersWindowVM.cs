@@ -127,7 +127,7 @@ namespace Message.ViewModel
             }
             catch (Exception)
             {
-
+                return false;
             }
         }
 
