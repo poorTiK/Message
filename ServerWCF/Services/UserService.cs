@@ -167,28 +167,22 @@ namespace ServerWCF.Services
             {
                 try
                 {
-                    var contacts = userContext.Contacts.Include("UserOwner").ToList();
+                    var contacts = userContext.Contacts.Where(contact => contact is UserToGroupContact).ToList();
 
                     var dbChatGroup = userContext.ChatGroups.Where(cg => cg.Id == chatGroupId).FirstOrDefault();
                     var ownedFromDb = userContext.Users.Where(u => u.Id == participantId).FirstOrDefault();
 
+                    UserToGroupContact uToGContact = null;
                     foreach (var contact in contacts)
                     {
-                        if (contact.UserOwnerId == dbChatGroup.Id && (contact is UserToGroupContact userToGroupContact) && userToGroupContact.ChatGroupId == chatGroupId)
+                        uToGContact = contact as UserToGroupContact;
+
+                        if (uToGContact.UserOwnerId == ownedFromDb.Id && uToGContact.ChatGroupId == chatGroupId)
                         {
                             userContext.Contacts.Remove(contact);
                             userContext.SaveChanges();
-                            return true;
+                            break;
                         }
-                    }
-
-                    var groupInfo = new ChatGroupUiInfo(dbChatGroup);
-                    var userIds = dbChatGroup.Participants.Select(c => c.UserOwnerId).ToList();
-                    var usersFromGroup = userContext.Users.Where(u => userIds.Contains(u.Id)).ToList();
-
-                    foreach (var userToNotify in usersFromGroup)
-                    {
-                        RemoveContactCallback(groupInfo, userToNotify);
                     }
 
                     return true;

@@ -271,10 +271,7 @@ namespace Message.ViewModel
         {
             if (CustomMessageBox.Show(Translations.GetTranslation()["LeaveGroupAsk"].ToString(), MessageBoxType.ConfirmationWithYesNo) == MessageBoxResult.Yes)
             {
-                Task.Run(() =>
-                {
-                    UserServiceClient.RemoveUserToChatGroupContact(_group.Id, GlobalBase.CurrentUser.Id);
-                }).ContinueWith(task =>
+                UserServiceClient.RemoveUserToChatGroupContactAsync(_group.Id, GlobalBase.CurrentUser.Id).ContinueWith(task =>
                 {
                     Application.Current.Dispatcher.Invoke(new Action(() =>
                     {

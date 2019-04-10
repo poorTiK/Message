@@ -79,24 +79,27 @@ namespace Message.Model
 
         public static void loadPictures(UserServiceClient userServiceClient, List<UiInfo> uiInfos)
         {
-            lock (contactsMonitor)
+            foreach (UiInfo uiInfo in uiInfos)
             {
-                uiInfos.ForEach(uiInfo => loadPicture(userServiceClient, uiInfo));
+                loadPicture(userServiceClient, uiInfo);
             }
         }
 
         public static void loadPicture(UserServiceClient userServiceClient, UiInfo uiInfos)
         {
-            var chatFile = FileServiceClient.getChatFileById(uiInfos.ImageId);
+            lock (contactsMonitor)
+            {
+                var chatFile = FileServiceClient.getChatFileById(uiInfos.ImageId);
 
-            if (chatFile?.Source?.Length > 0)
-            {
-                var memstr = new MemoryStream(chatFile.Source);
-                Dispatcher.CurrentDispatcher.Invoke(() => { uiInfos.UiImage = Image.FromStream(memstr); });
-            }
-            else
-            {
-                Dispatcher.CurrentDispatcher.Invoke(() => { uiInfos.UiImage = ImageHelper.GetDefImage(); });
+                if (chatFile?.Source?.Length > 0)
+                {
+                    var memstr = new MemoryStream(chatFile.Source);
+                    Dispatcher.CurrentDispatcher.Invoke(() => { uiInfos.UiImage = Image.FromStream(memstr); });
+                }
+                else
+                {
+                    Dispatcher.CurrentDispatcher.Invoke(() => { uiInfos.UiImage = ImageHelper.GetDefImage(); });
+                }
             }
         }
 
