@@ -2,6 +2,7 @@
 using Message.Model;
 using Message.UserServiceReference;
 using Prism.Commands;
+using System;
 using System.Drawing;
 using System.ServiceModel;
 using System.Threading.Tasks;
@@ -49,7 +50,17 @@ namespace Message.ViewModel
 
         public byte[] CurrentUserPhoto
         {
-            get { return GlobalBase.FileServiceClient.getChatFileById(Profile.ImageId).Source; }
+            get
+            {
+                try
+                {
+                    return GlobalBase.FileServiceClient.getChatFileById(Profile.ImageId).Source;
+                }
+                catch (Exception)
+                {
+                    return null;
+                }
+            }
             set { SetProperty(ref _currentUserPhoto, value); }
         }
 
@@ -114,29 +125,36 @@ namespace Message.ViewModel
 
         public ContactProfileWindowVM(IView view, User user) : base()
         {
-            _view = view;
-            Profile = user;
-
-            UserName = Profile.FirstName;
-            UserLastName = Profile.LastName;
-            UserPhone = Profile.Phone;
-            UserEmail = Profile.Email;
-            UserBio = Profile.Bio;
-            bool contact;
-
-            SetAvatarForUI();
-
-            contact = UserServiceClient.IsExistsInContacts(GlobalBase.CurrentUser.Id, Profile.Id);
-
-            if (contact)
+            try
             {
-                IsContact = true;
-                IsNonContact = false;
+                _view = view;
+                Profile = user;
+
+                UserName = Profile.FirstName;
+                UserLastName = Profile.LastName;
+                UserPhone = Profile.Phone;
+                UserEmail = Profile.Email;
+                UserBio = Profile.Bio;
+                bool contact;
+
+                SetAvatarForUI();
+
+                contact = UserServiceClient.IsExistsInContacts(GlobalBase.CurrentUser.Id, Profile.Id);
+
+                if (contact)
+                {
+                    IsContact = true;
+                    IsNonContact = false;
+                }
+                else
+                {
+                    IsContact = false;
+                    IsNonContact = true;
+                }
             }
-            else
+            catch (Exception)
             {
-                IsContact = false;
-                IsNonContact = true;
+
             }
         }
 
@@ -152,41 +170,75 @@ namespace Message.ViewModel
 
         private void ExecuteOnAddContact()
         {
-            UserServiceClient.AddUserToUserContact(GlobalBase.CurrentUser.Id, Profile.Id);
-            GlobalBase.UpdateContactList();
-            ManageControls();
+            try
+            {
+                UserServiceClient.AddUserToUserContact(GlobalBase.CurrentUser.Id, Profile.Id);
+                GlobalBase.UpdateContactList();
+                ManageControls();
+            }
+            catch (Exception)
+            {
+            }
         }
 
         private void ExecuteOnDeleteContact()
         {
-            UserServiceClient.RemoveUserToUserContact(GlobalBase.CurrentUser.Id, Profile.Id);
-            GlobalBase.UpdateContactList();
-            ManageControls();
+            try
+            {
+                UserServiceClient.RemoveUserToUserContact(GlobalBase.CurrentUser.Id, Profile.Id);
+                GlobalBase.UpdateContactList();
+                ManageControls();
+            }
+            catch (Exception)
+            {
+
+            }
         }
 
         private void ManageControls()
         {
-            if (IsContact)
+            try
             {
-                IsContact = !IsContact;
-                IsNonContact = !IsNonContact;
+                if (IsContact)
+                {
+                    IsContact = !IsContact;
+                    IsNonContact = !IsNonContact;
+                }
+                else
+                {
+                    IsContact = !IsContact;
+                    IsNonContact = !IsNonContact;
+                }
             }
-            else
+            catch (Exception)
             {
-                IsContact = !IsContact;
-                IsNonContact = !IsNonContact;
+
             }
         }
 
         private void SetAvatarForUI()
         {
-            Task.Run(() =>
+            try
             {
-                System.Windows.Application.Current.Dispatcher.Invoke(() =>
-                {
-                    Image = GlobalBase.getUsersAvatar(Profile);
-                });
-            });
+                Task.Run(() =>
+                   {
+                       try
+                       {
+                           System.Windows.Application.Current.Dispatcher.Invoke(() =>
+                           {
+                               Image = GlobalBase.getUsersAvatar(Profile);
+                           });
+                       }
+                       catch (Exception)
+                       {
+
+                       }
+                   });
+            }
+            catch (Exception)
+            {
+
+            }
         }
     }
 }

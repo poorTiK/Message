@@ -132,17 +132,24 @@ namespace Message.ViewModel
 
         public UserProfileWindowVM(IView view) : base()
         {
-            _view = view;
+            try
+            {
+                _view = view;
 
-            UserName = GlobalBase.CurrentUser.FirstName;
-            UserLastName = GlobalBase.CurrentUser.LastName;
-            UserPhone = GlobalBase.CurrentUser.Phone;
-            UserEmail = GlobalBase.CurrentUser.Email;
-            UserBio = GlobalBase.CurrentUser.Bio;
+                UserName = GlobalBase.CurrentUser.FirstName;
+                UserLastName = GlobalBase.CurrentUser.LastName;
+                UserPhone = GlobalBase.CurrentUser.Phone;
+                UserEmail = GlobalBase.CurrentUser.Email;
+                UserBio = GlobalBase.CurrentUser.Bio;
 
-            IsNewChanges = false;
+                IsNewChanges = false;
 
-            SetAvatarForUI();
+                SetAvatarForUI();
+            }
+            catch (Exception)
+            {
+
+            }
         }
 
         private DelegateCommand _onCloseCommand;
@@ -168,18 +175,25 @@ namespace Message.ViewModel
 
         private void ExecuteOnLoadPhoto()
         {
-            var openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = GlobalBase.ImagePattern;
-            openFileDialog.ShowDialog();
-            var FilePath = openFileDialog.FileName;
-
-            if (FilePath != string.Empty)
+            try
             {
-                _newAvatar = File.ReadAllBytes(FilePath);
-                var memstr = new MemoryStream(_newAvatar);
-                Dispatcher.CurrentDispatcher.Invoke(() => { Images = Image.FromStream(memstr); });
+                var openFileDialog = new OpenFileDialog();
+                openFileDialog.Filter = GlobalBase.ImagePattern;
+                openFileDialog.ShowDialog();
+                var FilePath = openFileDialog.FileName;
 
-                IsNewChanges = true;
+                if (FilePath != string.Empty)
+                {
+                    _newAvatar = File.ReadAllBytes(FilePath);
+                    var memstr = new MemoryStream(_newAvatar);
+                    Dispatcher.CurrentDispatcher.Invoke(() => { Images = Image.FromStream(memstr); });
+
+                    IsNewChanges = true;
+                }
+            }
+            catch (Exception)
+            {
+
             }
         }
 
@@ -189,89 +203,117 @@ namespace Message.ViewModel
             {
                 Dispatcher.CurrentDispatcher.Invoke(() =>
                 {
-                    Images = GlobalBase.getUsersAvatar(GlobalBase.CurrentUser);
+                    try
+                    {
+                        Images = GlobalBase.getUsersAvatar(GlobalBase.CurrentUser);
+                    }
+                    catch (Exception)
+                    {
+
+                    }
                 });
             });
         }
 
         private void ExecuteOnApplyChanges()
         {
-            if (Validate())
+            try
             {
-                IsSavingProgress = true;
-                string res;
-                Task.Run((() =>
+                if (Validate())
                 {
-                    GlobalBase.CurrentUser.FirstName = UserName;
-                    GlobalBase.CurrentUser.LastName = UserLastName;
-                    GlobalBase.CurrentUser.Phone = UserPhone;
-                    GlobalBase.CurrentUser.Email = UserEmail;
-                    GlobalBase.CurrentUser.Bio = UserBio;
-                    res = UserServiceClient.AddOrUpdateUser(GlobalBase.CurrentUser);
-
-                    if (_newAvatar != null)
+                    IsSavingProgress = true;
+                    string res;
+                    Task.Run((() =>
                     {
-                        var chatFile = GlobalBase.FileServiceClient.getChatFileById(GlobalBase.CurrentUser.ImageId);
-                        if (chatFile == null)
+                        GlobalBase.CurrentUser.FirstName = UserName;
+                        GlobalBase.CurrentUser.LastName = UserLastName;
+                        GlobalBase.CurrentUser.Phone = UserPhone;
+                        GlobalBase.CurrentUser.Email = UserEmail;
+                        GlobalBase.CurrentUser.Bio = UserBio;
+                        res = UserServiceClient.AddOrUpdateUser(GlobalBase.CurrentUser);
+
+                        if (_newAvatar != null)
                         {
-                            GlobalBase.CurrentUser.ImageId = GlobalBase.FileServiceClient.UploadFile(new FileService.ChatFile() { Source = CompressionHelper.CompressImage(_newAvatar) });
-                            UserServiceClient.AddOrUpdateUser(GlobalBase.CurrentUser);
+                            var chatFile = GlobalBase.FileServiceClient.getChatFileById(GlobalBase.CurrentUser.ImageId);
+                            if (chatFile == null)
+                            {
+                                GlobalBase.CurrentUser.ImageId = GlobalBase.FileServiceClient.UploadFile(new FileService.ChatFile() { Source = CompressionHelper.CompressImage(_newAvatar) });
+                                UserServiceClient.AddOrUpdateUser(GlobalBase.CurrentUser);
+                            }
+                            else
+                            {
+                                GlobalBase.FileServiceClient.UpdateFileSource(chatFile.Id, CompressionHelper.CompressImage(_newAvatar));
+                            }
                         }
-                        else
+
+                        SetAvatarForUI();
+
+                        if (res == string.Empty)
                         {
-                            GlobalBase.FileServiceClient.UpdateFileSource(chatFile.Id, CompressionHelper.CompressImage(_newAvatar));
+                            Application.Current.Dispatcher.Invoke(new Action((() =>
+                        {
+                            CustomMessageBox.Show(Translations.GetTranslation()["ChangesSaved"].ToString());
+                        })));
                         }
-                    }
-
-                    SetAvatarForUI();
-
-                    if (res == string.Empty)
+                    })).ContinueWith((task =>
                     {
-                        Application.Current.Dispatcher.Invoke(new Action((() =>
-                    {
-                        CustomMessageBox.Show(Translations.GetTranslation()["ChangesSaved"].ToString());
-                    })));
-                    }
-                })).ContinueWith((task =>
-                {
-                    IsSavingProgress = false;
-                    IsNewChanges = false;
-                }));
+                        IsSavingProgress = false;
+                        IsNewChanges = false;
+                    }));
+                }
+            }
+            catch (Exception)
+            {
+
             }
         }
 
         private bool Validate()
         {
-            var message = string.Empty;
-            if (string.IsNullOrWhiteSpace(UserName))
+            try
             {
-                message = Application.Current.Resources.MergedDictionaries[4]["FirstNameValid"].ToString();
-            }
-            else if (string.IsNullOrWhiteSpace(UserLastName))
-            {
-                message = Application.Current.Resources.MergedDictionaries[4]["LastNameValid"].ToString();
-            }
-            else if (string.IsNullOrWhiteSpace(UserEmail) || UserEmail == string.Empty || !Regex.IsMatch(UserEmail, @"\A(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)\Z", RegexOptions.IgnoreCase))
-            {
-                message = Application.Current.Resources.MergedDictionaries[4]["EmailEmpty"].ToString();
-            }
+                var message = string.Empty;
+                if (string.IsNullOrWhiteSpace(UserName))
+                {
+                    message = Application.Current.Resources.MergedDictionaries[4]["FirstNameValid"].ToString();
+                }
+                else if (string.IsNullOrWhiteSpace(UserLastName))
+                {
+                    message = Application.Current.Resources.MergedDictionaries[4]["LastNameValid"].ToString();
+                }
+                else if (string.IsNullOrWhiteSpace(UserEmail) || UserEmail == string.Empty || !Regex.IsMatch(UserEmail, @"\A(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)\Z", RegexOptions.IgnoreCase))
+                {
+                    message = Application.Current.Resources.MergedDictionaries[4]["EmailEmpty"].ToString();
+                }
 
-            if (message != string.Empty)
+                if (message != string.Empty)
+                {
+                    Application.Current.Dispatcher.Invoke(new Action((() => { CustomMessageBox.Show(Application.Current.Resources.MergedDictionaries[4]["Error"].ToString(), message); })));
+                    return false;
+                }
+
+                return true;
+            }
+            catch (Exception)
             {
-                Application.Current.Dispatcher.Invoke(new Action((() => { CustomMessageBox.Show(Application.Current.Resources.MergedDictionaries[4]["Error"].ToString(), message); })));
+
                 return false;
             }
-
-            return true;
         }
 
         private void CheckChanges()
         {
-            if (UserName != GlobalBase.CurrentUser.FirstName || UserLastName != GlobalBase.CurrentUser.LastName ||
-                UserPhone != GlobalBase.CurrentUser.Phone ||
-                UserEmail != GlobalBase.CurrentUser.Email || UserBio != GlobalBase.CurrentUser.Bio)
+            try
             {
-                IsNewChanges = true;
+                if (UserName != GlobalBase.CurrentUser.FirstName || UserLastName != GlobalBase.CurrentUser.LastName ||
+                        UserPhone != GlobalBase.CurrentUser.Phone ||
+                        UserEmail != GlobalBase.CurrentUser.Email || UserBio != GlobalBase.CurrentUser.Bio)
+                {
+                    IsNewChanges = true;
+                }
+            }
+            catch (Exception)
+            {
             }
         }
     }

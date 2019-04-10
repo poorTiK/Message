@@ -61,20 +61,27 @@ namespace Message.ViewModel
 
         private void OnDownloadData()
         {
-            //TODO change to SaveFileDialog
-            var fileDialog = new FolderBrowserDialog();
-            var res = fileDialog.ShowDialog();
-            if (res == DialogResult.OK)
+            try
             {
-                var savePath = fileDialog.SelectedPath;
-                if (!string.IsNullOrEmpty(savePath))
+                //TODO change to SaveFileDialog
+                var fileDialog = new FolderBrowserDialog();
+                var res = fileDialog.ShowDialog();
+                if (res == DialogResult.OK)
                 {
-                    var chatFile = GlobalBase.FileServiceClient.getChatFileById(Message.ChatFileId);
-                    using (Stream fileStr = File.OpenWrite(savePath + "\\" + chatFile.Name))
+                    var savePath = fileDialog.SelectedPath;
+                    if (!string.IsNullOrEmpty(savePath))
                     {
-                        fileStr.Write(CompressionHelper.DecompressFile(chatFile.Source), 0, CompressionHelper.DecompressFile(chatFile.Source).Length);
+                        var chatFile = GlobalBase.FileServiceClient.getChatFileById(Message.ChatFileId);
+                        using (Stream fileStr = File.OpenWrite(savePath + "\\" + chatFile.Name))
+                        {
+                            fileStr.Write(CompressionHelper.DecompressFile(chatFile.Source), 0, CompressionHelper.DecompressFile(chatFile.Source).Length);
+                        }
                     }
                 }
+            }
+            catch (System.Exception)
+            {
+
             }
         }
 
@@ -96,23 +103,37 @@ namespace Message.ViewModel
 
         private void OnDelete()
         {
-            var canDelete = CustomMessageBox.Show("", Application.Current.Resources.MergedDictionaries[4]["AskForDelMessage"].ToString(), MessageBoxButton.YesNo);
-
-            switch (canDelete)
+            try
             {
-                case MessageBoxResult.Yes:
-                    UserServiceClient.RemoveMessage(Message);
-                    GlobalBase.RemoveMessageOnUI.Invoke(Message);
-                    break;
+                var canDelete = CustomMessageBox.Show("", Application.Current.Resources.MergedDictionaries[4]["AskForDelMessage"].ToString(), MessageBoxButton.YesNo);
 
-                case MessageBoxResult.No:
-                    break;
+                switch (canDelete)
+                {
+                    case MessageBoxResult.Yes:
+                        UserServiceClient.RemoveMessage(Message);
+                        GlobalBase.RemoveMessageOnUI.Invoke(Message);
+                        break;
+
+                    case MessageBoxResult.No:
+                        break;
+                }
+            }
+            catch (System.Exception)
+            {
+
             }
         }
 
         private void OnCopy()
         {
-            Clipboard.SetText(MessageText);
+            try
+            {
+                Clipboard.SetText(MessageText);
+            }
+            catch (System.Exception)
+            {
+
+            }
         }
     }
 }

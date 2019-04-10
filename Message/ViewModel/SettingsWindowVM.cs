@@ -64,48 +64,88 @@ namespace Message.ViewModel
 
         private void ExecuteOnChatSettings()
         {
-            view.Hide(false);
+            try
+            {
+                view.Hide(false);
 
-            var profEditWnd = new ChatSettingWindow();
-            profEditWnd.Owner = (Window)view;
-            profEditWnd.ShowDialog();
+                var profEditWnd = new ChatSettingWindow();
+                profEditWnd.Owner = (Window)view;
+                profEditWnd.ShowDialog();
 
-            view.Hide(true);
+                view.Hide(true);
+            }
+            catch (System.Exception)
+            {
+
+            }
         }
 
         private void UpdateUI()
         {
-            SetAvatarForUI();
+            try
+            {
+                SetAvatarForUI();
+            }
+            catch (System.Exception)
+            {
+            }
         }
 
         private void ExecuteOnProfileSettings()
         {
-            view.Hide(false);
+            try
+            {
+                view.Hide(false);
 
-            var profEditWnd = new UserProfileWindow();
-            profEditWnd.Owner = (Window)view;
-            profEditWnd.ShowDialog();
-            UpdateUI();
-            GlobalBase.UpdateContactList.Invoke();
+                var profEditWnd = new UserProfileWindow();
+                profEditWnd.Owner = (Window)view;
+                profEditWnd.ShowDialog();
+                UpdateUI();
+                GlobalBase.UpdateContactList.Invoke();
 
-            view.Hide(true);
+                view.Hide(true);
+            }
+            catch (System.Exception)
+            {
+            }
         }
 
         private void ExecuteOnExitChat()
         {
-            _serializeUser.CleanCurrentUser();
-            GlobalBase.ExitProgramm();
+            try
+            {
+                _serializeUser.CleanCurrentUser();
+                GlobalBase.ExitProgramm();
+            }
+            catch (System.Exception)
+            {
+            
+            }
         }
 
         private void SetAvatarForUI()
         {
-            Task.Run(() =>
-           {
-               Dispatcher.CurrentDispatcher.Invoke(() =>
-               {
-                   Images = GlobalBase.getUsersAvatar(GlobalBase.CurrentUser);
-               });
-           });
+            try
+            {
+                Task.Run(() =>
+                   {
+                       Dispatcher.CurrentDispatcher.Invoke(() =>
+                       {
+                           try
+                           {
+                               Images = GlobalBase.getUsersAvatar(GlobalBase.CurrentUser);
+                           }
+                           catch (System.Exception)
+                           {
+
+                           }
+                       });
+                   });
+            }
+            catch (System.Exception)
+            {
+
+            }
         }
     }
 }

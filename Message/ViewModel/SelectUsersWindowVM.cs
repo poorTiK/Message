@@ -45,24 +45,45 @@ namespace Message.ViewModel
 
         public SelectUsersWindowVM(IView view, ChatGroup group)
         {
-            _view = view;
-            _group = group;
-            IsAddEnabled = false;
+            try
+            {
+                _view = view;
+                _group = group;
+                IsAddEnabled = false;
 
-            var tempContactList = new List<UiInfo>();
-            Task.Run(() =>
-            {
-                tempContactList = UserServiceClient.GetAllContactsUiInfo(GlobalBase.CurrentUser.Id).Where(ui => ui is UserUiInfo).ToList();
-                var part = UserServiceClient.GetGroupParticipants(_group.Id);
-                foreach (var item in part)
+                var tempContactList = new List<UiInfo>();
+                Task.Run(() =>
                 {
-                    tempContactList.Remove(tempContactList.FirstOrDefault(x => (x as UserUiInfo).UserId == (item as UserUiInfo).UserId));
-                }
-            }).ContinueWith(task =>
+                    try
+                    {
+                        tempContactList = UserServiceClient.GetAllContactsUiInfo(GlobalBase.CurrentUser.Id).Where(ui => ui is UserUiInfo).ToList();
+                        var part = UserServiceClient.GetGroupParticipants(_group.Id);
+                        foreach (var item in part)
+                        {
+                            tempContactList.Remove(tempContactList.FirstOrDefault(x => (x as UserUiInfo).UserId == (item as UserUiInfo).UserId));
+                        }
+                    }
+                    catch (Exception)
+                    {
+
+                    }
+                }).ContinueWith(task =>
+                {
+                    try
+                    {
+                        ContactList = tempContactList;
+                        ContactList.ForEach(c => c.IsSelected = false);
+                    }
+                    catch (Exception)
+                    {
+
+                    }
+                });
+            }
+            catch (Exception)
             {
-                ContactList = tempContactList;
-                ContactList.ForEach(c => c.IsSelected = false);
-            });
+
+            }
         }
 
         private DelegateCommand _addMembers;
@@ -82,28 +103,55 @@ namespace Message.ViewModel
 
         private void ExecuteOnAddMembers()
         {
-            var membersToAdd = ContactList.Where(x => x.IsSelected).ToList();
-            ((_view as Window).Owner.DataContext as EditGroupWindowVM).Update(membersToAdd);
-            _view.CloseWindow();
+            try
+            {
+                var membersToAdd = ContactList.Where(x => x.IsSelected).ToList();
+                ((_view as Window).Owner.DataContext as EditGroupWindowVM).Update(membersToAdd);
+                _view.CloseWindow();
+            }
+            catch (Exception)
+            {
+
+            }
         }
 
         private bool CanExecuteAdd()
         {
-            if (ContactList != null && ContactList.First(x => x.IsSelected) != null)
+            try
             {
-                return true;
+                if (ContactList != null && ContactList.First(x => x.IsSelected) != null)
+                {
+                    return true;
+                }
+                return false;
             }
-            return false;
+            catch (Exception)
+            {
+
+            }
         }
 
         private void ExecuteOnChecked()
         {
-            IsAddEnabled = CanExecuteAdd();
+            try
+            {
+                IsAddEnabled = CanExecuteAdd();
+            }
+            catch (Exception)
+            {
+
+            }
         }
 
         private void ExecuteOnBack()
         {
-            _view.CloseWindow();
+            try
+            {
+                _view.CloseWindow();
+            }
+            catch (Exception)
+            {
+            }
         }
     }
 }

@@ -2,6 +2,7 @@
 using Message.Model;
 using Message.UserServiceReference;
 using Prism.Commands;
+using System;
 using System.Collections.Generic;
 
 namespace Message.ViewModel
@@ -48,14 +49,21 @@ namespace Message.ViewModel
 
         public ForwardMessageWindowVM(BaseMessage message, IView view) : base()
         {
-            var uiInfos = UserServiceClient.GetAllContactsUiInfo(GlobalBase.CurrentUser.Id);
-            GlobalBase.loadPictures(UserServiceClient, uiInfos);
-            ContactsList = uiInfos;
+            try
+            {
+                var uiInfos = UserServiceClient.GetAllContactsUiInfo(GlobalBase.CurrentUser.Id);
+                GlobalBase.loadPictures(UserServiceClient, uiInfos);
+                ContactsList = uiInfos;
 
-            _view = view;
-            _message = message;
+                _view = view;
+                _message = message;
 
-            IsForwardEnabled = false;
+                IsForwardEnabled = false;
+            }
+            catch(Exception)
+            {
+
+            }
         }
 
         private DelegateCommand _onForward;
@@ -75,48 +83,55 @@ namespace Message.ViewModel
 
         private void OnForward()
         {
-            if (SelectedContact != null)
+            try
             {
-                if (!GlobalBase.IsMenuEnabled && GlobalBase.SelectedContact.UniqueName == SelectedContact.UniqueName)
+                if (SelectedContact != null)
                 {
-                    return;
-                }
-                BaseMessage mes = null;
-
-                if (SelectedContact is UserUiInfo)
-                {
-                    var userUiInfo = SelectedContact as UserUiInfo;
-                    mes = new UserMessage()
+                    if (!GlobalBase.IsMenuEnabled && GlobalBase.SelectedContact.UniqueName == SelectedContact.UniqueName)
                     {
-                        Text = _message.Text,
-                        DateOfSending = _message.DateOfSending,
-                        SenderId = GlobalBase.CurrentUser.Id,
-                        ReceiverId = userUiInfo.UserId
-                    };
-
-
-                }
-                else if (SelectedContact is ChatGroupUiInfo)
-                {
-                    var groupUiInfo = SelectedContact as ChatGroupUiInfo;
-                    mes = new GroupMessage()
-                    {
-                        Text = _message.Text,
-                        DateOfSending = _message.DateOfSending,
-                        SenderId = GlobalBase.CurrentUser.Id,
-                        ChatGroupId = groupUiInfo.ChatGroupId
-                    };
-                }
-
-                UserServiceClient.SendMessageAsync(mes).ContinueWith((task) =>
-                {
-                    if (GlobalBase.SelectedContact.UniqueName == SelectedContact.UniqueName)
-                    {
-                        GlobalBase.AddMessageOnUi(mes);
+                        return;
                     }
-                });
+                    BaseMessage mes = null;
+
+                    if (SelectedContact is UserUiInfo)
+                    {
+                        var userUiInfo = SelectedContact as UserUiInfo;
+                        mes = new UserMessage()
+                        {
+                            Text = _message.Text,
+                            DateOfSending = _message.DateOfSending,
+                            SenderId = GlobalBase.CurrentUser.Id,
+                            ReceiverId = userUiInfo.UserId
+                        };
+
+
+                    }
+                    else if (SelectedContact is ChatGroupUiInfo)
+                    {
+                        var groupUiInfo = SelectedContact as ChatGroupUiInfo;
+                        mes = new GroupMessage()
+                        {
+                            Text = _message.Text,
+                            DateOfSending = _message.DateOfSending,
+                            SenderId = GlobalBase.CurrentUser.Id,
+                            ChatGroupId = groupUiInfo.ChatGroupId
+                        };
+                    }
+
+                    UserServiceClient.SendMessageAsync(mes).ContinueWith((task) =>
+                    {
+                        if (GlobalBase.SelectedContact.UniqueName == SelectedContact.UniqueName)
+                        {
+                            GlobalBase.AddMessageOnUi(mes);
+                        }
+                    });
+                }
+                _view.CloseWindow();
             }
-            _view.CloseWindow();
+            catch (Exception)
+            {
+
+            }
         }
     }
 }

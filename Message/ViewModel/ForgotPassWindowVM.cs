@@ -74,50 +74,57 @@ namespace Message.ViewModel
 
         private void OnSend()
         {
-            IsSending = true;
-
-            var ts = new CancellationTokenSource();
-            CancellationToken ct = ts.Token;
-            Task.Factory.StartNew(() =>
+            try
             {
-                if (!string.IsNullOrWhiteSpace(Email))
-                {
-                    User user = UserServiceClient.GetAllUsers().First(x => x.Email == Email);
+                IsSending = true;
 
-                    if (user != null)
+                var ts = new CancellationTokenSource();
+                CancellationToken ct = ts.Token;
+                Task.Factory.StartNew(() =>
+                {
+                    if (!string.IsNullOrWhiteSpace(Email))
                     {
-                        SendPassWithMail(user);
-                        return;
+                        User user = UserServiceClient.GetAllUsers().First(x => x.Email == Email);
+
+                        if (user != null)
+                        {
+                            SendPassWithMail(user);
+                            return;
+                        }
                     }
-                }
 
-                if (!string.IsNullOrWhiteSpace(Login))
-                {
-                    User user = UserServiceClient.GetUserByLogin(Login);
-
-                    if (user != null)
+                    if (!string.IsNullOrWhiteSpace(Login))
                     {
-                        SendPassWithMail(user);
-                        return;
-                    }
-                }
+                        User user = UserServiceClient.GetUserByLogin(Login);
 
-                Application.Current.Dispatcher.Invoke(new Action((() =>
-                {
-                    CustomMessageBox.Show(Translations.GetTranslation()["Error"].ToString(), Application.Current.Resources.MergedDictionaries[4]["CantFindUser"].ToString());
-                    ts.Cancel();
-                })));
-            }, ct).ContinueWith((task =>
-            {
-                if (!ct.IsCancellationRequested)
-                {
+                        if (user != null)
+                        {
+                            SendPassWithMail(user);
+                            return;
+                        }
+                    }
+
                     Application.Current.Dispatcher.Invoke(new Action((() =>
                     {
-                        CustomMessageBox.Show(Translations.GetTranslation()["RestorePass"].ToString(), Application.Current.Resources.MergedDictionaries[4]["EmailSend"].ToString());
+                        CustomMessageBox.Show(Translations.GetTranslation()["Error"].ToString(), Application.Current.Resources.MergedDictionaries[4]["CantFindUser"].ToString());
+                        ts.Cancel();
                     })));
-                }
-                IsSending = false;
-            }));
+                }, ct).ContinueWith((task =>
+                {
+                    if (!ct.IsCancellationRequested)
+                    {
+                        Application.Current.Dispatcher.Invoke(new Action((() =>
+                        {
+                            CustomMessageBox.Show(Translations.GetTranslation()["RestorePass"].ToString(), Application.Current.Resources.MergedDictionaries[4]["EmailSend"].ToString());
+                        })));
+                    }
+                    IsSending = false;
+                }));
+            }
+            finally
+            {
+
+            }
         }
 
         private DelegateCommand _onBack;
@@ -127,28 +134,49 @@ namespace Message.ViewModel
 
         private void OnBack()
         {
-            view.CloseWindow();
+            try
+            {
+                view.CloseWindow();
+            }
+            finally
+            {
+
+            }
         }
 
         private void SendPassWithMail(User user)
         {
-            var from = new MailAddress("messagePassRestoration@gmail.com"); // make custom mail adress
-            var to = new MailAddress(user.Email);
-
-            var message = new MailMessage(from, to);
-            message.Subject = "Password restore";
-            message.Body = "Your pass - " + user.Password;
-
-            var smtp = new SmtpClient("smtp.gmail.com", 587);
-            smtp.Credentials = new NetworkCredential("messagePassRestoration@gmail.com", "messageApp1");
-            smtp.EnableSsl = true;
-            smtp.SendMailAsync(message);
-
-            Application.Current.Dispatcher.Invoke(new Action((() =>
+            try
             {
-                CustomMessageBox.Show(Translations.GetTranslation()["RestorePass"].ToString(), Application.Current.Resources.MergedDictionaries[4]["EmailSend"].ToString());
-                IsSending = false;
-            })));
+                var from = new MailAddress("messagePassRestoration@gmail.com"); // make custom mail adress
+                var to = new MailAddress(user.Email);
+
+                var message = new MailMessage(from, to);
+                message.Subject = "Password restore";
+                message.Body = "Your pass - " + user.Password;
+
+                var smtp = new SmtpClient("smtp.gmail.com", 587);
+                smtp.Credentials = new NetworkCredential("messagePassRestoration@gmail.com", "messageApp1");
+                smtp.EnableSsl = true;
+                smtp.SendMailAsync(message);
+
+                Application.Current.Dispatcher.Invoke(new Action((() =>
+                {
+                    try
+                    {
+                        CustomMessageBox.Show(Translations.GetTranslation()["RestorePass"].ToString(), Application.Current.Resources.MergedDictionaries[4]["EmailSend"].ToString());
+                        IsSending = false;
+                    }
+                    finally
+                    {
+
+                    }
+                })));
+            }
+            finally
+            {
+
+            }
         }
     }
 }

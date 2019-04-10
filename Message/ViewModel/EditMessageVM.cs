@@ -30,10 +30,17 @@ namespace Message.ViewModel
 
         public EditMessageVM(BaseMessage message, IView View) : base()
         {
-            _view = View;
+            try
+            {
+                _view = View;
 
-            Message = message;
-            MessageText = GlobalBase.Base64Decode(message.Text);
+                Message = message;
+                MessageText = GlobalBase.Base64Decode(message.Text);
+            }
+            finally
+            {
+
+            }
         }
 
         private DelegateCommand _onApply;
@@ -53,16 +60,30 @@ namespace Message.ViewModel
 
         private void OnApply()
         {
-            Message.Text = Encoding.UTF8.GetBytes(MessageText);
+            try
+            {
+                Message.Text = Encoding.UTF8.GetBytes(MessageText);
 
-            UserServiceClient.EditMessage(Message);
+                UserServiceClient.EditMessage(Message);
 
-            _view.CloseWindow();
+                _view.CloseWindow();
+            }
+            finally
+            {
+
+            }
         }
 
         private void Validate()
         {
-            IsApplyEnabled = !string.IsNullOrWhiteSpace(MessageText);
+            try
+            {
+                IsApplyEnabled = !string.IsNullOrWhiteSpace(MessageText);
+            }
+            finally
+            {
+
+            }
         }
     }
 }

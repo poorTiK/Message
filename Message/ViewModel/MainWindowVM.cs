@@ -185,58 +185,79 @@ namespace Message.ViewModel
 
         public MainWindowVM(IView iView, IPasswordSupplier ipasswordSupplier) : base()
         {
-            view = iView;
-            passwordSupplier = ipasswordSupplier;
-            _serializeUser = new SerializeUserToRegistry();
-
-            IsLoginProgress = true;
-
-            var userLogin = TryGetUser();
-
-            if (!string.IsNullOrEmpty(userLogin))
+            try
             {
-                InitLogin(userLogin);
+                view = iView;
+                passwordSupplier = ipasswordSupplier;
+                _serializeUser = new SerializeUserToRegistry();
+
+                IsLoginProgress = true;
+
+                var userLogin = TryGetUser();
+
+                if (!string.IsNullOrEmpty(userLogin))
+                {
+                    InitLogin(userLogin);
+                }
+
+                //IsLoginProgress = false;
+                IsRegisterProgress = false;
+
+                IsSignUpVisible = true;
+                IsRegisterVisible = false;
             }
+            catch (Exception)
+            {
 
-            //IsLoginProgress = false;
-            IsRegisterProgress = false;
-
-            IsSignUpVisible = true;
-            IsRegisterVisible = false;
+            }
         }
 
         private void InitLogin(string userLogin)
         {
-            var user = new User();
-            Task.Run(() =>
+            try
             {
-                user = UserServiceClient.GetUserByLogin(userLogin);
-            }).ContinueWith(task =>
-            {
-                Application.Current.Dispatcher.Invoke(() =>
+                var user = new User();
+                Task.Run(() =>
                 {
-                    if (user?.Status == "online")
+                    user = UserServiceClient.GetUserByLogin(userLogin);
+                }).ContinueWith(task =>
+                {
+                    Application.Current.Dispatcher.Invoke(() =>
                     {
-                        CustomMessageBox.Show(
-                        Translations.GetTranslation()["Error"].ToString(),
-                        Translations.GetTranslation()["UserAlreadyOnline"].ToString(),
-                        MessageBoxType.Error);
+                        try
+                        {
+                            if (user?.Status == "online")
+                            {
+                                CustomMessageBox.Show(
+                                Translations.GetTranslation()["Error"].ToString(),
+                                Translations.GetTranslation()["UserAlreadyOnline"].ToString(),
+                                MessageBoxType.Error);
 
-                        IsLoginProgress = false;
-                        return;
-                    }
-                    else if (user == null)
-                    {
-                        IsLoginProgress = false;
-                        return;
-                    }
+                                IsLoginProgress = false;
+                                return;
+                            }
+                            else if (user == null)
+                            {
+                                IsLoginProgress = false;
+                                return;
+                            }
 
-                    var wnd = new MessageMainWnd(user);
-                    wnd.Show();
-                    view.CloseWindow();
-                    IsLoginProgress = false;
+                            var wnd = new MessageMainWnd(user);
+                            wnd.Show();
+                            view.CloseWindow();
+                            IsLoginProgress = false;
+                        }
+                        catch (Exception)
+                        {
+
+                        }
+                    });
                 });
-            });
+            }
+            catch (Exception)
+            {
+
+            }
         }
 
         private string TryGetUser()
@@ -253,199 +274,269 @@ namespace Message.ViewModel
 
         private void ExecuteOnStartRegister()
         {
-            if (IsSignUpVisible)
+            try
             {
-                view.AnimatedResize(450, 310);
-                IsSignUpVisible = false;
-                IsRegisterVisible = true;
+                if (IsSignUpVisible)
+                {
+                    view.AnimatedResize(450, 310);
+                    IsSignUpVisible = false;
+                    IsRegisterVisible = true;
+                }
+                else
+                {
+                    view.AnimatedResize(250, 450);
+                    IsSignUpVisible = true;
+                    IsRegisterVisible = false;
+                }
             }
-            else
+            catch (Exception)
             {
-                view.AnimatedResize(250, 450);
-                IsSignUpVisible = true;
-                IsRegisterVisible = false;
+
             }
         }
 
         private void ExecuteOnBackCommand()
         {
-            if (IsSignUpVisible)
+            try
             {
-                view.AnimatedResize(400, 250);
-                IsSignUpVisible = false;
-                IsRegisterVisible = true;
+                if (IsSignUpVisible)
+                {
+                    view.AnimatedResize(400, 250);
+                    IsSignUpVisible = false;
+                    IsRegisterVisible = true;
+                }
+                else
+                {
+                    view.AnimatedResize(250, 450);
+                    IsSignUpVisible = true;
+                    IsRegisterVisible = false;
+                }
             }
-            else
+            catch (Exception)
             {
-                view.AnimatedResize(250, 450);
-                IsSignUpVisible = true;
-                IsRegisterVisible = false;
+
             }
         }
 
         private async void ExecuteOnLogin()
         {
-            IsLoginProgress = true;
-            await Task.Factory.StartNew(() =>
+            try
             {
-                if (ValidateOnLogin())
+                IsLoginProgress = true;
+                await Task.Factory.StartNew(() =>
                 {
-                    var user = UserServiceClient.GetUser(LoginText, AESEncryptor.encryptPassword(Password));
-                    if (user != null)
+                    try
                     {
-                        if (user.Status == "online")
+                        if (ValidateOnLogin())
                         {
-                            Application.Current.Dispatcher.Invoke(() =>
+                            var user = UserServiceClient.GetUser(LoginText, AESEncryptor.encryptPassword(Password));
+                            if (user != null)
                             {
-                                CustomMessageBox.Show(
-                                Translations.GetTranslation()["Error"].ToString(),
-                                Translations.GetTranslation()["UserAlreadyOnline"].ToString(),
-                                MessageBoxType.Error);
-                            });
-                            return;
+                                if (user.Status == "online")
+                                {
+                                    Application.Current.Dispatcher.Invoke(() =>
+                                    {
+                                        CustomMessageBox.Show(
+                                        Translations.GetTranslation()["Error"].ToString(),
+                                        Translations.GetTranslation()["UserAlreadyOnline"].ToString(),
+                                        MessageBoxType.Error);
+                                    });
+                                    return;
+                                }
+                                _serializeUser.SerializeUser(user);
+                                Application.Current.Dispatcher.Invoke(() =>
+                                {
+                                    var wnd = new MessageMainWnd(user);
+                                    wnd.Show();
+                                    view.CloseWindow();
+                                    IsLoginProgress = false;
+                                });
+                            }
                         }
-                        _serializeUser.SerializeUser(user);
-                        Application.Current.Dispatcher.Invoke(() =>
-                        {
-                            var wnd = new MessageMainWnd(user);
-                            wnd.Show();
-                            view.CloseWindow();
-                            IsLoginProgress = false;
-                        });
                     }
-                }
-            }).ContinueWith(task => { IsLoginProgress = false; });
+                    catch (Exception)
+                    {
+
+                    }
+                }).ContinueWith(task => { IsLoginProgress = false; });
+            }
+            catch (Exception)
+            {
+
+            }
         }
 
         private void ExecuteOnRegister()
         {
-            IsRegisterProgress = true;
-            Task.Run(() =>
+            try
             {
-                var message = string.Empty;
-                if (ValidateOnRegister())
+                IsRegisterProgress = true;
+                Task.Run(() =>
                 {
-                    var user = new User()
+                    try
                     {
-                        Login = UserLogin,
-                        Password = AESEncryptor.encryptPassword(RPassword),
-                        FirstName = Name,
-                        LastName = Surname,
-                        Email = Email,
-                        Status = DateTime.Now.ToString()
-                    };
-
-                    if (UserServiceClient.GetUserByLogin(UserLogin) == null)
-                    {
-                        if (UserServiceClient.AddOrUpdateUser(user) == string.Empty)
+                        var message = string.Empty;
+                        if (ValidateOnRegister())
                         {
-                            Application.Current.Dispatcher.Invoke(new Action((() =>
+                            var user = new User()
                             {
-                                CustomMessageBox.Show(Translations.GetTranslation()["RegisterDone"].ToString());
-                                Clear();
-                                ExecuteOnBackCommand();
-                                return;
-                            })));
-                        }
-                        else
-                        {
-                            message = Translations.GetTranslation()["RegError"].ToString();
-                        }
-                    }
-                    else
-                    {
-                        message = Translations.GetTranslation()["SameUserExits"].ToString();
-                    }
+                                Login = UserLogin,
+                                Password = AESEncryptor.encryptPassword(RPassword),
+                                FirstName = Name,
+                                LastName = Surname,
+                                Email = Email,
+                                Status = DateTime.Now.ToString()
+                            };
 
-                    if (message != string.Empty)
-                    {
-                        Application.Current.Dispatcher.Invoke(new Action(() =>
-                        {
-                            CustomMessageBox.Show(Translations.GetTranslation()["Error"].ToString(), message);
-                        }));
+                            if (UserServiceClient.GetUserByLogin(UserLogin) == null)
+                            {
+                                if (UserServiceClient.AddOrUpdateUser(user) == string.Empty)
+                                {
+                                    Application.Current.Dispatcher.Invoke(new Action((() =>
+                                    {
+                                        CustomMessageBox.Show(Translations.GetTranslation()["RegisterDone"].ToString());
+                                        Clear();
+                                        ExecuteOnBackCommand();
+                                        return;
+                                    })));
+                                }
+                                else
+                                {
+                                    message = Translations.GetTranslation()["RegError"].ToString();
+                                }
+                            }
+                            else
+                            {
+                                message = Translations.GetTranslation()["SameUserExits"].ToString();
+                            }
+
+                            if (message != string.Empty)
+                            {
+                                Application.Current.Dispatcher.Invoke(new Action(() =>
+                                {
+                                    CustomMessageBox.Show(Translations.GetTranslation()["Error"].ToString(), message);
+                                }));
+                            }
+                        }
                     }
-                }
-            }).ContinueWith(task => { IsRegisterProgress = false; });
+                    catch (Exception)
+                    {
+
+                    }
+                }).ContinueWith(task => { IsRegisterProgress = false; });
+            }
+            catch (Exception)
+            {
+
+            }
         }
 
         private void ExecuteOnForgotPassword()
         {
-            var passWindow = new ForgotPassWindow();
-            passWindow.Owner = (Window)view;
-            passWindow.ShowDialog();
+            try
+            {
+                var passWindow = new ForgotPassWindow();
+                passWindow.Owner = (Window)view;
+                passWindow.ShowDialog();
+            }
+            catch (Exception)
+            {
+
+            }
         }
 
         private bool ValidateOnRegister()
         {
-            var message = string.Empty;
-            if (string.IsNullOrWhiteSpace(Name))
+            try
             {
-                message = Translations.GetTranslation()["FirstNameValid"].ToString();
-            }
-            else if (string.IsNullOrWhiteSpace(Surname))
-            {
-                message = Translations.GetTranslation()["LastNameValid"].ToString();
-            }
-            else if (string.IsNullOrWhiteSpace(UserLogin))
-            {
-                message = Translations.GetTranslation()["EmptyLogin"].ToString();
-            }
-            else if (RPassword.Length < 8 || string.IsNullOrWhiteSpace(RPassword) || RPassword == string.Empty || !Regex.IsMatch(RPassword, @"^[a-zA-Z0-9]{8,}$"))
-            {
-                message = Translations.GetTranslation()["PassValidation"].ToString();
-            }
-            else if (RPassword != Rep_RPassword)
-            {
-                message = Translations.GetTranslation()["PassMatchValidation"].ToString();
-            }
-            else if (string.IsNullOrWhiteSpace(Email) || Email == string.Empty || !Regex.IsMatch(Email, @"\A(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)\Z", RegexOptions.IgnoreCase))
-            {
-                message = Translations.GetTranslation()["EmailValidation"].ToString();
-            }
+                var message = string.Empty;
+                if (string.IsNullOrWhiteSpace(Name))
+                {
+                    message = Translations.GetTranslation()["FirstNameValid"].ToString();
+                }
+                else if (string.IsNullOrWhiteSpace(Surname))
+                {
+                    message = Translations.GetTranslation()["LastNameValid"].ToString();
+                }
+                else if (string.IsNullOrWhiteSpace(UserLogin))
+                {
+                    message = Translations.GetTranslation()["EmptyLogin"].ToString();
+                }
+                else if (RPassword.Length < 8 || string.IsNullOrWhiteSpace(RPassword) || RPassword == string.Empty || !Regex.IsMatch(RPassword, @"^[a-zA-Z0-9]{8,}$"))
+                {
+                    message = Translations.GetTranslation()["PassValidation"].ToString();
+                }
+                else if (RPassword != Rep_RPassword)
+                {
+                    message = Translations.GetTranslation()["PassMatchValidation"].ToString();
+                }
+                else if (string.IsNullOrWhiteSpace(Email) || Email == string.Empty || !Regex.IsMatch(Email, @"\A(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)\Z", RegexOptions.IgnoreCase))
+                {
+                    message = Translations.GetTranslation()["EmailValidation"].ToString();
+                }
 
-            if (message != string.Empty)
+                if (message != string.Empty)
+                {
+                    Application.Current.Dispatcher.Invoke(new Action((() => { CustomMessageBox.Show(Translations.GetTranslation()["Error"].ToString(), message); })));
+                    return false;
+                }
+
+                return true;
+            }
+            catch (Exception)
             {
-                Application.Current.Dispatcher.Invoke(new Action((() => { CustomMessageBox.Show(Translations.GetTranslation()["Error"].ToString(), message); })));
                 return false;
             }
-
-            return true;
         }
 
         private bool ValidateOnLogin()
         {
-            var message = string.Empty;
+            try
+            {
+                var message = string.Empty;
 
-            if (string.IsNullOrWhiteSpace(LoginText))
-            {
-                message = Translations.GetTranslation()["EmptyLogin"].ToString();
-            }
-            else if (Password.Length < 8 || string.IsNullOrWhiteSpace(Password) || Password == string.Empty || !Regex.IsMatch(Password, @"^[a-zA-Z0-9]{8,}$"))
-            {
-                message = Translations.GetTranslation()["PassValidation"].ToString();
-            }
-            else if (UserServiceClient.GetUser(LoginText, AESEncryptor.encryptPassword(Password)) == null)
-            {
-                message = Translations.GetTranslation()["LogPassValid"].ToString();
-            }
+                if (string.IsNullOrWhiteSpace(LoginText))
+                {
+                    message = Translations.GetTranslation()["EmptyLogin"].ToString();
+                }
+                else if (Password.Length < 8 || string.IsNullOrWhiteSpace(Password) || Password == string.Empty || !Regex.IsMatch(Password, @"^[a-zA-Z0-9]{8,}$"))
+                {
+                    message = Translations.GetTranslation()["PassValidation"].ToString();
+                }
+                else if (UserServiceClient.GetUser(LoginText, AESEncryptor.encryptPassword(Password)) == null)
+                {
+                    message = Translations.GetTranslation()["LogPassValid"].ToString();
+                }
 
-            if (message != string.Empty)
+                if (message != string.Empty)
+                {
+                    Application.Current.Dispatcher.Invoke(new Action((() => { CustomMessageBox.Show(Translations.GetTranslation()["Error"].ToString(), message); })));
+                    return false;
+                }
+
+                return true;
+            }
+            catch (Exception)
             {
-                Application.Current.Dispatcher.Invoke(new Action((() => { CustomMessageBox.Show(Translations.GetTranslation()["Error"].ToString(), message); })));
                 return false;
             }
-
-            return true;
         }
 
         private void Clear()
         {
-            Name = string.Empty;
-            Surname = string.Empty;
-            UserLogin = string.Empty;
-            Email = string.Empty;
-            RPassword = string.Empty;
-            Rep_RPassword = string.Empty;
+            try
+            {
+                Name = string.Empty;
+                Surname = string.Empty;
+                UserLogin = string.Empty;
+                Email = string.Empty;
+                RPassword = string.Empty;
+                Rep_RPassword = string.Empty;
+            }
+            catch (Exception)
+            {
+
+            }
         }
     }
 }

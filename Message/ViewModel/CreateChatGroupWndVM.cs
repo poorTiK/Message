@@ -50,17 +50,24 @@ namespace Message.ViewModel
             get { return _name; }
             set
             {
-                SetProperty(ref _name, value, () =>
+                try
                 {
-                    if (!string.IsNullOrWhiteSpace(value))
-                    {
-                        IsCanCreate = true;
-                    }
-                    else
-                    {
-                        IsCanCreate = false;
-                    }
-                });
+                    SetProperty(ref _name, value, () =>
+                           {
+                               if (!string.IsNullOrWhiteSpace(value))
+                               {
+                                   IsCanCreate = true;
+                               }
+                               else
+                               {
+                                   IsCanCreate = false;
+                               }
+                           });
+                }
+                catch (Exception)
+                {
+
+                }
             }
         }
 
@@ -84,31 +91,52 @@ namespace Message.ViewModel
 
         public CreateChatGroupWndVM(IView view)
         {
-            _view = view;
-            ContactList = UserServiceClient.GetAllContactsUiInfo(GlobalBase.CurrentUser.Id).Where(ui => ui is UserUiInfo).ToList();
-            ContactList.ForEach(c => c.IsSelected = false);
+            try
+            {
+                _view = view;
+                ContactList = UserServiceClient.GetAllContactsUiInfo(GlobalBase.CurrentUser.Id).Where(ui => ui is UserUiInfo).ToList();
+                ContactList.ForEach(c => c.IsSelected = false);
 
-            SetAvatarForUI();
+                SetAvatarForUI();
+            }
+            catch (Exception)
+            {
+
+            }
         }
 
         public CreateChatGroupWndVM(IView view, List<UiInfo> ContactsList) : this(view)
         {
-            this.ContactList = ContactsList;
+            try
+            {
+                this.ContactList = ContactsList;
 
-            IsCanCreate = false;
+                IsCanCreate = false;
 
-            SetAvatarForUI();
+                SetAvatarForUI();
+            }
+            catch (Exception)
+            {
+
+            }
         }
 
         private void SetAvatarForUI()
         {
-            Task.Run(() =>
+            try
             {
-                Application.Current.Dispatcher.Invoke(() =>
+                Task.Run(() =>
                 {
-                    Images = ImageHelper.GetDefGroupImage();
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        Images = ImageHelper.GetDefGroupImage();
+                    });
                 });
-            });
+            }
+            catch (Exception)
+            {
+
+            }
         }
 
         private bool _isCreating;
@@ -121,77 +149,99 @@ namespace Message.ViewModel
 
         private void ExecuteOnCreate()
         {
-            if (Validate())
+            try
             {
-                IsCreating = true;
-                Task.Run(() =>
+                if (Validate())
                 {
-                    var selectedContacts = ContactList.Where(c => c.IsSelected).Select(ui => ui as UserUiInfo).ToList();
-
-                    var chatGroup = new ChatGroup();
-
-                    chatGroup.Name = Name;
-
-                    UserServiceClient.AddOrUpdateChatGroup(chatGroup);
-                    chatGroup = UserServiceClient.GetChatGroup(chatGroup.Name);
-
-                    foreach (var uiInfo in selectedContacts)
+                    IsCreating = true;
+                    Task.Run(() =>
                     {
-                        UserServiceClient.AddUserToChatGroupContact(chatGroup.Id, uiInfo.UserId);
-                    }
+                        var selectedContacts = ContactList.Where(c => c.IsSelected).Select(ui => ui as UserUiInfo).ToList();
 
-                    UserServiceClient.AddUserToChatGroupContact(chatGroup.Id, GlobalBase.CurrentUser.Id);
+                        var chatGroup = new ChatGroup();
 
-                    if (_newAvatar != null)
+                        chatGroup.Name = Name;
+
+                        UserServiceClient.AddOrUpdateChatGroup(chatGroup);
+                        chatGroup = UserServiceClient.GetChatGroup(chatGroup.Name);
+
+                        foreach (var uiInfo in selectedContacts)
+                        {
+                            UserServiceClient.AddUserToChatGroupContact(chatGroup.Id, uiInfo.UserId);
+                        }
+
+                        UserServiceClient.AddUserToChatGroupContact(chatGroup.Id, GlobalBase.CurrentUser.Id);
+
+                        if (_newAvatar != null)
+                        {
+                            var updatedChat = UserServiceClient.GetChatGroup(Name);
+                            updatedChat.ImageId = GlobalBase.FileServiceClient.UploadFile(new FileService.ChatFile() { Source = CompressionHelper.CompressImage(_newAvatar) });
+                            UserServiceClient.AddOrUpdateChatGroup(updatedChat);
+                        }
+                    }).ContinueWith(task =>
                     {
-                        var updatedChat = UserServiceClient.GetChatGroup(Name);
-                        updatedChat.ImageId = GlobalBase.FileServiceClient.UploadFile(new FileService.ChatFile() { Source = CompressionHelper.CompressImage(_newAvatar) });
-                        UserServiceClient.AddOrUpdateChatGroup(updatedChat);
-                    }
-                }).ContinueWith(task =>
-                {
-                    Application.Current.Dispatcher.Invoke(new Action(() =>
-                    {
-                        IsCreating = false;
-                        _view.CloseWindow();
-                    }));
-                });
+                        Application.Current.Dispatcher.Invoke(new Action(() =>
+                        {
+                            IsCreating = false;
+                            _view.CloseWindow();
+                        }));
+                    });
+                }
+            }
+            catch (Exception)
+            {
+
             }
         }
 
         private void ExecuteOnLoadPhoto()
         {
-            var openFileDialog = new OpenFileDialog();
-            openFileDialog.ShowDialog();
-            var FilePath = openFileDialog.FileName;
-
-            if (FilePath != string.Empty)
+            try
             {
-                _newAvatar = File.ReadAllBytes(FilePath);
-                var memstr = new MemoryStream(_newAvatar);
-                Application.Current.Dispatcher.Invoke(() => { Images = Image.FromStream(memstr); });
+                var openFileDialog = new OpenFileDialog();
+                openFileDialog.ShowDialog();
+                var FilePath = openFileDialog.FileName;
+
+                if (FilePath != string.Empty)
+                {
+                    _newAvatar = File.ReadAllBytes(FilePath);
+                    var memstr = new MemoryStream(_newAvatar);
+                    Application.Current.Dispatcher.Invoke(() => { Images = Image.FromStream(memstr); });
+                }
+            }
+            catch (Exception)
+            {
+
             }
         }
 
         private bool Validate()
         {
-            var message = string.Empty;
+            try
+            {
+                var message = string.Empty;
 
-            if (string.IsNullOrWhiteSpace(Name))
-            {
-                message = Translations.GetTranslation()["FirstNameValid"].ToString();
-            }
-            else if (!ContactList.Any(x => x.IsSelected == true))
-            {
-                message = Translations.GetTranslation()["NoMemmbersSelected"].ToString();
-            }
+                if (string.IsNullOrWhiteSpace(Name))
+                {
+                    message = Translations.GetTranslation()["FirstNameValid"].ToString();
+                }
+                else if (!ContactList.Any(x => x.IsSelected == true))
+                {
+                    message = Translations.GetTranslation()["NoMemmbersSelected"].ToString();
+                }
 
-            if (message != string.Empty)
+                if (message != string.Empty)
+                {
+                    Application.Current.Dispatcher.Invoke(new Action((() => { CustomMessageBox.Show(Translations.GetTranslation()["Error"].ToString(), message); })));
+                    return false;
+                }
+                return true;
+            }
+            catch (Exception)
             {
-                Application.Current.Dispatcher.Invoke(new Action((() => { CustomMessageBox.Show(Translations.GetTranslation()["Error"].ToString(), message); })));
+
                 return false;
             }
-            return true;
         }
     }
 }

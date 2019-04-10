@@ -42,15 +42,22 @@ namespace Message.ViewModel
             {
                 SetProperty(ref _selectedContact, value, () =>
                 {
-                    if (value != null)
+                    try
                     {
-                        if (!UserServiceClient.GetAllContactsUiInfo(GlobalBase.CurrentUser.Id).Where(x => x is UserUiInfo).Any(x => x.UniqueName == value.UniqueName))
+                        if (value != null)
                         {
-                            IsAddEnabled = true;
-                            return;
+                            if (!UserServiceClient.GetAllContactsUiInfo(GlobalBase.CurrentUser.Id).Where(x => x is UserUiInfo).Any(x => x.UniqueName == value.UniqueName))
+                            {
+                                IsAddEnabled = true;
+                                return;
+                            }
                         }
+                        IsAddEnabled = false;
                     }
-                    IsAddEnabled = false;
+                    catch (System.Exception)
+                    {
+
+                    }
                 });
             }
         }
@@ -62,20 +69,27 @@ namespace Message.ViewModel
             get { return _contactsSearch; }
             set
             {
-                SetProperty(ref _contactsSearch, value);
-
-                if (!string.IsNullOrEmpty(value))
+                try
                 {
-                    var tempUiInfos = UserServiceClient.FindNewUsersUiUnfoByLogin(GlobalBase.CurrentUser.Id, ContactsSearch);
-                    GlobalBase.loadPictures(UserServiceClient, tempUiInfos);
-                    ContactsList = tempUiInfos;
-                }
-                else
-                {
-                    UpdateContacts();
-                }
+                    SetProperty(ref _contactsSearch, value);
 
-                ManageControls();
+                    if (!string.IsNullOrEmpty(value))
+                    {
+                        var tempUiInfos = UserServiceClient.FindNewUsersUiUnfoByLogin(GlobalBase.CurrentUser.Id, ContactsSearch);
+                        GlobalBase.loadPictures(UserServiceClient, tempUiInfos);
+                        ContactsList = tempUiInfos;
+                    }
+                    else
+                    {
+                        UpdateContacts();
+                    }
+
+                    ManageControls();
+                }
+                catch (System.Exception)
+                {
+
+                }
             }
         }
 
@@ -89,14 +103,21 @@ namespace Message.ViewModel
 
         public ContatsWindowVM(IView iview) : base()
         {
-            view = iview;
+            try
+            {
+                view = iview;
 
-            var tempUiInfos = UserServiceClient.GetAllContactsUiInfo(GlobalBase.CurrentUser.Id).Where(x => x is UserUiInfo).ToList();
-            GlobalBase.loadPictures(UserServiceClient, tempUiInfos);
-            ContactsList = tempUiInfos;
+                var tempUiInfos = UserServiceClient.GetAllContactsUiInfo(GlobalBase.CurrentUser.Id).Where(x => x is UserUiInfo).ToList();
+                GlobalBase.loadPictures(UserServiceClient, tempUiInfos);
+                ContactsList = tempUiInfos;
 
-            IsAddEnabled = false;
-            ManageControls();
+                IsAddEnabled = false;
+                ManageControls();
+            }
+            catch (System.Exception)
+            {
+
+            }
         }
 
         private DelegateCommand _onAddContact;
@@ -116,56 +137,91 @@ namespace Message.ViewModel
 
         private void ExecuteOnOpenProfile()
         {
-            if (SelectedContact is UserUiInfo userUI)
+            try
             {
-                var user = UserServiceClient.GetUserById(userUI.UserId);
+                if (SelectedContact is UserUiInfo userUI)
+                {
+                    var user = UserServiceClient.GetUserById(userUI.UserId);
 
-                var wnd = new ContactProfileWindow(user);
-                wnd.Owner = (Window)view;
-                wnd.ShowDialog();
+                    var wnd = new ContactProfileWindow(user);
+                    wnd.Owner = (Window)view;
+                    wnd.ShowDialog();
 
-                UpdateContacts();
+                    UpdateContacts();
+                }
+            }
+            catch (System.Exception)
+            {
+
             }
         }
 
         private void ExecuteOnCloseCommand()
         {
-            view.CloseWindow();
+            try
+            {
+                view.CloseWindow();
+            }
+            catch (System.Exception)
+            {
+
+            }
         }
 
         private void ExecuteOnAddContactCommand()
         {
-            if (SelectedContact != null && SelectedContact is UserUiInfo userUI)
+            try
             {
-                var user = UserServiceClient.GetUserById(userUI.UserId);
-                UserServiceClient.AddUserToUserContact(GlobalBase.CurrentUser.Id, user.Id);
+                if (SelectedContact != null && SelectedContact is UserUiInfo userUI)
+                {
+                    var user = UserServiceClient.GetUserById(userUI.UserId);
+                    UserServiceClient.AddUserToUserContact(GlobalBase.CurrentUser.Id, user.Id);
 
-                UpdateContacts();
+                    UpdateContacts();
+                }
+
+                ManageControls();
             }
+            catch (System.Exception)
+            {
 
-            ManageControls();
+            }
         }
 
         private void UpdateContacts()
         {
-            var uiInfos = UserServiceClient.GetAllContactsUiInfo(GlobalBase.CurrentUser.Id);
-            GlobalBase.loadPictures(UserServiceClient, uiInfos);
+            try
+            {
+                var uiInfos = UserServiceClient.GetAllContactsUiInfo(GlobalBase.CurrentUser.Id);
+                GlobalBase.loadPictures(UserServiceClient, uiInfos);
 
-            ContactsList = uiInfos;
-            ManageControls();
+                ContactsList = uiInfos;
+                ManageControls();
 
-            GlobalBase.UpdateContactList();
+                GlobalBase.UpdateContactList();
+            }
+            catch (System.Exception)
+            {
+
+            }
         }
 
         private void ManageControls()
         {
-            if (string.IsNullOrEmpty(ContactsSearch))
+            try
             {
-                Caption = "Contacts";
+                if (string.IsNullOrEmpty(ContactsSearch))
+                {
+                    Caption = "Contacts";
+                }
+                else
+                {
+                    Caption = "Contacts search";
+                }
             }
-            else
+            catch (System.Exception)
             {
-                Caption = "Contacts search";
+
             }
         }
     }

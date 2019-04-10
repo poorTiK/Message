@@ -95,56 +95,92 @@ namespace Message.ViewModel
 
         public EditGroupWindowVM(IView view, ChatGroupUiInfo group)
         {
-            _view = view;
-            _groupUiInfo = group;
-            _membersToAdd = new List<UiInfo>();
+            try
+            {
+                _view = view;
+                _groupUiInfo = group;
+                _membersToAdd = new List<UiInfo>();
 
-            Init();
+                Init();
 
-            IsNewChanges = IsSavingProgress = false;
+                IsNewChanges = IsSavingProgress = false;
+            }
+            catch (Exception)
+            {
+
+            }
         }
 
         private void SetAvatarForUI()
         {
-            Task.Run(() =>
+            try
             {
-                var chatFile = GlobalBase.FileServiceClient.getChatFileById(_group.ImageId);
+                Task.Run(() =>
+                {
+                    var chatFile = GlobalBase.FileServiceClient.getChatFileById(_group.ImageId);
 
-                if (chatFile?.Source?.Length > 0)
-                {
-                    var memstr = new MemoryStream(chatFile.Source);
-                    Dispatcher.CurrentDispatcher.Invoke(() => { Images = Image.FromStream(memstr); });
-                }
-                else
-                {
-                    Dispatcher.CurrentDispatcher.Invoke(() => { Images = ImageHelper.GetDefGroupImage(); });
-                }
-            });
+                    if (chatFile?.Source?.Length > 0)
+                    {
+                        var memstr = new MemoryStream(chatFile.Source);
+                        Dispatcher.CurrentDispatcher.Invoke(() => { Images = Image.FromStream(memstr); });
+                    }
+                    else
+                    {
+                        Dispatcher.CurrentDispatcher.Invoke(() => { Images = ImageHelper.GetDefGroupImage(); });
+                    }
+                });
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
         public void Init()
         {
-            List<UiInfo> tempUiInfos = new List<UiInfo>();
-            Task.Run((() =>
+            try
             {
-                _group = UserServiceClient.GetChatGroup(_groupUiInfo.UniqueName);
+                List<UiInfo> tempUiInfos = new List<UiInfo>();
+                Task.Run((() =>
+                {
+                    try
+                    {
+                        _group = UserServiceClient.GetChatGroup(_groupUiInfo.UniqueName);
 
-                tempUiInfos = UserServiceClient.GetGroupParticipants(_group.Id);
+                        tempUiInfos = UserServiceClient.GetGroupParticipants(_group.Id);
 
-                UiInfo currentUserUiInfo = tempUiInfos.FirstOrDefault(info => info.UniqueName == GlobalBase.CurrentUser.Login);
-                tempUiInfos.Remove(currentUserUiInfo);
+                        UiInfo currentUserUiInfo = tempUiInfos.FirstOrDefault(info => info.UniqueName == GlobalBase.CurrentUser.Login);
+                        tempUiInfos.Remove(currentUserUiInfo);
 
-                GlobalBase.loadPictures(UserServiceClient, tempUiInfos);
-            })).ContinueWith(task =>
+                        GlobalBase.loadPictures(UserServiceClient, tempUiInfos);
+                    }
+                    catch (Exception)
+                    {
+
+                    }
+                })).ContinueWith(task =>
+                {
+                    try
+                    {
+                        GroupMemberList = tempUiInfos;
+
+                        GroupName = _group.Name;
+                        CurrentGroupName = _group.Name;
+                        GroupMembersAmount = GroupMemberList.Count.ToString();
+
+                        SetAvatarForUI();
+                    }
+                    catch (Exception)
+                    {
+
+                    }
+                });
+            }
+            catch (Exception)
             {
-                GroupMemberList = tempUiInfos;
 
-                GroupName = _group.Name;
-                CurrentGroupName = _group.Name;
-                GroupMembersAmount = GroupMemberList.Count.ToString();
-
-                SetAvatarForUI();
-            });
+            }
         }
 
         private DelegateCommand _onApply;
@@ -179,162 +215,225 @@ namespace Message.ViewModel
 
         private void ExecuteOnApplyChanges()
         {
-            if (Validate())
+            try
             {
-                IsSavingProgress = true;
-                var res = string.Empty;
-
-                Task.Run(() =>
+                if (Validate())
                 {
-                    _group.Name = GroupName;
+                    IsSavingProgress = true;
+                    var res = string.Empty;
 
-                    var chatFile = GlobalBase.FileServiceClient.getChatFileById(_group.ImageId);
-
-                    if (_newAvatar != null)
+                    Task.Run(() =>
                     {
-                        if (chatFile == null)
+                        _group.Name = GroupName;
+
+                        var chatFile = GlobalBase.FileServiceClient.getChatFileById(_group.ImageId);
+
+                        if (_newAvatar != null)
                         {
-                            _group.ImageId = GlobalBase.FileServiceClient.UploadFile(new FileService.ChatFile() { Source = CompressionHelper.CompressImage(_newAvatar) });
+                            if (chatFile == null)
+                            {
+                                _group.ImageId = GlobalBase.FileServiceClient.UploadFile(new FileService.ChatFile() { Source = CompressionHelper.CompressImage(_newAvatar) });
+                            }
+                            else
+                            {
+                                GlobalBase.FileServiceClient.UpdateFileSource(chatFile.Id, CompressionHelper.CompressImage(_newAvatar));
+                            }
                         }
-                        else
+
+                        if (_membersToAdd?.Count != 0)
                         {
-                            GlobalBase.FileServiceClient.UpdateFileSource(chatFile.Id, CompressionHelper.CompressImage(_newAvatar));
+                            foreach (var uiInfo in _membersToAdd)
+                            {
+                                UserServiceClient.AddUserToChatGroupContact(_group.Id, (uiInfo as UserUiInfo).UserId);
+                            }
                         }
-                    }
 
-                    if (_membersToAdd?.Count != 0)
-                    {
-                        foreach (var uiInfo in _membersToAdd)
+                        res = UserServiceClient.AddOrUpdateChatGroup(_group);
+
+                        SetAvatarForUI();
+
+                        if (res == string.Empty)
                         {
-                            UserServiceClient.AddUserToChatGroupContact(_group.Id, (uiInfo as UserUiInfo).UserId);
+                            Application.Current.Dispatcher.Invoke(new Action((() =>
+                        {
+                            CustomMessageBox.Show(Translations.GetTranslation()["ChangesSaved"].ToString());
+                        })));
                         }
-                    }
-
-                    res = UserServiceClient.AddOrUpdateChatGroup(_group);
-
-                    SetAvatarForUI();
-
-                    if (res == string.Empty)
+                    }).ContinueWith(task =>
                     {
-                        Application.Current.Dispatcher.Invoke(new Action((() =>
-                    {
-                        CustomMessageBox.Show(Translations.GetTranslation()["ChangesSaved"].ToString());
-                    })));
-                    }
-                }).ContinueWith(task =>
-                {
-                    IsSavingProgress = false;
-                    IsNewChanges = false;
+                        IsSavingProgress = false;
+                        IsNewChanges = false;
 
-                    GlobalBase.UpdateContactList();
-                });
+                        GlobalBase.UpdateContactList();
+                    });
+                }
+            }
+            catch (Exception)
+            {
+
             }
         }
 
         private void ExecuteOnBack()
         {
-            _view.CloseWindow();
+            try
+            {
+                _view.CloseWindow();
+            }
+            catch (Exception)
+            {
+
+            }
         }
 
         private void ExecuteOnOpenProfile()
         {
-            if (SelectedMember is UserUiInfo userUiInfo)
+            try
             {
-                var user = UserServiceClient.GetUserById(userUiInfo.UserId);
-                var wnd = new ContactProfileWindow(user);
-                wnd.Owner = (Window)_view;
-                wnd.ShowDialog();
+                if (SelectedMember is UserUiInfo userUiInfo)
+                {
+                    var user = UserServiceClient.GetUserById(userUiInfo.UserId);
+                    var wnd = new ContactProfileWindow(user);
+                    wnd.Owner = (Window)_view;
+                    wnd.ShowDialog();
+                }
+            }
+            catch (Exception)
+            {
+
             }
         }
 
         private void ExecuteOnLoadPhoto()
         {
-            var openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = GlobalBase.ImagePattern;
-            openFileDialog.ShowDialog();
-            var FilePath = openFileDialog.FileName;
-
-            if (FilePath != string.Empty)
+            try
             {
-                _newAvatar = File.ReadAllBytes(FilePath);
-                var memstr = new MemoryStream(_newAvatar);
-                Dispatcher.CurrentDispatcher.Invoke(() => { Images = Image.FromStream(memstr); });
-                IsNewChanges = true;
+                var openFileDialog = new OpenFileDialog();
+                openFileDialog.Filter = GlobalBase.ImagePattern;
+                openFileDialog.ShowDialog();
+                var FilePath = openFileDialog.FileName;
+
+                if (FilePath != string.Empty)
+                {
+                    _newAvatar = File.ReadAllBytes(FilePath);
+                    var memstr = new MemoryStream(_newAvatar);
+                    Dispatcher.CurrentDispatcher.Invoke(() => { Images = Image.FromStream(memstr); });
+                    IsNewChanges = true;
+                }
+            }
+            catch (Exception)
+            {
+
             }
         }
 
         private void ExecuteOnAddMembers()
         {
-            _view.Hide(false);
-            var wnd = new SelectUsersWindow(_group);
-            wnd.Owner = (Window)_view;
-            wnd.ShowDialog();
-            _view.Hide(true);
+            try
+            {
+                _view.Hide(false);
+                var wnd = new SelectUsersWindow(_group);
+                wnd.Owner = (Window)_view;
+                wnd.ShowDialog();
+                _view.Hide(true);
+            }
+            catch (Exception)
+            {
+
+            }
         }
 
         private void ExecuteOnLeaveGroup()
         {
-            if (CustomMessageBox.Show(Translations.GetTranslation()["LeaveGroupAsk"].ToString(), MessageBoxType.ConfirmationWithYesNo) == MessageBoxResult.Yes)
+            try
             {
-                UserServiceClient.RemoveUserToChatGroupContactAsync(_group.Id, GlobalBase.CurrentUser.Id).ContinueWith(task =>
+                if (CustomMessageBox.Show(Translations.GetTranslation()["LeaveGroupAsk"].ToString(), MessageBoxType.ConfirmationWithYesNo) == MessageBoxResult.Yes)
                 {
-                    Application.Current.Dispatcher.Invoke(new Action(() =>
+                    UserServiceClient.RemoveUserToChatGroupContactAsync(_group.Id, GlobalBase.CurrentUser.Id).ContinueWith(task =>
                     {
-                        _view.CloseWindow();
-                    }));
+                        Application.Current.Dispatcher.Invoke(new Action(() =>
+                        {
+                            _view.CloseWindow();
+                        }));
 
-                    GlobalBase.UpdateContactList();
-                });
+                        GlobalBase.UpdateContactList();
+                    });
+                }
+            }
+            catch (Exception)
+            {
+                
             }
         }
 
         private void CheckChanges()
         {
-            if (GroupName != _group.Name && !string.IsNullOrWhiteSpace(GroupName))
+            try
             {
-                IsNewChanges = true;
-                return;
+                if (GroupName != _group.Name && !string.IsNullOrWhiteSpace(GroupName))
+                {
+                    IsNewChanges = true;
+                    return;
+                }
+                IsNewChanges = false;
             }
-            IsNewChanges = false;
+            catch (Exception)
+            {
+
+            }
         }
 
         private bool Validate()
         {
-            var message = string.Empty;
-
-            if (string.IsNullOrWhiteSpace(GroupName))
+            try
             {
-                message = Application.Current.Resources.MergedDictionaries[4]["GroupNameValid"].ToString();
+                var message = string.Empty;
+
+                if (string.IsNullOrWhiteSpace(GroupName))
+                {
+                    message = Application.Current.Resources.MergedDictionaries[4]["GroupNameValid"].ToString();
+                }
+
+                if (message != string.Empty)
+                {
+                    Application.Current.Dispatcher.Invoke(new Action((() => { CustomMessageBox.Show(Application.Current.Resources.MergedDictionaries[4]["Error"].ToString(), message); })));
+                    return false;
+                }
+
+                return true;
             }
-
-            if (message != string.Empty)
+            catch (Exception)
             {
-                Application.Current.Dispatcher.Invoke(new Action((() => { CustomMessageBox.Show(Application.Current.Resources.MergedDictionaries[4]["Error"].ToString(), message); })));
                 return false;
             }
-
-            return true;
         }
 
         public void Update(List<UiInfo> membersToAdd)
         {
-            if (membersToAdd?.Count != 0)
+            try
             {
-                IsNewChanges = true;
-                _membersToAdd = membersToAdd;
-
-                var temp = new List<UiInfo>();
-                temp.AddRange(_membersToAdd);
-                temp.AddRange(GroupMemberList);
-                var defImage = Image.FromFile("../../Resources/DefaultPicture.jpg");
-
-                Task.Run(() =>
+                if (membersToAdd?.Count != 0)
                 {
-                    GlobalBase.loadPictures(UserServiceClient, temp);
-                }).ContinueWith(Task =>
-                {
-                    GroupMemberList = temp;
-                });
+                    IsNewChanges = true;
+                    _membersToAdd = membersToAdd;
+
+                    var temp = new List<UiInfo>();
+                    temp.AddRange(_membersToAdd);
+                    temp.AddRange(GroupMemberList);
+                    var defImage = Image.FromFile("../../Resources/DefaultPicture.jpg");
+
+                    Task.Run(() =>
+                    {
+                        GlobalBase.loadPictures(UserServiceClient, temp);
+                    }).ContinueWith(Task =>
+                    {
+                        GroupMemberList = temp;
+                    });
+                }
+            }
+            finally
+            {
+
             }
         }
     }
