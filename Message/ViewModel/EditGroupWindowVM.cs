@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Forms;
@@ -123,12 +124,16 @@ namespace Message.ViewModel
 
         public void Init()
         {
-            var tempUiInfos = new List<UiInfo>();
+            List<UiInfo> tempUiInfos = new List<UiInfo>();
             Task.Run((() =>
             {
                 _group = UserServiceClient.GetChatGroup(_groupUiInfo.UniqueName);
 
                 tempUiInfos = UserServiceClient.GetGroupParticipants(_group.Id);
+
+                UiInfo currentUserUiInfo = tempUiInfos.FirstOrDefault(info => info.UniqueName == GlobalBase.CurrentUser.Login);
+                tempUiInfos.Remove(currentUserUiInfo);
+
                 GlobalBase.loadPictures(UserServiceClient, tempUiInfos);
             })).ContinueWith(task =>
             {
