@@ -1,5 +1,6 @@
 ﻿using DialogApplication.Interfaces.IView;
 using DialogApplication.View.Controls.ControlsViewModel;
+using LoggingSystem;
 using System;
 using System.Collections.Generic;
 using System.Linq;

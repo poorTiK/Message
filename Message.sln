@@ -12,6 +12,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServerWCF", "ServerWCF\Serv
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DialogApplication", "DialogApplication\DialogApplication.csproj", "{B08BC15B-5BBA-4723-80E6-33EAA9AC56D7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoggingSystem", "LoggingSystem\LoggingSystem.csproj", "{9B7CD9DC-AE6A-47A3-9D10-844B7D7DB9DD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,6 +32,10 @@ Global
 		{B08BC15B-5BBA-4723-80E6-33EAA9AC56D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B08BC15B-5BBA-4723-80E6-33EAA9AC56D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B08BC15B-5BBA-4723-80E6-33EAA9AC56D7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9B7CD9DC-AE6A-47A3-9D10-844B7D7DB9DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9B7CD9DC-AE6A-47A3-9D10-844B7D7DB9DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9B7CD9DC-AE6A-47A3-9D10-844B7D7DB9DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9B7CD9DC-AE6A-47A3-9D10-844B7D7DB9DD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

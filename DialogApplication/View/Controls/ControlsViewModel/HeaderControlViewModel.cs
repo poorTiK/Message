@@ -1,5 +1,4 @@
-﻿using DialogApplication.AdditionalItems;
-using DialogApplication.View.ViewModel;
+﻿using DialogApplication.View.ViewModel;
 using Prism.Commands;
 using System;
 using System.Collections.Generic;
@@ -82,22 +81,10 @@ namespace DialogApplication.View.Controls.ControlsViewModel
             OnClose = onClose;
         }
 
-        private void ExecuteOnCloseCommand()
-        {
-            OnClose?.Invoke();
-            Logger.Log(this, "Window Closed");
-        }
+        private void ExecuteOnCloseCommand() => OnClose?.Invoke();
 
-        private void ExecuteOnMaximizeCommand()
-        {
-            OnMaximize?.Invoke();
-            Logger.Log(this, "Window Maximized");
-        }
+        private void ExecuteOnMaximizeCommand() => OnMaximize?.Invoke();
 
-        private void ExecuteOnMinimizeCommand()
-        {
-            OnMinimize?.Invoke();
-            Logger.Log(this, "Window Minimized");
-        }
+        private void ExecuteOnMinimizeCommand() => OnMinimize?.Invoke();
     }
 }
