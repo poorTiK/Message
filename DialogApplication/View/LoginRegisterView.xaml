@@ -1,0 +1,21 @@
+﻿<Window x:Class="DialogApplication.View.LoginRegisterView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DialogApplication.View"
+        xmlns:controls="clr-namespace:DialogApplication.View.Controls"
+        mc:Ignorable="d"
+
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        Name="MainWnd" Height="250" Width="450"
+        WindowStartupLocation="CenterScreen" WindowStyle="None"
+        BorderThickness="0" ResizeMode="NoResize">
+    <WindowChrome.WindowChrome>
+        <WindowChrome CaptionHeight="22" />
+    </WindowChrome.WindowChrome>
+
+    <Grid>
+        <controls:HeaderControl DataContext="{Binding HeaderControlViewModel}" />
+    </Grid>
+</Window>
